@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { baseURL, headers } from '../networking/config';
-import { resInterceptor } from '../networking/interceptors';
+import { baseURL, headers } from './config';
+import { resInterceptor } from './interceoptors';
 
 export class NetworkService {
     constructor() {

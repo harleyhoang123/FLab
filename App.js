@@ -1,11 +1,25 @@
-
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import RootNavigators from './src/navigations/RootNavigators';
+import { hide } from 'react-native-bootsplash';
+import {networkService} from "./src/networking";
+import {persistor, store} from "./src/store";
+import {Provider} from "react-redux";
+import {PersistGate} from "redux-persist/integration/react";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function App() {
+  const handleStoreRehydration = () => {
+    const { accessToken } = store.getState().user;
+
+    if (accessToken) {
+      networkService.setAccessToken(accessToken);
+    }
+  };
   return (
-      <RootNavigators/>
+      <Provider store={store}>
+            <RootNavigators />
+      </Provider>
   );
 }
 

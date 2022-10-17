@@ -1,8 +1,17 @@
 import { StyleSheet, View, TextInput, Text, TouchableOpacity } from 'react-native';
 import React ,{ useState } from 'react';
+import {useDispatch} from "react-redux";
+import {login} from "../../actions/UserAction";
+
+
 export default function Login({navigation}) {
+    const dispatch = useDispatch();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    const handleSubmit = () => {
+        dispatch(login(username, password));
+    };
   return (
     <View style={styles.container}>
         <View style={styles.left}>
@@ -12,8 +21,8 @@ export default function Login({navigation}) {
 
         <Text style={styles.login}>Login</Text>
 
-       
-        <TextInput style = {styles.textinput} placeholder='Email or Phone Number' 
+
+        <TextInput style = {styles.textinput} placeholder='Email or Phone Number'
         onChangeText={newText => setUsername(newText)}
         defaultValue={username}/>
         <TextInput placeholder='Password'
@@ -22,7 +31,7 @@ export default function Login({navigation}) {
         defaultValue={password}
         secureTextEntry
       />
-       
+
       <View style ={styles.forgotpw} >
       <View >
       <TouchableOpacity>
@@ -30,8 +39,8 @@ export default function Login({navigation}) {
         </TouchableOpacity>
       </View>
       </View>
-      <TouchableOpacity style= {styles.button} >
-            <Text style= {styles.text} onPress={() => navigation.navigate("Home")} >Log in</Text>
+      <TouchableOpacity style= {styles.button} onPress={handleSubmit} >
+            <Text style= {styles.text} >Log in</Text>
       </TouchableOpacity>
       <View style={styles.register}>
       <Text >Don't have a account?</Text>
@@ -62,7 +71,7 @@ flexDirection:'row',
   },
   textinput:{
     height: 50,
-    width: 500, 
+    width: 500,
     backgroundColor:'white',
     borderBottomWidth: 1,
     margin: 15

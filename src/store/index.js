@@ -3,7 +3,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 import { networkService } from '../networking';
 import { rootReducer } from '../reducers';
-import { storage } from '../storage';
+import { storage } from '../storages';
 
 const persistConfig = {
     key: 'root',
@@ -13,7 +13,7 @@ const persistConfig = {
 
 export const store = createStore(
     persistReducer(persistConfig, rootReducer),
-    applyMiddleware(thunk.withExtraArgument({ networkService, demoMode: true }))
+    applyMiddleware(thunk.withExtraArgument({ networkService }))
 );
 
 export const persistor = persistStore(store);

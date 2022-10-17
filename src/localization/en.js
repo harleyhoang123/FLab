@@ -1,4 +1,4 @@
-export const en = {
+export const strings = {
     common: {
         loading: 'Loading',
         connectionError: 'Connection error',
