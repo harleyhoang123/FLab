@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { spacing } from '../theme';
+import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+
+import { spacing } from '../theme/spacing';
 
 const styles = StyleSheet.create({
     container: {

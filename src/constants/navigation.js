@@ -5,4 +5,5 @@ export const NAVIGATION = {
     ticket: 'Ticket',
     lab: 'Lab',
     profile: 'Profile',
+    login: 'Login'
 };

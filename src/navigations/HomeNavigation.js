@@ -1,27 +1,48 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { NavigationContainer } from '@react-navigation/native';
 import React from "react";
-import { NAVIGATION } from '../constants';
-import Home from '../screens/Home/Home';
-import Forum from "../screens/Forum/Forum";
-import Lab from "../screens/Lab/Lab";
-import Notification from "../screens/Notification/Notification";
-import Ticket from "../screens/Ticket/Ticket";
-import Profile from "../screens/Profile/Profile";
-
-const Tab = createMaterialTopTabNavigator();
-
-export function HomeNavigation() {
+import { StyleSheet, View, Button } from "react-native";
+import Logo from "../assets/Logo";
+export default function HomeTopNavigator({navigation}) {
     return (
-        <NavigationContainer>
-            <Tab.Navigator initialRouteName={NAVIGATION.home}>
-                <Tab.Screen name={NAVIGATION.home} component={Home} />
-                <Tab.Screen name={NAVIGATION.lab} component={Lab} />
-                <Tab.Screen name={NAVIGATION.forum} component={Forum} />
-                <Tab.Screen name={NAVIGATION.notification} component={Notification} />
-                <Tab.Screen name={NAVIGATION.ticket} component={Ticket} />
-                <Tab.Screen name={NAVIGATION.profile} component={Profile} />
-        </Tab.Navigator>
-        </NavigationContainer>
+        <View style = {styles.container}>
+            <View style = {styles.topNavigationContent}>
+                <View style = {styles.topNavigationContentLeft}>
+                    <Logo/>
+                    <Button title={"Home"} onPress={() => navigation.push("Home")}/>
+                    <Button title={"Lab"} onPress={() => navigation.push("Home")}/>
+                </View>
+                <View style = {styles.topNavigationContentRight}>
+                    <Button title={"Home"} onPress={() => navigation.push("Home")}/>
+                    <Button title={"Home"} onPress={() => navigation.push("Home")}/>
+                </View>
+            </View>
+        </View>
     );
+
 }
+
+const styles = StyleSheet.create({
+    container:{
+        borderBottomWidth:1
+    },
+    topNavigationContent: {
+        flexDirection: 'row',
+        height: 50,
+        backgroundColor:'white',
+        justifyContent:'space-between',
+    },
+    content : {
+        backgroundColor:'gray',
+    },
+    topNavigationContentLeft: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+
+    },
+    topNavigationContentRight: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    button: {
+        justifyContent: "center",
+    },
+});

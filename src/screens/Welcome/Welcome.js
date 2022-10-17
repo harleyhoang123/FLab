@@ -1,14 +1,19 @@
 import React from 'react';
-import {Button, ImageBackground, View, StyleSheet} from 'react-native';
-import {NAVIGATION} from "../../constants";
-import {HomeNavigation} from "../../navigations/HomeNavigation";
-
+import { ImageBackground, View, StyleSheet} from 'react-native';
+import CustomButton from './CustomButton';
 function Welcome({navigation}) {
     return (
+        
         <ImageBackground style={styles.background} source={require('../../assets/background.jpeg')}>
+            <View style={styles.button} >
+            <CustomButton text ={"Register"}  ></CustomButton>
+            <CustomButton text ={"Login"}> </CustomButton>
+            
+            </View>
         </ImageBackground>
     );
 }
+
 
 const styles = StyleSheet.create({
     background: {
@@ -22,7 +27,11 @@ const styles = StyleSheet.create({
         height: "500px",
         justifyContent: "center",
         alignItems: "center"
-    }
+    },
+    button: {
+        
+        flexDirection: 'row-reverse'
+    },
 }
 );
 export default Welcome;

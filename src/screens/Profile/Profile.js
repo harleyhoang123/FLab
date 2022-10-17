@@ -1,10 +1,8 @@
 import React from 'react';
-import {Text, View} from "react-native";
-
-function Profile(props) {
+import {Text, View, Button} from "react-native";
+function Profile({navigation}) {
     return (
         <View>
-            <Text>This is profile page</Text>
         </View>
     );
 }
