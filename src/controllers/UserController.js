@@ -1,38 +1,22 @@
-import { routes } from '../controllers/routes';
-import { strings } from '../localization';
+import { routes } from './routers';
 
 export class UserController {
     constructor(networkService) {
         this.networkService = networkService;
     }
 
-    login({ username, password, demoMode }) {
-        if (demoMode) {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    if (username && password) {
-                        resolve({ data: { user: { username } } });
-                    } else {
-                        reject({ data: { error: strings.login.invalidCredentials } });
-                    }
-                }, 250);
-            });
-        }
-
+    login({ username, password }) {
         return this.networkService.request({
             method: 'POST',
             url: routes.authentication.login,
-            data: { username, password },
+            data: {
+                emailOrUsername: username ,
+                password: password
+            },
         });
     }
 
-    logout({ demoMode } = {}) {
-        if (demoMode) {
-            return new Promise((resolve) => {
-                setTimeout(resolve, 250);
-            });
-        }
-
+    logout() {
         return this.networkService.request({
             method: 'DELETE',
             url: routes.authentication.logout,

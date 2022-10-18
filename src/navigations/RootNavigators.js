@@ -5,6 +5,7 @@ import Welcome from '../screens/Welcome/Welcome';
 import Login from '../screens/Login/Login';
 import Register from '../screens/Register/Register';
 import Home from '../screens/Home/Home';
+import ForgotPassword from "../screens/Forgot Password/ForgotPassword";
 function RootNavigators(props) {
     const Stack = createStackNavigator();
     return (
@@ -14,7 +15,7 @@ function RootNavigators(props) {
                 <Stack.Screen name='Login' component={Login}/>
                 <Stack.Screen name='Register' component={Register}/>
                 <Stack.Screen name='Home' component={Home}/>
-
+                <Stack.Screen name='ForgotPassword' component={ForgotPassword}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

@@ -1,6 +1,6 @@
 export const routes = {
     authentication: {
-        login: '/users',
+        login: '/capstone/authentication/public/api/v1/accounts/account/login',
         logout: '/users/logout',
     },
 };

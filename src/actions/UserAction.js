@@ -29,24 +29,23 @@ const clearStore = () => ({
     payload: null,
 });
 
-export const login = (username, password) => async (dispatch, _, { demoMode, networkService }) => {
+export const login = (username, password) => async (dispatch, _, { networkService }) => {
     try {
         dispatch(loginRequest());
         const userController = new UserController(networkService);
-        const { data } = await userController.login({ username, password, demoMode });
-        if (!demoMode) {
-            networkService.setAccessToken(data.user.accessToken);
-        }
+        const { data } = await userController.login({ username, password });
+        console.log("Data is: "+ JSON.stringify(data));
+
         dispatch(loginSuccess(data.user));
     } catch ({ data }) {
         dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
     }
 };
 
-export const logout = () => async (dispatch, _, { demoMode, networkService }) => {
+export const logout = () => async (dispatch, _, { networkService }) => {
     try {
         const userController = new UserController(networkService);
-        await userController.logout({ demoMode });
+        await userController.logout();
     } finally {
         networkService.clearAccessToken();
         dispatch(clearStore());
