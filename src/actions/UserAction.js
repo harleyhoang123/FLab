@@ -29,7 +29,7 @@ const clearStore = () => ({
     payload: null,
 });
 
-export const login = (username, password) => async (dispatch, _, { demoMode, networkService }) => {
+export const login = (username, password) => async (dispatch, _, { networkService }) => {
     try {
         dispatch(loginRequest());
         const userController = new UserController(networkService);
@@ -42,7 +42,7 @@ export const login = (username, password) => async (dispatch, _, { demoMode, net
     }
 };
 
-export const logout = () => async (dispatch, _, { demoMode, networkService }) => {
+export const logout = () => async (dispatch, _, { networkService }) => {
     try {
         const userController = new UserController(networkService);
         await userController.logout();

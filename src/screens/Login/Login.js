@@ -1,113 +1,91 @@
-import { StyleSheet, View, TextInput, Text, TouchableOpacity } from 'react-native';
-import React ,{ useState } from 'react';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {login} from "../../actions/UserAction";
+import TextField from "../../components/TextField";
+import Logo from "../../assets/Logo";
+import Buttons from "../../components/Buttons";
+import Title from "../../components/Title";
 
 
 export default function Login({navigation}) {
     const dispatch = useDispatch();
-    const [username, setUsername] = useState('');
+    const [usernameOrEmail, setUsernameOrEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = () => {
-        dispatch(login(username, password));
+        dispatch(login(usernameOrEmail, password));
     };
-  return (
-    <View style={styles.container}>
-        <View style={styles.left}>
+    return (
+        <View style={styles.container}>
+            <View style={styles.left}>
+                <Logo style={styles.logo}/>
+            </View>
+            <View style={styles.right}>
+                <Title title={"Login"}></Title>
+                <TextField text={usernameOrEmail} onChangeText={newText => setUsernameOrEmail(newText)}
+                           placeholder={"Email or user name"}
+                           secureTextEntry={false}></TextField>
+                <TextField text={password} onChangeText={newText => setPassword(newText)} placeholder={"Password"}
+                           secureTextEntry={true}></TextField>
+                <View style={styles.forgotPassword}>
+                    <View>
+                        <TouchableOpacity onPress={() => navigation.push("ForgotPassword")}>
+                            <Text style={styles.txt}>Forgot Password?</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <Buttons text={"Log in"} onPressTo={handleSubmit} style={styles.button}></Buttons>
+                <View style={styles.register}>
+                    <Text>Don't have a account?</Text>
+                    <TouchableOpacity onPress={() => navigation.push("Register")}>
+                        <Text style={styles.txt}>Register Now</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
         </View>
-
-        <View style={styles.right}>
-
-        <Text style={styles.login}>Login</Text>
-
-
-        <TextInput style = {styles.textinput} placeholder='Email or Phone Number'
-        onChangeText={newText => setUsername(newText)}
-        defaultValue={username}/>
-        <TextInput placeholder='Password'
-        style={styles.textinput}
-        onChangeText={newText => setPassword(newText)}
-        defaultValue={password}
-        secureTextEntry
-      />
-
-      <View style ={styles.forgotpw} >
-      <View >
-      <TouchableOpacity>
-        <Text style= {styles.txt}>Forgot Password?</Text>
-        </TouchableOpacity>
-      </View>
-      </View>
-      <TouchableOpacity style= {styles.button} onPress={handleSubmit} >
-            <Text style= {styles.text} >Log in</Text>
-      </TouchableOpacity>
-      <View style={styles.register}>
-      <Text >Don't have a account?</Text>
-      <TouchableOpacity >
-      <Text style={styles.txt}>Register Now</Text>
-      </TouchableOpacity>
-      </View>
-      </View>
-    </View>
-  );
+    );
 }
 const styles = StyleSheet.create({
     container: {
-        flex:1,
-flexDirection:'row',
+        flex: 1,
+        flexDirection: 'row',
     },
-    left:{
-        flex:0.5,
+    left: {
+        flex: 0.5,
+        justifyContent: "center",
+        alignItems: "center",
     },
-    right:{
-        flex:0.5,
+    logo: {
+        width: "750px",
+        height: "750px",
     },
-  login: {
-    fontSize: 50,
-    fontWeight: "bold",
-    marginTop: 50,
-    marginLeft:40,
-  },
-  textinput:{
-    height: 50,
-    width: 500,
-    backgroundColor:'white',
-    borderBottomWidth: 1,
-    margin: 15
-  },
-  forgotpw: {
-    flexDirection : 'row',
-    paddingBottom:40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  register: {
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    marginLeft: 10,
-  },
-  txt:{
-    fontWeight: "bold",
-    borderBottomWidth:1,
-  },
-  button:{
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: 'black',
-    width: 240,
-    marginLeft: 150,
-    marginBottom:40,
-  },
-  text: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'white',
-  },
+    right: {
+        flex: 0.5,
+    },
+    title: {
+        fontSize: 50,
+        fontWeight: "bold",
+        marginTop: 200,
+        marginLeft: 15,
+    },
+    forgotPassword: {
+        paddingBottom: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    register: {
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        marginLeft: 10,
+    },
+    txt: {
+        fontWeight: "bold",
+        borderBottomWidth: 1,
+    },
+    button:{
+        width: 240,
+        marginLeft: 150,
+        marginBottom: 40,
+    },
 });
