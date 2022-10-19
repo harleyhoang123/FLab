@@ -8,19 +8,6 @@
     "ios": "expo start --ios",
     "web": "expo start --web"
   },
-  "jest": {
-    "preset": "react-native",
-    "transformIgnorePatterns": [
-      "node_modules/(?!react-native|react)/"
-    ],
-    "setupFiles": [
-      "<rootDir>/jest-setup.js"
-    ],
-    "globals": {
-      "__DEV__": true
-    },
-    "testEnvironment": "node"
-  },
   "dependencies": {
     "@expo-google-fonts/dev": "^0.2.2",
     "@expo/webpack-config": "^0.17.0",
@@ -33,14 +20,13 @@
     "expo": "~46.0.13",
     "expo-status-bar": "~1.4.0",
     "prop-types": "^15.8.1",
-    "react": "17.0.0",
-    "react-dom": "17.0.0",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
     "react-native": "0.69.6",
-    "react-native-bootsplash": "^4.3.2",
-    "react-native-gesture-handler": "^2.7.1",
     "react-native-localization": "^2.3.1",
-    "react-native-pager-view": "5.4.24",
-    "react-native-reanimated": "~2.9.1",
+    "react-native-pager-view": "^6.0.1",
+    "react-native-paper": "^4.12.5",
+    "react-native-reanimated": "^2.10.0",
     "react-native-tab-view": "^3.2.1",
     "react-native-web": "~0.18.7",
     "react-redux": "^8.0.4",

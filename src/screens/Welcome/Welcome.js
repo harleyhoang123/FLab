@@ -1,14 +1,13 @@
 import React from 'react';
 import { ImageBackground, View, StyleSheet} from 'react-native';
-import CustomButton from './CustomButton';
+import Buttons from "../../components/Buttons";
 function Welcome({navigation}) {
     return (
         
         <ImageBackground style={styles.background} source={require('../../assets/background.jpeg')}>
             <View style={styles.button} >
-            <CustomButton text ={"Register"}  ></CustomButton>
-            <CustomButton text ={"Login"}> </CustomButton>
-            
+            <Buttons text ={"Register"} onPressTo={() => navigation.push("Register")} style={{margin:20}} ></Buttons>
+            <Buttons text ={"Login"} onPressTo={() => navigation.push("Login")} style={{margin:20}}> </Buttons>
             </View>
         </ImageBackground>
     );
@@ -29,7 +28,6 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     button: {
-        
         flexDirection: 'row-reverse'
     },
 }
