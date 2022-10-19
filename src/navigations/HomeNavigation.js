@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, View, Button } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Button } from 'react-native-paper';
 import Logo from "../assets/Logo";
 export default function HomeTopNavigator({navigation}) {
     return (
@@ -7,12 +8,20 @@ export default function HomeTopNavigator({navigation}) {
             <View style = {styles.topNavigationContent}>
                 <View style = {styles.topNavigationContentLeft}>
                     <Logo/>
-                    <Button title={"Home"} onPress={() => navigation.push("Home")}/>
-                    <Button title={"Lab"} onPress={() => navigation.push("Home")}/>
+                    <Button style={styles.button} onPress={() => navigation.push("Home")}>
+                        Home
+                    </Button>
+                    <Button style={styles.button} onPress={() => navigation.push("Home")}>
+                        Home
+                    </Button>
                 </View>
                 <View style = {styles.topNavigationContentRight}>
-                    <Button title={"Login"} onPress={() => navigation.navigate("Login")}/>
-                    <Button title={"Register"} onPress={() => navigation.navigate("Register")}/>
+                    <Button style={styles.button} onPress={() => navigation.push("Login")}>
+                        Login
+                    </Button>
+                    <Button style={styles.button} onPress={() => navigation.push("Register")}>
+                        Register
+                    </Button>
                 </View>
             </View>
         </View>

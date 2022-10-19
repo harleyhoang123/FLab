@@ -2,10 +2,10 @@ import React from 'react';
 import {Text, View} from "react-native";
 import HomeTopNavigator from '../../navigations/HomeNavigation';
 
-function Home(props) {
+function Home({navigation}) {
     return (
         <View>
-            <HomeTopNavigator/>
+            <HomeTopNavigator navigation={navigation}/>
             <Text>This is home page</Text>
         </View>
     );

@@ -38,7 +38,7 @@ export default function Login({navigation}) {
                 <Buttons text={"Log in"} onPressTo={handleSubmit} style={styles.button}></Buttons>
                 <View style={styles.register}>
                     <Text>Don't have a account?</Text>
-                    <TouchableOpacity onPress={() => navigation.push("Register")}>
+                    <TouchableOpacity onPress={() => navigation.push("Home")}>
                         <Text style={styles.txt}>Register Now</Text>
                     </TouchableOpacity>
                 </View>
