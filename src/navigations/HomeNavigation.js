@@ -10,6 +10,10 @@ export default function HomeTopNavigator({ navigation }) {
           <Logo />
           <Button title={"Home"} onPress={() => navigation.push("Home")} />
           <Button title={"Lab"} onPress={() => navigation.push("Lab")} />
+          <Button
+            title={"Document"}
+            onPress={() => navigation.push("Document")}
+          />
         </View>
         <View style={styles.topNavigationContentRight}>
           <Button title={"Home"} onPress={() => navigation.push("Home")} />

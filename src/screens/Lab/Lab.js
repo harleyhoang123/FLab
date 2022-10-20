@@ -17,6 +17,7 @@ import {
   useFonts,
   BeVietnamPro_200ExtraLight_Italic,
 } from "@expo-google-fonts/dev";
+import LabNavigator from "../../navigations/LabNavigator";
 
 const DATA = [
   {
@@ -164,15 +165,18 @@ const Lab = () => {
     />
   );
   return (
-    <View style={styles.container}>
-      <SafeAreaView style={styles.flatlist}>
-        <FlatList
-          numColumns={5}
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
-      </SafeAreaView>
+    <View>
+      <LabNavigator />
+      <View style={styles.container}>
+        <SafeAreaView style={styles.flatlist}>
+          <FlatList
+            numColumns={5}
+            data={DATA}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        </SafeAreaView>
+      </View>
     </View>
   );
 };
