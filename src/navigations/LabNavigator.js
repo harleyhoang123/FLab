@@ -13,7 +13,7 @@ export default function LabNavigator({ navigation }) {
           />
           <Button
             title={"Document"}
-            onPress={() => navigation.push("LabRoomScreen")}
+            onPress={() => navigation.push("Document")}
           />
           <Button
             title={"Repository"}

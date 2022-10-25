@@ -155,7 +155,7 @@ const Item = ({ title, host, numberMem, description }) => (
   </View>
 );
 
-const Lab = () => {
+const Lab = ({ navigation }) => {
   const renderItem = ({ item }) => (
     <Item
       title={item.title}
@@ -166,7 +166,7 @@ const Lab = () => {
   );
   return (
     <View>
-      <LabNavigator />
+      <LabNavigator navigation={navigation} />
       <View style={styles.container}>
         <SafeAreaView style={styles.flatlist}>
           <FlatList

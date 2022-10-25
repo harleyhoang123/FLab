@@ -96,7 +96,7 @@ const Item2 = ({ title, labname, change, content }) => (
   </View>
 );
 
-const Doucument = () => {
+const Doucument = ({ navigation }) => {
   const image = {
     uri: "https://ptc-directory-sited-static.us-east-1.prod.public.atl-paas.net/gradients/3.svg",
   };
@@ -113,7 +113,7 @@ const Doucument = () => {
   );
   return (
     <View>
-      <HomeTopNavigator />
+      <HomeTopNavigator navigation={navigation} />
       <View style={styles.container}>
         <View style={styles.left}>
           <ImageBackground source={image}>

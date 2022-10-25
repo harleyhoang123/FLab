@@ -1,5 +1,5 @@
-export const baseURL = "http://18.163.56.171:80";
+export const baseURL = "http://43.198.11.126:80";
 
 export const headers = {
-    'Content-Type': 'application/json'
-}
+  "Content-Type": "application/json",
+};
