@@ -16,8 +16,8 @@ export default function LabNavigator({ navigation }) {
             onPress={() => navigation.push("Document")}
           />
           <Button
-            title={"Repository"}
-            onPress={() => navigation.push("LabRoomScreen")}
+            title={"DocumentDetail"}
+            onPress={() => navigation.push("DocumentDetail")}
           />
         </View>
       </View>
