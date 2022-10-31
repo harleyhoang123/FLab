@@ -9,6 +9,7 @@ import ForgotPassword from "../screens/Forgot Password/ForgotPassword";
 import Lab from "../screens/Lab/Lab";
 import Doucument from "../screens/Documents/document";
 import DocumentDetail from "../screens/DocumentDetail/DocumentDetail";
+import WorkSpace from "../screens/WorkSpace/WorkSpace";
 function RootNavigators(props) {
   const Stack = createStackNavigator();
   return (
@@ -25,6 +26,7 @@ function RootNavigators(props) {
         <Stack.Screen name="Lab" component={Lab} />
         <Stack.Screen name="Document" component={Doucument} />
         <Stack.Screen name="DocumentDetail" component={DocumentDetail} />
+        <Stack.Screen name="WorkSpace" component={WorkSpace} />
       </Stack.Navigator>
     </NavigationContainer>
   );
