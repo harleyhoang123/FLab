@@ -23,6 +23,7 @@ export default function LabNavigator({ navigation }) {
             title={"WorkSpace"}
             onPress={() => navigation.push("WorkSpace")}
           />
+          <Button title={"Space"} onPress={() => navigation.push("Spaces")} />
         </View>
       </View>
     </View>

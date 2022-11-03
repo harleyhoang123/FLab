@@ -10,6 +10,8 @@ import Lab from "../screens/Lab/Lab";
 import Doucument from "../screens/Documents/document";
 import DocumentDetail from "../screens/DocumentDetail/DocumentDetail";
 import WorkSpace from "../screens/WorkSpace/WorkSpace";
+import Spaces from "../screens/Spaces/Spaces";
+
 function RootNavigators(props) {
   const Stack = createStackNavigator();
   return (
@@ -27,6 +29,7 @@ function RootNavigators(props) {
         <Stack.Screen name="Document" component={Doucument} />
         <Stack.Screen name="DocumentDetail" component={DocumentDetail} />
         <Stack.Screen name="WorkSpace" component={WorkSpace} />
+        <Stack.Screen name="Spaces" component={Spaces} />
       </Stack.Navigator>
     </NavigationContainer>
   );
