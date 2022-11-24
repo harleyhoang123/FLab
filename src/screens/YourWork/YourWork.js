@@ -32,9 +32,11 @@ const listProject = [
 
 const Item = ({ title, host, description }) => (
   <View style={styles.itemContainer}>
-    <Text style={styles.name}>{title}</Text>
-    <Text style={styles.host}>{host}</Text>
-    <Text style={styles.description}>{description}</Text>
+    <View style={styles.content}>
+      <Text style={styles.name}>{title}</Text>
+      <Text style={styles.host}>{host}</Text>
+      <Text style={styles.description}>{description}</Text>
+    </View>
   </View>
 );
 
@@ -63,23 +65,41 @@ export const YourWork = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  content: {
+    paddingTop: 20,
+    paddingLeft: 20,
+    paddingBottom: 20,
+    paddingRight: 20,
+  },
   name: {
-    color: "red",
+    fontFamily: "BeVietnamPro_200ExtraLight_Italic, sans-serif",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 8,
   },
   host: {
-    color: "red",
+    color: "#666666",
+    fontSize: 14,
   },
   description: {
-    color: "red",
+    color: "#666666",
+    fontSize: 14,
   },
   itemContainer: {
     width: 350,
     height: 150,
+    borderColor: "#DEE2E6",
+    borderRadius: 10,
+    borderWidth: 1,
+    margin: 10,
   },
   allProject: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     marginTop: 30,
+    marginLeft: 50,
+    marginRight: 50,
+    marginBottom: 15,
   },
   recent: {
     marginTop: 50,
