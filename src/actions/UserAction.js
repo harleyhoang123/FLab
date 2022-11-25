@@ -35,7 +35,6 @@ export const login = (username, password) => async (dispatch, _, { networkServic
         const userController = new UserController(networkService);
         const { data } = await userController.login({ username, password });
         console.log("Data is: "+ JSON.stringify(data));
-
         dispatch(loginSuccess(data.user));
     } catch ({ data }) {
         dispatch(loginError(data?.error ?? strings.login.invalidCredentials));

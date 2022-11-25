@@ -24,10 +24,12 @@ export default function Login({navigation}) {
             <View style={styles.right}>
                 <Title title={"Login"}></Title>
                 <TextField text={usernameOrEmail} onChangeText={newText => setUsernameOrEmail(newText)}
-                           placeholder={"Email or user name"}
-                           secureTextEntry={false}></TextField>
-                <TextField text={password} onChangeText={newText => setPassword(newText)} placeholder={"Password"}
-                           secureTextEntry={true}></TextField>
+                           placeholder={" Email or user name"}
+                           secureTextEntry={false}
+                           multiline={false}></TextField>
+                <TextField text={password} onChangeText={newText => setPassword(newText)} placeholder={" Password"}
+                           secureTextEntry={true}
+                           multiline={false}></TextField>
                 <View style={styles.forgotPassword}>
                     <View>
                         <TouchableOpacity onPress={() => navigation.push("ForgotPassword")}>
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         borderBottomWidth: 1,
     },
-    button:{
+    button: {
         width: 240,
         marginLeft: 150,
         marginBottom: 40,

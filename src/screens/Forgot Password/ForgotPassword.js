@@ -14,9 +14,9 @@ function ForgotPassword({navigation}) {
             <View style={styles.right}>
                 <Title title={"Forgot Password"}></Title>
                 <Text style = {styles.txt}>Enter your email or user name </Text>
-                <TextField text={usernameOrEmail} onChangeText={newText => setUsernameOrEmail(newText)} placeholder={"Email or user name"}
+                <TextField text={usernameOrEmail} onChangeText={newText => setUsernameOrEmail(newText)} placeholder={" Email or user name"}
                            secureTextEntry={false}></TextField>
-                <Buttons text={"Log in"} onPressTo={() => navigation.push("Login")} style={styles.button}></Buttons>
+                <Buttons text={"Forgot"} onPressTo={() => navigation.push("Login")} style={styles.button}></Buttons>
                 <Buttons text={"Cancel"} onPressTo={() => navigation.push("Login")} style={[styles.button,{backgroundColor:'red'}] }></Buttons>
             </View>
         </View>

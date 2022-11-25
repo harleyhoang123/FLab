@@ -17,13 +17,13 @@ function Register({navigation}) {
             </View>
             <View style={styles.right}>
                 <Title title={"Register"}></Title>
-                <TextField text={email} onChangeText={newText => setEmail(newText)} placeholder={"Enter email"}
+                <TextField text={email} onChangeText={newText => setEmail(newText)} placeholder={" Enter email"}
                            secureTextEntry={false}></TextField>
-                <TextField text={username} onChangeText={newText => setUsername(newText)} placeholder={"Create user name"}
+                <TextField text={username} onChangeText={newText => setUsername(newText)} placeholder={" Create user name"}
                            secureTextEntry={false}></TextField>
-                <TextField text={password} onChangeText={newText => setPassword(newText)} placeholder={"Password"}
+                <TextField text={password} onChangeText={newText => setPassword(newText)} placeholder={" Password"}
                            secureTextEntry={true}></TextField>
-                <TextField text={rePassword} onChangeText={newText => setRePassword(newText)} placeholder={"Re-Password"}
+                <TextField text={rePassword} onChangeText={newText => setRePassword(newText)} placeholder={" Re-Password"}
                            secureTextEntry={true}></TextField>
                 <Buttons text={"Register"} onPressTo={()=>navigation.push("Login")} style={styles.button}/>
                 <View style={styles.login}>

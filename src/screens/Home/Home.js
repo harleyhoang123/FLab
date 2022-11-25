@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View} from "react-native";
+import {Text, View, StyleSheet} from "react-native";
 import HomeTopNavigator from '../../navigations/HomeNavigation';
 
 function Home({navigation}) {
@@ -10,5 +10,4 @@ function Home({navigation}) {
         </View>
     );
 }
-
 export default Home;
