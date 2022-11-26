@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     },
     textNotify: {
         fontWeight: "bold",
-        fontSize:18,
+        fontSize:16,
         marginTop:20,
         marginLeft:30,
     },
