@@ -1,28 +1,51 @@
 import React, {useState} from "react";
-import {StyleSheet, View, Text, TouchableOpacity, Image, Modal} from "react-native";
+import {StyleSheet, View, Text, TouchableOpacity, Image, Modal, FlatList} from "react-native";
 import Logo from "../assets/Logo";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBell} from "@fortawesome/free-solid-svg-icons/faBell";
+import NotifyComponent from "../components/NotifyComponent";
 
 export default function HomeTopNavigator({navigation}) {
-    const [modalVisible, setModalVisible] = useState(false);
+    const listNotify =[{
+        title: "Lionel Messi là ngôi sao mới nhất xuất hiện trong game sinh tồn PUBG Mobile ở bản cập nhật sắp tới.",
+        time: "1",
+        date: "s",
+    },
+        {
+            title: "Vụ 3 con gái đổ xăng đốt nhà mẹ: Người dân vẫn bủn rủn khi kể lại lúc đưa các nạn nhân ra ngoài",
+            time: "1",
+            date: "s",
+        },
+        {
+            title: "Chiều 31/10, khắp các nẻo đường, từ quán trà đá cho tới những người đi đổ xăng ở xã Trung Hòa (huyện Yên Mỹ, tỉnh Hưng Yên) vẫn bàn tán xôn xao về vụ việc 3 người con gái đốt nhà mẹ đẻ ở thôn Thiên Lộc.  ",
+            time: "1",
+            date: "s",
+        },
+        {
+            title: "fgh",
+            time: "1",
+            date: "s",
+        },
+    ]
+    const [modalProfileVisible, setModalProfileVisible] = useState(false);
+    const [modalNotifyVisible, setModalNotifyVisible] = useState(false);
     return (
         <View style = {styles.container}>
             <Modal
                 animationType="fade"
                 transparent={true}
-                visible={modalVisible}
+                visible={modalProfileVisible}
                 onRequestClose={() => {
-                    setModalVisible(!modalVisible);
+                    setModalProfileVisible(!modalProfileVisible);
                 }}
             >
                 <TouchableOpacity
                     activeOpacity={1}
-                    onPress={()=>  setModalVisible(!modalVisible) }
+                    onPress={()=>  setModalProfileVisible(!modalProfileVisible) }
                     style={styles.modal}>
-                    <View style={styles.modalView}>
+                    <View style={styles.modalProfileView}>
                         <TouchableOpacity onPress={() => {navigation.push("Profile")
-                            setModalVisible(!modalVisible)}}
+                            setModalProfileVisible(!modalProfileVisible)}}
                             style={[styles.buttonModal]}>
                             <Text style={styles.textStyle}>My Profile</Text>
                         </TouchableOpacity>
@@ -35,6 +58,34 @@ export default function HomeTopNavigator({navigation}) {
                         <TouchableOpacity style={[styles.buttonModal]}>
                             <Text style={styles.textStyle}>Log out</Text>
                         </TouchableOpacity>
+                    </View>
+                </TouchableOpacity>
+            </Modal>
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalNotifyVisible}
+                onRequestClose={() => {
+                    setModalNotifyVisible(!modalNotifyVisible);
+                }}
+            >
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={()=>  setModalNotifyVisible(!modalNotifyVisible) }
+                    style={styles.modal}>
+                    <View style={styles.modalNotifyView}>
+                        <View style={styles.notify}>
+                            <TouchableOpacity>
+                                <Text style={styles.textNotify}> ALL</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <Text style={styles.textNotify}> UNREAD</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <FlatList data={listNotify}
+                                  renderItem={({ item }) => (
+                                      <NotifyComponent date={item.date} time={item.time} title={item.title} />
+                                  )}/>
                     </View>
                 </TouchableOpacity>
             </Modal>
@@ -58,10 +109,10 @@ export default function HomeTopNavigator({navigation}) {
                     </TouchableOpacity>
                 </View>
                 <View style = {styles.topNavigationContentRight}>
-                    <TouchableOpacity style={[styles.button,{marginHorizontal:50,}]} onPress={() => navigation.push("Notification")}>
+                    <TouchableOpacity style={[styles.button,{marginHorizontal:50,}]} onPress={() => setModalNotifyVisible(true)}>
                         <FontAwesomeIcon icon={faBell} size={"xl"} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.button,{flexDirection: 'row',}]}  onPress={() => setModalVisible(true)}>
+                    <TouchableOpacity style={[styles.button,{flexDirection: 'row',}]}  onPress={() => setModalProfileVisible(true)}>
                         <Image
                             style={styles.userImage}
                             source={{
@@ -129,7 +180,21 @@ const styles = StyleSheet.create({
         alignItems: "flex-end",
         flex:1,
     },
-    modalView: {
+    modalProfileView: {
+        marginTop: 50,
+        marginRight:15,
+        backgroundColor: "white",
+        borderRadius: 20,
+        alignItems: "flex-start",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+    },
+    modalNotifyView: {
         marginTop: 50,
         marginRight:15,
         backgroundColor: "white",
@@ -145,5 +210,14 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         fontWeight: "bold",
+    },
+    notify:{
+        flexDirection:"row"
+    },
+    textNotify: {
+        fontWeight: "bold",
+        fontSize:18,
+        marginTop:20,
+        marginLeft:30,
     },
 });
