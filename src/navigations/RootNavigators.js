@@ -5,7 +5,6 @@ import Welcome from '../screens/Welcome/Welcome';
 import Login from '../screens/Login/Login';
 import Register from '../screens/Register/Register';
 import Home from '../screens/Home/Home';
-import ForgotPassword from "../screens/Forgot Password/ForgotPassword";
 import ListNews from "../screens/News/ListNews";
 import NewsDetail from "../screens/News/NewsDetail";
 import Notification from "../screens/Notification/Notification";
