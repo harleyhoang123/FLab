@@ -1,12 +1,13 @@
 import React from 'react';
 import {StyleSheet, TextInput} from "react-native";
 
-function TextField({placeholder, text,onChangeText, secureTextEntry}) {
+function TextField({placeholder, text,onChangeText, secureTextEntry, style,multiline}) {
     return (
-        <TextInput style={styles.textInput} placeholder={placeholder}
+        <TextInput style={[styles.textInput,style]} placeholder={placeholder}
                    onChangeText={onChangeText}
                    defaultValue={text}
                    secureTextEntry ={secureTextEntry}
+                   multiline={multiline}
         />
     );
 }
