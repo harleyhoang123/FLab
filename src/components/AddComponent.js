@@ -2,12 +2,12 @@ import React from 'react';
 import TextField from "./TextField";
 import {StyleSheet, Text, View} from "react-native";
 
-function AddComponent({title,suggest, multiline,style}) {
+function AddComponent({title,suggest, multiline,style, text,onChangeText }) {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.suggest}>{suggest}</Text>
-            <TextField multiline={multiline} style={style}/>
+            <TextField multiline={multiline} style={style} text={text} onChangeText={onChangeText}/>
         </View>
     );
 }

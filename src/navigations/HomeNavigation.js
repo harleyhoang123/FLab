@@ -107,6 +107,9 @@ export default function HomeTopNavigator({navigation}) {
                     <TouchableOpacity style={styles.button} onPress={() => navigation.push("ListNews")}>
                         <Text style={styles.textLogo}>News</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={() => navigation.push("ListMaterial")}>
+                        <Text style={styles.textLogo}>Material</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style = {styles.topNavigationContentRight}>
                     <TouchableOpacity style={[styles.button,{marginHorizontal:50,}]} onPress={() => setModalNotifyVisible(true)}>

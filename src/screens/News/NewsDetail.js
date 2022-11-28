@@ -161,15 +161,15 @@ const styles= StyleSheet.create(
     {
         container:{
             backgroundColor:'white',
-            marginLeft:150,
-            marginRight:150,
+            width:"65%",
+            alignSelf:"center",
             marginTop:20,
         },
         containerTitle:{
             marginLeft:20,
         },
         comment:{
-            width: 1000,
+            width: "80%",
             height:50,
         },
         button:{

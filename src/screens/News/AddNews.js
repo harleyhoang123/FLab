@@ -7,6 +7,7 @@ import TextEditorComponent from "../../components/TextEditorComponent";
 function AddNews({navigation}) {
 
     const [editorState, setEditorState] = useState("")
+    const [text, setText] = useState("")
     return (
         <View style={styles.container}>
             <HomeTopNavigator navigation={navigation}/>
@@ -14,10 +15,11 @@ function AddNews({navigation}) {
                 <Text style={styles.text}>Create a News</Text>
                 <AddComponent title={"Title"}
                               multiline={false}
-                              style={{width: "97%"}}/>
+                              style={{width: "97%"}}
+                text={text} onChangeText={text => setText(text)}/>
                 <TextEditorComponent title={"News Detail"} editorState={editorState} setEditorState={editorState => setEditorState(editorState)}></TextEditorComponent>
                 <Buttons text={"Add Image"} style={styles.button} />
-                <Buttons text={"Post News"} style={styles.button} onPressTo={()=> {console.log(editorState.toString())}}/>
+                <Buttons text={"Post News"} style={styles.button} onPressTo={()=> {navigation.push("ListNews")}}/>
             </View>
         </View>
     );

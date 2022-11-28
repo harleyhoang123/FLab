@@ -15,6 +15,13 @@ import QuestionDetail from "../screens/Forum/QuestionDetail";
 import AddQuestion from "../screens/Forum/AddQuestion";
 import AddNews from "../screens/News/AddNews";
 import EditProfile from "../screens/Profile/EditProfile";
+import ListMaterial from "../screens/Material/ListMaterial";
+import AddMaterial from "../screens/Material/AddMaterial";
+import MaterialDetail from "../screens/Material/MaterialDetail";
+import OrderMaterial from "../screens/Material/OrderMaterial";
+import RequestMaterial from "../screens/Material/RequestMaterial";
+import Ticket from "../screens/Ticket/Ticket";
+import TicketDetail from "../screens/Ticket/TicketDetail";
 function RootNavigators() {
     const Stack = createStackNavigator();
     return (
@@ -34,6 +41,13 @@ function RootNavigators() {
                 <Stack.Screen name='AddNews' component={AddNews}/>
                 <Stack.Screen name='AddQuestion' component={AddQuestion}/>
                 <Stack.Screen name='EditProfile' component={EditProfile}/>
+                <Stack.Screen name='ListMaterial' component={ListMaterial}/>
+                <Stack.Screen name='AddMaterial' component={AddMaterial}/>
+                <Stack.Screen name='MaterialDetail' component={MaterialDetail}/>
+                <Stack.Screen name='OrderMaterial' component={OrderMaterial}/>
+                <Stack.Screen name='RequestMaterial' component={RequestMaterial}/>
+                <Stack.Screen name='Ticket' component={Ticket}/>
+                <Stack.Screen name='TicketDetail' component={TicketDetail}/>
             </Stack.Navigator>
         </NavigationContainer>
     );
