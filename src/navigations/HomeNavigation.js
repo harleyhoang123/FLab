@@ -1,9 +1,8 @@
 import React, {useState} from "react";
-import {StyleSheet, View, Text, TouchableOpacity, Image, Modal, FlatList} from "react-native";
+import {StyleSheet, View, Text, TouchableOpacity, Image, Modal} from "react-native";
 import Logo from "../assets/Logo";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBell} from "@fortawesome/free-solid-svg-icons/faBell";
-import NotifyComponent from "../components/NotifyComponent";
 import Notification from "../screens/Notification/Notification";
 
 export default function HomeTopNavigator({navigation}) {
@@ -33,7 +32,9 @@ export default function HomeTopNavigator({navigation}) {
                         <TouchableOpacity style={[styles.buttonModal]}>
                             <Text style={styles.textStyle}>My Rewards</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.buttonModal]}>
+                        <TouchableOpacity onPress={() => {navigation.push("MyCV")
+                            setModalProfileVisible(!modalProfileVisible)}}
+                                          style={[styles.buttonModal]}>
                             <Text style={styles.textStyle}>My CV</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.buttonModal]}>

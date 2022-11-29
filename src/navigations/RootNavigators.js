@@ -28,6 +28,7 @@ import DocumentDetail from "../screens/DocumentDetail/DocumentDetail";
 import WorkSpace from "../screens/WorkSpace/WorkSpace";
 import Spaces from "../screens/Spaces/Spaces";
 import { YourWork } from "../screens/YourWork/YourWork";
+import MyCV from "../screens/CV/MyCV";
 function RootNavigators() {
     const Stack = createStackNavigator();
     return (
@@ -60,6 +61,7 @@ function RootNavigators() {
                 <Stack.Screen name="WorkSpace" component={WorkSpace} />
                 <Stack.Screen name="Spaces" component={Spaces} />
                 <Stack.Screen name="YourWork" component={YourWork} />
+                <Stack.Screen name="MyCV" component={MyCV} />
             </Stack.Navigator>
         </NavigationContainer>
     );

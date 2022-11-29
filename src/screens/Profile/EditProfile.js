@@ -52,7 +52,10 @@ function EditProfile({navigation}) {
                     <EditProfileComponent text={currentTermNo} placeholder={" Current Term No"} title={"Current Term No"} onTextChange={ currentTermNo => setCurrentTermNo(currentTermNo)} style={{width:150}}/>
                     <EditProfileComponent text={specialized} placeholder={" Specialized"} title={"Specialized"} onTextChange={ specialized => setSpecialized(specialized)} style={{width:150}}/>
                 </View>
-                <Buttons style={styles.button} text={"Save"} onPressTo={() => {navigation.push("Profile")}}/>
+                <View style={styles.containerButton}>
+                    <Buttons style={styles.button} text={"Save"} onPressTo={() => {navigation.push("Profile")}}/>
+                    <Buttons style={styles.button} text={"Cancel"} onPressTo={() => {navigation.push("Profile")}}/>
+                </View>
             </View>
         </View>
     );
@@ -88,6 +91,13 @@ const  styles = StyleSheet.create({
     },
     containerSmall:{
         flexDirection:"row",
+    },
+    containerButton:{
+        flexDirection:"row",
+    },
+    button:{
+        width:150,
+        marginRight:40,
     },
 });
 export default EditProfile;
