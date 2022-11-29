@@ -30,17 +30,18 @@ const listProject = [
   },
 ];
 
-const Item = ({ title, host, description }) => (
-  <View style={styles.itemContainer}>
-    <View style={styles.content}>
-      <Text style={styles.name}>{title}</Text>
-      <Text style={styles.host}>{host}</Text>
-      <Text style={styles.description}>{description}</Text>
-    </View>
-  </View>
-);
-
 export const YourWork = ({ navigation }) => {
+  const Item = ({ title, host, description }) => (
+    <View style={styles.itemContainer}>
+      <View style={styles.content}>
+        <Text style={styles.name} onPress={() => navigation.push("RoadMap")}>
+          {title}
+        </Text>
+        <Text style={styles.host}>{host}</Text>
+        <Text style={styles.description}>{description}</Text>
+      </View>
+    </View>
+  );
   const renderItem = ({ item }) => (
     <Item title={item.title} host={item.host} description={item.description} />
   );

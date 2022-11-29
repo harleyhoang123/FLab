@@ -30,6 +30,7 @@ import Spaces from "../screens/Spaces/Spaces";
 import { YourWork } from "../screens/YourWork/YourWork";
 import YourLab from "../screens/YourLab/YourLab";
 import ViewAllMember from "../screens/ViewAllMember/ViewAllMember";
+import RoadMap from "../screens/RoadMap/RoadMap";
 
 function RootNavigators() {
   const Stack = createStackNavigator();
@@ -68,6 +69,7 @@ function RootNavigators() {
         <Stack.Screen name="YourWork" component={YourWork} />
         <Stack.Screen name="YourLab" component={YourLab} />
         <Stack.Screen name="ViewAllMember" component={ViewAllMember} />
+        <Stack.Screen name="RoadMap" component={RoadMap} />
       </Stack.Navigator>
     </NavigationContainer>
   );
