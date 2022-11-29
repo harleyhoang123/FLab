@@ -27,12 +27,14 @@ export default function Login({ navigation }) {
           onChangeText={(newText) => setUsernameOrEmail(newText)}
           placeholder={"Email or user name"}
           secureTextEntry={false}
+          onSubmitEditing={handleSubmit}
         ></TextField>
         <TextField
           text={password}
           onChangeText={(newText) => setPassword(newText)}
           placeholder={"Password"}
           secureTextEntry={true}
+          onSubmitEditing={handleSubmit}
         ></TextField>
         <View style={styles.forgotPassword}>
           <View>
@@ -68,8 +70,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: "750px",
-    height: "750px",
+    width: "70%",
+    height: "70%",
   },
   right: {
     flex: 0.5,
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   button: {
-    width: 240,
+    width: "25%",
     marginLeft: 150,
     marginBottom: 40,
   },
