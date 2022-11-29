@@ -25,7 +25,7 @@ import "../../../node_modules/@syncfusion/ej2-react-documenteditor/styles/materi
 
 DocumentEditorContainerComponent.Inject(Toolbar);
 let SSObj = SpreadSheetDocument;
-export default function WorkSpace() {
+export default function WorkSpace({navigation}) {
   const saveDoc = () => {
     SSObj.save({
       url: "'https://ej2services.syncfusion.com/production/web-services/api/spreadsheet/save'",
@@ -44,7 +44,7 @@ export default function WorkSpace() {
       <LabNavigator navigation={navigation} />
       <View style={styles.container}>
         <View style={styles.left}>
-          <View style={styles.leftHeader}>
+          <View style={styles.left}>
             <Text style={styles.leftContent}>List WorkSpace</Text>
           </View>
         </View>

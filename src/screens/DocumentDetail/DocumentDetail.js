@@ -1,13 +1,9 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import LabNavigator from "../../navigations/LabNavigator";
-import ReactHtmlParser, {
-  processNodes,
-  convertNodeToElement,
-  htmlparser2,
-} from "react-html-parser";
+import HTMLReactParser from 'html-react-parser';
 
-export default function DocumentDetail() {
+export default function DocumentDetail({navigation}) {
   const data = {
     data: "<h1 style='color: blue;'> Report 1</h1> <p style='color: red;'> this is report 1</p>",
   };
@@ -18,7 +14,7 @@ export default function DocumentDetail() {
         <View style={styles.left}>
           <Text>Left</Text>
         </View>
-        <View style={styles.right}>{ReactHtmlParser(data.data)}</View>
+        <View style={styles.right}>{HTMLReactParser(data.data)}</View>
       </View>
     </View>
   );
