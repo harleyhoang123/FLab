@@ -6,6 +6,7 @@ import {
   View,
   Text,
   Image,
+  Pressable,
   ImageBackground,
   SafeAreaView,
   FlatList,
@@ -61,42 +62,45 @@ const DATA2 = [
   },
 ];
 
-const Item = ({ title, labname, time }) => (
-  <View style={styles.item}>
-    <View style={styles.first}>
-      <Icon style={styles.iconBook} name="book" size={25}></Icon>
-    </View>
-    <View style={styles.secound}>
-      <Text style={styles.titleText}>{title}</Text>
-      <Text style={styles.labname}>
-        {labname} | {time}
-      </Text>
-    </View>
-    <View style={styles.third}>
-      <Icon style={styles.iconEdit} name="edit" size={20}></Icon>
-    </View>
-  </View>
-);
-
-const Item2 = ({ title, labname, change, content }) => (
-  <View style={styles.item}>
-    <View style={styles.first}>
-      <Icon style={styles.iconBook} name="book" size={25}></Icon>
-    </View>
-    <View style={styles.secound}>
-      <Text style={styles.titleText}>{title}</Text>
-      <Text style={styles.labname}>
-        {labname} | {change}
-      </Text>
-      <Text style={styles.labname}>{content}</Text>
-    </View>
-    <View style={styles.third}>
-      <Icon style={styles.iconEdit} name="edit" size={20}></Icon>
-    </View>
-  </View>
-);
-
 const Doucument = ({ navigation }) => {
+  const Item = ({ title, labname, time }) => (
+    <View style={styles.item}>
+      <View style={styles.first}>
+        <Icon style={styles.iconBook} name="book" size={25}></Icon>
+      </View>
+      <View style={styles.secound}>
+        <Text
+          style={styles.titleText}
+          onPress={() => navigation.push("DocumentDetail")}
+        >
+          {title}
+        </Text>
+        <Text style={styles.labname}>
+          {labname} | {time}
+        </Text>
+      </View>
+      <View style={styles.third}>
+        <Icon style={styles.iconEdit} name="edit" size={20}></Icon>
+      </View>
+    </View>
+  );
+  const Item2 = ({ title, labname, change, content }) => (
+    <View style={styles.item}>
+      <View style={styles.first}>
+        <Icon style={styles.iconBook} name="book" size={25}></Icon>
+      </View>
+      <View style={styles.secound}>
+        <Text style={styles.titleText}>{title}</Text>
+        <Text style={styles.labname}>
+          {labname} | {change}
+        </Text>
+        <Text style={styles.labname}>{content}</Text>
+      </View>
+      <View style={styles.third}>
+        <Icon style={styles.iconEdit} name="edit" size={20}></Icon>
+      </View>
+    </View>
+  );
   const image = {
     uri: "https://ptc-directory-sited-static.us-east-1.prod.public.atl-paas.net/gradients/3.svg",
   };
