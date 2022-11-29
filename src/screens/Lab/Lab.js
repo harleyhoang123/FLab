@@ -120,42 +120,38 @@ const DATA = [
   },
 ];
 
-const Item = ({ title, host, numberMem, description }) => (
-  <View style={styles.item}>
-    <View style={styles.itemInfor}>
-      <Text style={styles.title}>{title}</Text>
-      <View style={styles.inlineIcon}>
-        <Icon style={styles.iconPadding} name="user-circle"></Icon>
-        <Text style={styles.host}>{host}</Text>
-      </View>
-      <View style={styles.inlineIcon}>
-        <Icon style={styles.iconPadding} name="id-card"></Icon>
-        <Text style={styles.numberMem}>Number of students: {numberMem}</Text>
-      </View>
-      <View></View>
-      <View style={styles.inlineIcon}>
-        <Icon style={styles.iconPadding} name="file"></Icon>
-        <Text style={styles.description}>Description: {description}</Text>
-      </View>
-      <View style={styles.inlineIconLink}>
-        <Text
-          onPress={() => navigation.navigate("Profile")}
-          style={styles.link}
-        >
-          Go to your Lab{"  "}
-        </Text>
-        <Icon
-          style={styles.iconPadding}
-          size={16}
-          color="#0078D4"
-          name="arrow-right"
-        ></Icon>
+const Lab = ({ navigation }) => {
+  const Item = ({ title, host, numberMem, description }) => (
+    <View style={styles.item}>
+      <View style={styles.itemInfor}>
+        <Text style={styles.title}>{title}</Text>
+        <View style={styles.inlineIcon}>
+          <Icon style={styles.iconPadding} name="user-circle"></Icon>
+          <Text style={styles.host}>{host}</Text>
+        </View>
+        <View style={styles.inlineIcon}>
+          <Icon style={styles.iconPadding} name="id-card"></Icon>
+          <Text style={styles.numberMem}>Number of students: {numberMem}</Text>
+        </View>
+        <View></View>
+        <View style={styles.inlineIcon}>
+          <Icon style={styles.iconPadding} name="file"></Icon>
+          <Text style={styles.description}>Description: {description}</Text>
+        </View>
+        <View style={styles.inlineIconLink}>
+          <Text onPress={() => navigation.push("YourLab")} style={styles.link}>
+            Go to your Lab{"  "}
+          </Text>
+          <Icon
+            style={styles.iconPadding}
+            size={16}
+            color="#0078D4"
+            name="arrow-right"
+          ></Icon>
+        </View>
       </View>
     </View>
-  </View>
-);
-
-const Lab = ({ navigation }) => {
+  );
   const renderItem = ({ item }) => (
     <Item
       title={item.title}
