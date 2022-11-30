@@ -18,6 +18,7 @@ import {
   BeVietnamPro_200ExtraLight_Italic,
 } from "@expo-google-fonts/dev";
 import LabNavigator from "../../navigations/LabNavigator";
+import UserComponent from "../../components/UserComponent";
 
 const DATA = [
   {
