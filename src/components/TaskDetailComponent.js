@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 
-export default function TaskComponent({ name }) {
+export default function TaskDetailComponent({ name }) {
   const [selected, setSelected] = React.useState("");
   const data = [
     { key: "1", value: "Done" },
