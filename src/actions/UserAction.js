@@ -41,7 +41,7 @@ export const login =
                 if (data.data !== null) {
                     try {
                         await AsyncStorage.setItem("@accountId", data.data.accountId)
-                        console.log("Set account id success: "+ data.data.accountId)
+                        console.log("Set account id success: " + data.data.accountId)
                     } catch ({err}) {
                         console.log("Can't store accountId:" + err)
                     }
@@ -65,3 +65,31 @@ export const logout =
                 dispatch(clearStore());
             }
         };
+export const register =
+    (email, fullName, username, password, navigation) => async (dispatch, _, {networkService}) => {
+        try {
+            const userController = new UserController(networkService);
+            const {data} = await userController.register({email, username, fullName, password});
+            console.log("Data Register is: " + JSON.stringify(data));
+            if (data.data !== null) {
+                navigation.push("Login")
+            }
+
+        } catch ({data}) {
+            dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+        }
+    };
+export const forgot =
+    (username, navigation) => async (dispatch, _, {networkService}) => {
+        try {
+            const userController = new UserController(networkService);
+            const {data} = await userController.forgot(username);
+            console.log("Data Register is: " + JSON.stringify(data));
+            if (data.data !== null) {
+                navigation.push("Login")
+            }
+
+        } catch ({data}) {
+            dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+        }
+    };

@@ -11,9 +11,17 @@ export default function Login({ navigation }) {
   const dispatch = useDispatch();
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [errorUsername, setErrorUsername]=useState("")
+  const [errorPassword, setErrorPassword]=useState("")
   const handleSubmit = () => {
-    dispatch(login(usernameOrEmail, password, navigation));
+    if (usernameOrEmail.trim().length===0){
+      setErrorUsername("Please enter username or email")
+      setErrorPassword("")
+    }else if (password.trim().length===0){
+      setErrorUsername("")
+      setErrorPassword("Please enter password")
+    }
+      dispatch(login(usernameOrEmail, password, navigation));
   };
   return (
     <View style={styles.container}>
@@ -29,6 +37,7 @@ export default function Login({ navigation }) {
           secureTextEntry={false}
           onSubmitEditing={handleSubmit}
         ></TextField>
+        <Text>{errorUsername}</Text>
         <TextField
           text={password}
           onChangeText={(newText) => setPassword(newText)}
@@ -36,6 +45,7 @@ export default function Login({ navigation }) {
           secureTextEntry={true}
           onSubmitEditing={handleSubmit}
         ></TextField>
+        <Text>{errorPassword}</Text>
         <View style={styles.forgotPassword}>
           <View>
             <TouchableOpacity onPress={() => navigation.push("ForgotPassword")}>

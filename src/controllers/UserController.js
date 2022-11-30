@@ -22,4 +22,25 @@ export class UserController {
             url: routes.authentication.logout,
         });
     }
+    register({email, username,fullName , password}){
+        return this.networkService.request({
+            method: 'POST',
+            url: routes.authentication.register,
+            data: {
+                email: email ,
+                username: username,
+                fullName: fullName,
+                password: password
+            },
+        });
+    }
+    forgot({username}){
+        return this.networkService.request({
+            method: 'POST',
+            url: routes.authentication.forgot,
+            data: {
+                username: username
+            },
+        });
+    }
 }

@@ -4,12 +4,19 @@ import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
 import Logo from "../../assets/Logo";
 import Title from "../../components/Title";
+import {register} from "../../actions/UserAction";
+import {useDispatch} from "react-redux";
 
 function Register({navigation}) {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
+    const [fullName, setFullName] = useState('');
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
+    const dispatch= useDispatch();
+    const handleRegister=()=> {
+        dispatch(register(email,username,fullName,password,navigation));
+    }
     return (
         <View style={styles.container}>
             <View style={styles.left}>
@@ -17,15 +24,17 @@ function Register({navigation}) {
             </View>
             <View style={styles.right}>
                 <Title title={"Register"}></Title>
-                <TextField text={email} onChangeText={newText => setEmail(newText)} placeholder={" Enter email"}
+                <TextField text={email} onChangeText={email => setEmail(email)} placeholder={" Enter email"}
                            secureTextEntry={false}></TextField>
-                <TextField text={username} onChangeText={newText => setUsername(newText)} placeholder={" Create user name"}
+                <TextField text={username} onChangeText={username => setUsername(username)} placeholder={" Enter user name"}
                            secureTextEntry={false}></TextField>
-                <TextField text={password} onChangeText={newText => setPassword(newText)} placeholder={" Password"}
+                <TextField text={username} onChangeText={fullName => setFullName(fullName)} placeholder={" Enter full name"}
+                           secureTextEntry={false}></TextField>
+                <TextField text={password} onChangeText={password => setPassword(password)} placeholder={" Password"}
                            secureTextEntry={true}></TextField>
-                <TextField text={rePassword} onChangeText={newText => setRePassword(newText)} placeholder={" Re-Password"}
+                <TextField text={rePassword} onChangeText={rePassword => setRePassword(rePassword)} placeholder={" Re-Password"}
                            secureTextEntry={true}></TextField>
-                <Buttons text={"Register"} onPressTo={()=>navigation.push("Login")} style={styles.button}/>
+                <Buttons text={"Register"} onPressTo={handleRegister} style={styles.button}/>
                 <View style={styles.login}>
                     <Text>Already have a account?</Text>
                     <TouchableOpacity onPress={() => navigation.push("Login")}>

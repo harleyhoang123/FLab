@@ -3,9 +3,15 @@ import {Image, StyleSheet, Text, View} from "react-native";
 import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
 import Title from "../../components/Title";
+import {useDispatch} from "react-redux";
+import {forgot} from "../../actions/UserAction";
 
 function ForgotPassword({navigation}) {
     const [usernameOrEmail, setUsernameOrEmail] = useState('');
+    const dispatch = useDispatch();
+    const handleForgot=()=> {
+        dispatch(forgot(usernameOrEmail,navigation));
+    }
     return (
         <View style={styles.container}>
             <View style={styles.left}>
@@ -16,7 +22,7 @@ function ForgotPassword({navigation}) {
                 <Text style = {styles.txt}>Enter your email or user name </Text>
                 <TextField text={usernameOrEmail} onChangeText={newText => setUsernameOrEmail(newText)} placeholder={" Email or user name"}
                            secureTextEntry={false}></TextField>
-                <Buttons text={"Forgot"} onPressTo={() => navigation.push("Login")} style={styles.button}></Buttons>
+                <Buttons text={"Forgot"} onPressTo={handleForgot} style={styles.button}></Buttons>
                 <Buttons text={"Cancel"} onPressTo={() => navigation.push("Login")} style={[styles.button,{backgroundColor:'red'}] }></Buttons>
             </View>
         </View>
