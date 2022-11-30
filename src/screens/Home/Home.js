@@ -20,7 +20,6 @@ function Home({navigation}) {
 
                 </View>
             )}/>
-
         </View>
     );
 }
