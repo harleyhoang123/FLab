@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import { Dropdown } from 'react-native-element-dropdown';
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import ForumNavigation from "../../navigations/ForumNavigation";
@@ -42,6 +42,7 @@ const listQuestion = [{
 function QuestionDetail({navigation}) {
     const [comment, setComment] = useState('');
     const [answer, setAnswer] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
     const title = "Unable to resolve dependency for installing html-parser"
     const author = "sa"
     const time = "11"
@@ -129,6 +130,7 @@ function QuestionDetail({navigation}) {
     ]
     return (
         <View>
+
             <HomeTopNavigator navigation={navigation}/>
             <View style={styles.container}>
                 <View style={styles.forum}>
@@ -140,8 +142,34 @@ function QuestionDetail({navigation}) {
                             <Text style={styles.textTitle}>{title}</Text>
                             <Text style={styles.textContent}>Post by {author} on {time}                 Viewed {views} times</Text>
                         </View>
-                        <View style={styles.containerB}>
-                            <Buttons text={"Add Question"} style={styles.button} onPressTo={() => navigation.push("AddQuestion")}/>
+                        <View >
+                            <Buttons text={"..."} style={styles.btnModal} onPressTo={() => setModalVisible(true)}/>
+                            <Modal
+                                animationType="fade"
+                                transparent={true}
+                                visible={modalVisible}
+                                onRequestClose={() => {
+                                    setModalVisible(!modalVisible);
+                                }}
+                            >
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    onPress={()=>  setModalVisible(!modalVisible) }
+                                    style={styles.modal}>
+                                    <View style={styles.modalView}>
+                                        <TouchableOpacity onPress={() => {
+                                            setModalVisible(!modalVisible)}}
+                                                          style={[styles.buttonModal]}>
+                                            <Text style={styles.textStyle}>Edit</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => {
+                                            setModalVisible(!modalVisible)}}
+                                                          style={[styles.buttonModal]}>
+                                            <Text style={styles.textStyle}>Delete</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </TouchableOpacity>
+                            </Modal>
                         </View>
                     </View>
                     <Separator/>
@@ -323,7 +351,40 @@ const styles = StyleSheet.create({
     },
     containerCon:{
         width:"90%"
-    }
+    },
+    btnModal:{
+        width:60,
+        height:40,
+    },
+    modal:{
+        alignItems: "flex-end",
+        flex:1,
+    },
+    modalView: {
+        marginTop: 50,
+        marginRight:15,
+        backgroundColor: "white",
+        borderRadius: 20,
+        alignItems: "flex-start",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+    },
+
+    textStyle: {
+        fontWeight: "bold",
+    },
+    buttonModal:{
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        paddingVertical: 15,
+        paddingHorizontal: 25,
+        width: 135,
+    },
 });
 
 export default QuestionDetail;

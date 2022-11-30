@@ -1,18 +1,49 @@
-import React from "react";
-import { Text, View } from "react-native";
+import React, {useState} from "react";
+import {Text, View, StyleSheet, FlatList} from "react-native";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import SprintComponent from "../../components/SprintComponent";
-import TaskComponent from "../../components/TaskComponent";
 
-function Home({ navigation }) {
-  return (
-    <View>
-      <HomeTopNavigator navigation={navigation} />
-      <SprintComponent/>
-        <View style={{margin:40}}></View>
-        <TaskComponent/>
-    </View>
-  );
+function Home({navigation}) {
+    const data = [
+        {id: 1},
+        {id: 2},
+        {id: 3},
+        {id: 4},
+        {id: 5},
+        {id: 6},
+    ]
+    return (
+        <View style={{backgroundColor:'white'}}>
+            <HomeTopNavigator navigation={navigation}/>
+            <FlatList data={data} renderItem={({item}) => (<View>
+                    <SprintComponent/>
+
+                </View>
+            )}/>
+
+        </View>
+    );
 }
+
+const styles = StyleSheet.create({
+    button: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#efefef',
+        height: 50,
+        width: '90%',
+        paddingHorizontal: 10,
+        zIndex: 1,
+    },
+    buttonText: {
+        flex: 1,
+        textAlign: 'center',
+    },
+    dropdown: {
+        position: 'absolute',
+        backgroundColor: '#fff',
+        top: 50,
+    },
+});
 
 export default Home;

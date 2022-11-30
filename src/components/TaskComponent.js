@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View,Image} from "react-native";
 import Buttons from "./Buttons";
-function SprintComponent({}) {
+function TaskComponent() {
     return (
         <TouchableOpacity>
         <View style={ styles.container}>
@@ -27,6 +27,7 @@ function SprintComponent({}) {
 }
 const styles = StyleSheet.create({
     container: {
+        marginLeft:250,
         width:"60%",
         flexDirection:"row",
         backgroundColor:'white',
@@ -54,4 +55,4 @@ const styles = StyleSheet.create({
         marginLeft:20,
     },
 });
-export default SprintComponent;
+export default TaskComponent;
