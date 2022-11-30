@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
     marginBottom: 30,
     borderWidth: 1,
     width: 350,
-    height: 180,
+    height: "auto",
     margin: 4,
   },
   title: {

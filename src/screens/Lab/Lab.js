@@ -26,6 +26,8 @@ const DATA = [
     host: "SonHH8",
     numberMem: "100",
     description: "blablah",
+    major: "SE",
+    numberOfProject: "2",
   },
   {
     id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
@@ -33,6 +35,8 @@ const DATA = [
     host: "SonHH8",
     numberMem: "100",
     description: "blablah",
+    major: "SE",
+    numberOfProject: "2",
   },
   {
     id: "58694a0f-3da1-471f-bd96-145571e29d72",
@@ -40,88 +44,21 @@ const DATA = [
     host: "SonHH8",
     numberMem: "100",
     description: "blablah",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d73",
-    title: "SW Architecture and Design_Kiến trúc và Thiết kế phần mềm",
-    host: "SonHH8",
-    numberMem: "100",
-    description: "blablah",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d74",
-    title: "SW Architecture and Design_Kiến trúc và Thiết kế phần mềm",
-    host: "SonHH8",
-    numberMem: "100",
-    description: "blablah",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d75",
-    title: "SW Architecture and Design_Kiến trúc và Thiết kế phần mềm",
-    host: "SonHH8",
-    numberMem: "100",
-    description: "blablah",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d76",
-    title: "SW Architecture and Design_Kiến trúc và Thiết kế phần mềm",
-    host: "SonHH8",
-    numberMem: "100",
-    description: "blablah",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d78",
-    title: "SW Architecture and Design_Kiến trúc và Thiết kế phần mềm",
-    host: "SonHH8",
-    numberMem: "100",
-    description: "blablah",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d79",
-    title: "SW Architecture and Design_Kiến trúc và Thiết kế phần mềm",
-    host: "SonHH8",
-    numberMem: "100",
-    description: "blablah",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d16",
-    title: "SW Architecture and Design_Kiến trúc và Thiết kế phần mềm",
-    host: "SonHH8",
-    numberMem: "100",
-    description: "blablah",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d26",
-    title: "SW Architecture and Design_Kiến trúc và Thiết kế phần mềm",
-    host: "SonHH8",
-    numberMem: "100",
-    description: "blablah",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d36",
-    title: "SW Architecture and Design_Kiến trúc và Thiết kế phần mềm",
-    host: "SonHH8",
-    numberMem: "100",
-    description: "blablah",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d46",
-    title: "SW Architecture and Design_Kiến trúc và Thiết kế phần mềm",
-    host: "SonHH8",
-    numberMem: "100",
-    description: "blablah",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d56",
-    title: "SW Architecture and Design_Kiến trúc và Thiết kế phần mềm",
-    host: "SonHH8",
-    numberMem: "100",
-    description: "blablah",
+    major: "SE",
+    numberOfProject: "2",
   },
 ];
 
 const Lab = ({ navigation }) => {
-  const Item = ({ title, host, numberMem, description }) => (
+  const Item = ({
+    id,
+    title,
+    host,
+    numberMem,
+    description,
+    major,
+    numberOfProject,
+  }) => (
     <View style={styles.item}>
       <View style={styles.itemInfor}>
         <Text style={styles.title}>{title}</Text>
@@ -137,6 +74,16 @@ const Lab = ({ navigation }) => {
         <View style={styles.inlineIcon}>
           <Icon style={styles.iconPadding} name="file"></Icon>
           <Text style={styles.description}>Description: {description}</Text>
+        </View>
+        <View style={styles.inlineIcon}>
+          <Icon style={styles.iconPadding} name="object-group"></Icon>
+          <Text style={styles.description}>Major: {major}</Text>
+        </View>
+        <View style={styles.inlineIcon}>
+          <Icon style={styles.iconPadding} name="window-restore"></Icon>
+          <Text style={styles.description}>
+            Number Of Project: {numberOfProject}
+          </Text>
         </View>
         <View style={styles.inlineIconLink}>
           <Text onPress={() => navigation.push("YourLab")} style={styles.link}>
@@ -154,10 +101,13 @@ const Lab = ({ navigation }) => {
   );
   const renderItem = ({ item }) => (
     <Item
+      id={item.id}
       title={item.title}
       host={item.host}
       numberMem={item.numberMem}
       description={item.description}
+      major={item.major}
+      numberOfProject={item.numberOfProject}
     />
   );
   return (
