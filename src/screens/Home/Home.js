@@ -17,7 +17,6 @@ function Home({navigation}) {
             <HomeTopNavigator navigation={navigation}/>
             <FlatList data={data} renderItem={({item}) => (<View>
                     <SprintComponent/>
-
                 </View>
             )}/>
         </View>
