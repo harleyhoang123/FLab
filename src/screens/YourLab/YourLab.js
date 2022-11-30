@@ -28,7 +28,7 @@ const listProject = {
   address: "Room3-Delta",
 };
 
-export default function YourLab({ navigation }) {
+export default function YourLab({ route, navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={styles.container}>
