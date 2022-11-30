@@ -114,47 +114,6 @@ export default function RoadMap({ navigation }) {
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
               />
-              <Formik
-                initialValues={{
-                  sprint: "",
-                  task: "",
-                  time: "",
-                  completed: false,
-                }}
-                onSubmit={(values) => console.log(values)}
-              >
-                <View>
-                  <Text style={{ fontSize: 22 }}>Add new task</Text>
-                  <TextInput
-                    onChangeText={handleChange("sprint")}
-                    onBlur={handleBlur("sprint")}
-                    value={values.sprint}
-                    style={styles.input}
-                    placeholder="Sprint"
-                  />
-                  <TextInput
-                    onChangeText={handleChange("task")}
-                    onBlur={handleBlur("task")}
-                    value={values.task}
-                    style={styles.input}
-                    placeholder="Task"
-                  />
-                  <TextInput
-                    onChangeText={handleChange("time")}
-                    onBlur={handleBlur("time")}
-                    value={values.time}
-                    style={styles.input}
-                    placeholder="From-to"
-                  />
-                  <CheckBox
-                    value={values.completed}
-                    onValueChange={handleChange("completed")}
-                    style={styles.checkbox}
-                  />
-                  <Text>Did you done this task?</Text>
-                  <Button onPress={handleSubmit} title="Submit" />
-                </View>
-              </Formik>
             </SafeAreaView>
           </View>
         </View>
