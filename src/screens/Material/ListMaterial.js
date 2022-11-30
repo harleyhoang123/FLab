@@ -5,7 +5,7 @@ import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
 import MaterialItem from "../../components/MaterialItem";
 
-const listNews =[{
+const list1 =[{
     title: "Laptop 1",
     status:"Free"
 },
@@ -22,8 +22,35 @@ const listNews =[{
         status:"Busy"
     },
 ]
+const list2 =[{
+    title: "Laptop 1",
+    status:"Free"
+},
+    {
+        title: "Iphone",
+        status:"Free"
+    },
+    {
+        title: "Ipad",
+        status:"Free"
+    },
+]
 function ListMaterial({navigation}) {
     const [text, setText] = useState('');
+    const [booked, setBooked] = useState(false);
+    const [list, setList] = useState(list1);
+    const handleClick=()=>{
+        setBooked(!booked)
+        handleData()
+    }
+    const handleData=()=>{
+        if(booked){
+           setList(list1)
+        }else {
+            setList(list2)
+        }
+
+    };
     return (
         <View>
             <HomeTopNavigator navigation={navigation}/>
@@ -36,15 +63,15 @@ function ListMaterial({navigation}) {
                                placeholder={" Search"}
                                secureTextEntry={false}
                                multiline={false}/>
-                    <Buttons text={"Search"} />
+                    <Buttons text={"Search"} onPressTo={handleClick}/>
                     <Buttons text={"Order Material"} style={[styles.button,{marginLeft:20}]} onPressTo={()=> navigation.push("OrderMaterial")}/>
                     <Buttons text={"Add Material"} style={[styles.button,{marginLeft:20}]} onPressTo={()=> navigation.push("AddMaterial")}/>
                 </View>
             </View>
             <FlatList
-                data={listNews}
+                data={list}
                 renderItem={({ item }) => (
-                    <MaterialItem navigation={navigation} title={item.title} status={item.status} />
+                    <MaterialItem navigation={navigation} title={item.title} status={item.status} booked={booked}/>
                 )}
             />
             <View style={styles.containerButton}>

@@ -2,10 +2,10 @@ import React from 'react';
 import {View, Image, TouchableOpacity, Text, StyleSheet} from "react-native";
 import Separator from "./Separator";
 
-function MaterialItem({title,status,image,style, navigation}) {
+function MaterialItem({title,status,image,style,booked, navigation}) {
     return (
         <View style={[styles.container,style]}>
-            <TouchableOpacity onPress={() => navigation.push("MaterialDetail")}>
+            <TouchableOpacity onPress={() => navigation.push("MaterialDetail",{booked:booked})}>
                 <View style={styles.containerContent}>
                     <View style={styles.containerLogo}>
                         <Image

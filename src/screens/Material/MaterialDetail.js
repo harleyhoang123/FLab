@@ -2,7 +2,19 @@ import React from 'react';
 import {Image, StyleSheet, Text, View} from "react-native";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import Buttons from "../../components/Buttons";
-function MaterialDetail({navigation}) {
+function MaterialDetail({route,navigation}) {
+    const {booked}=route.params;
+    const handleButton=()=>{
+        if (!booked){
+            return(
+                <Buttons text={"Request"} style={styles.button} onPressTo={()=> {navigation.push("RequestMaterial")}}/>
+            );
+        }else {
+            return(
+                <Buttons text={"Return"} style={styles.button} onPressTo={()=> {navigation.push("ListMaterial")}}/>
+            );
+        }
+    };
     return (
             <View style={styles.container}>
                 <HomeTopNavigator navigation={navigation}/>
@@ -20,7 +32,7 @@ function MaterialDetail({navigation}) {
                         <Text style={styles.text}>Amount: 1</Text>
                         <Text style={styles.text}>Description: PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC</Text>
                         <Text style={styles.text}>Note: None</Text>
-                        <Buttons text={"Request"} style={styles.button} onPressTo={()=> {navigation.push("RequestMaterial")}}/>
+                        {handleButton()}
                     </View>
                 </View>
             </View>
