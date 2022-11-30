@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, FlatList, StyleSheet} from "react-native";
+import {View, Text, FlatList, StyleSheet, Modal, TouchableOpacity} from "react-native";
 import HTMLReactParser from 'html-react-parser';
 import Separator from "../../components/Separator";
 import TextField from "../../components/TextField";
@@ -38,6 +38,7 @@ const listNews =[{
 ]
 
 function NewsDetail({navigation}) {
+    const [modalVisible, setModalVisible] = useState(false);
     const [comment, setComment] = useState('');
     const title = "<h1>This is heading 1</h1>\n"
     const author= "s"
@@ -104,9 +105,42 @@ function NewsDetail({navigation}) {
             <View style={styles.container}>
 
                 <View style={styles.containerTitle}>
-                    <Text >
-                        {HTMLReactParser(title)}
-                    </Text>
+                    <View style={styles.row}>
+                        <View style={styles.containerT}>
+                            <Text >
+                                {HTMLReactParser(title)}
+                            </Text>
+                        </View>
+                        <View>
+                            <Buttons text={"..."} style={styles.btnModal} onPressTo={() => setModalVisible(true)}/>
+                            <Modal
+                                animationType="fade"
+                                transparent={true}
+                                visible={modalVisible}
+                                onRequestClose={() => {
+                                    setModalVisible(!modalVisible);
+                                }}
+                            >
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    onPress={()=>  setModalVisible(!modalVisible) }
+                                    style={styles.modal}>
+                                    <View style={styles.modalView}>
+                                        <TouchableOpacity onPress={() => {
+                                            setModalVisible(!modalVisible)}}
+                                                          style={[styles.buttonModal]}>
+                                            <Text style={styles.textStyle}>Edit</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => {
+                                            setModalVisible(!modalVisible)}}
+                                                          style={[styles.buttonModal]}>
+                                            <Text style={styles.textStyle}>Delete</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </TouchableOpacity>
+                            </Modal>
+                        </View>
+                    </View>
                     <Text style={styles.txt}>
                         Post by {author} on {time}
                     </Text>
@@ -164,6 +198,7 @@ const styles= StyleSheet.create(
             width:"65%",
             alignSelf:"center",
             marginTop:20,
+            flex:1,
         },
         containerTitle:{
             marginLeft:20,
@@ -193,6 +228,46 @@ const styles= StyleSheet.create(
         },
         txt:{
             fontSize:17,
+        },
+        row:{
+            flexDirection:"row",
+            justifyContent:"space-between",
+        },
+        btnModal:{
+            width:30,
+            height:40,
+        },
+        modal:{
+            alignItems: "flex-end",
+            flex:1,
+        },
+        modalView: {
+            marginTop: 110,
+            marginRight:"18%",
+            backgroundColor: "white",
+            borderRadius: 20,
+            alignItems: "flex-start",
+            shadowColor: "#000",
+            shadowOffset: {
+                width: 0,
+                height: 2
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 4,
+        },
+
+        textStyle: {
+            fontWeight: "bold",
+        },
+        buttonModal:{
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            paddingVertical: 15,
+            paddingHorizontal: 25,
+            width: 135,
+        },
+        containerT: {
+            flex: 0.8,
         },
     }
 );

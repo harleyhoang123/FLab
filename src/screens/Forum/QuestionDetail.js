@@ -142,7 +142,7 @@ function QuestionDetail({navigation}) {
                             <Text style={styles.textTitle}>{title}</Text>
                             <Text style={styles.textContent}>Post by {author} on {time}                 Viewed {views} times</Text>
                         </View>
-                        <View >
+                        <View>
                             <Buttons text={"..."} style={styles.btnModal} onPressTo={() => setModalVisible(true)}/>
                             <Modal
                                 animationType="fade"
@@ -157,6 +157,11 @@ function QuestionDetail({navigation}) {
                                     onPress={()=>  setModalVisible(!modalVisible) }
                                     style={styles.modal}>
                                     <View style={styles.modalView}>
+                                        <TouchableOpacity onPress={() => {
+                                            setModalVisible(!modalVisible)}}
+                                                          style={[styles.buttonModal]}>
+                                            <Text style={styles.textStyle}>Add Question</Text>
+                                        </TouchableOpacity>
                                         <TouchableOpacity onPress={() => {
                                             setModalVisible(!modalVisible)}}
                                                           style={[styles.buttonModal]}>
@@ -285,10 +290,8 @@ const styles = StyleSheet.create({
         paddingLeft: 50,
     },
     containerTitle: {
-        marginTop:20,
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "center",
     },
     comment: {
         width: 1000,
@@ -321,9 +324,7 @@ const styles = StyleSheet.create({
     },
     containerT: {
         flex: 0.8,
-    },
-    containerB: {
-        flex: 0.15,
+        marginTop:20,
     },
     containerC: {
         paddingLeft: 200,
@@ -353,7 +354,7 @@ const styles = StyleSheet.create({
         width:"90%"
     },
     btnModal:{
-        width:60,
+        width:30,
         height:40,
     },
     modal:{
@@ -361,8 +362,8 @@ const styles = StyleSheet.create({
         flex:1,
     },
     modalView: {
-        marginTop: 50,
-        marginRight:15,
+        marginTop: 110,
+        marginRight:"10%",
         backgroundColor: "white",
         borderRadius: 20,
         alignItems: "flex-start",
