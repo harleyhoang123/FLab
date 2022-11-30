@@ -50,7 +50,10 @@ const DATA = [
   },
 ];
 
-const Lab = ({ navigation }) => {
+const Lab = ({ route, navigation }) => {
+  const data = route.params.data;
+
+  const items = data.items;
   const Item = ({
     id,
     title,
