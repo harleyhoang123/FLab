@@ -115,14 +115,32 @@ const Lab = ({ navigation }) => {
     <View>
       <LabNavigator navigation={navigation} />
       <View style={styles.container}>
-        <SafeAreaView style={styles.flatlist}>
-          <FlatList
-            numColumns={5}
-            data={DATA}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-          />
-        </SafeAreaView>
+        <View style={styles.top}>
+          <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 120 }}>
+            Suggestion
+          </Text>
+          <SafeAreaView style={styles.flatlist}>
+            <FlatList
+              numColumns={5}
+              data={DATA}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+            />
+          </SafeAreaView>
+        </View>
+        <View style={styles.bot}>
+          <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 120 }}>
+            Recent
+          </Text>
+          <SafeAreaView style={styles.flatlist}>
+            <FlatList
+              numColumns={5}
+              data={DATA}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+            />
+          </SafeAreaView>
+        </View>
       </View>
     </View>
   );

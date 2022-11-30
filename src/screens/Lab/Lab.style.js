@@ -42,10 +42,23 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 30,
+    display: "flex",
+    flexDirection: "column",
+  },
+  top: {
+    height: "50%",
+    width: "100%",
+    borderBottomColor: "black",
+    borderBottomWidth: 2,
+  },
+  bot: {
+    width: "100%",
+    marginTop: 25,
   },
   flatlist: {
     flex: 1,
     flexDirection: "row",
+    marginLeft: 120,
   },
   item: {
     borderColor: "#DEE2E6",
