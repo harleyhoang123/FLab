@@ -1,12 +1,16 @@
 import React from "react";
 import { Text, View } from "react-native";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
+import SprintComponent from "../../components/SprintComponent";
+import TaskComponent from "../../components/TaskComponent";
 
 function Home({ navigation }) {
   return (
     <View>
       <HomeTopNavigator navigation={navigation} />
-      <Text>This is home page</Text>
+      <SprintComponent/>
+        <View style={{margin:40}}></View>
+        <TaskComponent/>
     </View>
   );
 }
