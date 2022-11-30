@@ -1,6 +1,5 @@
 import React from "react";
 import { Text, View } from "react-native";
-import TaskComponent from "../../components/TaskComponent";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 
 function Home({ navigation }) {
