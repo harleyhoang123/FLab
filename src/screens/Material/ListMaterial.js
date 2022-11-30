@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {View, Text, FlatList, StyleSheet} from "react-native";
-import HomeTopNavigator from "../../navigations/HomeNavigation";
 import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
 import MaterialItem from "../../components/MaterialItem";
+import LabNavigator from "../../navigations/LabNavigator";
 
 const listNews =[{
     title: "Laptop 1",
@@ -26,7 +26,7 @@ function ListMaterial({navigation}) {
     const [text, setText] = useState('');
     return (
         <View>
-            <HomeTopNavigator navigation={navigation}/>
+            <LabNavigator navigation={navigation}/>
             <View style ={styles.container}>
                 <View>
                     <Text style ={styles.text}>List Materials</Text>

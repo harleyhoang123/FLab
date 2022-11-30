@@ -1,11 +1,11 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from "react-native";
-import HomeTopNavigator from "../../navigations/HomeNavigation";
 import Buttons from "../../components/Buttons";
+import LabNavigator from "../../navigations/LabNavigator";
 function MaterialDetail({navigation}) {
     return (
             <View style={styles.container}>
-                <HomeTopNavigator navigation={navigation}/>
+                <LabNavigator navigation={navigation}/>
                 <View style={styles.containerContent}>
                     <View style={styles.containerImage}>
                         <Image

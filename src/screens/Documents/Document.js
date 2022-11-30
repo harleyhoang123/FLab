@@ -96,7 +96,7 @@ const Item2 = ({ title, labname, change, content }) => (
   </View>
 );
 
-const Doucument = ({ navigation }) => {
+const Document = ({ navigation }) => {
   const image = {
     uri: "https://ptc-directory-sited-static.us-east-1.prod.public.atl-paas.net/gradients/3.svg",
   };
@@ -187,4 +187,4 @@ const Doucument = ({ navigation }) => {
   );
 };
 
-export default Doucument;
+export default Document;

@@ -1,9 +1,9 @@
 
 import {View, Text, StyleSheet} from "react-native";
-import HomeTopNavigator from "../../navigations/HomeNavigation";
 import AddComponent from "../../components/AddComponent";
 import Buttons from "../../components/Buttons";
 import React, {useState} from "react";
+import LabNavigator from "../../navigations/LabNavigator";
 function AddMaterial({navigation}) {
     const [title, setTitle] = useState("")
     const [amount, setAmount] = useState("")
@@ -11,7 +11,7 @@ function AddMaterial({navigation}) {
     const [note, setNote] = useState("")
     return (
         <View style={styles.container}>
-            <HomeTopNavigator navigation={navigation}/>
+            <LabNavigator navigation={navigation}/>
             <View style={styles.containerContent}>
                 <Text style={styles.text}>Add a Material</Text>
                 <AddComponent title={"Title"}

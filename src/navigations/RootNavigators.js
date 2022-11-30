@@ -23,12 +23,14 @@ import Ticket from "../screens/Ticket/Ticket";
 import TicketDetail from "../screens/Ticket/TicketDetail";
 import ForgotPassword from "../screens/Forgot Password/ForgotPassword";
 import Lab from "../screens/Lab/Lab";
-import Doucument from "../screens/Documents/document";
+import Document from "../screens/Documents/document";
 import DocumentDetail from "../screens/DocumentDetail/DocumentDetail";
 import WorkSpace from "../screens/WorkSpace/WorkSpace";
 import Spaces from "../screens/Spaces/Spaces";
 import { YourWork } from "../screens/YourWork/YourWork";
 import MyCV from "../screens/CV/MyCV";
+import Upload from "../screens/CV/Upload";
+import Repository from "../screens/Repository/Repository";
 function RootNavigators() {
     const Stack = createStackNavigator();
     return (
@@ -56,12 +58,14 @@ function RootNavigators() {
                 <Stack.Screen name='Ticket' component={Ticket}/>
                 <Stack.Screen name='TicketDetail' component={TicketDetail}/>
                 <Stack.Screen name="Lab" component={Lab} />
-                <Stack.Screen name="Document" component={Doucument} />
+                <Stack.Screen name="Document" component={Document} />
                 <Stack.Screen name="DocumentDetail" component={DocumentDetail} />
                 <Stack.Screen name="WorkSpace" component={WorkSpace} />
                 <Stack.Screen name="Spaces" component={Spaces} />
                 <Stack.Screen name="YourWork" component={YourWork} />
                 <Stack.Screen name="MyCV" component={MyCV} />
+                <Stack.Screen name="Upload" component={Upload} />
+                <Stack.Screen name="Repository" component={Repository} />
             </Stack.Navigator>
         </NavigationContainer>
     );

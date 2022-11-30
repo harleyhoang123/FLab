@@ -1,9 +1,9 @@
 import {View, Text, StyleSheet, Image} from "react-native";
-import HomeTopNavigator from "../../navigations/HomeNavigation";
 import Buttons from "../../components/Buttons";
 import React,{useState} from "react";
 import TextField from "../../components/TextField";
 import { DateTimePicker } from '@hashiprobr/react-native-paper-datetimepicker';
+import LabNavigator from "../../navigations/LabNavigator";
 
 function RequestMaterial({navigation}) {
     const [amount, setAmount] = useState("");
@@ -16,7 +16,7 @@ function RequestMaterial({navigation}) {
 
     return (
         <View style={styles.container}>
-            <HomeTopNavigator navigation={navigation}/>
+            <LabNavigator navigation={navigation}/>
             <View style={styles.containerContent}>
                 <View style={styles.containerImage}>
                     <Image

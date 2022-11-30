@@ -62,6 +62,12 @@ export default function LabNavigator({ navigation }) {
             <TouchableOpacity style={styles.button} onPress={() => navigation.push("YourWork")}>
               <Text style={styles.textLogo}>YourWork</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.push("ListMaterial")}>
+              <Text style={styles.textLogo}>Material</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.push("Repository")}>
+              <Text style={styles.textLogo}>Repository</Text>
+            </TouchableOpacity>
           </View>
           <View style = {styles.topNavigationContentRight}>
             <TouchableOpacity style={[styles.button,{marginHorizontal:50,}]} onPress={() => setModalNotifyVisible(true)}>
