@@ -47,7 +47,8 @@ function ListNews({navigation}) {
                     <TextField text={text} onChangeText={newText => setText(newText)}
                                placeholder={" Search"}
                                secureTextEntry={false}
-                               multiline={false}/>
+                               multiline={false}
+                               style={{width:400}}/>
                     <Buttons text={"Search"} />
                     <Buttons text={"Add News"} style={[styles.button,{marginLeft:20}]} onPressTo={()=> navigation.push("AddNews")}/>
                 </View>

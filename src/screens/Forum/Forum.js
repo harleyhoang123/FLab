@@ -51,7 +51,8 @@ function Forum({navigation}) {
                             <TextField text={text} onChangeText={newText => setText(newText)}
                                        placeholder={" Search"}
                                        secureTextEntry={false}
-                                       multiline={false}/>
+                                       multiline={false}
+                                       style={{width:400}}/>
                             <Buttons text={"Search"} />
                             <Buttons text={"Add Question"} style={[styles.button,{marginLeft:20}]} onPressTo={() => navigation.push("AddQuestion")}/>
                         </View>

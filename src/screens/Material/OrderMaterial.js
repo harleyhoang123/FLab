@@ -1,8 +1,8 @@
 import {View, Text, StyleSheet} from "react-native";
-import HomeTopNavigator from "../../navigations/HomeNavigation";
 import AddComponent from "../../components/AddComponent";
 import Buttons from "../../components/Buttons";
 import React,{useState} from "react";
+import LabNavigator from "../../navigations/LabNavigator";
 
 function OrderMaterial({navigation}) {
     const [title, setTitle] = useState("")
@@ -10,7 +10,7 @@ function OrderMaterial({navigation}) {
     const [description, setDescription] = useState("")
     return (
         <View style={styles.container}>
-            <HomeTopNavigator navigation={navigation}/>
+            <LabNavigator navigation={navigation}/>
             <View style={styles.containerContent}>
                 <Text style={styles.text}>Order a Material</Text>
                 <AddComponent title={"Title"}

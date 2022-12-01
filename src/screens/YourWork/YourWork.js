@@ -14,6 +14,7 @@ import {
 } from "@expo-google-fonts/dev";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import LabNavigator from "../../navigations/LabNavigator";
 
 const listProject = [
   {
@@ -47,6 +48,7 @@ export const YourWork = ({ navigation }) => {
   );
   return (
     <View style={styles.container}>
+      <LabNavigator navigation={navigation}/>
       <View style={styles.top}>
         <Text style={styles.title}>Your Work</Text>
         <Text style={styles.recent}>Recent Project</Text>
