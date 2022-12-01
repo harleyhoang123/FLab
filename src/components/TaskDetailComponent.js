@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useRef} from "react";
 import {
   StyleSheet,
   Text,
@@ -16,7 +16,25 @@ import { SelectList } from "react-native-dropdown-select-list";
 
 export default function TaskDetailComponent({isVisible}) {
   console.log("Visible: " + isVisible);
+  const [Comments, SetComments] = useState([]);
+  const [commentValue, setCommentValue] = useState('');
+  const [showComment, setShowComment] = useState(false);
+  const InputRef = useRef();
 
+  // Function to add comments to array
+  const AddToComments = () => {
+    let temp = {
+      id: GenerateUniqueID(),
+      commentValue: commentValue,
+    };
+    SetComments([...Comments, temp]); // Adds comment to Array
+    InputRef.current.clear(); // This clears the TextInput Field
+  };
+
+  // Function to Generate a Unique ID for array elements
+  const GenerateUniqueID = () => {
+    return Math.floor(Math.random() * Date.now()).toString();
+  };
   const data = [
     { key: "1", value: "Done" },
     { key: "2", value: "Inprogess" },
@@ -108,6 +126,23 @@ export default function TaskDetailComponent({isVisible}) {
               </Pressable>
             </View>
           </View>
+        <View style={styles.containerComment}>
+          <View style={styles.comment_container}>
+            <TextInput
+                style={styles.input_txt}
+                onChangeText={(text) => setCommentValue(text)}
+                placeholder="type something ..."
+                ref={InputRef}
+            />
+            <Button title="send" onPress={() => AddToComments()} />
+          </View>
+
+          {Comments.map((c) => (
+              <View style={styles.showComment_container} key={c.id}>
+                <Text>{c.commentValue}</Text>
+              </View>
+          ))}
+        </View>
         </View> :<View></View>}
       </View>
   );
@@ -195,5 +230,30 @@ const styles = StyleSheet.create({
   },
   source: {
     color: "green",
+  },
+  containerComment: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  comment_container: {
+    width: '100%',
+    minHeight: 50,
+    flexDirection: 'row',
+    marginTop: 30,
+    marginBottom: 40,
+  },
+  input_txt: {
+    width: '70%',
+    borderWidth: 1,
+    borderColor: '#000000',
+    padding: 10,
+  },
+  showComment_container: {
+    width: '70%',
+    minHeight: 50,
+    backgroundColor: '#B0C4DE',
+    marginTop: 10,
   },
 });
