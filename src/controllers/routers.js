@@ -13,5 +13,7 @@ export const routes = {
       "http://192.168.31.197:8083/flab/lab/public/api/v1/laboratories",
     getLaboratoryById:
       "http://192.168.31.197:8083/flab/lab/public/api/v1/laboratories/:lab-id",
+    getAllMemberInLaboratory:
+      "http://192.168.31.197:8083/flab/lab/public/api/v1/laboratories/:lab-id/members",
   },
 };

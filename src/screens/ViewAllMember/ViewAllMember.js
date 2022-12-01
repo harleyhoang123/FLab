@@ -51,9 +51,17 @@ const Item = ({ name, role, ava, code }) => (
   </View>
 );
 
-const ViewAllMember = ({ navigation }) => {
+const ViewAllMember = ({ route, navigation }) => {
+  const data = route.params.data;
+  const listMember = data.items;
   const renderItem = ({ item }) => (
-    <Item name={item.name} role={item.role} ava={item.ava} code={item.code} />
+    <Item
+      id={item.memberId}
+      name={item.userInfo.userInfo.fullName}
+      role={item.userInfo.userInfo.roles}
+      ava={item.ava}
+      code={item.memberId}
+    />
   );
   return (
     <View style={styles.comp}>
@@ -77,9 +85,9 @@ const ViewAllMember = ({ navigation }) => {
           </View>
         </View>
         <FlatList
-          data={DATA}
+          data={listMember}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.memberId}
         />
       </SafeAreaView>
     </View>
@@ -136,7 +144,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   title: {
-    fontSize: 32,
+    fontSize: 25,
   },
   titleContent: {
     fontSize: 32,

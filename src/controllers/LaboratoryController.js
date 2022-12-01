@@ -23,4 +23,12 @@ export class LaboratoryController {
       data: null,
     });
   }
+
+  getAllmemberInLaboratory({ labId }) {
+    return this.networkService.request({
+      method: "GET",
+      url: routes.laboratory.getAllMemberInLaboratory.replace(":lab-id", labId),
+      data: null,
+    });
+  }
 }

@@ -17,15 +17,35 @@ export const getLaboratoryByAccountId =
   };
 
 export const getLaboratoryById =
+  (labId, isJoined, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const laboratoryController = new LaboratoryController(networkService);
+      console.log("Lab ID in actions: " + labId);
+      const response = await laboratoryController.getLaboratoryById({
+        labId,
+      });
+      navigation.navigate("YourLab", {
+        data: response.data.data,
+        isJoined: isJoined,
+      });
+    } catch ({ data }) {
+      dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+    }
+  };
+
+export const getAllMemberInLaboratoryById =
   (labId, navigation) =>
   async (dispatch, _, { networkService }) => {
     try {
       const laboratoryController = new LaboratoryController(networkService);
-      console.log("Account ID in actions: " + labId);
-      const response = await laboratoryController.getLaboratoryById({
+      console.log("Lab ID in actions: " + labId);
+      const response = await laboratoryController.getAllmemberInLaboratory({
         labId,
       });
-      navigation.navigate("Yourlab", { data: response.data.data });
+      navigation.navigate("ViewAllMember", {
+        data: response.data.data,
+      });
     } catch ({ data }) {
       dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
     }

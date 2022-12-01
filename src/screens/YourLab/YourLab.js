@@ -15,54 +15,54 @@ import HomeTopNavigator from "../../navigations/HomeNavigation";
 import ProfileComponent from "../../components/ProfileComponent";
 import Buttons from "../../components/Buttons";
 import { useState } from "react";
-
-const listProject = {
-  id: "1",
-  title: "SW Architecture and Design_Kiến trúc và Thiết kế phần mềm",
-  dob: "02/02/2022",
-  host: "SonHH8",
-  description: "blablah",
-  username: "Hoang Hai Son",
-  contact: "9847528394758923",
-  numberofmember: "40",
-  address: "Room3-Delta",
-};
+import { useDispatch } from "react-redux";
+import { getAllMemberInLaboratoryById } from "../../actions/LaboratoryAction";
 
 export default function YourLab({ route, navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
+  const data = route.params.data;
+  const isJoined = route.params.isJoined;
+
+  const dispatch = useDispatch();
+  const goToViewAllMemberPage = (labId) => {
+    dispatch(getAllMemberInLaboratoryById(labId, navigation));
+  };
   return (
     <View style={styles.container}>
       <HomeTopNavigator navigation={navigation} />
       <View style={styles.containerProfile}>
         <View style={styles.containerName}>
-          <Text style={styles.textName}>{listProject.title}</Text>
+          <Text style={styles.textName}>{data.laboratoryName}</Text>
         </View>
         <View style={styles.containerInfo}>
           <View style={styles.info}>
             <ProfileComponent
               title={"Start from"}
-              information={listProject.dob}
+              information={data.createdDate}
             />
           </View>
           <ProfileComponent
             title={"Address"}
-            information={listProject.address}
+            information={data.lastModifiedDate}
           />
           <ProfileComponent
             title={"Contact"}
-            information={listProject.contact}
+            information={data.ownerBy.userInfo.email}
           />
-          <ProfileComponent title={"Host"} information={listProject.host} />
+          <ProfileComponent
+            title={"Host"}
+            information={data.ownerBy.userInfo.username}
+          />
           <ProfileComponent
             title={"Description"}
-            information={listProject.description}
+            information={data?.projects?.description}
           />
           <View style={styles.info}></View>
           <View style={styles.info}>
-            <ProfileComponent title={"Major"} information={"BSE"} />
+            <ProfileComponent title={"Major"} information={data.major} />
             <ProfileComponent
               title={"Number of member"}
-              information={listProject.numberofmember}
+              information={data.projects.members}
             />
           </View>
         </View>
@@ -70,16 +70,18 @@ export default function YourLab({ route, navigation }) {
           <Buttons
             style={styles.button}
             text={"View All Member"}
-            onPressTo={() => {
-              navigation.push("ViewAllMember");
-            }}
+            onPressTo={() => goToViewAllMemberPage(data.laboratoryId)}
           />
           <View style={styles.leavebtn}>
             <Pressable
               style={[styles.button, styles.buttonOpen]}
               onPress={() => setModalVisible(true)}
             >
-              <Text style={styles.textStyle}>Leave</Text>
+              {isJoined ? (
+                <Text style={styles.textStyle}>Leave</Text>
+              ) : (
+                <Text style={styles.textStyle}>Join</Text>
+              )}
             </Pressable>
           </View>
         </View>
@@ -101,7 +103,11 @@ export default function YourLab({ route, navigation }) {
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
               >
-                <Text style={styles.textStyle}>Leave</Text>
+                {isJoined ? (
+                  <Text style={styles.textStyle}>Leave</Text>
+                ) : (
+                  <Text style={styles.textStyle}>Join</Text>
+                )}
               </Pressable>
             </View>
           </View>
