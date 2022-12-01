@@ -4,6 +4,7 @@ import HomeTopNavigator from "../../navigations/HomeNavigation";
 import SprintComponent from "../../components/SprintComponent";
 import TaskDetailComponent from "../../components/TaskDetailComponent";
 import ChildIssueComponent from "../../components/ChildIssueComponent";
+import PaginationBar from "../../components/PaginationBar";
 
 function Home({ navigation }) {
   const data = [
@@ -17,6 +18,7 @@ function Home({ navigation }) {
   return (
     <View style={{ backgroundColor: "white" }}>
       <HomeTopNavigator navigation={navigation} />
+      <PaginationBar />
       <FlatList
         data={data}
         renderItem={({ item }) => <View>{/* <SprintComponent /> */}</View>}

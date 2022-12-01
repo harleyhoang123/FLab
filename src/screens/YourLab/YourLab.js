@@ -90,8 +90,7 @@ export default function YourLab({ route, navigation }) {
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
+            this.visibleModal(false);
           }}
         >
           <View style={styles.centeredView}>
@@ -99,16 +98,24 @@ export default function YourLab({ route, navigation }) {
               <Text style={styles.modalText}>
                 Do you want to leave this Lab
               </Text>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                {isJoined ? (
-                  <Text style={styles.textStyle}>Leave</Text>
-                ) : (
-                  <Text style={styles.textStyle}>Join</Text>
-                )}
-              </Pressable>
+              <View style={styles.wrapper}>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  {isJoined ? (
+                    <Text style={styles.textStyle}>Leave</Text>
+                  ) : (
+                    <Text style={styles.textStyle}>Join</Text>
+                  )}
+                </Pressable>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>Cancel</Text>
+                </Pressable>
+              </View>
             </View>
           </View>
         </Modal>
@@ -121,6 +128,9 @@ const styles = StyleSheet.create({
   container: {
     alignContent: "center",
     flex: 1,
+  },
+  wrapper: {
+    flexDirection: "row",
   },
   containerProfile: {
     flex: 1,
