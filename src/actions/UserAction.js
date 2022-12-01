@@ -1,6 +1,7 @@
 import {UserController} from "../controllers";
 import {strings} from "../localization";
 import AsyncStorage from '@react-native-community/async-storage';
+import React,{useState} from "react";
 
 export const TYPES = {
     CLEAR_STORE: "CLEAR_STORE",
@@ -29,7 +30,15 @@ const clearStore = () => ({
     type: TYPES.CLEAR_STORE,
     payload: null,
 });
-
+const getAccountId = async () => {
+    try {
+        const accountId = await AsyncStorage.getItem('@accountId');
+        console.log("AccountId: "+ accountId);
+        return accountId;
+    } catch(e) {
+        console.log("Can't get account id: "+e);
+    }
+}
 export const login =
     (username, password, navigation) =>
         async (dispatch, _, {networkService}) => {
@@ -56,14 +65,9 @@ export const login =
 
 export const logout =
     () =>
-        async (dispatch, _, {demoMode, networkService}) => {
-            try {
-                const userController = new UserController(networkService);
-                await userController.logout();
-            } finally {
-                networkService.clearAccessToken();
-                dispatch(clearStore());
-            }
+        async (dispatch, _, {networkService}) => {
+            networkService.clearAccessToken();
+            dispatch(clearStore());
         };
 export const register =
     (email, fullName, username, password, navigation) => async (dispatch, _, {networkService}) => {
@@ -80,15 +84,32 @@ export const register =
         }
     };
 export const forgot =
-    (username, navigation) => async (dispatch, _, {networkService}) => {
+    (emailOrUsername, navigation) => async (dispatch, _, {networkService}) => {
+        console.log("In User Action: " + emailOrUsername);
         try {
             const userController = new UserController(networkService);
-            const {data} = await userController.forgot(username);
-            console.log("Data Register is: " + JSON.stringify(data));
+            const {data} = await userController.forgotPassword({emailOrUsername});
+            console.log("Data Forgot is: " + JSON.stringify(data));
             if (data.data !== null) {
                 navigation.push("Login")
             }
+        } catch ({data}) {
+            dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+        }
+    };
 
+export const changePassword =
+    (oldPassword, newPassword,accountId) => async (dispatch, _, {networkService}) => {
+        console.log("Oll Password User Action: "+ oldPassword);
+        console.log("New Password User Action: "+ newPassword);
+        console.log("Account ID User Action: "+ accountId);
+        try {
+            // const [accountId, setAccountId] = useState('');
+            // getAccountId().then(accountId => setAccountId(accountId));
+            // console.log("Account ID User Action: "+ accountId);
+            const userController = new UserController(networkService);
+            const {data} = await userController.changePassword({oldPassword, newPassword, accountId});
+            console.log("Data Change is: " + JSON.stringify(data));
         } catch ({data}) {
             dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
         }

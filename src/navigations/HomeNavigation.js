@@ -7,6 +7,7 @@ import Notification from "../screens/Notification/Notification";
 import {useDispatch} from "react-redux";
 import {getLaboratoryByAccountId} from '../actions/LaboratoryAction'
 import AsyncStorage from '@react-native-community/async-storage';
+import {logout} from "../actions/UserAction";
 
 const getAccountId = async () => {
     try {
@@ -24,6 +25,10 @@ export default function HomeTopNavigator({navigation}) {
     const dispatch = useDispatch();
     const goToLabPage = () =>{
         dispatch(getLaboratoryByAccountId(accountId, navigation))
+    }
+    const handleLogout = () =>{
+        dispatch(logout);
+        navigation.push("Login");
     }
     const [modalProfileVisible, setModalProfileVisible] = useState(false);
     const [modalNotifyVisible, setModalNotifyVisible] = useState(false);
@@ -55,7 +60,12 @@ export default function HomeTopNavigator({navigation}) {
                         <TouchableOpacity style={[styles.buttonModal]}>
                             <Text style={styles.textStyle}>My CV</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.buttonModal]}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                handleLogout()
+                                setModalProfileVisible(!modalProfileVisible)
+                            }}
+                            style={[styles.buttonModal]}>
                             <Text style={styles.textStyle}>Log out</Text>
                         </TouchableOpacity>
                     </View>
