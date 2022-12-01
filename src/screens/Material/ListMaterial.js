@@ -5,6 +5,7 @@ import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
 import MaterialItem from "../../components/MaterialItem";
 import PaginationBar from "../../components/PaginationBar";
+import LabNavigator from "../../navigations/LabNavigator";
 
 const list1 = [
   {
@@ -55,7 +56,7 @@ function ListMaterial({ navigation }) {
   };
   return (
     <View>
-      <HomeTopNavigator navigation={navigation} />
+      <LabNavigator navigation={navigation} />
       <View style={styles.container}>
         <View>
           <Text style={styles.text}>List Materials</Text>

@@ -65,7 +65,7 @@ const ViewAllMember = ({ route, navigation }) => {
   );
   return (
     <View style={styles.comp}>
-      <LabNavigator />
+      <LabNavigator navigation={navigation} />
       <View>
         <Text style={styles.titleContent}>List all member in your lab</Text>
       </View>
