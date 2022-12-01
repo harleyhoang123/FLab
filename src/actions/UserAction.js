@@ -40,8 +40,10 @@ export const login =
                 console.log("Data is: " + JSON.stringify(data));
                 if (data.data !== null) {
                     try {
-                        await AsyncStorage.setItem("@accountId", data.data.accountId)
-                        console.log("Set account id success: " + data.data.accountId)
+                        await AsyncStorage.setItem("@accountId", data.data.accountId);
+                        await AsyncStorage.setItem("@roles", data.data.roles);
+                        await AsyncStorage.setItem("@avatar", data.data.avatar);
+                        console.log("Set account id success: " + JSON.stringify(data.data));
                     } catch ({err}) {
                         console.log("Can't store accountId:" + err)
                     }

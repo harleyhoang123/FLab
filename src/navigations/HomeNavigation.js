@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { getLaboratoryByAccountId } from "../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
 import { logout } from "../actions/UserAction";
+import AvatarComponent from "../components/AvatarComponent";
 
 const getAccountId = async () => {
   try {
@@ -131,12 +132,7 @@ export default function HomeTopNavigator({ navigation }) {
             style={[styles.button, { flexDirection: "row" }]}
             onPress={() => setModalProfileVisible(true)}
           >
-            <Image
-              style={styles.userImage}
-              source={{
-                uri: "https://flab-account-bucket.s3.eu-central-1.amazonaws.com/de4e73de-4213-4934-8028-436e8103e3c9",
-              }}
-            />
+            <AvatarComponent height={30} width={30}/>
             <Text>Profile</Text>
           </TouchableOpacity>
         </View>
