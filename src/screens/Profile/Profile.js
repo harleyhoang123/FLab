@@ -4,12 +4,32 @@ import HomeTopNavigator from "../../navigations/HomeNavigation";
 import Buttons from "../../components/Buttons";
 import ProfileComponent from "../../components/ProfileComponent";
 import TextField from "../../components/TextField";
+import {useDispatch} from "react-redux";
+import {changePassword} from "../../actions/UserAction";
+import AsyncStorage from "@react-native-community/async-storage";
+const getAccountId = async () => {
+    try {
+        const accountId = await AsyncStorage.getItem('@accountId');
+        console.log("AccountId: "+ accountId);
+        return accountId;
+    } catch(e) {
+        console.log("Can't get account id: "+e);
+    }
+}
 function Profile({navigation}) {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [reNewPassword, setReNewPassword] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [accountId, setAccountId] = useState("");
+    getAccountId().then(accountId => setAccountId(accountId));
+    const dispatch = useDispatch();
+    const handleChangePassword = () => {
+        console.log("Oll Password: "+ oldPassword)
+        console.log("New Password: "+ newPassword)
+        dispatch(changePassword(oldPassword, newPassword,accountId));
+    }
     return (
         <View style={styles.container}>
             <HomeTopNavigator navigation={navigation}/>
@@ -49,7 +69,7 @@ function Profile({navigation}) {
                     <TextField text={oldPassword} onChangeText={oldPassword=> setOldPassword(oldPassword)} placeholder={" Old Password"} secureTextEntry={true}/>
                     <TextField text={newPassword} onChangeText={newPassword=> setNewPassword(newPassword)} placeholder={" New Password"} secureTextEntry={true}/>
                     <TextField text={reNewPassword} onChangeText={reNewPassword=> setReNewPassword(reNewPassword)} placeholder={" Re-New Password"} secureTextEntry={true}/>
-                    <Buttons style={styles.button} text={"Change Password"}/>
+                    <Buttons style={styles.button} onPressTo={handleChangePassword} text={"Change Password"}/>
                 </View>
                 <View>
                     <View style={styles.containerInfo}>

@@ -20,6 +20,7 @@ export class NetworkService {
         console.log("Token is: "+ this.client.defaults.headers.common['Authorization'])
         console.log("Method: "+ method);
         console.log("URL: "+ url);
+        console.log("Data  is" + JSON.stringify(data));
         return this.client.request({ method, url, data, ...config });
     }
 }
