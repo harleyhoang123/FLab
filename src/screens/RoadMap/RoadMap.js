@@ -42,12 +42,11 @@ const data = [
 ];
 
 export default function RoadMap({ navigation }) {
-  const [visible, setVisible] = useState("false");
+  const [isVisible, setIsVisible] = useState(false);
 
-  const callBackSetIsVisible = (visibles) => {
-    console.log(visibles);
-    setVisible(visibles);
-  };
+  const callBackSetIsVisible = (isVisible) => {
+    setIsVisible(isVisible);
+  }
 
   return (
     <View>
@@ -67,7 +66,7 @@ export default function RoadMap({ navigation }) {
           </View>
         </View>
         <View style={styles.taskDetail}>
-          <TaskDetailComponent visible={visible} />
+          <TaskDetailComponent isVisible={isVisible} />
         </View>
       </View>
     </View>

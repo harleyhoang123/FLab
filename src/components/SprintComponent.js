@@ -9,7 +9,7 @@ import {
 import Buttons from "./Buttons";
 import TaskComponent from "./TaskComponent";
 import TextField from "./TextField";
-function SprintComponent({ callbackVisibleTask }) {
+function SprintComponent({callBackSetIsVisible}) {
   const [visible, setVisible] = useState(false);
   const [isTextField, setIsTextField] = useState(false);
   const toggleDropdown = () => {
@@ -40,7 +40,7 @@ function SprintComponent({ callbackVisibleTask }) {
           <FlatList
             data={data}
             renderItem={({ item }) => (
-              <TaskComponent callbackVisibleTask={callbackVisibleTask} />
+              <TaskComponent callBackSetIsVisible={callBackSetIsVisible} />
             )}
           />
           {renderTextField(isTextField)}

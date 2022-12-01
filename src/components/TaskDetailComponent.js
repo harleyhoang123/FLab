@@ -14,8 +14,8 @@ import {
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 
-export default function TaskDetailComponent({ visible }) {
-  console.log("Visible: " + visible);
+export default function TaskDetailComponent({isVisible}) {
+  console.log("Visible: " + isVisible);
 
   const data = [
     { key: "1", value: "Done" },
@@ -44,71 +44,72 @@ export default function TaskDetailComponent({ visible }) {
   );
 
   const renderItem = ({ item }) => <Item id={item.id} content={item.content} />;
-  return (
-    <View style={[styles.container]}>
-      <View style={styles.wrapper}>
-        <Text style={styles.source}>FLab15/Flab1</Text>
-        <Text style={styles.title}>
-          Summary of features in existing laboratory management systems
-        </Text>
-        <SelectList
-          setSelected={(val) => setSelected(val)}
-          placeholder={"Task status"}
-          data={data}
-          save="value"
-          boxStyles={{
-            width: 130,
-            height: 45,
-            marginTop: 10,
-            marginBottom: 10,
-            marginRight: 5,
-          }}
-          dropdownStyles={{
-            width: 130,
-          }}
-          search={false}
-        />
-        <Text style={styles.description}>Description</Text>
-        <Text style={styles.descriptionDetail}>
-          {" "}
-          {visible}
-          Summary of features in existing laboratory management systems
-        </Text>
-        <Text style={styles.descriptionDetail}>Child Issues</Text>
-        <SafeAreaView style={styles.flatlist}>
-          <FlatList
-            data={childIssue}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-          />
-        </SafeAreaView>
+  return(
+      <View>
+      {isVisible? <View style={[styles.container]}>
+          <View style={styles.wrapper}>
+            <Text style={styles.source}>FLab15/Flab1</Text>
+            <Text style={styles.title}>
+              Summary of features in existing laboratory management systems
+            </Text>
 
-        <View style={styles.borderBot}>
-          <View style={styles.borderBot}>
-            <Text style={styles.descriptionDetail}>Details</Text>
+            <SelectList
+                setSelected={(val) => setSelected(val)}
+                placeholder={"Task status"}
+                data={data}
+                save="value"
+                boxStyles={{
+                  width: 130,
+                  height: 45,
+                  marginTop: 10,
+                  marginBottom: 10,
+                  marginRight: 5,
+                }}
+                dropdownStyles={{
+                  width: 130,
+                }}
+                search={false}
+            />
+            <Text style={styles.description}>Description</Text>
+            <Text style={styles.descriptionDetail}>
+              Summary of features in existing laboratory management systems
+            </Text>
+            <Text style={styles.descriptionDetail}>Child Issues</Text>
+            <SafeAreaView style={styles.flatlist}>
+              <FlatList
+                  data={childIssue}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => item.id}
+              />
+            </SafeAreaView>
+
+            <View style={styles.borderBot}>
+              <View style={styles.borderBot}>
+                <Text style={styles.descriptionDetail}>Details</Text>
+              </View>
+              <View>
+                <Text style={styles.descriptionDetail}>Assignee: Hai Son</Text>
+                <Text style={styles.descriptionDetail}>Sprint: 1</Text>
+                <Text style={styles.descriptionDetail}>Estimate: 1 point</Text>
+                <Text style={styles.descriptionDetail}>Reporter: Hai Son</Text>
+              </View>
+            </View>
+            <View style={styles.comment}>
+              <Image
+                  style={styles.tinyLogo}
+                  source={{ uri: "https://reactnative.dev/img/tiny_logo.png" }}
+              />
+              <TextInput style={styles.input} placeholder="Comment..." />
+              <Pressable
+                  style={styles.button}
+                  onPress={() => Alert.alert("Simple Button pressed")}
+              >
+                <Text style={styles.text}>Submit</Text>
+              </Pressable>
+            </View>
           </View>
-          <View>
-            <Text style={styles.descriptionDetail}>Assignee: Hai Son</Text>
-            <Text style={styles.descriptionDetail}>Sprint: 1</Text>
-            <Text style={styles.descriptionDetail}>Estimate: 1 point</Text>
-            <Text style={styles.descriptionDetail}>Reporter: Hai Son</Text>
-          </View>
-        </View>
-        <View style={styles.comment}>
-          <Image
-            style={styles.tinyLogo}
-            source={{ uri: "https://reactnative.dev/img/tiny_logo.png" }}
-          />
-          <TextInput style={styles.input} placeholder="Comment..." />
-          <Pressable
-            style={styles.button}
-            onPress={() => Alert.alert("Simple Button pressed")}
-          >
-            <Text style={styles.text}>Submit</Text>
-          </Pressable>
-        </View>
+        </View> :<View></View>}
       </View>
-    </View>
   );
 }
 

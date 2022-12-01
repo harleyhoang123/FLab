@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import Buttons from "./Buttons";
 import TaskDetailComponent from "./TaskDetailComponent";
-function TaskComponent({ callbackTaskVisible }) {
+function TaskComponent({callBackSetIsVisible}) {
   return (
     <View style={styles.wrapper}>
       <View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => callBackSetIsVisible(true)} >
           <View style={styles.container}>
             <View style={styles.row}>
               <Text style={styles.text}>abcxyz</Text>
@@ -26,7 +26,7 @@ function TaskComponent({ callbackTaskVisible }) {
               <Buttons
                 text={"..."}
                 style={styles.button}
-                onPress={() => callbackTaskVisible("true")}
+
               />
             </View>
           </View>
