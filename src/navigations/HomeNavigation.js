@@ -134,7 +134,7 @@ export default function HomeTopNavigator({ navigation }) {
             <Image
               style={styles.userImage}
               source={{
-                uri: "https://pbs.twimg.com/profile_images/486929358120964097/gNLINY67_400x400.png",
+                uri: "https://flab-account-bucket.s3.eu-central-1.amazonaws.com/de4e73de-4213-4934-8028-436e8103e3c9",
               }}
             />
             <Text>Profile</Text>

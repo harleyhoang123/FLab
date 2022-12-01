@@ -61,7 +61,7 @@ export const logout =
             dispatch(clearStore());
         };
 export const register =
-    (email, fullName, username, password, navigation) => async (dispatch, _, {networkService}) => {
+    (email, username, fullName, password, navigation) => async (dispatch, _, {networkService}) => {
         try {
             const userController = new UserController(networkService);
             const {data} = await userController.register({email, username, fullName, password});

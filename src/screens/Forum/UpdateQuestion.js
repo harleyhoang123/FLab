@@ -1,52 +1,31 @@
 import React, {useState} from 'react';
-import {Button, FlatList, StyleSheet, Text, View,} from "react-native";
+import { StyleSheet, Text, View,} from "react-native";
 import AddComponent from "../../components/AddComponent";
 import {Dropdown} from "react-native-element-dropdown";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import ForumNavigation from "../../navigations/ForumNavigation";
 import Buttons from "../../components/Buttons";
 import {useDispatch} from "react-redux";
-import {addQuestion, updateQuestion} from "../../actions/ForumAction";
-
-function AddQuestion({navigation}) {
+import { updateQuestion} from "../../actions/ForumAction";
+function UpdateQuestion({route, navigation}) {
+    const res = route.params;
     const [value, setValue] = useState('Public');
-    const [title, setTitle] = useState('');
-    const [detail, setDetail] = useState('');
+    const [title, setTitle] = useState(res.data.title);
+    const [detail, setDetail] = useState(res.data.content);
     const [yourTry, setYourTry] = useState('');
-    const [tag, setTag] = useState('');
-    const handleStatus =() =>{
-        if (res == undefined) {
-
-        }else {
-            setTitle(res.data.title);
-            setDetail(res.data.content);
-            setTag(res.data.tags);
-            setIsEdit(true)
-            setQuestionId(res.data.questionId)
-        }
-    }
-
+    const [tag, setTag] = useState(res.data.tags);
+    const [questionId, setQuestionId] = useState(res.data.questionId);
     const dispatch = useDispatch();
     const data = [
         {label: 'Public', value: 'Public'},
         {label: 'Inside Lab Room', value: 'Inside Lab Room'},
     ]
-
     const handleClick = () => {
-        console.log(isEdit);
-        if (isEdit) {
             const content = detail + " \n " + yourTry;
             dispatch(updateQuestion(title, content, tag, questionId, navigation));
-        } else {
-            const content = detail + " \n " + yourTry;
-            dispatch(addQuestion(title, content, tag, navigation));
-        }
-
     }
-
     return (
         <View>
-            {handleStatus}
             <HomeTopNavigator navigation={navigation}/>
             <View style={styles.container}>
                 <View style={styles.forum}>
@@ -102,7 +81,6 @@ function AddQuestion({navigation}) {
         </View>
     );
 }
-
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
@@ -140,4 +118,4 @@ const styles = StyleSheet.create({
         marginLeft: 30,
     },
 });
-export default AddQuestion;
+export default UpdateQuestion;

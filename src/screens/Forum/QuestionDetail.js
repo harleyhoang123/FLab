@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {FlatList, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import { Dropdown } from 'react-native-element-dropdown';
+import {Dropdown} from 'react-native-element-dropdown';
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import ForumNavigation from "../../navigations/ForumNavigation";
 import Separator from "../../components/Separator";
@@ -9,6 +9,8 @@ import Buttons from "../../components/Buttons";
 import CommentItem from "../../components/CommentItem";
 import QuestionItem from "../../components/QuestionItem";
 import VoteComponent from "../../components/VoteComponent";
+import {useDispatch} from "react-redux";
+import {getQuestionDetailByQuestionId} from "../../actions/ForumAction";
 
 const listQuestion = [{
     title: "Lionel Messi là ngôi sao mới nhất xuất hiện trong game sinh tồn PUBG Mobile ở bản cập nhật sắp tới.",
@@ -40,6 +42,10 @@ const listQuestion = [{
 ]
 
 function QuestionDetail({route,navigation}) {
+    const dispatch = useDispatch();
+    const handleClick = () => {
+        dispatch(getQuestionDetailByQuestionId('6388f5e5c505183a8b03e46e', navigation,true));
+    };
     const res = route.params;
     console.log(JSON.stringify(res));
     const [comment, setComment] = useState('');
@@ -58,8 +64,7 @@ function QuestionDetail({route,navigation}) {
     const [value, setValue] = useState('Highest score (default)');
     const formatTime=(date)=>{
         const d= new Date(date);
-        const day = d.getDate()+"/"+d.getMonth()+"/"+d.getFullYear();
-        return day;
+        return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
     }
     const data=[
         {label: 'Highest score (default)', value: 'Highest score (default)'},
@@ -103,6 +108,7 @@ function QuestionDetail({route,navigation}) {
                                             <Text style={styles.textStyle}>Add Question</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={() => {
+                                            handleClick()
                                             setModalVisible(!modalVisible)}}
                                                           style={[styles.buttonModal]}>
                                             <Text style={styles.textStyle}>Edit</Text>
@@ -138,7 +144,10 @@ function QuestionDetail({route,navigation}) {
                     </View>
                     <View style={{marginLeft:100,marginTop:50,}}>
                         {userComment.map((item)=>(
-                            <CommentItem username={item.createdBy} content={item.content} time={formatTime(item.createdDate)}/>
+                            <View key={item.commentId}>
+                                <CommentItem username={item.createdBy} content={item.content} time={formatTime(item.createdDate)}/>
+                            </View>
+
                         ))
                         }
                         <View style={styles.containerComment}>
@@ -168,10 +177,12 @@ function QuestionDetail({route,navigation}) {
                         </View>
                     </View>
                     {userAnswer.map((item)=>(
-                        <View>
+                        <View key={item.answerId}>
                             <CommentItem username={item.createdBy} content={item.content} time={formatTime(item.createdDate)}/>
                             {item.comments.map((item)=>(
-                                <CommentItem username={item.createdBy} content={item.content} time={formatTime(item.createdDate)}/>
+                                <View key={item.commentId}>
+                                    <CommentItem username={item.createdBy} content={item.content} time={formatTime(item.createdDate)}/>
+                                </View>
                             ))
                             }
                             <Separator/>

@@ -26,9 +26,9 @@ function Register({navigation}) {
                 <Title title={"Register"}></Title>
                 <TextField text={email} onChangeText={email => setEmail(email)} placeholder={" Enter email"}
                            secureTextEntry={false}></TextField>
-                <TextField text={username} onChangeText={username => setUsername(username)} placeholder={" Enter user name"}
+                <TextField text={fullName} onChangeText={fullName => setFullName(fullName)} placeholder={" Enter full name"}
                            secureTextEntry={false}></TextField>
-                <TextField text={username} onChangeText={fullName => setFullName(fullName)} placeholder={" Enter full name"}
+                <TextField text={username} onChangeText={username => setUsername(username)} placeholder={" Enter user name"}
                            secureTextEntry={false}></TextField>
                 <TextField text={password} onChangeText={password => setPassword(password)} placeholder={" Password"}
                            secureTextEntry={true}></TextField>
