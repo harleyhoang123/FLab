@@ -1,12 +1,19 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Separator from "./Separator";
+import {useDispatch} from "react-redux";
+import {login} from "../actions/UserAction";
+import {getQuestionDetailByQuestionId} from "../actions/ForumAction";
 
 function QuestionItem({navigation, author, time, views, votes, answers, style, title, tags}) {
+    const dispatch = useDispatch();
+    const handleClick = () => {
+        dispatch(getQuestionDetailByQuestionId('638833af767ee95df3572224', navigation));
+    };
     return (
         <View style={[styles.container, style]}>
             <Separator/>
-            <TouchableOpacity onPress={() => navigation.push("QuestionDetail")}>
+            <TouchableOpacity onPress={handleClick}>
                 <View style={styles.containerContent}>
                     <View style={styles.containerLogo}>
                         <Text style={styles.text}>{votes} votes</Text>

@@ -39,89 +39,28 @@ const listQuestion = [{
     },
 ]
 
-function QuestionDetail({navigation}) {
+function QuestionDetail({route,navigation}) {
+    const res = route.params;
+    console.log(JSON.stringify(res));
     const [comment, setComment] = useState('');
     const [answer, setAnswer] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
-    const title = "Unable to resolve dependency for installing html-parser"
-    const author = "sa"
-    const time = "11"
-    const views = "10"
-    const content = "I am trying to install npm install react-html-parser in my current project. So I am trying to install the npm install react-html-parser but after I use the command."
-    const userComment = [
-        {
-            username: "A",
-            cmt: "abc",
-            time: "1",
-        },
-        {
-            username: "A",
-            cmt: "abc",
-            time: "1",
-        },
-        {
-            username: "A",
-            cmt: "abc",
-            time: "1",
-        },
-    ]
-    const tags = ["react-native", "react", "web",]
-    const numberAnswer="3"
-    const userAnswer = [
-        {
-            username: "A",
-            cmt: "abc",
-            time: "1",
-            reply: [
-                {
-                    username: "B",
-                    cmt: "xyz",
-                    time: "2",
-                },
-                {
-                    username: "C",
-                    cmt: "123",
-                    time: "3",
-                }
-            ]
-        },
-        {
-            username: "A",
-            cmt: "abc",
-            time: "1",
-            reply: [
-                {
-                    username: "B",
-                    cmt: "xyz",
-                    time: "2",
-                },
-                {
-                    username: "C",
-                    cmt: "123",
-                    time: "3",
-                }
-            ]
-        },
-        {
-            username: "A",
-            cmt: "abc",
-            time: "1",
-            reply: [
-                {
-                    username: "B",
-                    cmt: "xyz",
-                    time: "2",
-                },
-                {
-                    username: "C",
-                    cmt: "123",
-                    time: "3",
-                }
-            ]
-        },
-    ]
-    const votes="5"
+    const title = res.data.title;
+    const author = res.data.createdBy;
+    const time = res.data.createdDate;
+    const views = res.data.views;
+    const content = res.data.content;
+    const userComment = res.data.comments;
+    const tags = res.data.tags;
+    const numberAnswer=res.data.answers.length;
+    const userAnswer = res.data.answers;
+    const votes=res.data.score;
     const [value, setValue] = useState('Highest score (default)');
+    const formatTime=(date)=>{
+        const d= new Date(date);
+        const day = d.getDate()+"/"+d.getMonth()+"/"+d.getFullYear();
+        return day;
+    }
     const data=[
         {label: 'Highest score (default)', value: 'Highest score (default)'},
         {label: 'Trending (recent votes count more)', value: 'Trending (recent votes count more)'},
@@ -140,7 +79,7 @@ function QuestionDetail({navigation}) {
                     <View style={styles.containerTitle}>
                         <View style={styles.containerT}>
                             <Text style={styles.textTitle}>{title}</Text>
-                            <Text style={styles.textContent}>Post by {author} on {time}                 Viewed {views} times</Text>
+                            <Text style={styles.textContent}>Post by {author} on {formatTime(time)}                 Viewed {views} times</Text>
                         </View>
                         <View>
                             <Buttons text={"..."} style={styles.btnModal} onPressTo={() => setModalVisible(true)}/>
@@ -158,6 +97,7 @@ function QuestionDetail({navigation}) {
                                     style={styles.modal}>
                                     <View style={styles.modalView}>
                                         <TouchableOpacity onPress={() => {
+                                            navigation.push("AddQuestion")
                                             setModalVisible(!modalVisible)}}
                                                           style={[styles.buttonModal]}>
                                             <Text style={styles.textStyle}>Add Question</Text>
@@ -197,12 +137,10 @@ function QuestionDetail({navigation}) {
                         </View>
                     </View>
                     <View style={{marginLeft:100,marginTop:50,}}>
-                        <FlatList
-                            data={userComment}
-                            renderItem={({item}) => (
-                                <CommentItem username={item.username} content={item.cmt} time={item.time}/>
-                            )}
-                        />
+                        {userComment.map((item)=>(
+                            <CommentItem username={item.createdBy} content={item.content} time={formatTime(item.createdDate)}/>
+                        ))
+                        }
                         <View style={styles.containerComment}>
                             <TextField text={comment} onChangeText={newText => setComment(newText)}
                                        placeholder={" Comment Here"}
@@ -229,24 +167,19 @@ function QuestionDetail({navigation}) {
                             />
                         </View>
                     </View>
-                    <FlatList
-                        data={userAnswer}
-                        renderItem={({ item }) => (
-                            <View>
-                                <CommentItem username={item.username} content={item.cmt} time={item.time}/>
-                                <FlatList
-                                    style={styles.flatList}
-                                    data={item.reply}
-                                    renderItem={({ item }) => (
-                                        <CommentItem username={item.username} content={item.cmt} time={item.time}/>
-                                    )}
-                                />
-                                <Separator/>
-                            </View>
-                        )}
-                    />
+                    {userAnswer.map((item)=>(
+                        <View>
+                            <CommentItem username={item.createdBy} content={item.content} time={formatTime(item.createdDate)}/>
+                            {item.comments.map((item)=>(
+                                <CommentItem username={item.createdBy} content={item.content} time={formatTime(item.createdDate)}/>
+                            ))
+                            }
+                            <Separator/>
+                        </View>
+                    ))
+                    }
                     <Text style={styles.textContent}>Your Answers</Text>
-                        <TextField text={comment} onChangeText={newText => setComment(newText)}
+                        <TextField text={answer} onChangeText={newText => setAnswer(newText)}
                                    placeholder={" Answer Here"}
                                    secureTextEntry={false}
                                    multiline={true}

@@ -1,6 +1,10 @@
 import {LaboratoryController} from "../controllers/LaboratoryController";
 import {strings} from "../localization";
-
+import {TYPES} from "./UserAction";
+const loginError = (error) => ({
+    type: TYPES.LOGIN_ERROR,
+    payload: {error},
+});
 export const getLaboratoryByAccountId =
     (accountId, navigation) =>
         async (dispatch, _, {networkService}) => {

@@ -30,15 +30,6 @@ const clearStore = () => ({
     type: TYPES.CLEAR_STORE,
     payload: null,
 });
-const getAccountId = async () => {
-    try {
-        const accountId = await AsyncStorage.getItem('@accountId');
-        console.log("AccountId: "+ accountId);
-        return accountId;
-    } catch(e) {
-        console.log("Can't get account id: "+e);
-    }
-}
 export const login =
     (username, password, navigation) =>
         async (dispatch, _, {networkService}) => {

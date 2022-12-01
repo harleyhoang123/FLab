@@ -44,9 +44,11 @@ export class UserController {
         console.log("Oll Password User Controller: "+ oldPassword)
         console.log("New Password User Controller: "+ newPassword)
         console.log("accountId User Controller: "+ accountId)
+        const URL = routes.authentication.changePassword.replace(":account-id", accountId);
+        console.log("URL: "+ URL);
         return this.networkService.request({
             method: 'PUT',
-            url: routes.authentication.changePassword.replace(":account-id", accountId),
+            url: URL,
             data: {
                 oldPassword: oldPassword,
                 newPassword: newPassword
