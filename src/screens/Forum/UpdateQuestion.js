@@ -32,7 +32,7 @@ function UpdateQuestion({route, navigation}) {
                     <ForumNavigation navigation={navigation}/>
                 </View>
                 <View style={styles.content}>
-                    <Text style={styles.text}>Ask a question</Text>
+                    <Text style={styles.text}>Update question</Text>
                     <AddComponent
                         text={title}
                         onChangeText={title => setTitle(title)}

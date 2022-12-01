@@ -10,7 +10,7 @@ import CommentItem from "../../components/CommentItem";
 import QuestionItem from "../../components/QuestionItem";
 import VoteComponent from "../../components/VoteComponent";
 import {useDispatch} from "react-redux";
-import {getQuestionDetailByQuestionId} from "../../actions/ForumAction";
+import {getQuestionDetailByQuestionId, postAnswer, postComment} from "../../actions/ForumAction";
 
 const listQuestion = [{
     title: "Lionel Messi là ngôi sao mới nhất xuất hiện trong game sinh tồn PUBG Mobile ở bản cập nhật sắp tới.",
@@ -42,30 +42,43 @@ const listQuestion = [{
 ]
 
 function QuestionDetail({route,navigation}) {
-    const dispatch = useDispatch();
-    const handleClick = () => {
-        dispatch(getQuestionDetailByQuestionId('6388f5e5c505183a8b03e46e', navigation,true));
-    };
+
     const res = route.params;
     console.log(JSON.stringify(res));
     const [comment, setComment] = useState('');
     const [answer, setAnswer] = useState('');
+    const [answerComment, setAnswerComment] = useState('');
+    const [userComment, setUserComment] = useState(res.data.comments);
+    const [userAnswer, setUserAnswer] = useState(res.data.answers);
+    const [userAnswerComment, setUserAnswerComment] = useState(res.data.answers.comments);
     const [modalVisible, setModalVisible] = useState(false);
     const title = res.data.title;
     const author = res.data.createdBy;
     const time = res.data.createdDate;
     const views = res.data.views;
     const content = res.data.content;
-    const userComment = res.data.comments;
     const tags = res.data.tags;
     const numberAnswer=res.data.answers.length;
-    const userAnswer = res.data.answers;
     const votes=res.data.score;
     const [value, setValue] = useState('Highest score (default)');
     const formatTime=(date)=>{
         const d= new Date(date);
         return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
     }
+    const dispatch = useDispatch();
+    const handleEdit = () => {
+        dispatch(getQuestionDetailByQuestionId('6388f5e5c505183a8b03e46e', navigation,true));
+    };
+    const handleComment = () => {
+        setUserComment([...userComment, comment]);
+        dispatch(postComment(comment,'6388f5e5c505183a8b03e46e'));
+        setComment('');
+    };
+    const handleAnswer = () => {
+        setUserAnswer([...userAnswer, answer]);
+        dispatch(postAnswer(answer,'6388f5e5c505183a8b03e46e'));
+        setAnswer('');
+    };
     const data=[
         {label: 'Highest score (default)', value: 'Highest score (default)'},
         {label: 'Trending (recent votes count more)', value: 'Trending (recent votes count more)'},
@@ -102,13 +115,13 @@ function QuestionDetail({route,navigation}) {
                                     style={styles.modal}>
                                     <View style={styles.modalView}>
                                         <TouchableOpacity onPress={() => {
-                                            navigation.push("AddQuestion")
+                                            navigation.push("UpdateQuestion")
                                             setModalVisible(!modalVisible)}}
                                                           style={[styles.buttonModal]}>
                                             <Text style={styles.textStyle}>Add Question</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={() => {
-                                            handleClick()
+                                            handleEdit()
                                             setModalVisible(!modalVisible)}}
                                                           style={[styles.buttonModal]}>
                                             <Text style={styles.textStyle}>Edit</Text>
@@ -143,7 +156,7 @@ function QuestionDetail({route,navigation}) {
                         </View>
                     </View>
                     <View style={{marginLeft:100,marginTop:50,}}>
-                        {userComment.map((item)=>(
+                        {userComment?.map((item)=>(
                             <View key={item.commentId}>
                                 <CommentItem username={item.createdBy} content={item.content} time={formatTime(item.createdDate)}/>
                             </View>
@@ -156,7 +169,7 @@ function QuestionDetail({route,navigation}) {
                                        secureTextEntry={false}
                                        multiline={true}
                                        style={styles.comment}/>
-                            <Buttons text={"Comment"} style={styles.button}/>
+                            <Buttons text={"Comment"} onPressTo={handleComment} style={styles.button}/>
                         </View>
                     </View>
                     <View style={styles.containerTitle}>
@@ -176,15 +189,24 @@ function QuestionDetail({route,navigation}) {
                             />
                         </View>
                     </View>
-                    {userAnswer.map((item)=>(
+                    {userAnswer?.map((item)=>(
                         <View key={item.answerId}>
                             <CommentItem username={item.createdBy} content={item.content} time={formatTime(item.createdDate)}/>
-                            {item.comments.map((item)=>(
+                            {userAnswerComment?.map((item)=>(
                                 <View key={item.commentId}>
                                     <CommentItem username={item.createdBy} content={item.content} time={formatTime(item.createdDate)}/>
+                                    <View style={styles.containerComment}>
+
+                                    </View>
                                 </View>
                             ))
                             }
+                            <TextField text={answerComment} onChangeText={newText => setAnswerComment(newText)}
+                                       placeholder={" Comment Here"}
+                                       secureTextEntry={false}
+                                       multiline={true}
+                                       style={styles.comment}/>
+                            <Buttons text={"Comment"} style={styles.button}/>
                             <Separator/>
                         </View>
                     ))
@@ -195,7 +217,7 @@ function QuestionDetail({route,navigation}) {
                                    secureTextEntry={false}
                                    multiline={true}
                                    style={[styles.comment,{height: 500}]}/>
-                        <Buttons text={"Post Your Answer"} style={[styles.button, {marginLeft:20}]}/>
+                        <Buttons text={"Post Your Answer"} onPressTo={handleAnswer} style={[styles.button, {marginLeft:20}]}/>
 
                     <Separator/>
                     <View style={{marginBottom:30}}>

@@ -34,4 +34,22 @@ export class ForumController {
             },
         });
     }
+    postComment({content,questionId}) {
+        return this.networkService.request({
+            method: 'POST',
+            url: routes.forum.postComment.replace(":question-id", questionId) ,
+            data: {
+                content: content
+            },
+        });
+    }
+    postAnswer({content,questionId}) {
+        return this.networkService.request({
+            method: 'POST',
+            url: routes.forum.postAnswer.replace(":question-id", questionId) ,
+            data: {
+                content: content
+            },
+        });
+    }
 }

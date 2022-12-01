@@ -17,6 +17,8 @@ export const routes = {
     forum: {
         getQuestionDetail: 'http://192.168.31.197:8081/flab/forum/public/api/v1/questions/',
         addQuestion:'http://192.168.31.197:8081/flab/forum/public/api/v1/questions/question',
-        updateQuestion:'http://192.168.31.197:8081/flab/forum/public/api/v1/questions/'
+        updateQuestion:'http://192.168.31.197:8081/flab/forum/public/api/v1/questions/',
+        postComment:'http://192.168.31.197:8081/flab/forum/public/api/v1/questions/:question-id/comment',
+        postAnswer:'http://192.168.31.197:8081/flab/forum/public/api/v1/questions/:question-id/answer'
     }
 };

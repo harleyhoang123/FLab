@@ -14,7 +14,7 @@ export const getQuestionDetailByQuestionId =
                 console.log("Questions ID in actions: "+ questionId)
                 const response = await forumController.getQuestionDetailByQuestionId({questionId});
                 if (isEdit){
-                    navigation.push("AddQuestion", {data: response.data.data});
+                    navigation.push("UpdateQuestion", {data: response.data.data});
                 }else {
                     navigation.push("QuestionDetail", {data: response.data.data});
                 }
@@ -52,6 +52,28 @@ export const updateQuestion =
             if (data.data !== null) {
                 navigation.push("Forum")
             }
+        } catch ({data}) {
+            dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+        }
+    };
+export const postComment =
+    (content, questionId) => async (dispatch, _, {networkService}) => {
+        console.log("content of comment: "+ content)
+        try {
+            const forumController = new ForumController(networkService);
+            const {data} = await forumController.postComment({content, questionId});
+            console.log("Data comment is: " + JSON.stringify(data));
+        } catch ({data}) {
+            dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+        }
+    };
+export const postAnswer =
+    (content, questionId) => async (dispatch, _, {networkService}) => {
+        console.log("content of answer: "+ content)
+        try {
+            const forumController = new ForumController(networkService);
+            const {data} = await forumController.postAnswer({content, questionId});
+            console.log("Data answer is: " + JSON.stringify(data));
         } catch ({data}) {
             dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
         }

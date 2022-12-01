@@ -14,39 +14,18 @@ function AddQuestion({navigation}) {
     const [detail, setDetail] = useState('');
     const [yourTry, setYourTry] = useState('');
     const [tag, setTag] = useState('');
-    const handleStatus =() =>{
-        if (res == undefined) {
-
-        }else {
-            setTitle(res.data.title);
-            setDetail(res.data.content);
-            setTag(res.data.tags);
-            setIsEdit(true)
-            setQuestionId(res.data.questionId)
-        }
-    }
-
     const dispatch = useDispatch();
     const data = [
         {label: 'Public', value: 'Public'},
         {label: 'Inside Lab Room', value: 'Inside Lab Room'},
     ]
-
     const handleClick = () => {
-        console.log(isEdit);
-        if (isEdit) {
-            const content = detail + " \n " + yourTry;
-            dispatch(updateQuestion(title, content, tag, questionId, navigation));
-        } else {
             const content = detail + " \n " + yourTry;
             dispatch(addQuestion(title, content, tag, navigation));
-        }
-
     }
 
     return (
         <View>
-            {handleStatus}
             <HomeTopNavigator navigation={navigation}/>
             <View style={styles.container}>
                 <View style={styles.forum}>

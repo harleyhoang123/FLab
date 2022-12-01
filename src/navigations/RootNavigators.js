@@ -35,6 +35,7 @@ import RoadMap from "../screens/RoadMap/RoadMap";
 import MyCV from "../screens/CV/MyCV";
 import Upload from "../screens/CV/Upload";
 import Repository from "../screens/Repository/Repository";
+import UpdateQuestion from "../screens/Forum/UpdateQuestion";
 function RootNavigators() {
   const Stack = createStackNavigator();
   return (
@@ -76,6 +77,7 @@ function RootNavigators() {
           <Stack.Screen name="MyCV" component={MyCV} />
           <Stack.Screen name="Upload" component={Upload} />
           <Stack.Screen name="Repository" component={Repository} />
+        <Stack.Screen name="UpdateQuestion" component={UpdateQuestion} />
       </Stack.Navigator>
     </NavigationContainer>
   );
