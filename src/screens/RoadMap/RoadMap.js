@@ -12,6 +12,9 @@ import {
 import { TextInput } from "react-native-paper";
 import LabNavigator from "../../navigations/LabNavigator";
 import { Formik } from "formik";
+import SprintComponent from "../../components/SprintComponent";
+import TaskDetailComponent from "../../components/TaskDetailComponent";
+import { useState } from "react";
 
 const projectName = {
   name: "FPT Lab Management",
@@ -39,60 +42,13 @@ const data = [
 ];
 
 export default function RoadMap({ navigation }) {
-  const [todos, setTodos] = React.useState([
-    {
-      id: 1,
-      sprint: "1",
-      task: "develop",
-      time: "16 Sep - 23 Sep",
-      description: "Do somethings right now.",
-      completed: true,
-    },
-    {
-      id: 2,
-      sprint: "2",
-      task: "develop",
-      time: "16 Sep - 23 Sep",
-      description: "Do somethings right now.",
-      completed: false,
-    },
-  ]);
-  const [textInput, setTextInput] = React.useState({});
+  const [visible, setVisible] = useState("false");
 
-  const ListItem = ({ sprint, task, time, description, completed }) => {
-    return (
-      <View style={styles.listItem}>
-        <View style={styles.sprintArea}>
-          <View style={styles.sprint}>
-            <Text style={styles.sprTxt}>Sprint {sprint}:</Text>
-            <Text style={styles.timeTxt}>{time}</Text>
-          </View>
-        </View>
-        <View style={styles.taskArea}>
-          <View style={styles.taskPosition}>
-            <Text style={styles.description}>{description}</Text>
-            <View style={styles.tag}>
-              <Text style={styles.task}>{task}</Text>
-            </View>
-          </View>
-          <Text style={styles.completed}>
-            {completed ? "Done" : "On Going"}
-          </Text>
-        </View>
-      </View>
-    );
+  const callBackSetIsVisible = (visibles) => {
+    console.log(visibles);
+    setVisible(visibles);
   };
 
-  const renderItem = ({ item }) => (
-    <ListItem
-      sprint={item?.sprint}
-      task={item?.task}
-      time={item?.time}
-      description={item?.description}
-      completed={item?.completed}
-    />
-  );
-  const addTodo = () => {};
   return (
     <View>
       <LabNavigator navigation={navigation} />
@@ -107,15 +63,11 @@ export default function RoadMap({ navigation }) {
         <View style={styles.right}>
           <Text style={styles.backlog}>BackLog</Text>
           <View style={styles.backlogContent}>
-            <SafeAreaView>
-              <FlatList
-                contentContainerStyle={{ padding: 20 }}
-                data={todos}
-                keyExtractor={(item) => item.id}
-                renderItem={renderItem}
-              />
-            </SafeAreaView>
+            <SprintComponent callBackSetIsVisible={callBackSetIsVisible} />
           </View>
+        </View>
+        <View style={styles.taskDetail}>
+          <TaskDetailComponent visible={visible} />
         </View>
       </View>
     </View>
@@ -125,6 +77,11 @@ export default function RoadMap({ navigation }) {
 const styles = StyleSheet.create({
   checkbox: {
     marginLeft: 14,
+  },
+  taskDetail: {
+    width: "20%",
+    marginTop: 88,
+    marginLeft: 50,
   },
   input: {
     height: 40,
@@ -191,12 +148,12 @@ const styles = StyleSheet.create({
     borderColor: "#DEE2E6",
   },
   right: {
-    width: "82%",
+    width: "58%",
     height: "100%",
   },
   listItem: {
     width: "80%",
-    flexDirection: "column",
+    flexDirection: "row",
     borderRadius: 7,
     borderWidth: 1,
     marginBottom: 10,
@@ -217,6 +174,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
     marginLeft: 20,
+    width: "100%",
   },
   backlogContent: {
     marginTop: 20,
@@ -225,7 +183,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     borderWidth: 1,
     borderColor: "#DEE2E6",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     padding: 5,
   },
   projectName: {

@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
   },
   top: {
-    height: "50%",
+    height: "auto",
     width: "100%",
     borderBottomColor: "black",
     borderBottomWidth: 2,

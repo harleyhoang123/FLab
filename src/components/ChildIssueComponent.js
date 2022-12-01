@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 
-export default function childIssueComponent({ name }) {
+export default function ChildIssueComponent({ name }) {
   const [selected, setSelected] = React.useState("");
   const data = [
     { key: "1", value: "Done" },
@@ -71,15 +71,6 @@ export default function childIssueComponent({ name }) {
         <Text style={styles.descriptionDetail}>
           Summary of features in existing laboratory management systems
         </Text>
-        <Text style={styles.descriptionDetail}>Child Issues</Text>
-        <SafeAreaView style={styles.flatlist}>
-          <FlatList
-            data={childIssue}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-          />
-        </SafeAreaView>
-
         <View style={styles.borderBot}>
           <View style={styles.borderBot}>
             <Text style={styles.descriptionDetail}>Details</Text>

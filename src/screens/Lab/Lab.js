@@ -2,8 +2,9 @@ import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Linking } from "react-native";
+import { Button, Linking } from "react-native";
 import { styles } from "../Lab/Lab.style";
+import { BackHandler } from "react-native";
 
 import {
   SafeAreaView,
@@ -25,7 +26,6 @@ const Lab = ({ route, navigation }) => {
   const data = route.params.data;
   const items = data.joinedLaboratories.items;
   const itemsSugges = data.suggestLaboratories.items;
-  console.log(JSON.stringify(items[0].ownerBy.userInfo.username));
   const Item = ({
     id,
     title,

@@ -14,8 +14,9 @@ import {
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 
-export default function TaskDetailComponent({ name }) {
-  const [selected, setSelected] = React.useState("");
+export default function TaskDetailComponent({ visible }) {
+  console.log("Visible: " + visible);
+
   const data = [
     { key: "1", value: "Done" },
     { key: "2", value: "Inprogess" },
@@ -44,7 +45,7 @@ export default function TaskDetailComponent({ name }) {
 
   const renderItem = ({ item }) => <Item id={item.id} content={item.content} />;
   return (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
       <View style={styles.wrapper}>
         <Text style={styles.source}>FLab15/Flab1</Text>
         <Text style={styles.title}>
@@ -69,6 +70,8 @@ export default function TaskDetailComponent({ name }) {
         />
         <Text style={styles.description}>Description</Text>
         <Text style={styles.descriptionDetail}>
+          {" "}
+          {visible}
           Summary of features in existing laboratory management systems
         </Text>
         <Text style={styles.descriptionDetail}>Child Issues</Text>
@@ -116,8 +119,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "black",
     borderRadius: 5,
-    width: "25%",
-    height: 700,
+    height: "auto",
   },
   button: {
     width: 50,
