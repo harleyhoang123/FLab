@@ -12,14 +12,19 @@ import Logo from "../assets/Logo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
 import Notification from "../screens/Notification/Notification";
+import { useDispatch } from "react-redux";
+import { getAllRepository } from "../actions/RepositoryAction";
 import {getListMaterialByLabId} from "../actions/LaboratoryAction";
-import {useDispatch} from "react-redux";
 
 
-export default function LabNavigator({ navigation }) {
+export default function LabNavigator({ route, navigation }) {
+  const dispatch = useDispatch();
+  const goToRepository = () => {
+    dispatch(getAllRepository(navigation));
+  };
+
   const [modalProfileVisible, setModalProfileVisible] = useState(false);
   const [modalNotifyVisible, setModalNotifyVisible] = useState(false);
-  const dispatch = useDispatch();
 
   const goToListMaterial = () =>{
     dispatch(getListMaterialByLabId("", navigation))
@@ -113,7 +118,7 @@ export default function LabNavigator({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.push("Repository")}
+            onPress={() => goToRepository()}
           >
             <Text style={styles.textLogo}>Repository</Text>
           </TouchableOpacity>

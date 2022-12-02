@@ -4,9 +4,11 @@ import HomeTopNavigator from "../../navigations/HomeNavigation";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
 function MaterialDetail({ route, navigation }) {
-  const { booked } = route.params;
+  const data = route.params.data;
+  const status = data.status;
+  const isAdmin = false;
   const handleButton = () => {
-    if (!booked) {
+    if (!status === "FREE") {
       return (
         <Buttons
           text={"Request"}
@@ -19,7 +21,7 @@ function MaterialDetail({ route, navigation }) {
     } else {
       return (
         <Buttons
-          text={"Return"}
+          text={"Back"}
           style={styles.button}
           onPressTo={() => {
             navigation.push("ListMaterial");
@@ -41,19 +43,32 @@ function MaterialDetail({ route, navigation }) {
           />
         </View>
         <View style={styles.containerInfo}>
-          <Text style={styles.name}>PC1</Text>
-          <Text style={styles.text}>Status: Busy</Text>
-          <Text style={styles.text}>Amount: 1</Text>
-          <Text style={styles.text}>
-            Description: PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1
-            is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC
-            PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is
-            PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1
-            is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC
-            PC1 is PC PC1 is PC PC1 is PC PC1 is PC PC1 is PC
-          </Text>
+          <Text style={styles.name}>{data.materialName}</Text>
+          <Text style={styles.text}>Status: {data.status}</Text>
+          <Text style={styles.text}>Amount: {data.amount}</Text>
+          <Text style={styles.text}>Description: {data.description}</Text>
           <Text style={styles.text}>Note: None</Text>
           {handleButton()}
+          {isAdmin ? (
+            <View>
+              <Buttons
+                text={"Delete"}
+                style={[styles.button]}
+                onPressTo={() => {
+                  navigation.push("Home");
+                }}
+              />
+              <Buttons
+                text={"Update"}
+                style={[styles.button]}
+                onPressTo={() => {
+                  navigation.push("Home");
+                }}
+              />
+            </View>
+          ) : (
+            <Text></Text>
+          )}
         </View>
       </View>
     </View>

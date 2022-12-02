@@ -8,36 +8,36 @@ import PaginationBar from "../../components/PaginationBar";
 import LabNavigator from "../../navigations/LabNavigator";
 
 const list1 = [
-    {
-        title: "Laptop 1",
-        status: "Free",
-    },
-    {
-        title: "Iphone",
-        status: "Free",
-    },
-    {
-        title: "Ipad",
-        status: "Free",
-    },
-    {
-        title: "PC",
-        status: "Busy",
-    },
+  {
+    title: "Laptop 1",
+    status: "Free",
+  },
+  {
+    title: "Iphone",
+    status: "Free",
+  },
+  {
+    title: "Ipad",
+    status: "Free",
+  },
+  {
+    title: "PC",
+    status: "Busy",
+  },
 ];
 const list2 = [
-    {
-        title: "Laptop 1",
-        status: "Free",
-    },
-    {
-        title: "Iphone",
-        status: "Free",
-    },
-    {
-        title: "Ipad",
-        status: "Free",
-    },
+  {
+    title: "Laptop 1",
+    status: "Free",
+  },
+  {
+    title: "Iphone",
+    status: "Free",
+  },
+  {
+    title: "Ipad",
+    status: "Free",
+  },
 ];
 
 function ListMaterial({route, navigation}) {
