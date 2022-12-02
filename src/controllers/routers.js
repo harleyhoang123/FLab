@@ -18,7 +18,11 @@ export const routes = {
         getAllMemberInLaboratory:
             host+"8083/flab/lab/public/api/v1/laboratories/:lab-id/members",
         getListMaterialByLabId:
-            host+"8083/flab/lab/public/api/v1/materials"
+            host+"8083/flab/lab/public/api/v1/materials",
+        getMembersInLaboratory: "",
+        createProjectInLaboratory: "",
+        createLaboratory: host+"8083/flab/lab/public/api/v1/laboratories/laboratory",
+        removeMemberFromLaboratory: host+"8083/flab/lab/public/api/v1/laboratories/:lab-id/members/:member-id"
     },
     forum: {
         getQuestionDetail:
@@ -41,5 +45,8 @@ export const routes = {
     },
     account: {
         getAccountInfo: host+"8084/flab/account/public/api/v1/profiles/:profile-id"
+    },
+    project: {
+        getMembersInProject: ""
     }
 };

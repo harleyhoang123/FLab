@@ -5,24 +5,14 @@ import SprintComponent from "../../components/SprintComponent";
 import TaskDetailComponent from "../../components/TaskDetailComponent";
 import ChildIssueComponent from "../../components/ChildIssueComponent";
 import PaginationBar from "../../components/PaginationBar";
+import CreateLaboratory from "../TestAPI/CreateLaboratory";
 
 function Home({ navigation }) {
-  const data = [
-    { id: 1 },
-    { id: 2 },
-    { id: 3 },
-    { id: 4 },
-    { id: 5 },
-    { id: 6 },
-  ];
+
   return (
     <View style={{ backgroundColor: "white" }}>
       <HomeTopNavigator navigation={navigation} />
-      <PaginationBar />
-      <FlatList
-        data={data}
-        renderItem={({ item }) => <View>{/* <SprintComponent /> */}</View>}
-      />
+      <CreateLaboratory navigation={navigation}/>
     </View>
   );
 }

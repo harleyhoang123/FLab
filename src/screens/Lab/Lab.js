@@ -15,6 +15,8 @@ import {
 } from "react-native";
 import LabNavigator from "../../navigations/LabNavigator";
 import { getLaboratoryById } from "../../actions/LaboratoryAction";
+import ButtonBack from "../../components/ButtonBack";
+import Buttons from "../../components/Buttons";
 
 const Lab = ({ route, navigation }) => {
   const data = route.params.data;
@@ -165,12 +167,12 @@ const Lab = ({ route, navigation }) => {
           <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 120 }}>
             Suggestion
           </Text>
+
           <SafeAreaView style={styles.flatlist}>
             <FlatList
               numColumns={5}
               data={itemsSugges}
               renderItem={renderItem}
-              keyExtractor={(item) => item.id}
             />
           </SafeAreaView>
         </View>
@@ -186,6 +188,22 @@ const Lab = ({ route, navigation }) => {
               keyExtractor={(item) => item.id}
             />
           </SafeAreaView>
+        </View>
+        <View style={styles.btn}>
+          <Buttons
+            text={"Create Lab"}
+            style={styles.button}
+            onPressTo={() => {
+              navigation.navigate("CreateLab");
+            }}
+          />
+          <Buttons
+            text={"Back"}
+            style={styles.button}
+            onPressTo={() => {
+              navigation.goBack(null);
+            }}
+          />
         </View>
       </View>
     </View>

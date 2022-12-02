@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import {Text, StyleSheet, View, FlatList, SafeAreaView, Button} from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  FlatList,
+  CheckBox,
+  SafeAreaView,
+  Button,
+} from "react-native";
 import Buttons from "../../components/Buttons";
-import { Table, TableWrapper, Row, Cell } from "react-native-table-component";
-import { RadioButton } from "react-native-paper";
+import { RadioButton, Checkbox } from "react-native-paper";
 import TextField from "../../components/TextField";
-import { Touchable, TouchableOpacity } from "react-native-web";
 import LabNavigator from "../../navigations/LabNavigator";
 import { useDispatch } from "react-redux";
 import { getFolderByRepositoryId } from "../../actions/RepositoryAction";
@@ -12,23 +18,26 @@ import { getFolderByRepositoryId } from "../../actions/RepositoryAction";
 function Repository({ route, navigation }) {
   const data = route.params.data;
   const [items, setItems] = useState(data.items);
-  const [checked, setChecked] = useState("");
-  const [id, setId] = useState(null);
   const [text, setText] = useState("");
   const dispatch = useDispatch();
   const getFolderByRepository = (id) => {
-    console.log("Id:" + id);
     dispatch(getFolderByRepositoryId(id, navigation));
   };
 
   const deleteFolder = () => {
     dispatch(deleteFolderById(id));
-  }
-
+  };
+  const [checked, setChecked] = useState("");
   const Item = ({ id, name, type, lastEdit, size }) => (
     <View style={styles.table}>
-      <View>
-        <Button title={"*"} onPress={(id) => setId(id)}></Button>
+      <View style={styles.columnCheckBox}>
+        <RadioButton.Group>
+          <RadioButton
+            value={id}
+            status={checked === id ? "checked" : "unchecked"}
+            onPress={() => setChecked(id)}
+          />
+        </RadioButton.Group>
       </View>
       <View style={styles.column}>
         <Text onPress={() => getFolderByRepository(id)}>{name}</Text>
@@ -41,10 +50,6 @@ function Repository({ route, navigation }) {
       </View>
       <View style={styles.column}>
         <Text>{size}</Text>
-      </View>
-      <View style={styles.column}>
-        <Text>Delete {"  "}</Text>
-        <Text>Download</Text>
       </View>
     </View>
   );
@@ -66,19 +71,8 @@ function Repository({ route, navigation }) {
           <View>
             <Text style={styles.myCV}> Repository</Text>
           </View>
-          <View style={styles.containerButton}>
-            <Buttons style={styles.button} text={"Refresh"} />
-            <Buttons style={styles.button} text={"Create folder"} />
-            <Buttons
-              style={styles.button}
-              text={"Upload"}
-              o
-              onPressTo={() => navigation.push("Upload")}
-            />
-          </View>
         </View>
         <View style={styles.containerSearch}>
-         <Button title={"Delete"} onPress={deleteFolder}></Button> //items la danh sach => remove item trong danh sach > setItems()
           <TextField
             text={text}
             onChangeText={(newText) => setText(newText)}
@@ -91,7 +85,24 @@ function Repository({ route, navigation }) {
         </View>
         <View style={styles.bot}>
           <Text style={styles.myCV}>List All Repository</Text>
+          <View style={styles.containerButton}>
+            <Buttons style={styles.button} text={"Refresh"} />
+            <Buttons style={styles.button} text={"Create"} />
+            <Buttons
+              style={styles.button}
+              text={"Delete"}
+              onPress={() => deleteFolder(id)}
+            />
+            <Buttons style={styles.button} text={"Download"} />
+            <Buttons
+              style={styles.button}
+              text={"Upload"}
+              o
+              onPressTo={() => navigation.push("Upload")}
+            />
+          </View>
           <View style={styles.table}>
+            <View style={[styles.columnCheckBox, styles.borderbot]}></View>
             <View style={[styles.column, styles.borderbot]}>
               <Text>File Name</Text>
             </View>
@@ -104,9 +115,6 @@ function Repository({ route, navigation }) {
             <View style={[styles.column, styles.borderbot]}>
               <Text>Size</Text>
             </View>
-            <View style={[styles.column, styles.borderbot]}>
-              <Text>Action</Text>
-            </View>
           </View>
           <SafeAreaView style={styles.flatlist}>
             <FlatList data={items} renderItem={renderItem} />
@@ -117,9 +125,13 @@ function Repository({ route, navigation }) {
   );
 }
 const styles = StyleSheet.create({
+  checkbox: {
+    alignSelf: "center",
+  },
   borderbot: {
-    borderBottomColor: "White",
-    borderBottomWidth: 2,
+    borderColor: "black",
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
   },
   container: {
     alignContent: "center",
@@ -131,15 +143,22 @@ const styles = StyleSheet.create({
   table: {
     width: "100%",
     flexDirection: "row",
-    backgroundColor: "#34aeeb",
+    justifyContent: "center",
+  },
+  columnCheckBox: {
+    width: "5%",
+    borderColor: "black",
+    borderRightWidth: 1,
+    borderLeftWidth: 1,
+    borderBottomWidth: 1,
+    alignItems: "center",
   },
   column: {
-    flexDirection: "row",
-    width: "20%",
-    borderColor: "white",
-    borderRightWidth: 2,
+    width: "22%",
+    borderColor: "black",
+    borderRightWidth: 1,
     justifyContent: "center",
-    height: 30,
+    borderBottomWidth: 1,
     alignItems: "center",
   },
   containerContent: {
@@ -155,6 +174,9 @@ const styles = StyleSheet.create({
   },
   containerButton: {
     flexDirection: "row",
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: "46%",
   },
   myCV: {
     fontWeight: "bold",
@@ -162,11 +184,15 @@ const styles = StyleSheet.create({
     marginLeft: 30,
   },
   button: {
-    width: 180,
+    width: 150,
+    height: 20,
     marginRight: 30,
   },
   content: {
     marginTop: 50,
+  },
+  containerSearch: {
+    marginLeft: 30,
   },
 });
 
