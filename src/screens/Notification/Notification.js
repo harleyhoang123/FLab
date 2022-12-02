@@ -38,14 +38,22 @@ function Notification({navigation, modalNotifyVisible, setModalNotifyVisible}) {
                     onPress={()=>  setModalNotifyVisible(!modalNotifyVisible) }
                     style={styles.modal}>
                     <View style={styles.modalNotifyView}>
-                        <View style={styles.notify}>
-                            <TouchableOpacity>
-                                <Text style={styles.textNotify}> ALL</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <Text style={styles.textNotify}> UNREAD</Text>
-                            </TouchableOpacity>
+                        <View style={styles.row}>
+                            <View style={styles.notify}>
+                                <TouchableOpacity>
+                                    <Text style={styles.textNotify}> ALL</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity>
+                                    <Text style={styles.textNotify}> UNREAD</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View>
+                                <TouchableOpacity>
+                                    <Text style={styles.textNotify}> Ignore</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
+
                         <FlatList data={listNotify}
                                   renderItem={({ item }) => (
                                       <NotifyComponent date={item.date} time={item.time} title={item.title} />
@@ -65,7 +73,6 @@ const styles = StyleSheet.create({
         marginRight:15,
         backgroundColor: "white",
         borderRadius: 20,
-        alignItems: "flex-start",
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -77,11 +84,20 @@ const styles = StyleSheet.create({
     textNotify: {
         fontWeight: "bold",
         fontSize:16,
-        marginTop:20,
         marginLeft:30,
+    },
+    text:{
+        fontWeight: "bold",
+        fontSize:16,
+        marginRight:40,
     },
     notify:{
         flexDirection:"row"
+    },
+    row:{
+        marginTop:20,
+        flexDirection:"row",
+        justifyContent:"space-between",
     },
 });
 export default Notification;

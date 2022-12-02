@@ -101,6 +101,7 @@ function QuestionDetail({route,navigation}) {
                         </View>
                         <View>
                             <Buttons text={"..."} style={styles.btnModal} onPressTo={() => setModalVisible(true)}/>
+                            <Buttons text={"Back"} style={styles.btnModal} onPressTo={() => navigation.goBack(navigation)}/>
                             <Modal
                                 animationType="fade"
                                 transparent={true}
@@ -115,7 +116,7 @@ function QuestionDetail({route,navigation}) {
                                     style={styles.modal}>
                                     <View style={styles.modalView}>
                                         <TouchableOpacity onPress={() => {
-                                            navigation.push("UpdateQuestion")
+                                            navigation.push("AddQuestion")
                                             setModalVisible(!modalVisible)}}
                                                           style={[styles.buttonModal]}>
                                             <Text style={styles.textStyle}>Add Question</Text>
@@ -205,7 +206,7 @@ function QuestionDetail({route,navigation}) {
                                        placeholder={" Comment Here"}
                                        secureTextEntry={false}
                                        multiline={true}
-                                       style={styles.comment}/>
+                                       style={[styles.comment,{width: "95%"}]}/>
                             <Buttons text={"Comment"} style={styles.button}/>
                             <Separator/>
                         </View>
@@ -216,7 +217,7 @@ function QuestionDetail({route,navigation}) {
                                    placeholder={" Answer Here"}
                                    secureTextEntry={false}
                                    multiline={true}
-                                   style={[styles.comment,{height: 500}]}/>
+                                   style={[styles.comment,{height: 300, width: "95%"}]}/>
                         <Buttons text={"Post Your Answer"} onPressTo={handleAnswer} style={[styles.button, {marginLeft:20}]}/>
 
                     <Separator/>
@@ -322,6 +323,7 @@ const styles = StyleSheet.create({
     btnModal:{
         width:30,
         height:40,
+        marginBottom:10,
     },
     modal:{
         alignItems: "flex-end",

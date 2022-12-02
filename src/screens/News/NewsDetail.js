@@ -103,47 +103,49 @@ function NewsDetail({navigation}) {
         <View>
             <HomeTopNavigator navigation={navigation}/>
             <View style={styles.container}>
-
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                    }}
+                >
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={()=>  setModalVisible(!modalVisible) }
+                        style={styles.modal}>
+                        <View style={styles.modalView}>
+                            <TouchableOpacity onPress={() => {
+                                setModalVisible(!modalVisible)}}
+                                              style={[styles.buttonModal]}>
+                                <Text style={styles.textStyle}>Edit</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => {
+                                setModalVisible(!modalVisible)}}
+                                              style={[styles.buttonModal]}>
+                                <Text style={styles.textStyle}>Delete</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </TouchableOpacity>
+                </Modal>
                 <View style={styles.containerTitle}>
                     <View style={styles.row}>
                         <View style={styles.containerT}>
                             <Text >
                                 {HTMLReactParser(title)}
                             </Text>
+                            <Text style={styles.txt}>
+                                Post by {author} on {time}
+                            </Text>
                         </View>
                         <View>
                             <Buttons text={"..."} style={styles.btnModal} onPressTo={() => setModalVisible(true)}/>
-                            <Modal
-                                animationType="fade"
-                                transparent={true}
-                                visible={modalVisible}
-                                onRequestClose={() => {
-                                    setModalVisible(!modalVisible);
-                                }}
-                            >
-                                <TouchableOpacity
-                                    activeOpacity={1}
-                                    onPress={()=>  setModalVisible(!modalVisible) }
-                                    style={styles.modal}>
-                                    <View style={styles.modalView}>
-                                        <TouchableOpacity onPress={() => {
-                                            setModalVisible(!modalVisible)}}
-                                                          style={[styles.buttonModal]}>
-                                            <Text style={styles.textStyle}>Edit</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => {
-                                            setModalVisible(!modalVisible)}}
-                                                          style={[styles.buttonModal]}>
-                                            <Text style={styles.textStyle}>Delete</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </TouchableOpacity>
-                            </Modal>
+                            <Buttons text={"Back"} style={styles.btnModal} onPressTo={() => navigation.goBack(navigation)}/>
+
                         </View>
                     </View>
-                    <Text style={styles.txt}>
-                        Post by {author} on {time}
-                    </Text>
+
                 </View>
                 <Separator/>
                 <View View style={styles.containerTitle}>
@@ -236,6 +238,7 @@ const styles= StyleSheet.create(
         btnModal:{
             width:30,
             height:40,
+            marginBottom:10,
         },
         modal:{
             alignItems: "flex-end",

@@ -27,6 +27,7 @@ export default function Login({navigation}) {
                     placeholder={"Email or user name"}
                     secureTextEntry={false}
                     onSubmitEditing={handleSubmit}
+                    style={{width:"60%"}}
                 ></TextField>
                 <TextField
                     text={password}
@@ -34,6 +35,7 @@ export default function Login({navigation}) {
                     placeholder={"Password"}
                     secureTextEntry={true}
                     onSubmitEditing={handleSubmit}
+                    style={{width:"60%"}}
                 ></TextField>
                 <View style={styles.forgotPassword}>
                     <View>
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
     },
     button: {
         width: "25%",
-        marginLeft: 150,
+        marginLeft: "15%",
         marginBottom: 40,
     },
 });

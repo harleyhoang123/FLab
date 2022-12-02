@@ -15,7 +15,7 @@ function TextField({placeholder, text,onChangeText, secureTextEntry, style,multi
 const styles = StyleSheet.create({
     textInput: {
         height: 50,
-        width: "60%",
+        width: "99%",
         backgroundColor: 'white',
         borderWidth: 1,
         margin: 15,

@@ -24,15 +24,15 @@ function Register({navigation}) {
             </View>
             <View style={styles.right}>
                 <Title title={"Register"}></Title>
-                <TextField text={email} onChangeText={email => setEmail(email)} placeholder={" Enter email"}
+                <TextField text={email} onChangeText={email => setEmail(email)} placeholder={" Enter email"} style={{width:"60%"}}
                            secureTextEntry={false}></TextField>
-                <TextField text={fullName} onChangeText={fullName => setFullName(fullName)} placeholder={" Enter full name"}
+                <TextField text={fullName} onChangeText={fullName => setFullName(fullName)} placeholder={" Enter full name"} style={{width:"60%"}}
                            secureTextEntry={false}></TextField>
-                <TextField text={username} onChangeText={username => setUsername(username)} placeholder={" Enter user name"}
+                <TextField text={username} onChangeText={username => setUsername(username)} placeholder={" Enter user name"} style={{width:"60%"}}
                            secureTextEntry={false}></TextField>
-                <TextField text={password} onChangeText={password => setPassword(password)} placeholder={" Password"}
+                <TextField text={password} onChangeText={password => setPassword(password)} placeholder={" Password"} style={{width:"60%"}}
                            secureTextEntry={true}></TextField>
-                <TextField text={rePassword} onChangeText={rePassword => setRePassword(rePassword)} placeholder={" Re-Password"}
+                <TextField text={rePassword} onChangeText={rePassword => setRePassword(rePassword)} placeholder={" Re-Password"} style={{width:"60%"}}
                            secureTextEntry={true}></TextField>
                 <Buttons text={"Register"} onPressTo={handleRegister} style={styles.button}/>
                 <View style={styles.login}>
@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
         alignItems:"center",
     },
     logo: {
-        width: "750px",
-        height: "750px",
+        width: "70%",
+        height: "70%",
     },
     right: {
         flex: 0.5,
@@ -72,8 +72,8 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     button:{
-        width: 240,
-        marginLeft: 150,
+        width: "25%",
+        marginLeft: "15%",
         marginBottom: 40,
     },
 });

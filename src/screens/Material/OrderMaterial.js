@@ -3,11 +3,17 @@ import AddComponent from "../../components/AddComponent";
 import Buttons from "../../components/Buttons";
 import React,{useState} from "react";
 import LabNavigator from "../../navigations/LabNavigator";
+import {useDispatch} from "react-redux";
+import {getListMaterialByLabId} from "../../actions/LaboratoryAction";
 
 function OrderMaterial({navigation}) {
     const [title, setTitle] = useState("")
     const [amount, setAmount] = useState("")
     const [description, setDescription] = useState("")
+    const dispatch = useDispatch();
+    const goToListMaterial = () =>{
+        dispatch(getListMaterialByLabId("", navigation))
+    }
     return (
         <View style={styles.container}>
             <LabNavigator navigation={navigation}/>
@@ -26,7 +32,10 @@ function OrderMaterial({navigation}) {
                               style={{width: "97%", height:200}}
                               text={description} onChangeText={description => setDescription(description)}/>
                 <Buttons text={"Add Image"} style={styles.button} />
-                <Buttons text={"Order Material"} style={styles.button} onPressTo={()=> {navigation.push("ListMaterial")}}/>
+                <View style={styles.row}>
+                <Buttons text={"Order Material"} style={styles.button} onPressTo={goToListMaterial}/>
+                    <Buttons text={"Cancel"} style={styles.button} onPressTo={()=> {navigation.goBack(navigation)}}/>
+                </View>
             </View>
         </View>
     );
@@ -49,5 +58,8 @@ const styles = StyleSheet.create({
         margin:30,
         width:250,
     },
+    row:{
+        flexDirection:"row",
+    }
 });
 export default OrderMaterial;

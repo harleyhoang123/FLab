@@ -196,12 +196,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 5,
   },
-  userImage: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    marginRight: 10,
-  },
   modal: {
     alignItems: "flex-end",
     flex: 1,

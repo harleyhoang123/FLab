@@ -73,7 +73,11 @@ function UpdateQuestion({route, navigation}) {
                                 setValue(item.value)
                             }}
                         />
-                        <Buttons text={"Post Your Question"} onPressTo={handleClick} style={styles.button}/>
+                        <View style={styles.row}>
+                            <Buttons text={"Post Your Question"} onPressTo={handleClick} style={styles.button}/>
+                            <Buttons text={"Back"} onPressTo={()=>navigation.goBack(navigation)} style={styles.button}/>
+                        </View>
+
                     </View>
                 </View>
             </View>
@@ -117,5 +121,8 @@ const styles = StyleSheet.create({
     summit: {
         marginLeft: 30,
     },
+    row:{
+        flexDirection: "row",
+    }
 });
 export default UpdateQuestion;

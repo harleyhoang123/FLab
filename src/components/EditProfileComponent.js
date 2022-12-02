@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     },
     container:{
         margin:5,
-        marginRight:100,
+        marginRight:"5%",
     },
 
 });

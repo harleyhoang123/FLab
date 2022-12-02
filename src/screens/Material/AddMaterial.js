@@ -31,7 +31,11 @@ function AddMaterial({navigation}) {
                               style={{width: "97%", height:200}}
                               text={note} onChangeText={note => setNote(note)}/>
                 <Buttons text={"Add Image"} style={styles.button} />
-                <Buttons text={"Post Material"} style={styles.button} onPressTo={()=> {navigation.push("ListMaterial")}}/>
+                <View style={styles.row}>
+                    <Buttons text={"Add Material"} style={styles.button} onPressTo={()=> {navigation.push("ListMaterial")}}/>
+                    <Buttons text={"Cancel"} style={styles.button} onPressTo={()=> {navigation.goBack(navigation)}}/>
+                </View>
+
             </View>
         </View>
     );
@@ -54,5 +58,8 @@ const styles = StyleSheet.create({
         margin:30,
         width:250,
     },
+    row:{
+        flexDirection:"row",
+    }
 });
 export default AddMaterial;
