@@ -24,7 +24,7 @@ function MaterialDetail({ route, navigation }) {
           text={"Back"}
           style={styles.button}
           onPressTo={() => {
-            navigation.push("ListMaterial");
+            navigation.goBack(null);
           }}
         />
       );
