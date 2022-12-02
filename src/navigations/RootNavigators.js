@@ -36,6 +36,7 @@ import MyCV from "../screens/CV/MyCV";
 import Upload from "../screens/CV/Upload";
 import Repository from "../screens/Repository/Repository";
 import UpdateQuestion from "../screens/Forum/UpdateQuestion";
+import CreateLab from "../screens/Lab/CreateLab";
 function RootNavigators() {
   const Stack = createStackNavigator();
   return (
@@ -79,6 +80,7 @@ function RootNavigators() {
         <Stack.Screen name="Repository" component={Repository} />
         <Stack.Screen name="RepositoryDetail" component={RepositoryDetail} />
         <Stack.Screen name="UpdateQuestion" component={UpdateQuestion} />
+        <Stack.Screen name="CreateLab" component={CreateLab} />
       </Stack.Navigator>
     </NavigationContainer>
   );

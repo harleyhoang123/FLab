@@ -71,10 +71,19 @@ export const styles = StyleSheet.create({
     height: "auto",
     margin: 4,
   },
+  btn: {
+    flexDirection: "row",
+    width: "auto",
+  },
   title: {
     fontFamily: "BeVietnamPro_200ExtraLight_Italic, sans-serif",
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 8,
+  },
+  button: {
+    marginTop: 20,
+    width: 130,
+    marginLeft: 5,
   },
 });

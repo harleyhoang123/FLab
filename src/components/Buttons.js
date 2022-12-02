@@ -1,29 +1,29 @@
-import React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from "react-native";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-function Buttons({text, onPressTo, style, styleText}) {
-    return (
-        <TouchableOpacity style={[styles.button,style] } onPress={onPressTo}>
-            <Text style={[styles.text,styleText]}>{text}</Text>
-        </TouchableOpacity>
-    );
+function Buttons({ text, onPressTo, style, styleText }) {
+  return (
+    <TouchableOpacity style={[styles.button, style]} onPress={onPressTo}>
+      <Text style={[styles.text, styleText]}>{text}</Text>
+    </TouchableOpacity>
+  );
 }
 const styles = StyleSheet.create({
-    button: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 12,
-        paddingHorizontal: 32,
-        borderRadius: 4,
-        backgroundColor: 'black',
-        width: 120,
-    },
-    text: {
-        fontSize: 16,
-        lineHeight: 21,
-        fontWeight: 'bold',
-        letterSpacing: 0.25,
-        color: 'white',
-    },
+  button: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    backgroundColor: "black",
+    width: 120,
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "white",
+  },
 });
 export default Buttons;
