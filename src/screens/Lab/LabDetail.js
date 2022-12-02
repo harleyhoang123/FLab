@@ -16,16 +16,39 @@ import ProfileComponent from "../../components/ProfileComponent";
 import Buttons from "../../components/Buttons";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getAllMemberInLaboratoryById } from "../../actions/LaboratoryAction";
+import {
+  getAllMemberInLaboratoryById,
+  deleteLaboratory,
+} from "../../actions/LaboratoryAction";
+import AsyncStorage from "@react-native-community/async-storage";
+
+const getAccountId = async () => {
+  try {
+    const accountId = await AsyncStorage.getItem("@accountId");
+    console.log("AccountId: " + accountId);
+    return accountId;
+  } catch (e) {
+    console.log("Can't get account id: " + e);
+  }
+};
 
 export default function LabDetail({ route, navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [accountId, setAccountId] = useState("");
+  getAccountId().then((v) => setAccountId(v));
   const data = route.params.data;
   const isJoined = route.params.isJoined;
+  const isAdmin = true;
 
   const dispatch = useDispatch();
   const goToViewAllMemberPage = (labId) => {
     dispatch(getAllMemberInLaboratoryById(labId, navigation));
+  };
+
+  const delteCurrentLab = () => {
+    console.log("data.laboratoryId");
+    console.log(data.laboratoryId);
+    dispatch(deleteLaboratory(accountId, data.laboratoryId, navigation));
   };
   return (
     <View style={styles.container}>
@@ -83,6 +106,24 @@ export default function LabDetail({ route, navigation }) {
                 <Text style={styles.textStyle}>Join</Text>
               )}
             </Pressable>
+
+            <View style={{ marginTop: 20 }}>
+              <Pressable
+                style={[styles.button, styles.buttonOpen]}
+                onPress={() => setModalVisible(true)}
+              >
+                {isAdmin ? (
+                  <Text
+                    style={styles.textStyle}
+                    onPress={() => delteCurrentLab()}
+                  >
+                    Delete
+                  </Text>
+                ) : (
+                  <Text></Text>
+                )}
+              </Pressable>
+            </View>
           </View>
         </View>
         <Modal
@@ -172,6 +213,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 66,
     justifyContent: "center",
+    marginTop: 20,
   },
   centeredView: {
     flex: 1,
