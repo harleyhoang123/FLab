@@ -12,9 +12,19 @@ import Logo from "../assets/Logo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
 import Notification from "../screens/Notification/Notification";
+import {getListMaterialByLabId} from "../actions/LaboratoryAction";
+import {useDispatch} from "react-redux";
+
+
 export default function LabNavigator({ navigation }) {
   const [modalProfileVisible, setModalProfileVisible] = useState(false);
   const [modalNotifyVisible, setModalNotifyVisible] = useState(false);
+  const dispatch = useDispatch();
+
+  const goToListMaterial = () =>{
+    dispatch(getListMaterialByLabId("", navigation))
+  }
+
   return (
     <View style={styles.container}>
       <Modal
@@ -97,7 +107,7 @@ export default function LabNavigator({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.push("ListMaterial")}
+            onPress={goToListMaterial}
           >
             <Text style={styles.textLogo}>Material</Text>
           </TouchableOpacity>

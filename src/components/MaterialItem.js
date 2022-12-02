@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Image, TouchableOpacity, Text, StyleSheet} from "react-native";
 import Separator from "./Separator";
 
-function MaterialItem({title,status,image,style,booked, navigation}) {
+function MaterialItem({materialId, title,status,image,style,booked, navigation}) {
     return (
         <View style={[styles.container,style]}>
             <TouchableOpacity onPress={() => navigation.push("MaterialDetail",{booked:booked})}>
@@ -11,7 +11,7 @@ function MaterialItem({title,status,image,style,booked, navigation}) {
                         <Image
                             style={styles.tinyLogo}
                             source={{
-                                uri: 'https://flab-forum-bucket.s3.eu-central-1.amazonaws.com/83739451-4303-439f-b96d-a4e33e8799df',
+                                uri: 'https://media.istockphoto.com/id/1023428598/photo/3d-illustration-laptop-isolated-on-white-background-laptop-with-empty-space-screen-laptop-at.jpg?s=612x612&w=0&k=20&c=ssK6er5v1fGpSghGiqySwoD8tn5blC7xgefQJI2xU38=',
                             }}
                         />
                     </View>

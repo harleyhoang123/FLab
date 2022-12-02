@@ -14,7 +14,7 @@ import Notification from "../screens/Notification/Notification";
 import { useDispatch } from "react-redux";
 import { getLaboratoryByAccountId } from "../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
-import { logout } from "../actions/UserAction";
+import {getAccountInfoByAccountId, logout} from "../actions/UserAction";
 import AvatarComponent from "../components/AvatarComponent";
 
 const getAccountId = async () => {
@@ -33,6 +33,9 @@ export default function HomeTopNavigator({ navigation }) {
   const dispatch = useDispatch();
   const goToLabPage = () => {
     dispatch(getLaboratoryByAccountId(accountId, navigation));
+  };
+  const goToProfile = () => {
+    dispatch(getAccountInfoByAccountId(accountId, navigation));
   };
   const handleLogout = () => {
     dispatch(logout);
@@ -58,7 +61,7 @@ export default function HomeTopNavigator({ navigation }) {
           <View style={styles.modalProfileView}>
             <TouchableOpacity
               onPress={() => {
-                navigation.push("Profile");
+                goToProfile()
                 setModalProfileVisible(!modalProfileVisible);
               }}
               style={[styles.buttonModal]}

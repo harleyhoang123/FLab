@@ -107,3 +107,23 @@ export const changePassword =
             dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
         }
     };
+
+
+export const getAccountInfoByAccountId =
+    (accountId, navigation) => async (dispatch, _, {networkService}) => {
+        console.log("Account ID User Action: "+ accountId);
+        try {
+            const userController = new UserController(networkService);
+            const {data} = await userController.getAccountInfo({ accountId});
+            console.log("Data Change is: " + JSON.stringify(data));
+            console.log("Data.data is: "+ JSON.stringify(data.data))
+            if(data.data != null){
+                navigation.navigate("Profile", {data: data.data})
+            }
+        } catch ({data}) {
+            console.log("In catch: "+ JSON.stringify(data))
+            if(data.status.status === 400){
+                navigation.push("EditProfile");
+            }
+        }
+    };

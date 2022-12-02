@@ -13,6 +13,8 @@ export const routes = {
             "http://192.168.31.197:8083/flab/lab/public/api/v1/laboratories/:lab-id",
         getAllMemberInLaboratory:
             "http://192.168.31.197:8083/flab/lab/public/api/v1/laboratories/:lab-id/members",
+        getListMaterialByLabId:
+        "http://192.168.31.197:8083/flab/lab/public/api/v1/materials"
     },
     forum: {
         getQuestionDetail: 'http://192.168.31.197:8081/flab/forum/public/api/v1/questions/',
@@ -20,5 +22,8 @@ export const routes = {
         updateQuestion:'http://192.168.31.197:8081/flab/forum/public/api/v1/questions/',
         postComment:'http://192.168.31.197:8081/flab/forum/public/api/v1/questions/:question-id/comment',
         postAnswer:'http://192.168.31.197:8081/flab/forum/public/api/v1/questions/:question-id/answer'
+    },
+    account: {
+        getAccountInfo: 'http://192.168.31.197:8084/flab/account/public/api/v1/profiles/:profile-id'
     }
 };

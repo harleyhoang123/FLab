@@ -24,10 +24,18 @@ export class LaboratoryController {
     });
   }
 
-  getAllmemberInLaboratory({ labId }) {
+  getAllMemberInLaboratory({ labId }) {
     return this.networkService.request({
       method: "GET",
       url: routes.laboratory.getAllMemberInLaboratory.replace(":lab-id", labId),
+      data: null,
+    });
+  }
+
+  getListMaterialByLabId( {labId}){
+    return this.networkService.request({
+      method: "GET",
+      url: routes.laboratory.getListMaterialByLabId,
       data: null,
     });
   }

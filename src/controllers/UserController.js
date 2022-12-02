@@ -55,4 +55,14 @@ export class UserController {
             },
         });
     }
+
+    getAccountInfo({accountId}) {
+        return this.networkService.request({
+            method: 'GET',
+            url: routes.account.getAccountInfo.replace(":profile-id", accountId),
+            data: null
+        })
+    }
+
+
 }
