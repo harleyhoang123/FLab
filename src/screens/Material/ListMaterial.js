@@ -46,17 +46,6 @@ function ListMaterial({route, navigation}) {
     const [text, setText] = useState("");
     const [booked, setBooked] = useState(false);
     const [list, setList] = useState(listsMaterial);
-    // const handleClick = () => {
-    //   setBooked(!booked);
-    //   handleData();
-    // };
-    // const handleData = () => {
-    //   if (booked) {
-    //     setList(list1);
-    //   } else {
-    //     setList(list2);
-    //   }
-    // };
     return (
         <View>
             <LabNavigator navigation={navigation}/>
@@ -71,6 +60,7 @@ function ListMaterial({route, navigation}) {
                         placeholder={" Search"}
                         secureTextEntry={false}
                         multiline={false}
+                        style={{width:400}}
                     />
                     <Buttons text={"Search"}/>
                     <Buttons

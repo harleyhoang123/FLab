@@ -4,16 +4,21 @@ import React,{useState} from "react";
 import TextField from "../../components/TextField";
 import { DateTimePicker } from '@hashiprobr/react-native-paper-datetimepicker';
 import LabNavigator from "../../navigations/LabNavigator";
+import {getListMaterialByLabId} from "../../actions/LaboratoryAction";
+import {useDispatch} from "react-redux";
 
 function RequestMaterial({navigation}) {
-    const [amount, setAmount] = useState("");
 
+    const [amount, setAmount] = useState("");
     const [reason, setReason] = useState("");
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [startTime, setStartTime] = useState(new Date());
     const [endTime, setEndTime] = useState(new Date());
-
+    const dispatch = useDispatch();
+    const goToListMaterial = () =>{
+        dispatch(getListMaterialByLabId("", navigation))
+    }
     return (
         <View style={styles.container}>
             <LabNavigator navigation={navigation}/>
@@ -61,8 +66,10 @@ function RequestMaterial({navigation}) {
                     </View>
                     <Text style={styles.text}>Reason:</Text>
                     <TextField text={reason} onChangeText={reason => setReason(reason)} multiline={true} style={{height: 200}}></TextField>
-                    <Buttons text={"Request"} style={styles.button} onPressTo={()=> {navigation.push("Ticket")}}/>
-
+                    <View style={styles.time}>
+                        <Buttons text={"Request"} style={styles.button} onPressTo={goToListMaterial}/>
+                        <Buttons text={"Cancel"} style={styles.button} onPressTo={()=> {navigation.goBack(navigation)}}/>
+                    </View>
                 </View>
             </View>
         </View>
@@ -99,6 +106,7 @@ const styles = StyleSheet.create({
     button:{
         marginTop:50,
         width:130,
+        marginRight:40,
     },
     image:{
         width:500,

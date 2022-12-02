@@ -23,6 +23,7 @@ function ForgotPassword({navigation}) {
                 <TextField text={emailOrUsername}
                            onChangeText={(newText) => setEmailOrUsername(newText)}
                            placeholder={" Email or user name"}
+                           style={{width:"60%"}}
                            secureTextEntry={false}></TextField>
                 <Buttons text={"Forgot"} onPressTo={handleForgot} style={styles.button}></Buttons>
                 <Buttons text={"Cancel"} onPressTo={() => navigation.push("Login")}
@@ -43,15 +44,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     logo: {
-        width: "750px",
-        height: "750px"
+        width: "70%",
+        height: "70%",
     },
     right: {
         flex: 0.5,
     },
     button: {
-        width: 240,
-        marginLeft: 150,
+        width: "25%",
+        marginLeft: "15%",
         marginBottom: 20,
     },
     txt: {

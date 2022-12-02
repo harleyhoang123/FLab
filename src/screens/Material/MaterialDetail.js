@@ -3,12 +3,18 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
+import {useDispatch} from "react-redux";
+import {getListMaterialByLabId} from "../../actions/LaboratoryAction";
 function MaterialDetail({ route, navigation }) {
+  const dispatch = useDispatch();
+  const goToListMaterial = () =>{
+    dispatch(getListMaterialByLabId("", navigation))
+  }
   const data = route.params.data;
   const status = data.status;
   const isAdmin = false;
   const handleButton = () => {
-    if (!status === "FREE") {
+    if (status === "FREE") {
       return (
         <Buttons
           text={"Request"}
@@ -21,11 +27,9 @@ function MaterialDetail({ route, navigation }) {
     } else {
       return (
         <Buttons
-          text={"Back"}
+          text={"Return"}
           style={styles.button}
-          onPressTo={() => {
-            navigation.goBack(null);
-          }}
+          onPressTo={goToListMaterial}
         />
       );
     }
@@ -48,7 +52,11 @@ function MaterialDetail({ route, navigation }) {
           <Text style={styles.text}>Amount: {data.amount}</Text>
           <Text style={styles.text}>Description: {data.description}</Text>
           <Text style={styles.text}>Note: None</Text>
-          {handleButton()}
+          <View style={styles.row}>
+            {handleButton()}
+            <Buttons text={"Cancel"} style={styles.button} onPressTo={()=> {navigation.goBack(navigation)}}/>
+          </View>
+
           {isAdmin ? (
             <View>
               <Buttons
@@ -105,10 +113,14 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 50,
     width: 130,
+    marginRight:40,
   },
   image: {
     width: 500,
     height: 500,
+  },
+  row:{
+    flexDirection:"row",
   },
 });
 export default MaterialDetail;

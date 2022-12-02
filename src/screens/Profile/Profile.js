@@ -22,7 +22,9 @@ function Profile({navigation}) {
     const [reNewPassword, setReNewPassword] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [verifyPhoneNumber, setVerifyPhoneNumber] = useState('');
     const [accountId, setAccountId] = useState("");
+    const [notify, setNotify] = useState("");
     getAccountId().then(accountId => setAccountId(accountId));
     const dispatch = useDispatch();
     const handleChangePassword = () => {
@@ -50,7 +52,6 @@ function Profile({navigation}) {
                     <ProfileComponent title={"Address"} information={"Phường Tiền Châu, Thành Phố Phúc Yên, Tỉnh Vĩnh Phúc"}/>
                     <ProfileComponent title={"Phone number"} information={"0387424978"}/>
                     <ProfileComponent title={"Email"} information={"SonNCHE140279@fpt.edu.vn"}/>
-                    <ProfileComponent title={"Personal Email"} information={"ncson8920@gmail.com"}/>
                     <View style={styles.info}>
                         <ProfileComponent title={"Roll number"} information={"HE140279"}/>
                         <ProfileComponent title={"Member Code"} information={"SonNCHE140279"}/>
@@ -66,22 +67,34 @@ function Profile({navigation}) {
                 </View>
                 <View style={styles.containerInfo}>
                     <Text style={styles.text}>Change PassWord</Text>
-                    <TextField text={oldPassword} onChangeText={oldPassword=> setOldPassword(oldPassword)} placeholder={" Old Password"} secureTextEntry={true}/>
-                    <TextField text={newPassword} onChangeText={newPassword=> setNewPassword(newPassword)} placeholder={" New Password"} secureTextEntry={true}/>
-                    <TextField text={reNewPassword} onChangeText={reNewPassword=> setReNewPassword(reNewPassword)} placeholder={" Re-New Password"} secureTextEntry={true}/>
+                    <TextField text={oldPassword} onChangeText={oldPassword=> setOldPassword(oldPassword)} placeholder={" Old Password"} secureTextEntry={true} style={styles.textField}/>
+                    <TextField text={newPassword} onChangeText={newPassword=> setNewPassword(newPassword)} placeholder={" New Password"} secureTextEntry={true} style={styles.textField}/>
+                    <TextField text={reNewPassword} onChangeText={reNewPassword=> setReNewPassword(reNewPassword)} placeholder={" Re-New Password"} secureTextEntry={true} style={styles.textField}/>
+                    <Text>{notify}</Text>
                     <Buttons style={styles.button} onPressTo={handleChangePassword} text={"Change Password"}/>
                 </View>
                 <View>
                     <View style={styles.containerInfo}>
-                        <Text style={styles.text}>Verify Email</Text>
-                        <TextField text={email} onChangeText={email=> setEmail(email)} placeholder={" Email"} secureTextEntry={false}/>
-                        <Buttons style={styles.button} text={"Verify Email"}/>
+                        <Text style={styles.text}>Change Email</Text>
+                        <TextField text={email} onChangeText={email=> setEmail(email)} placeholder={" Email"} secureTextEntry={false} style={styles.textField}/>
+                        <Text>{notify}</Text>
+                        <Buttons style={styles.button} text={"Change Email"}/>
+                    </View>
+                </View>
+                <View>
+                    <View style={styles.containerInfo}>
+                        <Text style={styles.text}>Change Phone Number</Text>
+                        <TextField text={phoneNumber}  onChangeText={phoneNumber=> setPhoneNumber(phoneNumber)} placeholder={" Phone Number"} secureTextEntry={false} style={styles.textField}/>
+                        <Text>{notify}</Text>
+                        <Buttons style={styles.button} text={"Change Phone Number"}/>
                     </View>
                 </View>
                 <View>
                     <View style={styles.containerInfo}>
                         <Text style={styles.text}>Verify Phone Number</Text>
-                        <TextField text={phoneNumber} onChangeText={phoneNumber=> setPhoneNumber(phoneNumber)} placeholder={" Phone Number"} secureTextEntry={false}/>
+                        <TextField text={verifyPhoneNumber} onChangeText={verifyPhoneNumber=> setVerifyPhoneNumber(verifyPhoneNumber)} placeholder={" Phone Number"} secureTextEntry={false}
+                        style={styles.textField}/>
+                        <Text>{notify}</Text>
                         <Buttons style={styles.button} text={"Verify Phone Number"}/>
                     </View>
                 </View>
@@ -97,11 +110,11 @@ function Profile({navigation}) {
      containerProfile:{
          flex:1,
          alignSelf:"center",
-         width:"60%",
+         width:"70%",
          backgroundColor:'white',
      },
      containerName:{
-         paddingLeft:150,
+         paddingLeft:100,
          margin:20,
          flexDirection:"row",
          justifyContent: "flex-start",
@@ -109,7 +122,7 @@ function Profile({navigation}) {
      },
      containerInfo:{
          margin:20,
-         paddingLeft:150,
+         paddingLeft:100,
          justifyContent: "flex-start",
          alignItems: "flex-start",
      },
@@ -133,6 +146,9 @@ function Profile({navigation}) {
      button:{
          width:250,
          marginLeft:15,
+     },
+     textField:{
+         width:"80%"
      },
  });
 export default Profile;

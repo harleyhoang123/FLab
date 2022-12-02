@@ -63,7 +63,7 @@ export const getListMaterialByLabId =
                 });
                 console.log("Response from get list material by id: "+ JSON.stringify(response))
                 console.log("Data: "+ JSON.stringify(response.data.data))
-                navigation.navigate("ListMaterial", {
+                navigation.push("ListMaterial", {
                     data: response.data.data,
                 });
             } catch ({data}) {
