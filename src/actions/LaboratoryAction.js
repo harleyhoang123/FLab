@@ -25,7 +25,7 @@ export const getLaboratoryById =
                 const response = await laboratoryController.getLaboratoryById({
                     labId,
                 });
-                navigation.navigate("YourLab", {
+                navigation.navigate("LabDetail", {
                     data: response.data.data,
                     isJoined: isJoined,
                 });
@@ -61,12 +61,54 @@ export const getListMaterialByLabId =
                 const response = await laboratoryController.getListMaterialByLabId({
                     labId,
                 });
-                console.log("Response from get list material by id: "+ JSON.stringify(response))
-                console.log("Data: "+ JSON.stringify(response.data.data))
+                console.log("Response from get list material by id: " + JSON.stringify(response))
+                console.log("Data: " + JSON.stringify(response.data.data))
                 navigation.navigate("ListMaterial", {
                     data: response.data.data,
                 });
             } catch ({data}) {
-                console.log("ERROR when getListMaterialByLabId: "+ JSON.stringify(data))
+                console.log("ERROR when getListMaterialByLabId: " + JSON.stringify(data))
             }
         };
+
+export const createLaboratory =
+    (requestData, navigation) =>
+        async (dispatch, _, {networkService}) => {
+            try {
+                const laboratoryController = new LaboratoryController(networkService);
+                console.log("Request data of createLaboratory actions: " + JSON.stringify(requestData));
+                const response = await laboratoryController.createLaboratory({requestData});
+                console.log("Response from get list material by id: " + JSON.stringify(response));
+                console.log("Data: " + JSON.stringify(response.data.data));
+                console.log("Lab Id: "+ JSON.stringify(response.data.data.labId))
+                dispatch(getLaboratoryById(response.data.data.labId, true, navigation));
+            } catch ({data}) {
+                console.log("ERROR when createLaboratory: " + JSON.stringify(data))
+            }
+        };
+
+export const removeMemberFromLaboratory =
+    (labId, memberId) =>
+        async (dispatch, _, {networkService}) => {
+            try {
+                const laboratoryController = new LaboratoryController(networkService);
+                const response = await laboratoryController.removeMemberFromLaboratory({labId, memberId});
+                console.log("Response remove member from laboratory: " + JSON.stringify(response));
+            } catch ({data}) {
+                console.log("ERROR when removeMemberFromLaboratory: " + JSON.stringify(data))
+            }
+        };
+
+export const deleteLaboratory =
+    (labId) =>
+        async (dispatch, _, {networkService}) => {
+            try {
+                const laboratoryController = new LaboratoryController(networkService);
+                const response = await laboratoryController.deleteLaboratory({labId});
+                console.log("Response remove member from laboratory: " + JSON.stringify(response));
+            } catch ({data}) {
+                console.log("ERROR when removeMemberFromLaboratory: " + JSON.stringify(data))
+            }
+};
+
+

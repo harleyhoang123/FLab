@@ -26,9 +26,19 @@ const getAccountId = async () => {
     console.log("Can't get account id: " + e);
   }
 };
-
+const getAvatar = async () => {
+  try {
+    const avatar = await AsyncStorage.getItem("@avatar");
+    console.log("avatar: " + avatar);
+    return avatar;
+  } catch (e) {
+    console.log("Can't get avatar: " + e);
+  }
+};
 export default function HomeTopNavigator({ navigation }) {
   const [accountId, setAccountId] = useState("");
+  const [avatar, setAvatar] = useState('');
+  getAvatar().then((v) => setAvatar(v));
   getAccountId().then((v) => setAccountId(v));
   const dispatch = useDispatch();
   const goToLabPage = () => {
@@ -135,7 +145,7 @@ export default function HomeTopNavigator({ navigation }) {
             style={[styles.button, { flexDirection: "row" }]}
             onPress={() => setModalProfileVisible(true)}
           >
-            <AvatarComponent height={30} width={30}/>
+            <AvatarComponent styles={null} avatarURL={avatar}/>
             <Text>Profile</Text>
           </TouchableOpacity>
         </View>
