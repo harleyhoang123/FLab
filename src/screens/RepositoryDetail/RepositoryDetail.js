@@ -6,24 +6,38 @@ import { RadioButton } from "react-native-paper";
 import TextField from "../../components/TextField";
 import { Touchable, TouchableOpacity } from "react-native-web";
 import LabNavigator from "../../navigations/LabNavigator";
-import { useDispatch } from "react-redux";
-import { getFolderByRepositoryId } from "../../actions/RepositoryAction";
 
-function Repository({ route, navigation }) {
+function RepositoryDetail({ route, navigation }) {
   const data = route.params.data;
   const items = data.items;
-  const [checked, setChecked] = useState("");
   const [text, setText] = useState("");
-  const dispatch = useDispatch();
-  const getFolderByRepository = (id) => {
-    console.log("Id:" + id);
-    dispatch(getFolderByRepositoryId(id, navigation));
-  };
-
+  const listFile = [
+    {
+      id: 1,
+      name: "abc",
+      type: "Folder",
+      lastEdit: "abc",
+      size: "102MB",
+    },
+    {
+      id: 2,
+      name: "xyz",
+      type: "Folder",
+      lastEdit: "xyz",
+      size: "102MB",
+    },
+    {
+      id: 3,
+      name: "123",
+      type: "Folder",
+      lastEdit: "123",
+      size: "102MB",
+    },
+  ];
   const Item = ({ id, name, type, lastEdit, size }) => (
     <View style={styles.table}>
       <View style={styles.column}>
-        <Text onPress={() => getFolderByRepository(id)}>{name}</Text>
+        <Text>{name}</Text>
       </View>
       <View style={styles.column}>
         <Text>{type}</Text>
@@ -43,10 +57,10 @@ function Repository({ route, navigation }) {
 
   const renderItem = ({ item }) => (
     <Item
-      id={item.repositoryId}
-      name={item.repositoryName}
-      type={item.description}
-      lastEdit={"11/2/2022"}
+      id={item.folderId}
+      name={item.folderName}
+      type={"word"}
+      lastEdit={"yesterday"}
       size={"40MB"}
     />
   );
@@ -56,7 +70,7 @@ function Repository({ route, navigation }) {
       <View style={styles.containerContent}>
         <View style={styles.header}>
           <View>
-            <Text style={styles.myCV}> Repository</Text>
+            <Text style={styles.myCV}> Repository Detail</Text>
           </View>
           <View style={styles.containerButton}>
             <Buttons style={styles.button} text={"Refresh"} />
@@ -81,7 +95,7 @@ function Repository({ route, navigation }) {
           <Buttons text={"Search"} />
         </View>
         <View style={styles.bot}>
-          <Text style={styles.myCV}>List All Repository</Text>
+          <Text style={styles.myCV}>List All Folder</Text>
           <View style={styles.table}>
             <View style={[styles.column, styles.borderbot]}>
               <Text>File Name</Text>
@@ -161,4 +175,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Repository;
+export default RepositoryDetail;

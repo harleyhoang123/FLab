@@ -40,6 +40,8 @@ const list2 = [
   },
 ];
 function ListMaterial({ navigation }) {
+  const meterialIdfake = "638812440de84f751463f558";
+
   const [text, setText] = useState("");
   const [booked, setBooked] = useState(false);
   const [list, setList] = useState(list1);
@@ -86,10 +88,10 @@ function ListMaterial({ navigation }) {
         data={list}
         renderItem={({ item }) => (
           <MaterialItem
-            navigation={navigation}
+            id={meterialIdfake}
             title={item.title}
             status={item.status}
-            booked={booked}
+            navigation={navigation}
           />
         )}
       />
