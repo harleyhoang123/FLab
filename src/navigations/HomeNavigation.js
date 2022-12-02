@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { getLaboratoryByAccountId } from "../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
 import { logout } from "../actions/UserAction";
+import AvatarComponent from "../components/AvatarComponent";
 
 const getAccountId = async () => {
   try {
@@ -131,12 +132,7 @@ export default function HomeTopNavigator({ navigation }) {
             style={[styles.button, { flexDirection: "row" }]}
             onPress={() => setModalProfileVisible(true)}
           >
-            <Image
-              style={styles.userImage}
-              source={{
-                uri: "https://pbs.twimg.com/profile_images/486929358120964097/gNLINY67_400x400.png",
-              }}
-            />
+            <AvatarComponent height={30} width={30}/>
             <Text>Profile</Text>
           </TouchableOpacity>
         </View>

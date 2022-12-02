@@ -12,4 +12,44 @@ export class ForumController {
             }
         );
     }
+    addQuestion({title, content, tag}) {
+        return this.networkService.request({
+            method: 'POST',
+            url: routes.forum.addQuestion,
+            data: {
+                title: title,
+                content: content,
+                tag: [tag]
+            },
+        });
+    }
+    updateQuestion({title, content, tag, questionId}) {
+        return this.networkService.request({
+            method: 'POST',
+            url: routes.forum.updateQuestion+ questionId,
+            data: {
+                title: title,
+                content: content,
+                tag: [tag]
+            },
+        });
+    }
+    postComment({content,questionId}) {
+        return this.networkService.request({
+            method: 'POST',
+            url: routes.forum.postComment.replace(":question-id", questionId) ,
+            data: {
+                content: content
+            },
+        });
+    }
+    postAnswer({content,questionId}) {
+        return this.networkService.request({
+            method: 'POST',
+            url: routes.forum.postAnswer.replace(":question-id", questionId) ,
+            data: {
+                content: content
+            },
+        });
+    }
 }

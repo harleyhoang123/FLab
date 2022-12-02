@@ -40,8 +40,10 @@ export const login =
                 console.log("Data is: " + JSON.stringify(data));
                 if (data.data !== null) {
                     try {
-                        await AsyncStorage.setItem("@accountId", data.data.accountId)
-                        console.log("Set account id success: " + data.data.accountId)
+                        await AsyncStorage.setItem("@accountId", data.data.accountId);
+                        await AsyncStorage.setItem("@roles", data.data.roles);
+                        await AsyncStorage.setItem("@avatar", data.data.avatar);
+                        console.log("Set account id success: " + JSON.stringify(data.data));
                     } catch ({err}) {
                         console.log("Can't store accountId:" + err)
                     }
@@ -61,7 +63,7 @@ export const logout =
             dispatch(clearStore());
         };
 export const register =
-    (email, fullName, username, password, navigation) => async (dispatch, _, {networkService}) => {
+    (email, username, fullName, password, navigation) => async (dispatch, _, {networkService}) => {
         try {
             const userController = new UserController(networkService);
             const {data} = await userController.register({email, username, fullName, password});

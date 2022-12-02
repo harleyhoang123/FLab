@@ -1,19 +1,20 @@
 import React, {useState} from 'react';
-import {Button, FlatList, StyleSheet, Text, View,} from "react-native";
+import { StyleSheet, Text, View,} from "react-native";
 import AddComponent from "../../components/AddComponent";
 import {Dropdown} from "react-native-element-dropdown";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import ForumNavigation from "../../navigations/ForumNavigation";
 import Buttons from "../../components/Buttons";
 import {useDispatch} from "react-redux";
-import {addQuestion, updateQuestion} from "../../actions/ForumAction";
-
-function AddQuestion({navigation}) {
+import { updateQuestion} from "../../actions/ForumAction";
+function UpdateQuestion({route, navigation}) {
+    const res = route.params;
     const [value, setValue] = useState('Public');
-    const [title, setTitle] = useState('');
-    const [detail, setDetail] = useState('');
+    const [title, setTitle] = useState(res.data.title);
+    const [detail, setDetail] = useState(res.data.content);
     const [yourTry, setYourTry] = useState('');
-    const [tag, setTag] = useState('');
+    const [tag, setTag] = useState(res.data.tags);
+    const [questionId, setQuestionId] = useState(res.data.questionId);
     const dispatch = useDispatch();
     const data = [
         {label: 'Public', value: 'Public'},
@@ -21,9 +22,8 @@ function AddQuestion({navigation}) {
     ]
     const handleClick = () => {
             const content = detail + " \n " + yourTry;
-            dispatch(addQuestion(title, content, tag, navigation));
+            dispatch(updateQuestion(title, content, tag, questionId, navigation));
     }
-
     return (
         <View>
             <HomeTopNavigator navigation={navigation}/>
@@ -32,7 +32,7 @@ function AddQuestion({navigation}) {
                     <ForumNavigation navigation={navigation}/>
                 </View>
                 <View style={styles.content}>
-                    <Text style={styles.text}>Ask a question</Text>
+                    <Text style={styles.text}>Update question</Text>
                     <AddComponent
                         text={title}
                         onChangeText={title => setTitle(title)}
@@ -81,7 +81,6 @@ function AddQuestion({navigation}) {
         </View>
     );
 }
-
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
@@ -119,4 +118,4 @@ const styles = StyleSheet.create({
         marginLeft: 30,
     },
 });
-export default AddQuestion;
+export default UpdateQuestion;
