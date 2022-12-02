@@ -18,7 +18,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getAllMemberInLaboratoryById } from "../../actions/LaboratoryAction";
 
-export default function YourLab({ route, navigation }) {
+export default function LabDetail({ route, navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const data = route.params.data;
   const isJoined = route.params.isJoined;
@@ -167,10 +167,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: "bold",
-  },
-  button: {
-    width: 250,
-    marginLeft: 15,
   },
   leavebtn: {
     width: 120,

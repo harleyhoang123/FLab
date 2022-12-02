@@ -28,7 +28,7 @@ import DocumentDetail from "../screens/DocumentDetail/DocumentDetail";
 import WorkSpace from "../screens/WorkSpace/WorkSpace";
 import Spaces from "../screens/Spaces/Spaces";
 import { YourWork } from "../screens/YourWork/YourWork";
-import YourLab from "../screens/YourLab/YourLab";
+import LabDetail from "../screens/Lab/LabDetail";
 import ViewAllMember from "../screens/ViewAllMember/ViewAllMember";
 import RoadMap from "../screens/RoadMap/RoadMap";
 import RepositoryDetail from "../screens/RepositoryDetail/RepositoryDetail";
@@ -72,7 +72,7 @@ function RootNavigators() {
         <Stack.Screen name="WorkSpace" component={WorkSpace} />
         <Stack.Screen name="Spaces" component={Spaces} />
         <Stack.Screen name="YourWork" component={YourWork} />
-        <Stack.Screen name="YourLab" component={YourLab} />
+        <Stack.Screen name="LabDetail" component={LabDetail} />
         <Stack.Screen name="ViewAllMember" component={ViewAllMember} />
         <Stack.Screen name="RoadMap" component={RoadMap} />
         <Stack.Screen name="MyCV" component={MyCV} />
