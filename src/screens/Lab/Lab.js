@@ -15,7 +15,6 @@ import {
 } from "react-native";
 import LabNavigator from "../../navigations/LabNavigator";
 import { getLaboratoryById } from "../../actions/LaboratoryAction";
-import ButtonBack from "../../components/ButtonBack";
 import Buttons from "../../components/Buttons";
 
 const Lab = ({ route, navigation }) => {
