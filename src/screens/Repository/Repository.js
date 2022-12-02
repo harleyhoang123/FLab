@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, View, FlatList, SafeAreaView } from "react-native";
+import {Text, StyleSheet, View, FlatList, SafeAreaView, Button} from "react-native";
 import Buttons from "../../components/Buttons";
 import { Table, TableWrapper, Row, Cell } from "react-native-table-component";
 import { RadioButton } from "react-native-paper";
@@ -11,8 +11,9 @@ import { getFolderByRepositoryId } from "../../actions/RepositoryAction";
 
 function Repository({ route, navigation }) {
   const data = route.params.data;
-  const items = data.items;
+  const [items, setItems] = useState(data.items);
   const [checked, setChecked] = useState("");
+  const [id, setId] = useState(null);
   const [text, setText] = useState("");
   const dispatch = useDispatch();
   const getFolderByRepository = (id) => {
@@ -20,8 +21,15 @@ function Repository({ route, navigation }) {
     dispatch(getFolderByRepositoryId(id, navigation));
   };
 
+  const deleteFolder = () => {
+    dispatch(deleteFolderById(id));
+  }
+
   const Item = ({ id, name, type, lastEdit, size }) => (
     <View style={styles.table}>
+      <View>
+        <Button title={"*"} onPress={(id) => setId(id)}></Button>
+      </View>
       <View style={styles.column}>
         <Text onPress={() => getFolderByRepository(id)}>{name}</Text>
       </View>
@@ -70,6 +78,7 @@ function Repository({ route, navigation }) {
           </View>
         </View>
         <View style={styles.containerSearch}>
+         <Button title={"Delete"} onPress={deleteFolder}></Button> //items la danh sach => remove item trong danh sach > setItems()
           <TextField
             text={text}
             onChangeText={(newText) => setText(newText)}
