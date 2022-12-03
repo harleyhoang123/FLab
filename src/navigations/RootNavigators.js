@@ -38,6 +38,8 @@ import Repository from "../screens/Repository/Repository";
 import UpdateQuestion from "../screens/Forum/UpdateQuestion";
 import CreateLab from "../screens/Lab/CreateLab";
 import MemberProfile from "../screens/MemberProfile/MemberProfile";
+import UpdateLab from "../screens/Lab/UpdateLab";
+import MemberDetail from "../screens/Lab/MemberDetail";
 function RootNavigators() {
   const Stack = createStackNavigator();
   return (
@@ -83,6 +85,8 @@ function RootNavigators() {
         <Stack.Screen name="UpdateQuestion" component={UpdateQuestion} />
         <Stack.Screen name="CreateLab" component={CreateLab} />
         <Stack.Screen name="MemberProfile" component={MemberProfile} />
+        <Stack.Screen name="UpdateLab" component={UpdateLab} />
+        <Stack.Screen name="MemberDetail" component={MemberDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );

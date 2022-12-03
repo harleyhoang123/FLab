@@ -12,15 +12,15 @@ import {
 import { useDispatch } from "react-redux";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
-import { createLaboratory } from "../../actions/LaboratoryAction";
 
-export default function CreateLab({ navigation }) {
+export default function UpdateLab({ route, navigation }) {
+  const labInfo = route.params.labInfo;
   const [textName, onChangeNameText] = useState("");
   const [textDescription, onChangeDescriptionText] = useState("");
   const [textMajor, onChangeMajorText] = useState("");
   const dispatch = useDispatch();
 
-  const createLaboratoryHandle = () => {
+  const updateLaboratoryHandle = () => {
     const requestData = {
       labName: textName,
       description: textDescription,
@@ -33,28 +33,28 @@ export default function CreateLab({ navigation }) {
     <View>
       <LabNavigator />
       <View style={styles.container}>
-        <Text style={styles.title}>Create a Lab</Text>
+        <Text style={styles.title}>Update your's Lab</Text>
         <View>
           <View>
-            <Text style={styles.usage}>Enter lab information</Text>
+            <Text style={styles.usage}>Update lab information</Text>
           </View>
           <View>
             <TextInput
               style={styles.input}
               onChangeText={(text) => onChangeNameText(text)}
-              value={textName}
+              value={labInfo.laboratoryName}
               placeholder={"Enter lab's name"}
             />
             <TextInput
               style={styles.input}
               onChangeText={(text) => onChangeDescriptionText(text)}
-              value={textDescription}
+              value={labInfo.description}
               placeholder={"Enter lab's description"}
             />
             <TextInput
               style={styles.input}
               onChangeText={(text) => onChangeMajorText(text)}
-              value={textMajor}
+              value={labInfo.major}
               placeholder={"Enter lab's major"}
             />
           </View>
@@ -63,7 +63,7 @@ export default function CreateLab({ navigation }) {
             <Buttons
               text={"Create"}
               style={styles.button}
-              onPressTo={createLaboratoryHandle}
+              onPressTo={updateLaboratoryHandle}
             />
             <Buttons
               text={"Back"}

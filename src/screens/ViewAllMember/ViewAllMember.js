@@ -6,8 +6,10 @@ import {
   StyleSheet,
   Text,
   StatusBar,
+  Pressable,
   Image,
 } from "react-native";
+
 import LabNavigator from "../../navigations/LabNavigator";
 
 const DATA = [
@@ -34,26 +36,33 @@ const DATA = [
   },
 ];
 
-const Item = ({ name, role, ava, code }) => (
-  <View style={styles.item}>
-    <View style={styles.ava}>
-      <Text style={styles.title}>{code}</Text>
-    </View>
-    <View style={styles.ava}>
-      <Image style={styles.tinyLogo} source={{ uri: ava }} />
-    </View>
-    <View style={styles.name}>
-      <Text style={styles.title}>{name}</Text>
-    </View>
-    <View style={styles.role}>
-      <Text style={styles.title}>{role}</Text>
-    </View>
-  </View>
-);
-
 const ViewAllMember = ({ route, navigation }) => {
   const data = route.params.data;
   const listMember = data.items;
+  const Item = ({ name, role, ava, code }) => (
+    <View style={styles.item}>
+      <View style={styles.ava}>
+        <Text style={styles.title}>{code}</Text>
+      </View>
+      <View style={styles.ava}>
+        <Image style={styles.tinyLogo} source={{ uri: ava }} />
+      </View>
+      <View style={styles.name}>
+        <Text
+          style={styles.title}
+          onPress={() => {
+            navigation.push("MemberDetail");
+          }}
+        >
+          {name}
+        </Text>
+      </View>
+      <View style={styles.role}>
+        <Text style={styles.title}>{role}</Text>
+      </View>
+    </View>
+  );
+
   const renderItem = ({ item }) => (
     <Item
       id={item.memberId}
@@ -117,6 +126,7 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 1,
     borderStyle: "solid",
+    color: "blue",
   },
   role: {
     width: "20%",

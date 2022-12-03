@@ -14,8 +14,7 @@ import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
 import Notification from "../screens/Notification/Notification";
 import { useDispatch } from "react-redux";
 import { getAllRepository } from "../actions/RepositoryAction";
-import {getListMaterialByLabId} from "../actions/LaboratoryAction";
-
+import { getListMaterialByLabId } from "../actions/LaboratoryAction";
 
 export default function LabNavigator({ route, navigation }) {
   const dispatch = useDispatch();
@@ -26,9 +25,9 @@ export default function LabNavigator({ route, navigation }) {
   const [modalProfileVisible, setModalProfileVisible] = useState(false);
   const [modalNotifyVisible, setModalNotifyVisible] = useState(false);
 
-  const goToListMaterial = () =>{
-    dispatch(getListMaterialByLabId("", navigation))
-  }
+  const goToListMaterial = () => {
+    dispatch(getListMaterialByLabId("", navigation));
+  };
 
   return (
     <View style={styles.container}>
@@ -89,15 +88,6 @@ export default function LabNavigator({ route, navigation }) {
           >
             <Text style={styles.textLogo}>Document</Text>
           </TouchableOpacity>
-          {/* <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.push("DocumentDetail")}
-          >
-            <Text style={styles.textLogo}>DocumentDetail</Text>
-          </TouchableOpacity> */}
-          {/* <TouchableOpacity style={styles.button} onPress={() => navigation.push("WorkSpace")}>
-              <Text style={styles.textLogo}>WorkSpace</Text>
-            </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.push("Spaces")}
@@ -110,10 +100,7 @@ export default function LabNavigator({ route, navigation }) {
           >
             <Text style={styles.textLogo}>YourWork</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={goToListMaterial}
-          >
+          <TouchableOpacity style={styles.button} onPress={goToListMaterial}>
             <Text style={styles.textLogo}>Material</Text>
           </TouchableOpacity>
           <TouchableOpacity
