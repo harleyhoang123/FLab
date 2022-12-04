@@ -12,6 +12,7 @@ import {
   Pressable,
   TextField,
 } from "react-native";
+import { SelectList } from "react-native-dropdown-select-list";
 import LabNavigator from "../../navigations/LabNavigator";
 
 export default function MemberDetail({ navigation }) {

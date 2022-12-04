@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { TextInput } from "react-native-paper";
 import LabNavigator from "../../navigations/LabNavigator";
-import { Formik } from "formik";
 import SprintComponent from "../../components/SprintComponent";
 import TaskDetailComponent from "../../components/TaskDetailComponent";
 import { useState } from "react";
@@ -46,7 +45,7 @@ export default function RoadMap({ navigation }) {
 
   const callBackSetIsVisible = (isVisible) => {
     setIsVisible(isVisible);
-  }
+  };
 
   return (
     <View>
