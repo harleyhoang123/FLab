@@ -18,6 +18,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   getAllMemberInLaboratoryById,
+  getAllProjectByLabId,
   deleteLaboratory,
 } from "../../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -43,6 +44,10 @@ export default function LabDetail({ route, navigation }) {
   const dispatch = useDispatch();
   const goToViewAllMemberPage = (labId) => {
     dispatch(getAllMemberInLaboratoryById(labId, navigation));
+  };
+
+  const goToViewAllProjectPage = (labId) => {
+    dispatch(getAllProjectByLabId(labId, navigation));
   };
 
   const delteCurrentLab = () => {
@@ -90,11 +95,19 @@ export default function LabDetail({ route, navigation }) {
           </View>
         </View>
         <View style={styles.containerInfo}>
-          <Buttons
-            style={styles.button}
-            text={"View All Member"}
-            onPressTo={() => goToViewAllMemberPage(data.laboratoryId)}
-          />
+          <View style={{ flexDirection: "row" }}>
+            <Buttons
+              style={styles.button}
+              text={"View All Member"}
+              onPressTo={() => goToViewAllMemberPage(data.laboratoryId)}
+            />
+            <Buttons
+              style={styles.button}
+              text={"View All Project"}
+              onPressTo={() => goToViewAllProjectPage(data.laboratoryId)}
+            />
+          </View>
+
           <View style={styles.leavebtn}>
             <Pressable
               style={[styles.button, styles.buttonOpen]}
@@ -103,7 +116,7 @@ export default function LabDetail({ route, navigation }) {
               {isJoined ? (
                 <Text style={styles.textStyle}>Leave</Text>
               ) : (
-                <Text style={styles.textStyle}>Join</Text>
+                <Text style={styles.textStyle}>Apply</Text>
               )}
             </Pressable>
           </View>
@@ -259,7 +272,7 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
     marginRight: 10,
-    width: 113,
+    width: 200,
   },
   buttonOpen: {
     backgroundColor: "red",

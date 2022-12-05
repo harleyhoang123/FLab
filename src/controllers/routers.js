@@ -35,16 +35,11 @@ export const routes = {
       host + "8081/flab/forum/public/api/v1/questions/:question-id/comment",
     postAnswer:
       host + "8081/flab/forum/public/api/v1/questions/:question-id/answer",
-    getListQuestion:
-        host + "8081/flab/forum/public/api/v1/questions",
-    closeQuestion:
-        host + "8081/flab/forum/public/api/v1/questions/",
-    postCommentToAnswer:
-        host + "8081/flab/forum/public/api/v1/answers/",
-    deleteComment:
-        host + "8081/flab/forum/public/api/v1/comments/",
-    deleteAnswer:
-        host + "8081/flab/forum/public/api/v1/answers/",
+    getListQuestion: host + "8081/flab/forum/public/api/v1/questions",
+    closeQuestion: host + "8081/flab/forum/public/api/v1/questions/",
+    postCommentToAnswer: host + "8081/flab/forum/public/api/v1/answers/",
+    deleteComment: host + "8081/flab/forum/public/api/v1/comments/",
+    deleteAnswer: host + "8081/flab/forum/public/api/v1/answers/",
   },
   material: {
     getMaterialById:
@@ -62,11 +57,21 @@ export const routes = {
       host + "8084/flab/account/public/api/v1/profiles/:profile-id",
   },
   project: {
-    getMembersInProject: "",
+    getProjectByLabId:
+      host + "8083/flab/lab/public/api/v1/projects/:lab-id/projects",
+    getProjectDetailById:
+      host + "8083/flab/lab/public/api/v1/projects/:project-id",
+    getAllMemberInProject:
+      host + "8083/flab/lab/public/api/v1/projects/:project-id/members",
+    removeMemberInProject:
+      host +
+      "8083/flab/lab/public/api/v1/projects/:project-id/members/:member-id",
+    removeProject:
+      host + "8083/flab/lab/public/api/v1/projects/:lab-id/:project-id",
   },
-  news:{
-    getListNews:host + "8888/flab/notification/public/api/v1/news",
-    getNewsByNewsId:host + "8888/flab/notification/public/api/v1/news/",
-    createNews:host + "8888/flab/notification/public/api/v1/news/news",
-  }
+  news: {
+    getListNews: host + "8888/flab/notification/public/api/v1/news",
+    getNewsByNewsId: host + "8888/flab/notification/public/api/v1/news/",
+    createNews: host + "8888/flab/notification/public/api/v1/news/news",
+  },
 };

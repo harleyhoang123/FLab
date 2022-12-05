@@ -15,6 +15,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import LabNavigator from "../../navigations/LabNavigator";
 import { SelectList } from "react-native-dropdown-select-list";
+import Buttons from "../../components/Buttons";
 
 const DATA = [
   {
@@ -106,6 +107,7 @@ const ViewAllMember = ({ route, navigation }) => {
       <View>
         <Text style={styles.titleContent}>List all member in your lab</Text>
       </View>
+      <Buttons style={styles.button} text={"Add new member"} />
       <SafeAreaView style={styles.container}>
         <View style={styles.tableForm}>
           <View style={[styles.ava]}>
@@ -183,6 +185,12 @@ const styles = StyleSheet.create({
     marginTop: "40vh",
     marginLeft: "50vh",
     alignItems: "center",
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    marginLeft: 10,
+    width: 215,
   },
   input: {
     height: 40,

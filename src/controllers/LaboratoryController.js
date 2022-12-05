@@ -39,11 +39,40 @@ export class LaboratoryController {
       data: null,
     });
   }
+  getProjectByLabId({ labId }) {
+    return this.networkService.request({
+      method: "GET",
+      url: routes.project.getProjectByLabId.replace(":lab-id", labId),
+      data: null,
+    });
+  }
+
+  getProjectDetail({ projectId }) {
+    return this.networkService.request({
+      method: "GET",
+      url: routes.project.getProjectDetailById.replace(
+        ":project-id",
+        projectId
+      ),
+      data: null,
+    });
+  }
 
   getMembersInLaboratory({ labId }) {
     return this.networkService.request({
       method: "GET",
       url: routes.laboratory.getMembersInLaboratory,
+      data: null,
+    });
+  }
+
+  getAllMembersInProject({ projectId }) {
+    return this.networkService.request({
+      method: "GET",
+      url: routes.project.getAllMemberInProject.replace(
+        ":project-id",
+        projectId
+      ),
       data: null,
     });
   }
@@ -101,6 +130,16 @@ export class LaboratoryController {
     });
   }
 
+  removeMemberInProject({ projectId, memberId }) {
+    return this.networkService.request({
+      method: "DELETE",
+      url: routes.project.removeMemberInProject
+        .replace(":project-id", projectId)
+        .replace(":member-id", memberId),
+      data: null,
+    });
+  }
+
   createLaboratory({ requestData }) {
     return this.networkService.request({
       method: "POST",
@@ -119,6 +158,16 @@ export class LaboratoryController {
       url: routes.laboratory.removeMemberFromLaboratory
         .replace(":lab-id", labId)
         .replace(":member-id", memberId),
+      data: null,
+    });
+  }
+
+  removeProject({ labId, projectId }) {
+    return this.networkService.request({
+      method: "DELETE",
+      url: routes.project.removeProject
+        .replace(":lab-id", labId)
+        .replace(":project-id", projectId),
       data: null,
     });
   }

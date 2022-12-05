@@ -1,5 +1,6 @@
 import { LaboratoryController } from "../controllers/LaboratoryController";
 import { strings } from "../localization";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export const getLaboratoryByAccountId =
   (accountId, navigation) =>
@@ -12,13 +13,16 @@ export const getLaboratoryByAccountId =
       });
       navigation.navigate("Lab", { data: response.data.data });
     } catch ({ data }) {
-      dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+      console.log(
+        "Error when getLaboratoryByAccountId " + JSON.stringify(data)
+      );
     }
   };
 
 export const getLaboratoryById =
   (labId, isJoined, navigation) =>
   async (dispatch, _, { networkService }) => {
+    await AsyncStorage.setItem("@currentLabId", labId);
     try {
       const laboratoryController = new LaboratoryController(networkService);
       console.log("Lab ID in actions: " + labId);
@@ -30,7 +34,7 @@ export const getLaboratoryById =
         isJoined: isJoined,
       });
     } catch ({ data }) {
-      dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+      console.log("Error when getLaboratoryById " + JSON.stringify(data));
     }
   };
 
@@ -47,7 +51,64 @@ export const getAllMemberInLaboratoryById =
         data: response.data.data,
       });
     } catch ({ data }) {
+      console.log(
+        "Error when get all member in Project " + JSON.stringify(data)
+      );
+    }
+  };
+
+export const getAllProjectByLabId =
+  (labId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const laboratoryController = new LaboratoryController(networkService);
+      console.log("Lab ID in actions: " + labId);
+      const response = await laboratoryController.getProjectByLabId({
+        labId,
+      });
+      navigation.navigate("Project", {
+        data: response.data.data,
+      });
+    } catch ({ data }) {
       dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+    }
+  };
+
+export const getAllMemberInProject =
+  (projectId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const laboratoryController = new LaboratoryController(networkService);
+      console.log("Project ID in actions: " + projectId);
+      const response = await laboratoryController.getAllMembersInProject({
+        projectId,
+      });
+      console.log("Response" + JSON.stringify(response));
+      navigation.push("ViewAllMemberInProject", {
+        data: response.data.data,
+      });
+    } catch ({ data }) {
+      console.log(
+        "Error when get all member in Project " + JSON.stringify(data)
+      );
+    }
+  };
+
+export const getProjectById =
+  (projectId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const laboratoryController = new LaboratoryController(networkService);
+      console.log("projectId ID in actions: " + projectId);
+      const response = await laboratoryController.getProjectDetail({
+        projectId,
+      });
+      await AsyncStorage.setItem("@projectId", response.data.data.projectId);
+      navigation.navigate("ProjectDetail", {
+        data: response.data.data,
+      });
+    } catch ({ data }) {
+      console.log("ERROR when getProjectById: " + JSON.stringify(data));
     }
   };
 
@@ -127,6 +188,46 @@ export const deleteLaboratory =
         "Response remove member from laboratory: " + JSON.stringify(response)
       );
       dispatch(getLaboratoryByAccountId(accountId, navigation));
+    } catch ({ data }) {
+      console.log(
+        "ERROR when removeMemberFromLaboratory: " + JSON.stringify(data)
+      );
+    }
+  };
+
+export const removeMemberInProjectById =
+  (projectId, memberId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const laboratoryController = new LaboratoryController(networkService);
+      const response = await laboratoryController.removeMemberInProject({
+        projectId,
+        memberId,
+      });
+      console.log(
+        "Response remove member from laboratory: " + JSON.stringify(response)
+      );
+      dispatch(getAllMemberInProject(projectId, navigation));
+    } catch ({ data }) {
+      console.log(
+        "ERROR when removeMemberFromLaboratory: " + JSON.stringify(data)
+      );
+    }
+  };
+
+export const removeProject =
+  (labId, projectId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const laboratoryController = new LaboratoryController(networkService);
+      const response = await laboratoryController.removeProject({
+        labId,
+        projectId,
+      });
+      console.log(
+        "Response remove member from laboratory: " + JSON.stringify(response)
+      );
+      dispatch(getAllProjectByLabId(labId, navigation));
     } catch ({ data }) {
       console.log(
         "ERROR when removeMemberFromLaboratory: " + JSON.stringify(data)
