@@ -94,12 +94,6 @@ function Repository({ route, navigation }) {
               onPress={() => deleteFolder(id)}
             />
             <Buttons style={styles.button} text={"Download"} />
-            <Buttons
-              style={styles.button}
-              text={"Upload"}
-              o
-              onPressTo={() => navigation.push("Upload")}
-            />
           </View>
           <View style={styles.table}>
             <View style={[styles.columnCheckBox, styles.borderbot]}></View>
@@ -176,7 +170,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 5,
     marginBottom: 5,
-    marginLeft: "46%",
+    justifyContent: "flex-end",
+    marginRight: 30,
   },
   myCV: {
     fontWeight: "bold",

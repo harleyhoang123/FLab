@@ -88,12 +88,12 @@ export default function LabNavigator({ route, navigation }) {
           >
             <Text style={styles.textLogo}>Document</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.push("Spaces")}
           >
             <Text style={styles.textLogo}>Spaces</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.push("YourWork")}

@@ -36,8 +36,17 @@ function RepositoryDetail({ route, navigation }) {
   ];
   const Item = ({ id, name, type, lastEdit, size }) => (
     <View style={styles.table}>
+      <View style={styles.columnCheckBox}>
+        <RadioButton.Group>
+          <RadioButton
+            value={id}
+            status={checked === id ? "checked" : "unchecked"}
+            onPress={() => setChecked(id)}
+          />
+        </RadioButton.Group>
+      </View>
       <View style={styles.column}>
-        <Text>{name}</Text>
+        <Text onPress={() => getFolderByRepository(id)}>{name}</Text>
       </View>
       <View style={styles.column}>
         <Text>{type}</Text>
@@ -47,10 +56,6 @@ function RepositoryDetail({ route, navigation }) {
       </View>
       <View style={styles.column}>
         <Text>{size}</Text>
-      </View>
-      <View style={styles.column}>
-        <Text>Delete {"  "}</Text>
-        <Text>Download</Text>
       </View>
     </View>
   );
@@ -70,17 +75,7 @@ function RepositoryDetail({ route, navigation }) {
       <View style={styles.containerContent}>
         <View style={styles.header}>
           <View>
-            <Text style={styles.myCV}> Repository Detail</Text>
-          </View>
-          <View style={styles.containerButton}>
-            <Buttons style={styles.button} text={"Refresh"} />
-            <Buttons style={styles.button} text={"Create folder"} />
-            <Buttons
-              style={styles.button}
-              text={"Upload"}
-              o
-              onPressTo={() => navigation.push("Upload")}
-            />
+            <Text style={styles.myCV}> Repository</Text>
           </View>
         </View>
         <View style={styles.containerSearch}>
@@ -95,8 +90,24 @@ function RepositoryDetail({ route, navigation }) {
           <Buttons text={"Search"} />
         </View>
         <View style={styles.bot}>
-          <Text style={styles.myCV}>List All Folder</Text>
+          <Text style={styles.myCV}>List All Repository</Text>
+          <View style={styles.containerButton}>
+            <Buttons style={styles.button} text={"Refresh"} />
+            <Buttons
+              style={styles.button}
+              text={"Delete"}
+              onPress={() => deleteFolder(id)}
+            />
+            <Buttons style={styles.button} text={"Download"} />
+            <Buttons
+              style={styles.button}
+              text={"Upload"}
+              o
+              onPressTo={() => navigation.push("Upload")}
+            />
+          </View>
           <View style={styles.table}>
+            <View style={[styles.columnCheckBox, styles.borderbot]}></View>
             <View style={[styles.column, styles.borderbot]}>
               <Text>File Name</Text>
             </View>
@@ -109,9 +120,6 @@ function RepositoryDetail({ route, navigation }) {
             <View style={[styles.column, styles.borderbot]}>
               <Text>Size</Text>
             </View>
-            <View style={[styles.column, styles.borderbot]}>
-              <Text>Action</Text>
-            </View>
           </View>
           <SafeAreaView style={styles.flatlist}>
             <FlatList data={items} renderItem={renderItem} />
@@ -122,9 +130,13 @@ function RepositoryDetail({ route, navigation }) {
   );
 }
 const styles = StyleSheet.create({
+  checkbox: {
+    alignSelf: "center",
+  },
   borderbot: {
-    borderBottomColor: "White",
-    borderBottomWidth: 2,
+    borderColor: "black",
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
   },
   container: {
     alignContent: "center",
@@ -136,15 +148,22 @@ const styles = StyleSheet.create({
   table: {
     width: "100%",
     flexDirection: "row",
-    backgroundColor: "#34aeeb",
+    justifyContent: "center",
+  },
+  columnCheckBox: {
+    width: "5%",
+    borderColor: "black",
+    borderRightWidth: 1,
+    borderLeftWidth: 1,
+    borderBottomWidth: 1,
+    alignItems: "center",
   },
   column: {
-    flexDirection: "row",
-    width: "20%",
-    borderColor: "white",
-    borderRightWidth: 2,
+    width: "22%",
+    borderColor: "black",
+    borderRightWidth: 1,
     justifyContent: "center",
-    height: 30,
+    borderBottomWidth: 1,
     alignItems: "center",
   },
   containerContent: {
@@ -160,6 +179,10 @@ const styles = StyleSheet.create({
   },
   containerButton: {
     flexDirection: "row",
+    marginTop: 5,
+    marginBottom: 5,
+    justifyContent: "flex-end",
+    marginRight: 60,
   },
   myCV: {
     fontWeight: "bold",
@@ -167,11 +190,15 @@ const styles = StyleSheet.create({
     marginLeft: 30,
   },
   button: {
-    width: 180,
+    width: 150,
+    height: 20,
     marginRight: 30,
   },
   content: {
     marginTop: 50,
+  },
+  containerSearch: {
+    marginLeft: 30,
   },
 });
 

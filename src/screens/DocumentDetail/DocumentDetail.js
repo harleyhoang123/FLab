@@ -7,14 +7,30 @@ export default function DocumentDetail({ navigation }) {
   const data = {
     data: "<h1 style='color: blue;'> Report 1</h1> <p style='color: red;'> this is report 1</p>",
   };
+  const source = {
+    uri: "http://samples.leanpub.com/thereactnativebook-sample.pdf",
+    cache: true,
+  };
   return (
     <View>
       <LabNavigator navigation={navigation} />
       <View style={styles.container}>
-        <View style={styles.left}></View>
-        <View style={styles.right}>
-          <Text> {HTMLReactParser(data.data)}</Text>
-        </View>
+        {/* <Pdf
+          source={source}
+          onLoadComplete={(numberOfPages, filePath) => {
+            console.log(`Number of pages: ${numberOfPages}`);
+          }}
+          onPageChanged={(page, numberOfPages) => {
+            console.log(`Current page: ${page}`);
+          }}
+          onError={(error) => {
+            console.log(error);
+          }}
+          onPressLink={(uri) => {
+            console.log(`Link pressed: ${uri}`);
+          }}
+          style={styles.pdf}
+        /> */}
       </View>
     </View>
   );
