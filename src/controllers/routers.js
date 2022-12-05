@@ -68,6 +68,8 @@ export const routes = {
       "8083/flab/lab/public/api/v1/projects/:project-id/members/:member-id",
     removeProject:
       host + "8083/flab/lab/public/api/v1/projects/:lab-id/:project-id",
+    createProject:
+      host + "8083/flab/lab/public/api/v1/laboratories/:lab-id/project",
   },
   news: {
     getListNews: host + "8888/flab/notification/public/api/v1/news",
