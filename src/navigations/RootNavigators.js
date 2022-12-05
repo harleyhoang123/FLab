@@ -43,6 +43,7 @@ import MemberDetail from "../screens/Lab/MemberDetail";
 import Project from "../screens/Lab/Project";
 import ProjectDetail from "../screens/Lab/ProjectDetail";
 import ViewAllMemberInProject from "../screens/Lab/ViewAllMemberInProject";
+import CreateProject from "../screens/Lab/CreateProject";
 function RootNavigators() {
   const Stack = createStackNavigator();
   return (
@@ -92,6 +93,7 @@ function RootNavigators() {
         <Stack.Screen name="MemberDetail" component={MemberDetail} />
         <Stack.Screen name="Project" component={Project} />
         <Stack.Screen name="ProjectDetail" component={ProjectDetail} />
+        <Stack.Screen name="CreateProject" component={CreateProject} />
         <Stack.Screen
           name="ViewAllMemberInProject"
           component={ViewAllMemberInProject}

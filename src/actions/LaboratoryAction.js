@@ -66,11 +66,14 @@ export const getAllProjectByLabId =
       const response = await laboratoryController.getProjectByLabId({
         labId,
       });
-      navigation.navigate("Project", {
+      console.log(
+        "Dat when get Project by lab id:" + JSON.stringify(response.data.data)
+      );
+      navigation.push("Project", {
         data: response.data.data,
       });
     } catch ({ data }) {
-      dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+      console.log("Error when getAllProjectByLabId " + JSON.stringify(data));
     }
   };
 
@@ -154,6 +157,30 @@ export const createLaboratory =
       console.log("Data: " + JSON.stringify(response.data.data));
       console.log("Lab Id: " + JSON.stringify(response.data.data.labId));
       dispatch(getLaboratoryById(response.data.data.labId, true, navigation));
+    } catch ({ data }) {
+      console.log("ERROR when createLaboratory: " + JSON.stringify(data));
+    }
+  };
+
+export const createProjectInLab =
+  (labId, requestData, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const laboratoryController = new LaboratoryController(networkService);
+      console.log(
+        "Request data of createLaboratory actions: " +
+          JSON.stringify(requestData)
+      );
+      const response = await laboratoryController.createProjectInLab({
+        labId,
+        requestData,
+      });
+      console.log(
+        "Response from get list material by id: " + JSON.stringify(response)
+      );
+      console.log("Data: " + JSON.stringify(response.data.data));
+      console.log("Lab Id: " + JSON.stringify(response.data.data.labId));
+      dispatch(getAllProjectByLabId(labId, navigation));
     } catch ({ data }) {
       console.log("ERROR when createLaboratory: " + JSON.stringify(data));
     }

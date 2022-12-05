@@ -109,6 +109,19 @@ export class LaboratoryController {
     });
   }
 
+  createProjectInLab({ labId, requestData }) {
+    return this.networkService.request({
+      method: "POST",
+      url: routes.project.createProject.replace(":lab-id", labId),
+      data: {
+        projectName: requestData.projectName,
+        description: requestData.description,
+        startDate: requestData.startDate,
+        toDate: requestData.toDate,
+      },
+    });
+  }
+
   updateLaboratory({ labId, requestData }) {
     return this.networkService.request({
       method: "PUT",

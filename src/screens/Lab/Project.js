@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { getProjectById } from "../../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
 import { removeProject } from "../../actions/LaboratoryAction";
+import Buttons from "../../components/Buttons";
 
 const getCuurentLabId = async () => {
   try {
@@ -49,8 +50,12 @@ export default function Project({ route, navigation }) {
     <View style={styles.item}>
       <Text>{projectId}</Text>
       <Text style={styles.title}>Project name: {projectName}</Text>
+
       <View style={{ flexDirection: "row" }}>
-        <Text style={styles.title}>Description: {description}</Text>
+        <View style={{ width: 400 }}>
+          <Text style={styles.title}>Description: {description}</Text>
+        </View>
+
         <View style={{ marginLeft: "60%", flexDirection: "row" }}>
           <Text
             onPress={() => goToProjectDetailPage(projectId)}
@@ -83,6 +88,13 @@ export default function Project({ route, navigation }) {
       <View style={styles.container}>
         <View>
           <Text style={styles.heading}>List Project</Text>
+          <Buttons
+            text={"Create project"}
+            style={styles.button}
+            onPressTo={() => {
+              navigation.navigate("CreateProject");
+            }}
+          />
         </View>
         <SafeAreaView>
           <FlatList
@@ -97,6 +109,11 @@ export default function Project({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    marginTop: 20,
+    marginLeft: 30,
+    width: 215,
+  },
   action: {
     borderRadius: 5,
     color: "white",
