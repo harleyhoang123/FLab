@@ -21,7 +21,7 @@ function NewsItem({newsId, title, author, thumbnail, createdDate,views,comments,
                         <Image
                             style={styles.tinyLogo}
                             source={{
-                                uri: {thumbnail},
+                                uri: thumbnail,
                             }}
                         />
                     </View>
