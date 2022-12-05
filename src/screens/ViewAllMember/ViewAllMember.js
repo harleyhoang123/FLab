@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   View,
   FlatList,
   StyleSheet,
   Text,
+  TextInput,
   StatusBar,
+  Pressable,
+  Modal,
   Image,
+  Button,
 } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 import LabNavigator from "../../navigations/LabNavigator";
+import { SelectList } from "react-native-dropdown-select-list";
 
 const DATA = [
   {
@@ -34,26 +40,57 @@ const DATA = [
   },
 ];
 
-const Item = ({ name, role, ava, code }) => (
-  <View style={styles.item}>
-    <View style={styles.ava}>
-      <Text style={styles.title}>{code}</Text>
-    </View>
-    <View style={styles.ava}>
-      <Image style={styles.tinyLogo} source={{ uri: ava }} />
-    </View>
-    <View style={styles.name}>
-      <Text style={styles.title}>{name}</Text>
-    </View>
-    <View style={styles.role}>
-      <Text style={styles.title}>{role}</Text>
-    </View>
-  </View>
-);
-
 const ViewAllMember = ({ route, navigation }) => {
   const data = route.params.data;
   const listMember = data.items;
+  const [shouldShow, setShouldShow] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selected, setSelected] = React.useState("");
+  const dataDrop = [
+    { key: "1", value: "Admin" },
+    { key: "2", value: "Lead" },
+    { key: "3", value: "Slave" },
+  ];
+
+  const Item = ({ name, role, ava, code }) => (
+    <View style={styles.item}>
+      <View style={styles.ava}>
+        <Text style={styles.title}>{code}</Text>
+      </View>
+      <View style={styles.ava}>
+        <Image style={styles.tinyLogo} source={{ uri: ava }} />
+      </View>
+      <View style={styles.name}>
+        <Text
+          style={styles.title}
+          onPress={() => {
+            navigation.push("MemberDetail");
+          }}
+        >
+          {name}
+        </Text>
+      </View>
+      <View style={styles.role}>
+        <Text style={styles.title}>{role}</Text>
+        <Icon
+          onPress={() => setShouldShow(!shouldShow)}
+          style={{ paddingLeft: 5 }}
+          name="wrench"
+        ></Icon>
+        {shouldShow ? (
+          <View style={styles.popUp}>
+            <View style={{ backgroundColor: "yellow", width: 30 }}>
+              <Text onPress={() => setModalVisible(!modalVisible)}>Edit</Text>
+            </View>
+            <View style={{ backgroundColor: "red" }}>
+              <Text>Remove</Text>
+            </View>
+          </View>
+        ) : null}
+      </View>
+    </View>
+  );
+
   const renderItem = ({ item }) => (
     <Item
       id={item.memberId}
@@ -90,11 +127,80 @@ const ViewAllMember = ({ route, navigation }) => {
           keyExtractor={(item) => item.memberId}
         />
       </SafeAreaView>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          this.visibleModal(false);
+        }}
+      >
+        <View style={styles.modal}>
+          <Text style={{ fontSize: 20 }}>Enter new role</Text>
+          <SelectList
+            setSelected={(val) => setSelected(val)}
+            placeholder={"Task status"}
+            data={dataDrop}
+            save="value"
+            boxStyles={{
+              width: 530,
+              height: 45,
+              marginTop: 10,
+              marginBottom: 10,
+              marginRight: 5,
+            }}
+            dropdownStyles={{
+              width: 130,
+            }}
+            search={false}
+          />
+          <View
+            style={{
+              marginTop: 20,
+              width: "auto",
+              margin: 20,
+              flexDirection: "row",
+            }}
+          >
+            <Button title="Submit"></Button>
+            <Button
+              onPress={() => setModalVisible(!modalVisible)}
+              title="Close"
+              color={"red"}
+            ></Button>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  modal: {
+    backgroundColor: "#f27474",
+    width: "50%",
+    borderRadius: 15,
+    marginTop: "40vh",
+    marginLeft: "50vh",
+    alignItems: "center",
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    width: "45%",
+  },
+  popUp: {
+    zIndex: 2,
+    borderWidth: 1,
+    borderRadius: 5,
+    position: "absolute",
+    marginLeft: 164,
+    backgroundColor: "#fc4503",
+    color: "white",
+    flexDirection: "row",
+  },
   comp: {
     backgroundColor: "rgb(255, 255, 255)",
   },
@@ -117,6 +223,7 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 1,
     borderStyle: "solid",
+    color: "blue",
   },
   role: {
     width: "20%",
@@ -125,6 +232,8 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 1,
     borderStyle: "solid",
+    flexDirection: "row",
+    zIndex: 1,
   },
   tinyLogo: {
     width: 50,

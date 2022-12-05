@@ -106,25 +106,43 @@ export default function LabDetail({ route, navigation }) {
                 <Text style={styles.textStyle}>Join</Text>
               )}
             </Pressable>
-
-            <View style={{ marginTop: 20 }}>
+          </View>
+          {isAdmin ? (
+            <View style={{ marginTop: 20, flexDirection: "row" }}>
               <Pressable
                 style={[styles.button, styles.buttonOpen]}
                 onPress={() => setModalVisible(true)}
               >
-                {isAdmin ? (
+                <View>
                   <Text
                     style={styles.textStyle}
                     onPress={() => delteCurrentLab()}
                   >
                     Delete
                   </Text>
-                ) : (
-                  <Text></Text>
-                )}
+                </View>
+                <Text></Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonOpen]}
+                onPress={() => setModalVisible(true)}
+              >
+                <View>
+                  <Text
+                    style={styles.textStyle}
+                    onPress={() => {
+                      navigation.push("UpdateLab", { labInfo: data });
+                    }}
+                  >
+                    Update
+                  </Text>
+                </View>
+                <Text></Text>
               </Pressable>
             </View>
-          </View>
+          ) : (
+            <Text></Text>
+          )}
         </View>
         <Modal
           animationType="slide"
@@ -240,6 +258,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    marginRight: 10,
+    width: 113,
   },
   buttonOpen: {
     backgroundColor: "red",
