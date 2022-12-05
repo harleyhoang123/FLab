@@ -9,11 +9,11 @@ import {
   FlatList,
   Image,
 } from "react-native";
-import { TextInput } from "react-native-paper";
 import LabNavigator from "../../navigations/LabNavigator";
 import SprintComponent from "../../components/SprintComponent";
 import TaskDetailComponent from "../../components/TaskDetailComponent";
 import { useState } from "react";
+import SubTaskDetailComponent from "../../components/SubTaskDetailComponent";
 
 const projectName = {
   name: "FPT Lab Management",
@@ -21,32 +21,21 @@ const projectName = {
   major: "Software Enginner",
 };
 
-const data = [
-  {
-    id: "1",
-    sprint: "1",
-    task: "develop",
-    time: "16 Sep - 23 Sep",
-    numberOftask: "7",
-    description: "Do somethings right now.",
-  },
-  {
-    id: "2",
-    sprint: "2",
-    task: "develop",
-    time: "16 Sep - 23 Sep",
-    numberOftask: "7",
-    description: "Do somethings right now.",
-  },
-];
-
-export default function RoadMap({ navigation }) {
-  const [isVisible, setIsVisible] = useState(false);
-
-  const callBackSetIsVisible = (isVisible) => {
-    setIsVisible(isVisible);
-  };
-
+export default function Backlog({route, navigation }) {
+  const res= route.params.data;
+  const projectId = route.params.projectId;
+  const [sprintId, setSprintId] = useState(route.params.sprintId);
+  console.log("Res in backlog is: "+ JSON.stringify(res))
+  const taskDetail = route.params.taskDetail;
+  console.log("Task detail in backlog: "+ JSON.stringify(taskDetail));
+  console.log("Expression: "+ taskDetail != null);
+  const subTaskDetail = route.params.subTaskDetail;
+  console.log("Task detail in backlog: "+ JSON.stringify(subTaskDetail));
+  console.log("Expression: "+ subTaskDetail != null);
+  const [listSPrint, setListSPrint] = useState(res.sprints.items);
+  if(sprintId===null){
+    setSprintId("check");
+  }
   return (
     <View>
       <LabNavigator navigation={navigation} />
@@ -61,11 +50,19 @@ export default function RoadMap({ navigation }) {
         <View style={styles.right}>
           <Text style={styles.backlog}>BackLog</Text>
           <View style={styles.backlogContent}>
-            <SprintComponent callBackSetIsVisible={callBackSetIsVisible} />
+            {listSPrint?.map((item)=>(
+                <View key={item.sprintId}>
+                  <SprintComponent navigation={navigation} isVisible={sprintId} projectId={projectId} memberId={res.memberId} sprintId={item.sprintId} sprintName={item.sprintName}
+                                   goal={item.goal} startDate={item.startDate} endDate={item.endDate} tasks={item.tasks}
+                                   totalNotStartedTask={item.totalNotStartedTask} totalInProgressTask={item.totalInProgressTask} totalDoneTask={item.totalDoneTask}/>
+                </View>
+            ))}
+
           </View>
         </View>
         <View style={styles.taskDetail}>
-          <TaskDetailComponent isVisible={isVisible} />
+          {taskDetail != null && <TaskDetailComponent taskDetail={taskDetail} sprintId={sprintId} projectId={projectId} navigation={navigation}/> }
+          {subTaskDetail != null && <SubTaskDetailComponent subTaskDetail={subTaskDetail}/> }
         </View>
       </View>
     </View>
@@ -77,7 +74,7 @@ const styles = StyleSheet.create({
     marginLeft: 14,
   },
   taskDetail: {
-    width: "20%",
+    width: "25%",
     marginTop: 88,
     marginLeft: 50,
   },
@@ -146,7 +143,7 @@ const styles = StyleSheet.create({
     borderColor: "#DEE2E6",
   },
   right: {
-    width: "58%",
+    width: "53%",
     height: "100%",
   },
   listItem: {

@@ -12,11 +12,11 @@ import {
   Pressable,
   TextField,
 } from "react-native";
-import { SelectList } from "react-native-dropdown-select-list";
 import LabNavigator from "../../navigations/LabNavigator";
 import { useDispatch } from "react-redux";
 import Buttons from "../../components/Buttons";
 import { getAllMemberInProject } from "../../actions/LaboratoryAction";
+import {getAllSprint} from "../../actions/WorkSpaceAction";
 
 export default function ProjectDetail({ route, navigation }) {
   const data = route.params.data;
@@ -24,7 +24,9 @@ export default function ProjectDetail({ route, navigation }) {
   const goToListMemberPage = (projectId) => {
     dispatch(getAllMemberInProject(projectId, navigation));
   };
-
+  const goToBacklog = (projectId) => {
+    dispatch(getAllSprint(projectId,null,null,null, navigation));
+  };
   return (
     <View>
       <LabNavigator navigation={navigation} />
@@ -61,6 +63,11 @@ export default function ProjectDetail({ route, navigation }) {
               style={styles.button}
               text={"View All Member"}
               onPressTo={() => goToListMemberPage(data.projectId)}
+            />
+            <Buttons
+                style={styles.button}
+                text={"BackLog"}
+                onPressTo={() => goToBacklog(data.projectId)}
             />
           </View>
         </View>
