@@ -27,14 +27,22 @@ export default function Backlog({route, navigation }) {
   const [sprintId, setSprintId] = useState(route.params.sprintId);
   console.log("Res in backlog is: "+ JSON.stringify(res))
   const taskDetail = route.params.taskDetail;
+  const [taskD, setTaskD] = useState(taskDetail);
   console.log("Task detail in backlog: "+ JSON.stringify(taskDetail));
   console.log("Expression: "+ taskDetail != null);
   const subTaskDetail = route.params.subTaskDetail;
+  const [subTaskD, setSubTaskD] = useState(subTaskDetail);
   console.log("Task detail in backlog: "+ JSON.stringify(subTaskDetail));
   console.log("Expression: "+ subTaskDetail != null);
   const [listSPrint, setListSPrint] = useState(res.sprints.items);
   if(sprintId===null){
     setSprintId("check");
+  }
+  const callbackCloseTask=(task)=>{
+    setTaskD(task)
+  }
+  const callbackCloseSubTask=(subTask)=>{
+    setSubTaskD(subTask)
   }
   return (
     <View>
@@ -61,8 +69,8 @@ export default function Backlog({route, navigation }) {
           </View>
         </View>
         <View style={styles.taskDetail}>
-          {taskDetail != null && <TaskDetailComponent taskDetail={taskDetail} sprintId={sprintId} projectId={projectId} navigation={navigation}/> }
-          {subTaskDetail != null && <SubTaskDetailComponent subTaskDetail={subTaskDetail}/> }
+          {taskD != null && <TaskDetailComponent taskDetail={taskD} callbackCloseTask={callbackCloseTask} sprintId={sprintId} projectId={projectId} navigation={navigation}/> }
+          {subTaskD != null && <SubTaskDetailComponent subTaskDetail={subTaskD} callbackCloseSubTask={callbackCloseSubTask} /> }
         </View>
       </View>
     </View>

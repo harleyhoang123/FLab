@@ -11,7 +11,7 @@ import TextField from "./TextField";
 import TaskComponent from "./TaskComponent";
 import SubTaskComponent from "./SubTaskComponent";
 
-export default function TaskDetailComponent({taskDetail,navigation,projectId,sprintId}) {
+export default function TaskDetailComponent({taskDetail,callbackCloseTask,navigation,projectId,sprintId}) {
   const [selected, setSelected] = useState();
   const [Comments, SetComments] = useState([]);
   const [commentValue, setCommentValue] = useState('');
@@ -70,7 +70,7 @@ const renderDetail=()=>{
   return(
       <View style={[styles.container]}>
           <View style={styles.wrapper}>
-            <Buttons text={"X"} style={styles.buttonClose}></Buttons>
+            <Buttons text={"X"} style={styles.buttonClose} onPressTo={()=>callbackCloseTask(null)}></Buttons>
             <Text style={styles.title}>
               {taskDetail.data.data.taskName}
             </Text>

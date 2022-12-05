@@ -4,7 +4,7 @@ import Buttons from "./Buttons";
 import {Picker} from "@react-native-picker/picker";
 import SubTaskComponent from "./SubTaskComponent";
 
-function SubTaskDetailComponent({subTaskDetail}) {
+function SubTaskDetailComponent({subTaskDetail,callbackCloseSubTask}) {
     const [selected, setSelected] = useState();
     const [Comments, SetComments] = useState([]);
     const [commentValue, setCommentValue] = useState('');
@@ -48,7 +48,7 @@ function SubTaskDetailComponent({subTaskDetail}) {
     return (
         <View style={[styles.container]}>
             <View style={styles.wrapper}>
-                <Buttons text={"X"} style={styles.buttonClose}></Buttons>
+                <Buttons text={"X"} style={styles.buttonClose} onPressTo={()=>callbackCloseSubTask(null)}></Buttons>
                 <Text style={styles.title}>
                     {subTaskDetail.data.data.subTaskName}
                 </Text>
