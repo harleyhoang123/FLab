@@ -1,28 +1,28 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View,} from "react-native";
+import {StyleSheet, Text, View,} from "react-native";
 import AddComponent from "../../components/AddComponent";
 import {Dropdown} from "react-native-element-dropdown";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import ForumNavigation from "../../navigations/ForumNavigation";
 import Buttons from "../../components/Buttons";
 import {useDispatch} from "react-redux";
-import { updateQuestion} from "../../actions/ForumAction";
+import {updateQuestion} from "../../actions/ForumAction";
+
 function UpdateQuestion({route, navigation}) {
     const res = route.params;
     const [value, setValue] = useState('Public');
     const [title, setTitle] = useState(res.data.title);
-    const [detail, setDetail] = useState(res.data.content);
-    const [yourTry, setYourTry] = useState('');
+    const [problem, setProblem] = useState(res.data.problem);
+    const [triedCase, setTriedCase] = useState(res.data.triedCase);
     const [tag, setTag] = useState(res.data.tags);
-    const [questionId, setQuestionId] = useState(res.data.questionId);
+    const questionId = res.data.questionId
     const dispatch = useDispatch();
     const data = [
         {label: 'Public', value: 'Public'},
         {label: 'Inside Lab Room', value: 'Inside Lab Room'},
     ]
     const handleClick = () => {
-            const content = detail + " \n " + yourTry;
-            dispatch(updateQuestion(title, content, tag, questionId, navigation));
+        dispatch(updateQuestion(title, problem, triedCase, tag, questionId, navigation));
     }
     return (
         <View>
@@ -41,15 +41,15 @@ function UpdateQuestion({route, navigation}) {
                         multiline={false}
                         style={{width: "96%"}}/>
                     <AddComponent
-                        text={detail}
-                        onChangeText={detail => setDetail(detail)}
+                        text={problem}
+                        onChangeText={problem => setProblem(problem)}
                         title={"What are the details of your problem?"}
                         suggest={"Introduce the problem and expand on what you put in the title. Minimum 20 characters."}
                         multiline={true}
                         style={{width: "96%", height: 300}}/>
                     <AddComponent
-                        text={yourTry}
-                        onChangeText={yourTry => setYourTry(yourTry)}
+                        text={triedCase}
+                        onChangeText={triedCase => setTriedCase(triedCase)}
                         title={"What did you try and what were you expecting?"}
                         suggest={"Describe what you tried, what you expected to happen, and what actually resulted. Minimum 20 characters."}
                         multiline={true}
@@ -74,8 +74,9 @@ function UpdateQuestion({route, navigation}) {
                             }}
                         />
                         <View style={styles.row}>
-                            <Buttons text={"Post Your Question"} onPressTo={handleClick} style={styles.button}/>
-                            <Buttons text={"Back"} onPressTo={()=>navigation.goBack(navigation)} style={styles.button}/>
+                            <Buttons text={"Update"} onPressTo={handleClick} style={styles.button}/>
+                            <Buttons text={"Back"} onPressTo={() => navigation.goBack(navigation)}
+                                     style={styles.button}/>
                         </View>
 
                     </View>
@@ -85,6 +86,7 @@ function UpdateQuestion({route, navigation}) {
         </View>
     );
 }
+
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
@@ -116,12 +118,12 @@ const styles = StyleSheet.create({
     },
     button: {
         margin: 30,
-        width: 250,
+        width: 150,
     },
     summit: {
         marginLeft: 30,
     },
-    row:{
+    row: {
         flexDirection: "row",
     }
 });

@@ -16,6 +16,8 @@ import { getLaboratoryByAccountId } from "../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
 import {getAccountInfoByAccountId, logout} from "../actions/UserAction";
 import AvatarComponent from "../components/AvatarComponent";
+import {getListQuestion} from "../actions/ForumAction";
+import {getListNews} from "../actions/NewsAction";
 
 const getAccountId = async () => {
   try {
@@ -46,6 +48,12 @@ export default function HomeTopNavigator({ navigation }) {
   };
   const goToProfile = () => {
     dispatch(getAccountInfoByAccountId(accountId, navigation));
+  };
+  const goToForum = () => {
+    dispatch(getListQuestion(navigation));
+  };
+  const gotoNews = () => {
+    dispatch(getListNews(navigation));
   };
   const handleLogout = () => {
     dispatch(logout);
@@ -123,13 +131,13 @@ export default function HomeTopNavigator({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.push("Forum")}
+            onPress={goToForum}
           >
             <Text style={styles.textLogo}>Forum</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.push("ListNews")}
+            onPress={gotoNews}
           >
             <Text style={styles.textLogo}>News</Text>
           </TouchableOpacity>

@@ -1,69 +1,70 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import Buttons from "./Buttons";
-import TaskDetailComponent from "./TaskDetailComponent";
 function TaskComponent({callBackSetIsVisible}) {
   return (
-    <View style={styles.wrapper}>
-      <View>
-        <TouchableOpacity onPress={() => callBackSetIsVisible(true)} >
-          <View style={styles.container}>
-            <View style={styles.row}>
-              <Text style={styles.text}>abcxyz</Text>
-              <Buttons text={"Edit"} style={styles.button}></Buttons>
-              <Buttons text={"Define"} style={styles.button}></Buttons>
+      <View style={styles.containerContent}>
+        <View style={styles.sprint}>
+          <TouchableOpacity onPress={() => callBackSetIsVisible(true)} >
+            <View style={styles.container}>
+              <View style={styles.row}>
+                <Text style={styles.text}>abcxyz</Text>
+                <Buttons text={"Edit"} style={styles.btn}></Buttons>
+              </View>
+              <View style={styles.row}>
+                <Buttons text={"Done"} style={styles.btn}></Buttons>
+                <TouchableOpacity>
+                  <Image
+                      style={styles.userImage}
+                      source={{
+                        uri: "https://pbs.twimg.com/profile_images/486929358120964097/gNLINY67_400x400.png",
+                      }}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={styles.row}>
-              <Buttons text={"Done"} style={styles.button}></Buttons>
-              <TouchableOpacity>
-                <Image
-                  style={styles.userImage}
-                  source={{
-                    uri: "https://pbs.twimg.com/profile_images/486929358120964097/gNLINY67_400x400.png",
-                  }}
-                />
-              </TouchableOpacity>
-              <Buttons
-                text={"..."}
-                style={styles.button}
-
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
+
+    justifyContent:"space-between",
+    flexDirection:"row",
+  },
+  containerContent: {
     flexDirection: "row",
-    backgroundColor: "white",
-    justifyContent: "space-between",
+    justifyContent: "center",
+    backgroundColor:'white',
     alignItems: "center",
     borderWidth: 1,
   },
-  wrapper: {
-    flexDirection: "row",
-  },
   row: {
+    alignItems:"center",
     flexDirection: "row",
-    alignItems: "center",
   },
-  button: {
-    margin: 10,
+  sprint: {
+    flex: 10,
+    justifyContent: "center",
+    margin:2
+  },
+  btn: {
+    margin: 5,
     width: 60,
-    height: 40,
-  },
-  userImage: {
-    width: 30,
     height: 30,
-    borderRadius: 15,
-    marginRight: 10,
   },
   text: {
-    fontSize: 20,
-    marginLeft: 20,
+    marginRight: 20,
+    fontSize: 16,
+  },
+  userImage:{
+    width:30,
+    height:30,
+    borderRadius:15,
+    marginRight:50,
+    marginLeft:30
   },
 });
 export default TaskComponent;

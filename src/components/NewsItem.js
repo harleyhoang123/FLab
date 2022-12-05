@@ -1,17 +1,27 @@
 import React from 'react';
 import {View, Image, TouchableOpacity, Text, StyleSheet} from "react-native";
 import Separator from "./Separator";
+import {useDispatch} from "react-redux";
+import {getNewsDetailByNewsId} from "../actions/NewsAction";
 
-function NewsItem({title, time, author, view, comments,style, navigation}) {
+function NewsItem({newsId, title, author, thumbnail, createdDate,views,comments, style, navigation}) {
+    const dispatch=useDispatch();
+    const handleClick=()=>{
+        dispatch(getNewsDetailByNewsId(newsId,navigation))
+    }
+    const formatTime=(date)=>{
+        const d= new Date(date);
+        return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
+    }
     return (
         <View style={[styles.container,style]}>
-            <TouchableOpacity onPress={() => navigation.push("NewsDetail")}>
+            <TouchableOpacity onPress={handleClick}>
                 <View style={styles.containerContent}>
                     <View style={styles.containerLogo}>
                         <Image
                             style={styles.tinyLogo}
                             source={{
-                                uri: 'https://flab-forum-bucket.s3.eu-central-1.amazonaws.com/83739451-4303-439f-b96d-a4e33e8799df',
+                                uri: {thumbnail},
                             }}
                         />
                     </View>
@@ -27,10 +37,10 @@ function NewsItem({title, time, author, view, comments,style, navigation}) {
                                 Tác giả: {author}
                             </Text>
                             <Text style={styles.textInfo}>
-                                Ngày đăng: {time}
+                                Ngày đăng: {formatTime(createdDate)}
                             </Text>
                             <Text style={styles.textView}>
-                                Lượt xem: {view}
+                                Lượt xem: {views}
                             </Text>
                             <Text style={styles.textView}>
                                 Bình luận: {comments}

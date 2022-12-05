@@ -5,36 +5,9 @@ import HomeTopNavigator from "../../navigations/HomeNavigation";
 import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
 
-const listNews =[{
-    title: "Lionel Messi là ngôi sao mới nhất xuất hiện trong game sinh tồn PUBG Mobile ở bản cập nhật sắp tới.",
-    time: "1",
-    author: "s",
-    view: "10",
-comment:"10",
-},
-    {
-        title: "Vụ 3 con gái đổ xăng đốt nhà mẹ: Người dân vẫn bủn rủn khi kể lại lúc đưa các nạn nhân ra ngoài",
-        time: "1",
-        author: "s",
-        view: "10",
-        comment:"10",
-    },
-    {
-        title: "Chiều 31/10, khắp các nẻo đường, từ quán trà đá cho tới những người đi đổ xăng ở xã Trung Hòa (huyện Yên Mỹ, tỉnh Hưng Yên) vẫn bàn tán xôn xao về vụ việc 3 người con gái đốt nhà mẹ đẻ ở thôn Thiên Lộc.  ",
-        time: "1",
-        author: "s",
-        view: "10",
-        comment:"10",
-    },
-    {
-        title: "fgh",
-        time: "1",
-        author: "s",
-        view: "10",
-        comment:"10",
-    },
-]
-function ListNews({navigation}) {
+function ListNews({route,navigation}) {
+    const res = route.params;
+    const listNews= res.data.items
     const [text, setText] = useState('');
     return (
         <View>
@@ -56,7 +29,8 @@ function ListNews({navigation}) {
             <FlatList
                 data={listNews}
                 renderItem={({ item }) => (
-                    <NewsItem title={item.title} time={item.time} author={item.author} view={item.view} comments={item.comment} navigation={navigation} />
+                    <NewsItem newsId={item.newsId} title={item.title} author={item.author} thumbnail={item.thumbnail} createdDate={item.createdDate}
+                              views={item.views} comments={item.comments} navigation={navigation} />
                 )}
             />
             <View style={styles.containerButton}>

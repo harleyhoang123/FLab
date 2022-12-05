@@ -35,6 +35,16 @@ export const routes = {
       host + "8081/flab/forum/public/api/v1/questions/:question-id/comment",
     postAnswer:
       host + "8081/flab/forum/public/api/v1/questions/:question-id/answer",
+    getListQuestion:
+        host + "8081/flab/forum/public/api/v1/questions",
+    closeQuestion:
+        host + "8081/flab/forum/public/api/v1/questions/",
+    postCommentToAnswer:
+        host + "8081/flab/forum/public/api/v1/answers/",
+    deleteComment:
+        host + "8081/flab/forum/public/api/v1/comments/",
+    deleteAnswer:
+        host + "8081/flab/forum/public/api/v1/answers/",
   },
   material: {
     getMaterialById:
@@ -54,4 +64,9 @@ export const routes = {
   project: {
     getMembersInProject: "",
   },
+  news:{
+    getListNews:host + "8888/flab/notification/public/api/v1/news",
+    getNewsByNewsId:host + "8888/flab/notification/public/api/v1/news/",
+    createNews:host + "8888/flab/notification/public/api/v1/news/news",
+  }
 };

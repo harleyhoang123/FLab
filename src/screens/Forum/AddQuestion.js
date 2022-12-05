@@ -6,13 +6,13 @@ import HomeTopNavigator from "../../navigations/HomeNavigation";
 import ForumNavigation from "../../navigations/ForumNavigation";
 import Buttons from "../../components/Buttons";
 import {useDispatch} from "react-redux";
-import {addQuestion, updateQuestion} from "../../actions/ForumAction";
+import {addQuestion} from "../../actions/ForumAction";
 
 function AddQuestion({navigation}) {
     const [value, setValue] = useState('Public');
     const [title, setTitle] = useState('');
-    const [detail, setDetail] = useState('');
-    const [yourTry, setYourTry] = useState('');
+    const [problem, setProblem] = useState('');
+    const [triedCase, setTriedCase] = useState('');
     const [tag, setTag] = useState('');
     const dispatch = useDispatch();
     const data = [
@@ -20,8 +20,7 @@ function AddQuestion({navigation}) {
         {label: 'Inside Lab Room', value: 'Inside Lab Room'},
     ]
     const handleClick = () => {
-            const content = detail + " \n " + yourTry;
-            dispatch(addQuestion(title, content, tag, navigation));
+            dispatch(addQuestion(title, problem, triedCase, tag, navigation));
     }
 
     return (
@@ -41,15 +40,15 @@ function AddQuestion({navigation}) {
                         multiline={false}
                         style={{width: "96%"}}/>
                     <AddComponent
-                        text={detail}
-                        onChangeText={detail => setDetail(detail)}
+                        text={problem}
+                        onChangeText={problem => setProblem(problem)}
                         title={"What are the details of your problem?"}
                         suggest={"Introduce the problem and expand on what you put in the title. Minimum 20 characters."}
                         multiline={true}
                         style={{width: "96%", height: 300}}/>
                     <AddComponent
-                        text={yourTry}
-                        onChangeText={yourTry => setYourTry(yourTry)}
+                        text={triedCase}
+                        onChangeText={triedCase => setTriedCase(triedCase)}
                         title={"What did you try and what were you expecting?"}
                         suggest={"Describe what you tried, what you expected to happen, and what actually resulted. Minimum 20 characters."}
                         multiline={true}

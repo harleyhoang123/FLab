@@ -4,10 +4,14 @@ import Separator from "./Separator";
 import {useDispatch} from "react-redux";
 import {getQuestionDetailByQuestionId} from "../actions/ForumAction";
 
-function QuestionItem({navigation, author, time, views, votes, answers, style, title, tags}) {
+function QuestionItem({questionId, title, tags, score, views, answers, style, askedBy,createdDate, navigation}) {
+    const formatTime=(date)=>{
+        const d= new Date(date);
+        return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
+    }
     const dispatch = useDispatch();
     const handleClick = () => {
-        dispatch(getQuestionDetailByQuestionId('6388f5e5c505183a8b03e46e', navigation,false));
+        dispatch(getQuestionDetailByQuestionId(questionId, navigation,false));
     };
     return (
         <View style={[styles.container, style]}>
@@ -15,7 +19,7 @@ function QuestionItem({navigation, author, time, views, votes, answers, style, t
             <TouchableOpacity onPress={handleClick}>
                 <View style={styles.containerContent}>
                     <View style={styles.containerLogo}>
-                        <Text style={styles.text}>{votes} votes</Text>
+                        <Text style={styles.text}>{score} votes</Text>
                         <Text style={styles.text}>{answers} answers</Text>
                         <Text style={styles.text}>{views} views</Text>
                     </View>
@@ -38,7 +42,7 @@ function QuestionItem({navigation, author, time, views, votes, answers, style, t
                         />
                         <View style={styles.info}>
                             <Text style={styles.textInfo}>
-                                Post by {author} on {time}
+                                Post by {askedBy} on {formatTime(createdDate)}
                             </Text>
                         </View>
                     </View>

@@ -1,11 +1,14 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {View, Text, StyleSheet} from "react-native";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import AddComponent from "../../components/AddComponent";
 import Buttons from "../../components/Buttons";
-import TextEditorComponent from "../../components/TextEditorComponent";
-import TextField from "../../components/TextField";
+import {useDropzone} from 'react-dropzone'
 function AddNews({navigation}) {
+    const onDrop = useCallback(acceptedFiles => {
+        // Do something with the files
+    }, [])
+    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
     const [content, setContent] = useState("")
     const [text, setText] = useState("")
@@ -22,11 +25,11 @@ function AddNews({navigation}) {
                               multiline={false}
                               style={{width: "97%",height:300}}
                               text={content} onChangeText={text => setContent(text)}></AddComponent>
-                <Buttons text={"Add Image"} style={styles.button} />
+                <Buttons text={"Add Image"} onPressTo={getInputProps} style={styles.button} />
                 <View style={styles.row}>
                     <Buttons text={"Post News"} style={styles.button} onPressTo={()=> {navigation.push("ListNews")}}/>
                     <Buttons text={"Back"} style={styles.button} onPressTo={()=> {navigation.goBack(navigation)}}/>
-                </View>\
+                </View>
             </View>
         </View>
     );
