@@ -1,4 +1,4 @@
-import React,{useState,useRef} from "react";
+import React, { useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -14,11 +14,12 @@ import {
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 
-export default function TaskDetailComponent({isVisible}) {
+export default function TaskDetailComponent({ isVisible }) {
   console.log("Visible: " + isVisible);
   const [Comments, SetComments] = useState([]);
-  const [commentValue, setCommentValue] = useState('');
+  const [commentValue, setCommentValue] = useState("");
   const [showComment, setShowComment] = useState(false);
+  const [selected, setSelected] = React.useState("");
   const InputRef = useRef();
 
   // Function to add comments to array
@@ -62,9 +63,10 @@ export default function TaskDetailComponent({isVisible}) {
   );
 
   const renderItem = ({ item }) => <Item id={item.id} content={item.content} />;
-  return(
-      <View>
-      {isVisible? <View style={[styles.container]}>
+  return (
+    <View>
+      {isVisible ? (
+        <View style={[styles.container]}>
           <View style={styles.wrapper}>
             <Text style={styles.source}>FLab15/Flab1</Text>
             <Text style={styles.title}>
@@ -72,21 +74,21 @@ export default function TaskDetailComponent({isVisible}) {
             </Text>
 
             <SelectList
-                setSelected={(val) => setSelected(val)}
-                placeholder={"Task status"}
-                data={data}
-                save="value"
-                boxStyles={{
-                  width: 130,
-                  height: 45,
-                  marginTop: 10,
-                  marginBottom: 10,
-                  marginRight: 5,
-                }}
-                dropdownStyles={{
-                  width: 130,
-                }}
-                search={false}
+              setSelected={(val) => setSelected(val)}
+              placeholder={"Task status"}
+              data={data}
+              save="value"
+              boxStyles={{
+                width: 130,
+                height: 45,
+                marginTop: 10,
+                marginBottom: 10,
+                marginRight: 5,
+              }}
+              dropdownStyles={{
+                width: 130,
+              }}
+              search={false}
             />
             <Text style={styles.description}>Description</Text>
             <Text style={styles.descriptionDetail}>
@@ -95,9 +97,9 @@ export default function TaskDetailComponent({isVisible}) {
             <Text style={styles.descriptionDetail}>Child Issues</Text>
             <SafeAreaView style={styles.flatlist}>
               <FlatList
-                  data={childIssue}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => item.id}
+                data={childIssue}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
               />
             </SafeAreaView>
 
@@ -114,37 +116,40 @@ export default function TaskDetailComponent({isVisible}) {
             </View>
             <View style={styles.comment}>
               <Image
-                  style={styles.tinyLogo}
-                  source={{ uri: "https://reactnative.dev/img/tiny_logo.png" }}
+                style={styles.tinyLogo}
+                source={{ uri: "https://reactnative.dev/img/tiny_logo.png" }}
               />
               <TextInput style={styles.input} placeholder="Comment..." />
               <Pressable
-                  style={styles.button}
-                  onPress={() => Alert.alert("Simple Button pressed")}
+                style={styles.button}
+                onPress={() => Alert.alert("Simple Button pressed")}
               >
                 <Text style={styles.text}>Submit</Text>
               </Pressable>
             </View>
           </View>
-        <View style={styles.containerComment}>
-          <View style={styles.comment_container}>
-            <TextInput
+          <View style={styles.containerComment}>
+            <View style={styles.comment_container}>
+              <TextInput
                 style={styles.input_txt}
                 onChangeText={(text) => setCommentValue(text)}
                 placeholder="type something ..."
                 ref={InputRef}
-            />
-            <Button title="send" onPress={() => AddToComments()} />
-          </View>
+              />
+              <Button title="send" onPress={() => AddToComments()} />
+            </View>
 
-          {Comments.map((c) => (
+            {Comments.map((c) => (
               <View style={styles.showComment_container} key={c.id}>
                 <Text>{c.commentValue}</Text>
               </View>
-          ))}
+            ))}
+          </View>
         </View>
-        </View> :<View></View>}
-      </View>
+      ) : (
+        <View></View>
+      )}
+    </View>
   );
 }
 
@@ -233,27 +238,27 @@ const styles = StyleSheet.create({
   },
   containerComment: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
   comment_container: {
-    width: '100%',
+    width: "100%",
     minHeight: 50,
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 30,
     marginBottom: 40,
   },
   input_txt: {
-    width: '70%',
+    width: "70%",
     borderWidth: 1,
-    borderColor: '#000000',
+    borderColor: "#000000",
     padding: 10,
   },
   showComment_container: {
-    width: '70%',
+    width: "70%",
     minHeight: 50,
-    backgroundColor: '#B0C4DE',
+    backgroundColor: "#B0C4DE",
     marginTop: 10,
   },
 });

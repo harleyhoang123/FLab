@@ -49,8 +49,7 @@ export const routes = {
     getFolderByRepositoryId:
       host +
       "8082/flab/repository/public/api/v1/folders/:repository-id/folders",
-    getAllRepository:
-      host + "8082/flab/repository/public/api/v1/repositories/all",
+    getAllRepository: host + "8082/flab/repository/public/api/v1/repositories",
   },
   account: {
     getAccountInfo:
