@@ -29,7 +29,7 @@ function ListNews({route,navigation}) {
             <FlatList
                 data={listNews}
                 renderItem={({ item }) => (
-                    <NewsItem newsId={item.newsId} title={item.title} author={item.author} thumbnail={item.thumbnail} createdDate={item.createdDate}
+                    <NewsItem newsId={item.newsId} title={item.title} author={item.author} thumbnail={item.thumbnail.url} createdDate={item.createdDate}
                               views={item.views} comments={item.comments} navigation={navigation} />
                 )}
             />

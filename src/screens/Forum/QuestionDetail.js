@@ -102,7 +102,6 @@ function QuestionDetail({route,navigation}) {
     ]
     return (
         <View>
-
             <HomeTopNavigator navigation={navigation}/>
             <View style={styles.container}>
                 <View style={styles.forum}>
@@ -112,7 +111,7 @@ function QuestionDetail({route,navigation}) {
                     <View style={styles.containerTitle}>
                         <View style={styles.containerT}>
                             <Text style={styles.textTitle}>{title}</Text>
-                            <Text style={styles.textContent}>Post by {author} on {formatTime(time)}                 Viewed {views} times</Text>
+                            <Text style={styles.textContent}>Post by {author} on {formatTime(time)} Viewed {views} times</Text>
                         </View>
                         <View>
                             <Buttons text={"AddQuestion"} style={[styles.button,{marginBottom:20}]} onPressTo={() => navigation.push("AddQuestion")}/>
