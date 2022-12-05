@@ -28,9 +28,9 @@ function SprintComponent({callBackSetIsVisible}) {
   ];
   const renderTextField = () => {
     return isTextField ? (
-      <TextField onSubmitEditing={changeType} />
+      <TextField onSubmitEditing={changeType} style={{margin:0,width:"100%",height:40}}/>
     ) : (
-      <Buttons text={"Create issue"} onPressTo={changeType} />
+      <Buttons text={"+ Create issue"} style={{width:"100%", alignItems:"flex-start", backgroundColor:'#F4F5F7'}} onPressTo={changeType}  styleText={{color:"#4C5C76"}}/>
     );
   };
   const renderDropdown = (isTextField) => {
@@ -40,7 +40,9 @@ function SprintComponent({callBackSetIsVisible}) {
           <FlatList
             data={data}
             renderItem={({ item }) => (
-              <TaskComponent callBackSetIsVisible={callBackSetIsVisible} />
+                <View>
+                  <TaskComponent callBackSetIsVisible={callBackSetIsVisible} />
+                </View>
             )}
           />
           {renderTextField(isTextField)}
@@ -69,8 +71,8 @@ function SprintComponent({callBackSetIsVisible}) {
         <View style={styles.view3}>
           <Text style={styles.text3}>2</Text>
         </View>
-        <Buttons text={"Complete sprint"} style={styles.btn} />
-        <Buttons text={"..."} style={styles.button} />
+        <Buttons text={"Complete sprint"} style={styles.btn} styleText={{fontSize:14}}/>
+        <Buttons text={"..."} style={styles.button} styleText={{fontSize:14}} />
       </View>
       {renderDropdown()}
     </View>
@@ -78,31 +80,27 @@ function SprintComponent({callBackSetIsVisible}) {
 }
 const styles = StyleSheet.create({
   container: {
-    margin: 8,
-    minWidth: 628,
+    margin: 5,
     padding: 8,
     borderRadius: 8,
   },
   containerContent: {
     flexDirection: "row",
-    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
+    borderRadius: 8,
   },
   row: {
     flexDirection: "row",
   },
   sprint: {
-    height: 50,
     flex: 10,
-    borderWidth: 1,
-    borderRadius: 2,
     justifyContent: "center",
-    paddingLeft: 5,
+    margin:2
   },
   view1: {
-    margin: 10,
+    margin: 5,
     width: 20,
     borderRadius: 5,
     backgroundColor: "#DFE1E6",
@@ -110,7 +108,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   view2: {
-    margin: 10,
+    margin: 5,
     width: 20,
     borderRadius: 5,
     backgroundColor: "#0052CC",
@@ -118,7 +116,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   view3: {
-    margin: 10,
+    margin: 5,
     width: 20,
     borderRadius: 5,
     backgroundColor: "#00875A",
@@ -127,35 +125,34 @@ const styles = StyleSheet.create({
   },
   text1: {
     color: "black",
-    fontSize: 20,
   },
   text2: {
     color: "white",
-    fontSize: 20,
   },
   text3: {
     color: "white",
-    fontSize: 20,
   },
   btn: {
-    margin: 10,
-    width: 200,
-    height: 40,
+    margin: 5,
+    width: 180,
+    height: 30,
   },
   button: {
-    margin: 10,
-    width: 60,
-    height: 40,
+    width: 20,
+    height: 30,
+    margin: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
   },
   textSprint: {
     marginRight: 20,
     marginLeft: 20,
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: "bold",
   },
   text: {
     marginRight: 20,
-    fontSize: 20,
+    fontSize: 16,
   },
 });
 export default SprintComponent;

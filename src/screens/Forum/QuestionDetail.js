@@ -10,7 +10,14 @@ import CommentItem from "../../components/CommentItem";
 import QuestionItem from "../../components/QuestionItem";
 import VoteComponent from "../../components/VoteComponent";
 import {useDispatch} from "react-redux";
-import {getQuestionDetailByQuestionId, postAnswer, postComment} from "../../actions/ForumAction";
+import {
+    closeQuestion,
+    getListQuestion,
+    getQuestionDetailByQuestionId,
+    postAnswer,
+    postComment
+} from "../../actions/ForumAction";
+import AnswerComponent from "../../components/AnswerComponent";
 
 const listQuestion = [{
     title: "Lionel Messi là ngôi sao mới nhất xuất hiện trong game sinh tồn PUBG Mobile ở bản cập nhật sắp tới.",
@@ -44,19 +51,22 @@ const listQuestion = [{
 function QuestionDetail({route,navigation}) {
 
     const res = route.params;
-    console.log(JSON.stringify(res));
-    const [comment, setComment] = useState('');
+
+    console.log("Data in question detail: "+JSON.stringify(res));
+    const [content, setContent] = useState('');
     const [answer, setAnswer] = useState('');
-    const [answerComment, setAnswerComment] = useState('');
+    const [addedComment, setAddedComment] = useState();
+    // const commentQuestion=res.data.comments;
     const [userComment, setUserComment] = useState(res.data.comments);
+    // const answerQuestion=res.data.answers
     const [userAnswer, setUserAnswer] = useState(res.data.answers);
-    const [userAnswerComment, setUserAnswerComment] = useState(res.data.answers.comments);
-    const [modalVisible, setModalVisible] = useState(false);
     const title = res.data.title;
-    const author = res.data.createdBy;
+    const questionId = res.data.questionId;
+    const author = res.data.createdBy.fullName;
     const time = res.data.createdDate;
     const views = res.data.views;
-    const content = res.data.content;
+    const problem = res.data.problem;
+    const triedCase = res.data.triedCase;
     const tags = res.data.tags;
     const numberAnswer=res.data.answers.length;
     const votes=res.data.score;
@@ -67,17 +77,22 @@ function QuestionDetail({route,navigation}) {
     }
     const dispatch = useDispatch();
     const handleEdit = () => {
-        dispatch(getQuestionDetailByQuestionId('6388f5e5c505183a8b03e46e', navigation,true));
+        dispatch(getQuestionDetailByQuestionId(questionId, navigation,true));
+    };
+    const handleClose = () => {
+        dispatch(closeQuestion(questionId, navigation));
     };
     const handleComment = () => {
-        setUserComment([...userComment, comment]);
-        dispatch(postComment(comment,'6388f5e5c505183a8b03e46e'));
-        setComment('');
+        dispatch(postComment(content,questionId, navigation));
+        setContent('');
     };
     const handleAnswer = () => {
         setUserAnswer([...userAnswer, answer]);
-        dispatch(postAnswer(answer,'6388f5e5c505183a8b03e46e'));
+        dispatch(postAnswer(answer,questionId));
         setAnswer('');
+    };
+    const handleBack = () => {
+        dispatch(getListQuestion(navigation));
     };
     const data=[
         {label: 'Highest score (default)', value: 'Highest score (default)'},
@@ -100,48 +115,16 @@ function QuestionDetail({route,navigation}) {
                             <Text style={styles.textContent}>Post by {author} on {formatTime(time)}                 Viewed {views} times</Text>
                         </View>
                         <View>
-                            <Buttons text={"..."} style={styles.btnModal} onPressTo={() => setModalVisible(true)}/>
-                            <Buttons text={"Back"} style={styles.btnModal} onPressTo={() => navigation.goBack(navigation)}/>
-                            <Modal
-                                animationType="fade"
-                                transparent={true}
-                                visible={modalVisible}
-                                onRequestClose={() => {
-                                    setModalVisible(!modalVisible);
-                                }}
-                            >
-                                <TouchableOpacity
-                                    activeOpacity={1}
-                                    onPress={()=>  setModalVisible(!modalVisible) }
-                                    style={styles.modal}>
-                                    <View style={styles.modalView}>
-                                        <TouchableOpacity onPress={() => {
-                                            navigation.push("AddQuestion")
-                                            setModalVisible(!modalVisible)}}
-                                                          style={[styles.buttonModal]}>
-                                            <Text style={styles.textStyle}>Add Question</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => {
-                                            handleEdit()
-                                            setModalVisible(!modalVisible)}}
-                                                          style={[styles.buttonModal]}>
-                                            <Text style={styles.textStyle}>Edit</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => {
-                                            setModalVisible(!modalVisible)}}
-                                                          style={[styles.buttonModal]}>
-                                            <Text style={styles.textStyle}>Delete</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </TouchableOpacity>
-                            </Modal>
+                            <Buttons text={"AddQuestion"} style={[styles.button,{marginBottom:20}]} onPressTo={() => navigation.push("AddQuestion")}/>
+                            <Buttons text={"Back"} style={styles.button} onPressTo={handleBack}/>
                         </View>
                     </View>
                     <Separator/>
                     <View style={styles.containerContent}>
-                        <VoteComponent votes={votes}/>
+                        <VoteComponent votes={votes} size={"4x"}/>
                         <View style={styles.containerCon}>
-                            <Text style={styles.textContent}>{content}</Text>
+                            <Text style={styles.textContent}>{problem}</Text>
+                            <Text style={styles.textContent}>{triedCase}</Text>
                             <FlatList
                                 style={styles.flatListTag}
                                 horizontal={true}
@@ -154,18 +137,28 @@ function QuestionDetail({route,navigation}) {
                                     </TouchableOpacity>
                                 )}
                             />
+                            <View style={styles.containerComment}>
+                                <View style={styles.login}>
+                                    <TouchableOpacity onPress={handleEdit}>
+                                        <Text style={styles.txt}>Edit</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={styles.login}>
+                                    <TouchableOpacity onPress={handleClose}>
+                                        <Text style={styles.txt}>Close</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
                         </View>
                     </View>
                     <View style={{marginLeft:100,marginTop:50,}}>
                         {userComment?.map((item)=>(
                             <View key={item.commentId}>
-                                <CommentItem username={item.createdBy} content={item.content} time={formatTime(item.createdDate)}/>
+                                <CommentItem questionId={questionId} navigation={navigation} commentId={item.commentId} username={item.createdBy.fullName} content={item.content} time={formatTime(item.createdDate)}/>
                             </View>
-
-                        ))
-                        }
+                        ))}
                         <View style={styles.containerComment}>
-                            <TextField text={comment} onChangeText={newText => setComment(newText)}
+                            <TextField text={content} onChangeText={newText => setContent(newText)}
                                        placeholder={" Comment Here"}
                                        secureTextEntry={false}
                                        multiline={true}
@@ -192,23 +185,7 @@ function QuestionDetail({route,navigation}) {
                     </View>
                     {userAnswer?.map((item)=>(
                         <View key={item.answerId}>
-                            <CommentItem username={item.createdBy} content={item.content} time={formatTime(item.createdDate)}/>
-                            {userAnswerComment?.map((item)=>(
-                                <View key={item.commentId}>
-                                    <CommentItem username={item.createdBy} content={item.content} time={formatTime(item.createdDate)}/>
-                                    <View style={styles.containerComment}>
-
-                                    </View>
-                                </View>
-                            ))
-                            }
-                            <TextField text={answerComment} onChangeText={newText => setAnswerComment(newText)}
-                                       placeholder={" Comment Here"}
-                                       secureTextEntry={false}
-                                       multiline={true}
-                                       style={[styles.comment,{width: "95%"}]}/>
-                            <Buttons text={"Comment"} style={styles.button}/>
-                            <Separator/>
+                        <AnswerComponent questionId={questionId} navigation={navigation} answerId={item.answerId} votes={item.score} createdBy={item.createdBy.fullName} content={item.content} createdDate={item.createdDate} userAnswerComment={item.comments}/>
                         </View>
                     ))
                     }
@@ -261,11 +238,12 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     comment: {
-        width: 1000,
+        width: "90%",
         height: 50,
     },
     button: {
         width: 200,
+
     },
     containerComment: {
         flexDirection: "row",
@@ -320,39 +298,15 @@ const styles = StyleSheet.create({
     containerCon:{
         width:"90%"
     },
-    btnModal:{
-        width:30,
-        height:40,
-        marginBottom:10,
-    },
-    modal:{
-        alignItems: "flex-end",
-        flex:1,
-    },
-    modalView: {
-        marginTop: 110,
-        marginRight:"10%",
-        backgroundColor: "white",
-        borderRadius: 20,
-        alignItems: "flex-start",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-    },
-
-    textStyle: {
-        fontWeight: "bold",
-    },
-    buttonModal:{
+    login: {
         alignItems: 'flex-start',
         justifyContent: 'center',
-        paddingVertical: 15,
-        paddingHorizontal: 25,
-        width: 150,
+        marginLeft: 10,
+    },
+    txt: {
+        fontSize: 18,
+        fontWeight: "bold",
+        borderBottomWidth: 1,
     },
 });
 

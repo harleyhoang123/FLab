@@ -37,120 +37,74 @@ const listNews =[{
     },
 ]
 
-function NewsDetail({navigation}) {
+function NewsDetail({route,navigation}) {
+    const res = route.params;
+    console.log("Data in News detail: "+JSON.stringify(res));
     const [modalVisible, setModalVisible] = useState(false);
     const [comment, setComment] = useState('');
-    const title = "<h1>This is heading 1</h1>\n"
-    const author= "s"
-    const time = "1"
-    const content= "<h1>This is heading 1</h1>\n" +
-        "<h2>This is heading 2</h2>\n" +
-        "<h3>This is heading 3</h3>"
-    const userComment= [
-        {
-            username: "A",
-            cmt: "abc",
-            time:"1",
-            reply: [
-                {
-                    username: "B",
-                    cmt: "xyz",
-                    time:"2",
-                },
-                {
-                    username: "C",
-                    cmt: "123",
-                    time:"3",
-                }
-            ]
-        },
-        {
-            username: "A",
-            cmt: "abc",
-            time:"1",
-            reply: [
-                {
-                    username: "B",
-                    cmt: "xyz",
-                    time:"2",
-                },
-                {
-                    username: "C",
-                    cmt: "123",
-                    time:"3",
-                }
-            ]
-        },
-        {
-            username: "A",
-            cmt: "abc",
-            time:"1",
-            reply: [
-                {
-                    username: "B",
-                    cmt: "xyz",
-                    time:"2",
-                },
-                {
-                    username: "C",
-                    cmt: "123",
-                    time:"3",
-                }
-            ]
-        },
-    ]
+    const formatTime=(date)=>{
+        const d= new Date(date);
+        return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
+    }
+    const title = res.data.title;
+    const author= res.data.author;
+    const time = res.data.createdDate;
+    const content= res.data.content;
+    const views= res.data.views
+    const [userComment, setUserComment] = useState(res.data.comments);
     return (
         <View>
             <HomeTopNavigator navigation={navigation}/>
             <View style={styles.container}>
-                <Modal
-                    animationType="fade"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                        setModalVisible(!modalVisible);
-                    }}
-                >
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={()=>  setModalVisible(!modalVisible) }
-                        style={styles.modal}>
-                        <View style={styles.modalView}>
-                            <TouchableOpacity onPress={() => {
-                                setModalVisible(!modalVisible)}}
-                                              style={[styles.buttonModal]}>
-                                <Text style={styles.textStyle}>Edit</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {
-                                setModalVisible(!modalVisible)}}
-                                              style={[styles.buttonModal]}>
-                                <Text style={styles.textStyle}>Delete</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </TouchableOpacity>
-                </Modal>
                 <View style={styles.containerTitle}>
                     <View style={styles.row}>
                         <View style={styles.containerT}>
-                            <Text >
-                                {HTMLReactParser(title)}
+                            <Text style={{fontSize:20, fontWeight:"Bold", marginTop:20}}>
+                                {title}
                             </Text>
                             <Text style={styles.txt}>
-                                Post by {author} on {time}
+                                Post by {author} on {formatTime(time)}              Views : {views}
                             </Text>
                         </View>
                         <View>
                             <Buttons text={"..."} style={styles.btnModal} onPressTo={() => setModalVisible(true)}/>
                             <Buttons text={"Back"} style={styles.btnModal} onPressTo={() => navigation.goBack(navigation)}/>
-
+                            <View styles={{position: "absolute"}}>
+                                <Modal
+                                    animationType="fade"
+                                    transparent={true}
+                                    visible={modalVisible}
+                                    onRequestClose={() => {
+                                        setModalVisible(!modalVisible);
+                                    }}
+                                >
+                                    <TouchableOpacity
+                                        activeOpacity={1}
+                                        onPress={()=>  setModalVisible(!modalVisible) }
+                                        style={styles.modal}>
+                                        <View style={styles.modalView}>
+                                            <TouchableOpacity onPress={() => {
+                                                setModalVisible(!modalVisible)}}
+                                                              style={[styles.buttonModal]}>
+                                                <Text style={styles.textStyle}>Edit</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity onPress={() => {
+                                                setModalVisible(!modalVisible)}}
+                                                              style={[styles.buttonModal]}>
+                                                <Text style={styles.textStyle}>Delete</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </TouchableOpacity>
+                                </Modal>
+                            </View>
                         </View>
                     </View>
 
                 </View>
                 <Separator/>
                 <View View style={styles.containerTitle}>
-                    <Text>
-                        {HTMLReactParser(content)}
+                    <Text style={styles.txt}>
+                        {content}
                     </Text>
                 </View>
                 <View style={styles.containerComment}>
@@ -161,21 +115,21 @@ function NewsDetail({navigation}) {
                                style={styles.comment}/>
                     <Buttons text={"Comment"} style={styles.button}/>
                 </View>
-                <FlatList
-                    data={userComment}
-                    renderItem={({ item }) => (
-                        <View>
-                            <CommentItem username={item.username} content={item.cmt} time={item.time}/>
-                            <FlatList
-                                style={styles.flatList}
-                                data={item.reply}
-                                renderItem={({ item }) => (
-                                    <CommentItem username={item.username} content={item.cmt} time={item.time}/>
-                                )}
-                            />
-                        </View>
-                    )}
-                />
+                {/*<FlatList*/}
+                {/*    data={userComment}*/}
+                {/*    renderItem={({ item }) => (*/}
+                {/*        <View>*/}
+                {/*            <CommentItem username={item.username} content={item.cmt} time={item.time}/>*/}
+                {/*            <FlatList*/}
+                {/*                style={styles.flatList}*/}
+                {/*                data={item.reply}*/}
+                {/*                renderItem={({ item }) => (*/}
+                {/*                    <CommentItem username={item.username} content={item.cmt} time={item.time}/>*/}
+                {/*                )}*/}
+                {/*            />*/}
+                {/*        </View>*/}
+                {/*    )}*/}
+                {/*/>*/}
 
                 <View style={styles.userComment}>
                     <Separator/>
@@ -229,6 +183,7 @@ const styles= StyleSheet.create(
             marginBottom: 20,
         },
         txt:{
+            marginTop:20,
             fontSize:17,
         },
         row:{
@@ -245,6 +200,7 @@ const styles= StyleSheet.create(
             flex:1,
         },
         modalView: {
+            position:"absolute",
             marginTop: 110,
             marginRight:"18%",
             backgroundColor: "white",

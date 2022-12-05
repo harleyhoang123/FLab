@@ -5,35 +5,11 @@ import ForumNavigation from "../../navigations/ForumNavigation";
 import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
 import QuestionItem from "../../components/QuestionItem";
-const listQuestion =[{
-    title: "Lionel Messi là ngôi sao mới nhất xuất hiện trong game sinh tồn PUBG Mobile ở bản cập nhật sắp tới.",
-    time: "1",
-    author: "s",
-    views: "10",
-    answers:"10",
-    votes:"10",
-    tags: ["react-native","react", "web",],
-},
-    {
-        title: "Vụ 3 con gái đổ xăng đốt nhà mẹ: Người dân vẫn bủn rủn khi kể lại lúc đưa các nạn nhân ra ngoài",
-        time: "1",
-        author: "s",
-        views: "10",
-        answers:"10",
-        votes:"10",
-        tags: ["react-native","react", "web",],
-    },
-    {
-        title: "Chiều 31/10, khắp các nẻo đường, từ quán trà đá cho tới những người đi đổ xăng ở xã Trung Hòa (huyện Yên Mỹ, tỉnh Hưng Yên) vẫn bàn tán xôn xao về vụ việc 3 người con gái đốt nhà mẹ đẻ ở thôn Thiên Lộc.  ",
-        time: "1",
-        author: "s",
-        views: "10",
-        answers:"10",
-        votes:"10",
-        tags: ["react-native","react", "web",],
-    },
-]
-function Forum({navigation}) {
+function Forum({route,navigation}) {
+    console.log("onForum");
+    const res = route.params;
+    const listQuestion= res.data.items
+    console.log("List Question is:"+JSON.stringify(res));
     const [text, setText] = useState('');
     return (
         <View >
@@ -67,8 +43,8 @@ function Forum({navigation}) {
                     <FlatList
                         data={listQuestion}
                         renderItem={({ item }) => (
-                            <QuestionItem title={item.title} time={item.time} author={item.author} navigation={navigation} views={item.views}
-                                          tags={item.tags} votes={item.votes} answers={item.answers} />
+                            <QuestionItem questionId={item.questionId} title={item.title} tags={item.tags} score={item.score} views={item.views}
+                                          answers={item.answers} askedBy={item.askedBy.username} createdDate={item.createdDate} navigation={navigation}/>
                         )}
                     />
                     <View style={styles.containerButton}>
