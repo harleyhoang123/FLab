@@ -5,18 +5,38 @@ import HomeTopNavigator from "../../navigations/HomeNavigation";
 import EditProfileComponent from "../../components/EditProfileComponent";
 import Buttons from "../../components/Buttons";
 import {RadioButton} from "react-native-paper";
+import {useDispatch} from "react-redux";
+import {updateProfile} from "../../actions/UserAction";
 
-function EditProfile({navigation}) {
-    const name=" Nguyen Cong Son"
-    const [fullName, setFullName] = useState(name);
-    const [dateOfBirth, setDateOfBirth] = useState('');
-    const [gender, setGender] = useState('Male');
-    const [address, setAddress] = useState('');
-    const [rollNumber, setRollNumber] = useState('');
-    const [memberCode, setMemberCode] = useState('');
-    const [major, setMajor] = useState('');
-    const [currentTermNo, setCurrentTermNo] = useState('');
-    const [specialized, setSpecialized] = useState('');
+function EditProfile({route,navigation}) {
+    const response= route.params.data;
+    const fullNameInfo=response.lastModifiedBy.userInfo.fullName;
+    const avatar= response.avatar;
+    const profileId = response.profileId;
+    const accountId= response.lastModifiedBy.accountId
+    const genderInfo= response.gender;
+    const dateOfBirthInfo= response.dateOfBirth;
+    const addressInfo= response.address;
+    const phoneNumberInfo= response.phoneNumber;
+    const studentId= response.studentId;
+    const studentCode= response.studentCode;
+    const majorInfo= response.major;
+    const currentTermNoInfo=response.currentTermNo;
+    const specializedInfo= response.specialized;
+    const [fullName, setFullName] = useState(fullNameInfo);
+    const [dateOfBirth, setDateOfBirth] = useState(dateOfBirthInfo);
+    const [gender, setGender] = useState(genderInfo);
+    const [address, setAddress] = useState(addressInfo);
+    const [phoneNumber, setPhoneNumber] = useState(phoneNumberInfo);
+    const [rollNumber, setRollNumber] = useState(studentId);
+    const [memberCode, setMemberCode] = useState(studentCode);
+    const [major, setMajor] = useState(majorInfo);
+    const [currentTermNo, setCurrentTermNo] = useState(currentTermNoInfo);
+    const [specialized, setSpecialized] = useState(specializedInfo);
+    const dispatch= useDispatch();
+    const updatedProfile =()=>{
+        dispatch(updateProfile(profileId, accountId, gender, dateOfBirth, address, phoneNumber, rollNumber, memberCode, major, currentTermNo, specialized, navigation))
+    }
     return (
         <View style={styles.container}>
             <HomeTopNavigator navigation={navigation}/>
@@ -57,6 +77,7 @@ function EditProfile({navigation}) {
                 </View>
 
                 <EditProfileComponent text={address} placeholder={" Address"} title={"Address"} onTextChange={ address => setAddress(address)} multiline={true} style={{height:300, width:"90%"}} />
+                <EditProfileComponent text={phoneNumber} placeholder={" Phone Number"} title={"Phone Number"} onTextChange={ phoneNumber => setPhoneNumber(phoneNumber)} style={{width:"90%"}}/>
                 <View style={styles.containerSmall}>
                     <EditProfileComponent text={rollNumber} placeholder={" Roll Number"} title={"Roll Number"} onTextChange={ rollNumber => setRollNumber(rollNumber)} style={{width:"99%"}}/>
                     <EditProfileComponent text={memberCode} placeholder={" Member Code"} title={"Member Code"} onTextChange={ memberCode => setMemberCode(memberCode)} style={{width:"99%"}}/>
@@ -67,7 +88,7 @@ function EditProfile({navigation}) {
                     <EditProfileComponent text={specialized} placeholder={" Specialized"} title={"Specialized"} onTextChange={ specialized => setSpecialized(specialized)} style={{width:"99%"}}/>
                 </View>
                 <View style={styles.containerButton}>
-                    <Buttons style={styles.button} text={"Save"} onPressTo={() => {navigation.push("Profile")}}/>
+                    <Buttons style={styles.button} text={"Save"} onPressTo={updatedProfile}/>
                     <Buttons style={styles.button} text={"Cancel"} onPressTo={() => {navigation.push("Profile")}}/>
                 </View>
             </View>

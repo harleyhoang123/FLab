@@ -5,7 +5,7 @@ import Buttons from "../../components/Buttons";
 import ProfileComponent from "../../components/ProfileComponent";
 import TextField from "../../components/TextField";
 import {useDispatch} from "react-redux";
-import {changePassword} from "../../actions/UserAction";
+import {changePassword, getAccountInfoByAccountId, getAccountInfoByAccountIdToEdit} from "../../actions/UserAction";
 import AsyncStorage from "@react-native-community/async-storage";
 const getAccountId = async () => {
     try {
@@ -16,7 +16,21 @@ const getAccountId = async () => {
         console.log("Can't get account id: "+e);
     }
 }
-function Profile({navigation}) {
+function Profile({route,navigation}) {
+    const response= route.params.data;
+    const fullName=response.lastModifiedBy.userInfo.fullName;
+    const avatar= response.avatar;
+    const profileId = response.profileId;
+    const gender= response.gender;
+    const dateOfBirth= response.dateOfBirth;
+    const address= response.address;
+    const emailInfo=response.createdBy.userInfo.email;
+    const phoneNumberInfo= response.phoneNumber;
+    const studentId= response.studentId;
+    const studentCode= response.studentCode;
+    const major= response.major;
+    const currentTermNo=response.currentTermNo;
+    const specialized= response.specialized;
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [reNewPassword, setReNewPassword] = useState('');
@@ -32,6 +46,10 @@ function Profile({navigation}) {
         console.log("New Password: "+ newPassword)
         dispatch(changePassword(oldPassword, newPassword,accountId));
     }
+    const goToEditProfile = () => {
+        console.log("EditProfile: ")
+        dispatch(getAccountInfoByAccountIdToEdit(response.lastModifiedBy.accountId, navigation));
+    };
     return (
         <View style={styles.container}>
             <HomeTopNavigator navigation={navigation}/>
@@ -42,28 +60,28 @@ function Profile({navigation}) {
                         source={{
                             uri: 'https://pbs.twimg.com/profile_images/486929358120964097/gNLINY67_400x400.png',
                         }}/>
-                    <Text style={styles.textName}> Nguyen Cong Son</Text>
+                    <Text style={styles.textName}>{fullName}</Text>
                 </View>
                 <View style={styles.containerInfo}>
                     <View style={styles.info}>
-                        <ProfileComponent title={"Date of birth"} information={"08/09/2000"}/>
-                        <ProfileComponent title={"Gender"} information={"Male"}/>
+                        <ProfileComponent title={"Date of birth"} information={dateOfBirth}/>
+                        <ProfileComponent title={"Gender"} information={gender}/>
                     </View>
-                    <ProfileComponent title={"Address"} information={"Phường Tiền Châu, Thành Phố Phúc Yên, Tỉnh Vĩnh Phúc"}/>
-                    <ProfileComponent title={"Phone number"} information={"0387424978"}/>
-                    <ProfileComponent title={"Email"} information={"SonNCHE140279@fpt.edu.vn"}/>
+                    <ProfileComponent title={"Address"} information={address}/>
+                    <ProfileComponent title={"Phone number"} information={phoneNumberInfo}/>
+                    <ProfileComponent title={"Email"} information={emailInfo}/>
                     <View style={styles.info}>
-                        <ProfileComponent title={"Roll number"} information={"HE140279"}/>
-                        <ProfileComponent title={"Member Code"} information={"SonNCHE140279"}/>
+                        <ProfileComponent title={"Roll number"} information={studentId}/>
+                        <ProfileComponent title={"Member Code"} information={studentCode}/>
                     </View>
                     <View style={styles.info}>
-                        <ProfileComponent title={"Major"} information={"BSE"}/>
-                        <ProfileComponent title={"Current Term No"} information={"9"}/>
-                        <ProfileComponent title={"Specialized"} information={"IS"}/>
+                        <ProfileComponent title={"Major"} information={major}/>
+                        <ProfileComponent title={"Current Term No"} information={currentTermNo}/>
+                        <ProfileComponent title={"Specialized"} information={specialized}/>
                     </View>
                 </View>
                 <View style={styles.containerInfo}>
-                    <Buttons style={styles.button} text={"Edit Profile"} onPressTo={() => {navigation.push("EditProfile")}}/>
+                    <Buttons style={styles.button} text={"Edit Profile"} onPressTo={goToEditProfile}/>
                 </View>
                 <View style={styles.containerInfo}>
                     <Text style={styles.text}>Change PassWord</Text>

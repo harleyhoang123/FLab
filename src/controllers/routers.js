@@ -61,6 +61,7 @@ export const routes = {
   account: {
     getAccountInfo:
       host + "8084/flab/account/public/api/v1/profiles/:profile-id",
+    updateAccountInfo: host + "8084/flab/account/public/api/v1/profiles/:profile-id",
   },
   project: {
     getProjectByLabId:

@@ -122,8 +122,35 @@ export const getAccountInfoByAccountId =
             }
         } catch ({data}) {
             console.log("In catch: "+ JSON.stringify(data))
-            if(data.status.status === 400){
-                navigation.push("EditProfile");
+        }
+    };
+export const getAccountInfoByAccountIdToEdit =
+    (accountId, navigation) => async (dispatch, _, {networkService}) => {
+        console.log("Account ID User Action: "+ accountId);
+        try {
+            const userController = new UserController(networkService);
+            const {data} = await userController.getAccountInfo({ accountId});
+            console.log("Data Change is: " + JSON.stringify(data));
+            console.log("Data.data is: "+ JSON.stringify(data.data))
+            if(data.data != null){
+                navigation.navigate("EditProfile", {data: data.data})
             }
+        } catch ({data}) {
+            console.log("In catch: "+ JSON.stringify(data))
+        }
+    };
+export const updateProfile =
+    (profileId, accountId, gender, dateOfBirth, address, phoneNumber, studentId, studentCode, major, currentTermNo, specialized, navigation) => async (dispatch, _, {networkService}) => {
+        console.log("Account ID User Action: "+ accountId);
+        try {
+            const userController = new UserController(networkService);
+            const {data} = await userController.updateProfile({ profileId, accountId, gender, dateOfBirth, address, phoneNumber, studentId, studentCode, major, currentTermNo, specialized});
+            console.log("Data Change is: " + JSON.stringify(data));
+            console.log("Data.data is: "+ JSON.stringify(data.data))
+            if(data.data != null){
+                dispatch(getAccountInfoByAccountId(accountId, navigation))
+            }
+        } catch ({data}) {
+            console.log("In catch: "+ JSON.stringify(data))
         }
     };

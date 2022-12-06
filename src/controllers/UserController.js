@@ -64,5 +64,21 @@ export class UserController {
         })
     }
 
-
+    updateProfile({profileId, accountId, gender, dateOfBirth, address, phoneNumber, studentId, studentCode, major, currentTermNo, specialized}) {
+        return this.networkService.request({
+            method: 'PUT',
+            url: routes.account.updateAccountInfo.replace(":profile-id", profileId),
+            data: {
+                accountId: accountId,
+                gender: gender,
+                dateOfBirth: dateOfBirth,
+                address: address,
+                phoneNumber: phoneNumber,
+                studentCode: studentCode,
+                major: major,
+                currentTermNo: currentTermNo,
+                specialized: specialized
+            },
+        });
+    }
 }
