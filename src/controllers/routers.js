@@ -50,8 +50,10 @@ export const routes = {
     getFolderByRepositoryId:
       host +
       "8082/flab/repository/public/api/v1/folders/:repository-id/folders",
-    getAllRepository:
-      host + "8082/flab/repository/public/api/v1/repositories",
+    getAllRepository: host + "8082/flab/repository/public/api/v1/repositories",
+    createFolderInRepository:
+      host +
+      "8082/flab/repository/public/api/v1/repositories/:repository-id/folder",
   },
   account: {
     getAccountInfo:
@@ -77,9 +79,11 @@ export const routes = {
     getNewsByNewsId: host + "8888/flab/notification/public/api/v1/news/",
     createNews: host + "8888/flab/notification/public/api/v1/news/news",
   },
-  workSpace:{
-    getAllSprint: host + "8085/flab/workspace/public/api/v1/sprints/:workspace-id/sprints",
+  workSpace: {
+    getAllSprint:
+      host + "8085/flab/workspace/public/api/v1/sprints/:workspace-id/sprints",
     getTaskDetail: host + "8085/flab/workspace/public/api/v1/tasks/:task-id",
-    getSubTaskDetail: host + "8085/flab/workspace/public/api/v1/subtasks/:subtask-id"
-  }
+    getSubTaskDetail:
+      host + "8085/flab/workspace/public/api/v1/subtasks/:subtask-id",
+  },
 };

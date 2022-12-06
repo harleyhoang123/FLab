@@ -44,6 +44,7 @@ import Project from "../screens/Lab/Project";
 import ProjectDetail from "../screens/Lab/ProjectDetail";
 import ViewAllMemberInProject from "../screens/Lab/ViewAllMemberInProject";
 import CreateProject from "../screens/Lab/CreateProject";
+import CreateFolderInRepo from "../screens/Repository/CreateFolderInRepo";
 function RootNavigators() {
   const Stack = createStackNavigator();
   return (
@@ -94,6 +95,10 @@ function RootNavigators() {
         <Stack.Screen name="Project" component={Project} />
         <Stack.Screen name="ProjectDetail" component={ProjectDetail} />
         <Stack.Screen name="CreateProject" component={CreateProject} />
+        <Stack.Screen
+          name="CreateFolderInRepo"
+          component={CreateFolderInRepo}
+        />
         <Stack.Screen
           name="ViewAllMemberInProject"
           component={ViewAllMemberInProject}

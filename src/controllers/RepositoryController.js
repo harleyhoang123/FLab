@@ -23,4 +23,15 @@ export class RepositoryController {
       data: null,
     });
   }
+
+  createFolderInRepo({ repositoryId, requestData }) {
+    return this.networkService.request({
+      method: "POST",
+      url: routes.repository.createFolderInRepository,
+      data: {
+        folderName: requestData.folderName,
+        description: requestData.description,
+      },
+    });
+  }
 }

@@ -29,3 +29,27 @@ export const getAllRepository =
       console.log("Error get folder by id:" + JSON.stringify(data));
     }
   };
+
+export const createFolderInRepo =
+  (repositoryId, requestData, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const repositoryController = new RepositoryController(networkService);
+      console.log(
+        "Request data of createFolderInRepo actions: " +
+          JSON.stringify(requestData)
+      );
+      const response = await repositoryController.createFolderInRepo({
+        repositoryId,
+        requestData,
+      });
+      console.log(
+        "Response from createFolderInRepo: " + JSON.stringify(response)
+      );
+      console.log("Data: " + JSON.stringify(response.data.data));
+      console.log("Lab Id: " + JSON.stringify(response.data.data.labId));
+      dispatch(getAllProjectByLabId(labId, navigation));
+    } catch ({ data }) {
+      console.log("ERROR when createFolderInRepo: " + JSON.stringify(data));
+    }
+  };
