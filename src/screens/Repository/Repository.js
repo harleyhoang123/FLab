@@ -14,6 +14,7 @@ import TextField from "../../components/TextField";
 import LabNavigator from "../../navigations/LabNavigator";
 import { useDispatch } from "react-redux";
 import { getFolderDetailId } from "../../actions/RepositoryAction";
+import ProjectNavigator from "../../navigations/ProjectNavigator";
 
 function Repository({ route, navigation }) {
   const data = route.params.data;
@@ -24,9 +25,9 @@ function Repository({ route, navigation }) {
     dispatch(getFolderDetailId(id, name, navigation));
   };
 
-  const deleteFolder = () => {
-    dispatch(deleteFolderById(id));
-  };
+  // const deleteFolder = () => {
+  //   dispatch(deleteFolderById(id));
+  // };
   const [checked, setChecked] = useState("");
   const Item = ({ id, name, type, lastEdit }) => (
     <View style={styles.table}>
@@ -66,7 +67,7 @@ function Repository({ route, navigation }) {
   );
   return (
     <View style={styles.container}>
-      <LabNavigator navigation={navigation} />
+      <ProjectNavigator navigation={navigation} />
       <View style={styles.containerContent}>
         <Text style={styles.myCV}> Repository</Text>
         <View style={styles.row}>

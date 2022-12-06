@@ -56,8 +56,7 @@ const getAvatar = async () => {
   }
 };
 export default function LabNavigator({ route, navigation }) {
-  const [repoId, setRepoId] = useState("");
-  getRepoId().then((v) => setRepoId(v));
+
   const [accountId, setAccountId] = useState("");
   const [avatar, setAvatar] = useState('');
   getAvatar().then((v) => setAvatar(v));
@@ -65,9 +64,7 @@ export default function LabNavigator({ route, navigation }) {
   const [labId, setLabId] = useState('');
   getLabId().then((v) => setLabId(v));
   const dispatch = useDispatch();
-  const goToRepository = () => {
-    dispatch(getFolderByRepositoryId(repoId, navigation));
-  };
+
   const goToViewAllMemberPage = (labId) => {
     dispatch(getAllMemberInLaboratoryById(labId, navigation));
   };
@@ -152,12 +149,6 @@ export default function LabNavigator({ route, navigation }) {
           >
             <Text style={styles.textLogo}>Project</Text>
           </TouchableOpacity>
-          {/* <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.push("Spaces")}
-          >
-            <Text style={styles.textLogo}>Spaces</Text>
-          </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.button}
             onPress={()=>goToViewAllMemberPage(labId)}
@@ -166,12 +157,6 @@ export default function LabNavigator({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={goToListMaterial}>
             <Text style={styles.textLogo}>Material</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => goToRepository()}
-          >
-            <Text style={styles.textLogo}>Repository</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.topNavigationContentRight}>

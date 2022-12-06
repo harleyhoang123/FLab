@@ -16,6 +16,16 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBell} from "@fortawesome/free-solid-svg-icons/faBell";
 import AvatarComponent from "../components/AvatarComponent";
 import {getAllSprint} from "../actions/WorkSpaceAction";
+import { getFolderByRepositoryId } from "../actions/RepositoryAction";
+const getRepoId = async () => {
+    try {
+        const repoId = await AsyncStorage.getItem("@currentProjectId");
+        console.log("repoId: " + repoId);
+        return repoId;
+    } catch (e) {
+        console.log("Can't get repo id: " + e);
+    }
+};
 const getProjectId = async () => {
     try {
         const projectId = await AsyncStorage.getItem("@projectId");
@@ -48,12 +58,15 @@ function ProjectNavigator({navigation}) {
     const [avatar, setAvatar] = useState('');
     getAvatar().then((v) => setAvatar(v));
     getAccountId().then((v) => setAccountId(v));
+    const [repoId, setRepoId] = useState("");
+    getRepoId().then((v) => setRepoId(v));
      const [projectId, setProject] = useState('');
     getProjectId().then((v) => setProject(v));
     const dispatch = useDispatch();
     const goToRepository = () => {
-        dispatch(getAllRepository(navigation));
+        dispatch(getFolderByRepositoryId(repoId, navigation));
     };
+    console.log("ProjectId in asyncStore: " + repoId);
     const goToListMemberPage = (projectId) => {
         dispatch(getAllMemberInProject(projectId, navigation));
     };

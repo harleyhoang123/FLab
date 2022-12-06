@@ -96,6 +96,7 @@ function RootNavigators() {
         <Stack.Screen name="Project" component={Project} />
         <Stack.Screen name="ProjectDetail" component={ProjectDetail} />
         <Stack.Screen name="CreateSubFolder" component={CreateSubFolder} />
+        <Stack.Screen name="CreateProject" component={CreateProject} />
         <Stack.Screen
           name="CreateFolderInRepo"
           component={CreateFolderInRepo}
