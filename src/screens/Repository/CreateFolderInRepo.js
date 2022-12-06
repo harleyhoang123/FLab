@@ -31,6 +31,7 @@ export default function CreateFolderInRepo({ navigation }) {
   const dispatch = useDispatch();
 
   const createFolderInRepositoryHandle = () => {
+    console.log("Response from custom network service: "+ JSON.stringify(response))
     const requestData = {
       folderName: textName,
       description: textDescription,
@@ -66,7 +67,7 @@ export default function CreateFolderInRepo({ navigation }) {
             <Buttons
               text={"Create"}
               style={styles.button}
-              onPressTo={() => navigation.navigate("CreateFolderInRepo")}
+              onPressTo={() => createFolderInRepositoryHandle()}
             />
             <Buttons
               text={"Back"}

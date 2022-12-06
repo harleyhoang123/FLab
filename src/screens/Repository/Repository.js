@@ -19,6 +19,7 @@ import ProjectNavigator from "../../navigations/ProjectNavigator";
 function Repository({ route, navigation }) {
   const data = route.params.data;
   const [items, setItems] = useState(data.items);
+  console.log("Data in repository: "+ JSON.stringify(items))
   const [text, setText] = useState("");
   const dispatch = useDispatch();
   const getFolderDetailIdHandler = (id, name) => {

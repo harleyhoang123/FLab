@@ -1,15 +1,10 @@
 import React from "react";
 import {
   StyleSheet,
-  SafeAreaView,
   View,
-  Button,
   Text,
-  CheckBox,
-  FlatList,
   Image,
 } from "react-native";
-import LabNavigator from "../../navigations/LabNavigator";
 import SprintComponent from "../../components/SprintComponent";
 import TaskDetailComponent from "../../components/TaskDetailComponent";
 import { useState } from "react";

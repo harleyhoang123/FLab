@@ -12,7 +12,7 @@ export const getFolderByRepositoryId =
         repoId,
       });
       console.log("Mate data in act:" + JSON.stringify(data.data));
-      navigation.navigate("Repository", { data: data.data });
+      navigation.push("Repository", { data: data.data });
     } catch ({ data }) {
       console.log("Error get folder by id:" + JSON.stringify(data));
     }
@@ -35,8 +35,7 @@ export const createFolderInRepo =
         "Response from createFolderInRepo: " + JSON.stringify(response)
       );
       console.log("Data: " + JSON.stringify(response.data.data));
-      console.log("Lab Id: " + JSON.stringify(response.data.data.labId));
-      dispatch(getAllRepository(navigation));
+      dispatch(getFolderByRepositoryId(repositoryId ,navigation));
     } catch ({ data }) {
       console.log("ERROR when createFolderInRepo: " + JSON.stringify(data));
     }
