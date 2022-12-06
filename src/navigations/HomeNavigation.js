@@ -154,7 +154,7 @@ export default function HomeTopNavigator({ navigation }) {
             style={[styles.button, { flexDirection: "row" }]}
             onPress={() => setModalProfileVisible(true)}
           >
-            <AvatarComponent styles={null} avatarURL={avatar}/>
+            <AvatarComponent avatarURL={avatar}/>
             <Text>Profile</Text>
           </TouchableOpacity>
         </View>

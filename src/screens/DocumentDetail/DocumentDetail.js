@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import LabNavigator from "../../navigations/LabNavigator";
 import HTMLReactParser from "html-react-parser";
+import ProjectNavigator from "../../navigations/ProjectNavigator";
 
 export default function DocumentDetail({ navigation }) {
   const data = {
@@ -13,7 +14,7 @@ export default function DocumentDetail({ navigation }) {
   };
   return (
     <View>
-      <LabNavigator navigation={navigation} />
+      <ProjectNavigator navigation={navigation} />
       <View style={styles.container}>
         {/* <Pdf
           source={source}

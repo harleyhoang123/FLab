@@ -6,6 +6,7 @@ import { RadioButton } from "react-native-paper";
 import TextField from "../../components/TextField";
 import { Touchable, TouchableOpacity } from "react-native-web";
 import LabNavigator from "../../navigations/LabNavigator";
+import ProjectNavigator from "../../navigations/ProjectNavigator";
 
 function RepositoryDetail({ route, navigation }) {
   const data = route.params.data;
@@ -71,7 +72,7 @@ function RepositoryDetail({ route, navigation }) {
   );
   return (
     <View style={styles.container}>
-      <LabNavigator navigation={navigation} />
+      <ProjectNavigator navigation={navigation} />
       <View style={styles.containerContent}>
         <View style={styles.header}>
           <View>

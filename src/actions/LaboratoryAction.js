@@ -26,6 +26,7 @@ export const getLaboratoryById =
     try {
       const laboratoryController = new LaboratoryController(networkService);
       console.log("Lab ID in actions: " + labId);
+        await AsyncStorage.setItem("@labId", labId);
       const response = await laboratoryController.getLaboratoryById({
         labId,
       });

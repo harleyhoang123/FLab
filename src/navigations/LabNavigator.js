@@ -14,43 +14,90 @@ import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
 import Notification from "../screens/Notification/Notification";
 import { useDispatch } from "react-redux";
 import { getAllRepository } from "../actions/RepositoryAction";
-import { getListMaterialByLabId } from "../actions/LaboratoryAction";
+import {getAllMemberInLaboratoryById, getAllProjectByLabId, getListMaterialByLabId} from "../actions/LaboratoryAction";
+import AsyncStorage from "@react-native-community/async-storage";
+import {getAccountInfoByAccountId, logout} from "../actions/UserAction";
+import AvatarComponent from "../components/AvatarComponent";
 
+const getLabId = async () => {
+  try {
+    const labId = await AsyncStorage.getItem("@labId");
+    console.log("labId: " + labId);
+    return labId;
+  } catch (e) {
+    console.log("Can't get labId: " + e);
+  }
+};
+const getAccountId = async () => {
+  try {
+    const accountId = await AsyncStorage.getItem("@accountId");
+    console.log("AccountId: " + accountId);
+    return accountId;
+  } catch (e) {
+    console.log("Can't get account id: " + e);
+  }
+};
+const getAvatar = async () => {
+  try {
+    const avatar = await AsyncStorage.getItem("@avatar");
+    console.log("avatar: " + avatar);
+    return avatar;
+  } catch (e) {
+    console.log("Can't get avatar: " + e);
+  }
+};
 export default function LabNavigator({ route, navigation }) {
+  const [accountId, setAccountId] = useState("");
+  const [avatar, setAvatar] = useState('');
+  getAvatar().then((v) => setAvatar(v));
+  getAccountId().then((v) => setAccountId(v));
+  const [labId, setLabId] = useState('');
+  getLabId().then((v) => setLabId(v));
   const dispatch = useDispatch();
   const goToRepository = () => {
     dispatch(getAllRepository(navigation));
   };
-
+  const goToViewAllMemberPage = (labId) => {
+    dispatch(getAllMemberInLaboratoryById(labId, navigation));
+  };
   const [modalProfileVisible, setModalProfileVisible] = useState(false);
   const [modalNotifyVisible, setModalNotifyVisible] = useState(false);
 
   const goToListMaterial = () => {
     dispatch(getListMaterialByLabId("", navigation));
   };
-
+  const goToViewAllProjectPage = (labId) => {
+    dispatch(getAllProjectByLabId(labId, navigation));
+  };
+  const goToProfile = () => {
+    dispatch(getAccountInfoByAccountId(accountId, navigation));
+  };
+  const handleLogout = () => {
+    dispatch(logout);
+    navigation.push("Login");
+  };
   return (
     <View style={styles.container}>
       <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalProfileVisible}
-        onRequestClose={() => {
-          setModalProfileVisible(!modalProfileVisible);
-        }}
+          animationType="fade"
+          transparent={true}
+          visible={modalProfileVisible}
+          onRequestClose={() => {
+            setModalProfileVisible(!modalProfileVisible);
+          }}
       >
         <TouchableOpacity
-          activeOpacity={1}
-          onPress={() => setModalProfileVisible(!modalProfileVisible)}
-          style={styles.modal}
+            activeOpacity={1}
+            onPress={() => setModalProfileVisible(!modalProfileVisible)}
+            style={styles.modal}
         >
           <View style={styles.modalProfileView}>
             <TouchableOpacity
-              onPress={() => {
-                navigation.push("Profile");
-                setModalProfileVisible(!modalProfileVisible);
-              }}
-              style={[styles.buttonModal]}
+                onPress={() => {
+                  goToProfile()
+                  setModalProfileVisible(!modalProfileVisible);
+                }}
+                style={[styles.buttonModal]}
             >
               <Text style={styles.textStyle}>My Profile</Text>
             </TouchableOpacity>
@@ -60,18 +107,24 @@ export default function LabNavigator({ route, navigation }) {
             <TouchableOpacity style={[styles.buttonModal]}>
               <Text style={styles.textStyle}>My CV</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.buttonModal]}>
+            <TouchableOpacity
+                onPress={() => {
+                  handleLogout();
+                  setModalProfileVisible(!modalProfileVisible);
+                }}
+                style={[styles.buttonModal]}
+            >
               <Text style={styles.textStyle}>Log out</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
       </Modal>
       <Notification
-        navigation={navigation}
-        modalNotifyVisible={modalNotifyVisible}
-        setModalNotifyVisible={(modalNotifyVisible) =>
-          setModalNotifyVisible(modalNotifyVisible)
-        }
+          navigation={navigation}
+          modalNotifyVisible={modalNotifyVisible}
+          setModalNotifyVisible={(modalNotifyVisible) =>
+              setModalNotifyVisible(modalNotifyVisible)
+          }
       />
       <View style={styles.topNavigationContent}>
         <View style={styles.topNavigationContentLeft}>
@@ -84,49 +137,32 @@ export default function LabNavigator({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.push("Document")}
+            onPress={() => goToViewAllProjectPage(labId)}
           >
-            <Text style={styles.textLogo}>Document</Text>
+            <Text style={styles.textLogo}>Project</Text>
           </TouchableOpacity>
-          {/* <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.push("Spaces")}
-          >
-            <Text style={styles.textLogo}>Spaces</Text>
-          </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.push("YourWork")}
+            onPress={()=>goToViewAllMemberPage(labId)}
           >
-            <Text style={styles.textLogo}>YourWork</Text>
+            <Text style={styles.textLogo}>Member</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={goToListMaterial}>
             <Text style={styles.textLogo}>Material</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => goToRepository()}
-          >
-            <Text style={styles.textLogo}>Repository</Text>
-          </TouchableOpacity>
         </View>
         <View style={styles.topNavigationContentRight}>
           <TouchableOpacity
-            style={[styles.button, { marginHorizontal: 50 }]}
-            onPress={() => setModalNotifyVisible(true)}
+              style={[styles.button, { marginHorizontal: 50 }]}
+              onPress={() => setModalNotifyVisible(true)}
           >
             <FontAwesomeIcon icon={faBell} size={"xl"} />
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.button, { flexDirection: "row" }]}
-            onPress={() => setModalProfileVisible(true)}
+              style={[styles.button, { flexDirection: "row" }]}
+              onPress={() => setModalProfileVisible(true)}
           >
-            <Image
-              style={styles.userImage}
-              source={{
-                uri: "https://pbs.twimg.com/profile_images/486929358120964097/gNLINY67_400x400.png",
-              }}
-            />
+            <AvatarComponent avatarURL={avatar}/>
             <Text>Profile</Text>
           </TouchableOpacity>
         </View>

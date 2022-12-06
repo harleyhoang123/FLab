@@ -16,6 +16,7 @@ import {
   BeVietnamPro_200ExtraLight_Italic,
 } from "@expo-google-fonts/dev";
 import LabNavigator from "../../navigations/LabNavigator";
+import ProjectNavigator from "../../navigations/ProjectNavigator";
 
 const DATA = [
   {
@@ -117,7 +118,7 @@ const Doucument = ({ navigation }) => {
   );
   return (
     <View>
-      <LabNavigator navigation={navigation} />
+      <ProjectNavigator navigation={navigation} />
       <View style={styles.container}>
         <View style={styles.left}>
           <ImageBackground source={image}>

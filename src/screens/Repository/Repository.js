@@ -14,6 +14,7 @@ import TextField from "../../components/TextField";
 import LabNavigator from "../../navigations/LabNavigator";
 import {useDispatch} from "react-redux";
 import {getFolderByRepositoryId} from "../../actions/RepositoryAction";
+import ProjectNavigator from "../../navigations/ProjectNavigator";
 
 function Repository({route, navigation}) {
     const data = route.params.data;
@@ -65,7 +66,7 @@ function Repository({route, navigation}) {
     );
     return (
         <View style={styles.container}>
-            <LabNavigator navigation={navigation}/>
+            <ProjectNavigator navigation={navigation}/>
             <View style={styles.containerContent}>
                 <Text style={styles.myCV}> Repository</Text>
                 <View style={styles.row}>

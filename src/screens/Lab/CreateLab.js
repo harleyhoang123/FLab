@@ -31,7 +31,7 @@ export default function CreateLab({ navigation }) {
   };
   return (
     <View>
-      <LabNavigator />
+      <LabNavigator navigation={navigation}/>
       <View style={styles.container}>
         <Text style={styles.title}>Create a Lab</Text>
         <View>

@@ -45,7 +45,7 @@ export default function UpdateLab({ route, navigation }) {
   };
   return (
     <View>
-      <LabNavigator />
+      <LabNavigator navigation={navigation}/>
       <View style={styles.container}>
         <Text style={styles.title}>Update your's Lab</Text>
         <View>

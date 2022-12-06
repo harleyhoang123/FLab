@@ -16,6 +16,7 @@ import {
 import LabNavigator from "../../navigations/LabNavigator";
 import { getLaboratoryById } from "../../actions/LaboratoryAction";
 import Buttons from "../../components/Buttons";
+import HomeTopNavigator from "../../navigations/HomeNavigation";
 
 const Lab = ({ route, navigation }) => {
   const data = route.params.data;
@@ -160,7 +161,7 @@ const Lab = ({ route, navigation }) => {
   );
   return (
     <View>
-      <LabNavigator navigation={navigation} />
+      <HomeTopNavigator navigation={navigation} />
       <View style={styles.container}>
         <View style={styles.top}>
           <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 120 }}>

@@ -15,6 +15,7 @@ import LabNavigator from "../../navigations/LabNavigator";
 import { useDispatch } from "react-redux";
 import { removeMemberInProjectById } from "../../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
+import ProjectNavigator from "../../navigations/ProjectNavigator";
 
 const getProjectId = async () => {
   try {
@@ -61,7 +62,7 @@ export default function ViewAllMemberInProject({ route, navigation }) {
   );
   return (
     <View>
-      <LabNavigator navigation={navigation} />
+      <ProjectNavigator navigation={navigation} />
       <View style={styles.container}>
         <View>
           <Text style={styles.heading}>List All Member</Text>

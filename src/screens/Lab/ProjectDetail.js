@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import Buttons from "../../components/Buttons";
 import { getAllMemberInProject } from "../../actions/LaboratoryAction";
 import {getAllSprint} from "../../actions/WorkSpaceAction";
+import ProjectNavigator from "../../navigations/ProjectNavigator";
 
 export default function ProjectDetail({ route, navigation }) {
   const data = route.params.data;
@@ -29,7 +30,7 @@ export default function ProjectDetail({ route, navigation }) {
   };
   return (
     <View>
-      <LabNavigator navigation={navigation} />
+      <ProjectNavigator navigation={navigation} />
       <View style={styles.container}>
         <View style={styles.left}>
           <View style={styles.ava}>

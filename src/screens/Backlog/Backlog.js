@@ -14,6 +14,7 @@ import SprintComponent from "../../components/SprintComponent";
 import TaskDetailComponent from "../../components/TaskDetailComponent";
 import { useState } from "react";
 import SubTaskDetailComponent from "../../components/SubTaskDetailComponent";
+import ProjectNavigator from "../../navigations/ProjectNavigator";
 
 const projectName = {
   name: "FPT Lab Management",
@@ -46,7 +47,7 @@ export default function Backlog({route, navigation }) {
   }
   return (
     <View>
-      <LabNavigator navigation={navigation} />
+      <ProjectNavigator navigation={navigation} />
       <View style={styles.container}>
         <View style={styles.left}>
           <View style={styles.projectTitle}>

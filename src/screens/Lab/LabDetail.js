@@ -22,6 +22,7 @@ import {
   deleteLaboratory,
 } from "../../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
+import LabNavigator from "../../navigations/LabNavigator";
 
 const getAccountId = async () => {
   try {
@@ -62,7 +63,7 @@ export default function LabDetail({ route, navigation }) {
   };
   return (
     <View style={styles.container}>
-      <HomeTopNavigator navigation={navigation} />
+      <LabNavigator navigation={navigation} />
       <View style={styles.containerProfile}>
         <View style={styles.containerName}>
           <Text style={styles.textName}>{data.laboratoryName}</Text>
