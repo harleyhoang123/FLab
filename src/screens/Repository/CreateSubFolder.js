@@ -12,31 +12,26 @@ import {
 import { useDispatch } from "react-redux";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
-import { createFolderInRepo } from "../../actions/RepositoryAction";
+import { createSubFolderInRepo } from "../../actions/RepositoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
-const getRepoId = async () => {
-  try {
-    const repoId = await AsyncStorage.getItem("@currentProjectId");
-    console.log("repoId: " + repoId);
-    return repoId;
-  } catch (e) {
-    console.log("Can't get repo id: " + e);
-  }
-};
-export default function CreateFolderInRepo({ navigation }) {
+
+export default function CreateSubFolder({ route, navigation }) {
   const [textName, onChangeNameText] = useState("");
   const [textDescription, onChangeDescriptionText] = useState("");
-  const [repoId, setRepoId] = useState("");
-  getRepoId().then((v) => setRepoId(v));
+  const folderName = route.params.folderName;
+  const parentFolderId = route.params.parentFolderId;
   const dispatch = useDispatch();
-
-  const createFolderInRepositoryHandle = () => {
+  console.log("folderName:" + folderName);
+  console.log("parentFolderId:" + parentFolderId);
+  const createSubFolderHandle = () => {
     const requestData = {
       folderName: textName,
       description: textDescription,
     };
     console.log(requestData);
-    dispatch(createFolderInRepo(repoId, requestData, navigation));
+    dispatch(
+      createSubFolderInRepo(folderName, parentFolderId, requestData, navigation)
+    );
   };
   return (
     <View>
@@ -66,7 +61,7 @@ export default function CreateFolderInRepo({ navigation }) {
             <Buttons
               text={"Create"}
               style={styles.button}
-              onPressTo={() => navigation.navigate("CreateFolderInRepo")}
+              onPressTo={createSubFolderHandle}
             />
             <Buttons
               text={"Back"}

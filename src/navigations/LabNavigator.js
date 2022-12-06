@@ -13,13 +13,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
 import Notification from "../screens/Notification/Notification";
 import { useDispatch } from "react-redux";
-import { getAllRepository } from "../actions/RepositoryAction";
+import { getFolderByRepositoryId } from "../actions/RepositoryAction";
 import { getListMaterialByLabId } from "../actions/LaboratoryAction";
+import AsyncStorage from "@react-native-community/async-storage";
+const getRepoId = async () => {
+  try {
+    const repoId = await AsyncStorage.getItem("@currentProjectId");
+    console.log("repoId: " + repoId);
+    return repoId;
+  } catch (e) {
+    console.log("Can't get repo id: " + e);
+  }
+};
 
 export default function LabNavigator({ route, navigation }) {
+  const [repoId, setRepoId] = useState("");
+  getRepoId().then((v) => setRepoId(v));
   const dispatch = useDispatch();
   const goToRepository = () => {
-    dispatch(getAllRepository(navigation));
+    dispatch(getFolderByRepositoryId(repoId, navigation));
   };
 
   const [modalProfileVisible, setModalProfileVisible] = useState(false);

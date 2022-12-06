@@ -13,22 +13,22 @@ import { RadioButton } from "react-native-paper";
 import TextField from "../../components/TextField";
 import LabNavigator from "../../navigations/LabNavigator";
 import { useDispatch } from "react-redux";
-import { getFolderByRepositoryId } from "../../actions/RepositoryAction";
+import { getFolderDetailId } from "../../actions/RepositoryAction";
 
 function Repository({ route, navigation }) {
   const data = route.params.data;
   const [items, setItems] = useState(data.items);
   const [text, setText] = useState("");
   const dispatch = useDispatch();
-  const getFolderByRepository = (id) => {
-    dispatch(getFolderByRepositoryId(id, navigation));
+  const getFolderDetailIdHandler = (id, name) => {
+    dispatch(getFolderDetailId(id, name, navigation));
   };
 
   const deleteFolder = () => {
     dispatch(deleteFolderById(id));
   };
   const [checked, setChecked] = useState("");
-  const Item = ({ id, name, type, lastEdit, size }) => (
+  const Item = ({ id, name, type, lastEdit }) => (
     <View style={styles.table}>
       <View style={styles.columnCheckBox}>
         <RadioButton.Group>
@@ -41,7 +41,7 @@ function Repository({ route, navigation }) {
       </View>
       <View style={styles.column}>
         <Text
-          onPress={() => getFolderByRepository(id)}
+          onPress={() => getFolderDetailIdHandler(id, name)}
           style={{ color: "blue" }}
         >
           {name}
@@ -53,19 +53,15 @@ function Repository({ route, navigation }) {
       <View style={styles.column}>
         <Text>{lastEdit}</Text>
       </View>
-      <View style={styles.column}>
-        <Text>{size}</Text>
-      </View>
     </View>
   );
 
   const renderItem = ({ item }) => (
     <Item
-      id={item.repositoryId}
-      name={item.repositoryName}
+      id={item.folderId}
+      name={item.folderName}
       type={item.description}
-      lastEdit={"11/2/2022"}
-      size={"40MB"}
+      lastEdit={item.lastModifiedDate}
     />
   );
   return (
@@ -91,22 +87,18 @@ function Repository({ route, navigation }) {
         </View>
 
         <View>
-          <Text style={[styles.myCV, { marginLeft: 60 }]}>
-            List All Repository
-          </Text>
           <View style={styles.containerButton}>
             <Buttons style={styles.button} text={"Refresh"} />
             <Buttons
               style={styles.button}
               onPressTo={() => navigation.navigate("CreateFolderInRepo")}
-              text={"Create"}
+              text={"Create Folder"}
             />
             <Buttons
               style={styles.button}
               text={"Delete"}
               onPress={() => deleteFolder(id)}
             />
-            <Buttons style={styles.button} text={"Download"} />
           </View>
           <View style={styles.table}>
             <View style={[styles.columnCheckBox, styles.borderbot]}></View>
@@ -118,9 +110,6 @@ function Repository({ route, navigation }) {
             </View>
             <View style={[styles.column, styles.borderbot]}>
               <Text>Last Edit</Text>
-            </View>
-            <View style={[styles.column, styles.borderbot]}>
-              <Text>Size</Text>
             </View>
           </View>
           <SafeAreaView style={styles.flatlist}>
@@ -166,7 +155,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   containerContent: {
-    width: "90%",
+    width: "100%",
     backgroundColor: "white",
   },
   header: {

@@ -47,13 +47,16 @@ export const routes = {
       host + "8083/flab/lab/public/api/v1/materials/:material-id",
   },
   repository: {
+    getFolderDetail:
+      host + "8082/flab/repository/public/api/v1/folders/:folder-id",
     getFolderByRepositoryId:
       host +
       "8082/flab/repository/public/api/v1/folders/:repository-id/folders",
-    getAllRepository: host + "8082/flab/repository/public/api/v1/repositories",
     createFolderInRepository:
       host +
       "8082/flab/repository/public/api/v1/repositories/:repository-id/folder",
+    createSubFolder:
+      host + "8082/flab/repository/public/api/v1/folders/:folder-id",
   },
   account: {
     getAccountInfo:
