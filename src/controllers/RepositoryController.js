@@ -1,4 +1,4 @@
-import {routes} from "./routers";
+import { routes } from "./routers";
 
 export class RepositoryController {
   constructor(networkService) {
@@ -9,8 +9,8 @@ export class RepositoryController {
     return this.networkService.request({
       method: "GET",
       url: routes.repository.getFolderByRepositoryId.replace(
-          ":repository-id",
-          repoId
+        ":repository-id",
+        repoId
       ),
       data: null,
     });
@@ -28,8 +28,8 @@ export class RepositoryController {
     return this.networkService.request({
       method: "POST",
       url: routes.repository.createFolderInRepository.replace(
-          ":repository-id",
-          repositoryId
+        ":repository-id",
+        repositoryId
       ),
       data: {
         folderName: requestData.folderName,
@@ -40,18 +40,26 @@ export class RepositoryController {
 
   createSubFolder({ parentFolderId, requestData }) {
     console.log(
-        "Parent folder id in create sub folder controller:" + parentFolderId
+      "Parent folder id in create sub folder controller:" + parentFolderId
     );
     return this.networkService.request({
       method: "POST",
       url: routes.repository.createSubFolder.replace(
-          ":folder-id",
-          parentFolderId
+        ":folder-id",
+        parentFolderId
       ),
       data: {
         folderName: requestData.folderName,
         description: requestData.description,
       },
+    });
+  }
+
+  downLoadFile({ fileId }) {
+    return this.networkService.request({
+      method: "GET",
+      url: routes.repository.downloadFile.replace(":file-id", fileId),
+      data: null,
     });
   }
 }

@@ -7,15 +7,24 @@ import TextField from "../../components/TextField";
 import { Touchable, TouchableOpacity } from "react-native-web";
 import LabNavigator from "../../navigations/LabNavigator";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
+import { downLoadFileByFileId } from "../../actions/RepositoryAction";
+import { useDispatch } from "react-redux";
 
 function RepositoryDetail({ route, navigation }) {
   const data = route.params.data;
+  const fileId = "638ee951dcab483f62c0aab3";
   const parentFolderId = route.params.parentFolderId;
   const folderName = route.params.folderName;
   const itemsFile = data.listFile;
   const itemsFolder = data.listFolder;
   const [text, setText] = useState("");
+  const dispatch = useDispatch();
   const [checked, setChecked] = useState("");
+
+  const downLoadFileHandler = () => {
+    console.log("An");
+    dispatch(downLoadFileByFileId(fileId));
+  };
 
   const Item = ({ id, name, type, description, lastEdit, size }) => (
     <View style={styles.table}>
@@ -58,7 +67,7 @@ function RepositoryDetail({ route, navigation }) {
           <RadioButton
             value={folderId}
             status={checked === folderId ? "checked" : "unchecked"}
-            onPress={() => setChecked(id)}
+            onPress={() => setChecked(folderId)}
           />
         </RadioButton.Group>
       </View>
@@ -137,7 +146,11 @@ function RepositoryDetail({ route, navigation }) {
               text={"Delete"}
               onPress={() => deleteFolder(id)}
             />
-            <Buttons style={styles.button} text={"Download"} />
+            <Buttons
+              onPressTo={downLoadFileHandler}
+              style={styles.button}
+              text={"Download"}
+            />
             <Buttons
               style={styles.button}
               text={"Upload"}
