@@ -12,7 +12,6 @@ function Home({ navigation }) {
   return (
     <View style={{ backgroundColor: "white" }}>
       <HomeTopNavigator navigation={navigation} />
-      <CreateLaboratory navigation={navigation}/>
     </View>
   );
 }

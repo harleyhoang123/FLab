@@ -38,7 +38,8 @@ export default function Project({ route, navigation }) {
 
   const dispatch = useDispatch();
   const goToProjectDetailPage = (projectId) => {
-    dispatch(getProjectById(labId, projectId, navigation));
+
+    dispatch(getProjectById(projectId, navigation));
   };
 
   const removeProjectById = (projectId) => {
@@ -47,6 +48,7 @@ export default function Project({ route, navigation }) {
 
   const Item = ({ projectId, projectName, description, members }) => (
     <View style={styles.item}>
+      <Text>{projectId}</Text>
       <Text style={styles.title}>Project name: {projectName}</Text>
 
       <View style={{ flexDirection: "row" }}>

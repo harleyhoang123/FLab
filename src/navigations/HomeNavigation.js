@@ -53,6 +53,7 @@ export default function HomeTopNavigator({ navigation }) {
     dispatch(getListQuestion(navigation));
   };
   const gotoNews = () => {
+    console.log("Click go to news")
     dispatch(getListNews(navigation));
   };
   const handleLogout = () => {

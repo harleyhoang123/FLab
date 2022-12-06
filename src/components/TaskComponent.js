@@ -1,17 +1,27 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import Buttons from "./Buttons";
-function TaskComponent({callBackSetIsVisible}) {
+import {getAllSprint} from "../actions/WorkSpaceAction";
+import {useDispatch} from "react-redux";
+function TaskComponent({navigation, projectId, taskId,sprintId,taskName,estimate,status,assignee}) {
+  const dispatch = useDispatch();
+  const goToBacklog = (projectId, taskId, sprintId) => {
+    dispatch(getAllSprint(projectId,taskId,null,sprintId, navigation));
+  };
+
   return (
       <View style={styles.containerContent}>
         <View style={styles.sprint}>
-          <TouchableOpacity onPress={() => callBackSetIsVisible(true)} >
+          <TouchableOpacity onPress={() => goToBacklog(projectId, taskId, sprintId)} >
             <View style={styles.container}>
               <View style={styles.row}>
-                <Text style={styles.text}>abcxyz</Text>
+                <Text style={styles.text}>{taskName}</Text>
                 <Buttons text={"Edit"} style={styles.btn}></Buttons>
               </View>
               <View style={styles.row}>
+                <View style={styles.view1}>
+                  <Text style={styles.text1}>{estimate}</Text>
+                </View>
                 <Buttons text={"Done"} style={styles.btn}></Buttons>
                 <TouchableOpacity>
                   <Image
@@ -56,6 +66,7 @@ const styles = StyleSheet.create({
     height: 30,
   },
   text: {
+    marginLeft: 20,
     marginRight: 20,
     fontSize: 16,
   },
@@ -65,6 +76,17 @@ const styles = StyleSheet.create({
     borderRadius:15,
     marginRight:50,
     marginLeft:30
+  },
+  view1: {
+    margin: 5,
+    width: 20,
+    borderRadius: 5,
+    backgroundColor: "#DFE1E6",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text1: {
+    color: "black",
   },
 });
 export default TaskComponent;
