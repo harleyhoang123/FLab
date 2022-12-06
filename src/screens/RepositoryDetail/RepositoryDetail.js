@@ -10,32 +10,14 @@ import ProjectNavigator from "../../navigations/ProjectNavigator";
 
 function RepositoryDetail({ route, navigation }) {
   const data = route.params.data;
-  const items = data.items;
+  const parentFolderId = route.params.parentFolderId;
+  const folderName = route.params.folderName;
+  const itemsFile = data.listFile;
+  const itemsFolder = data.listFolder;
   const [text, setText] = useState("");
-  const listFile = [
-    {
-      id: 1,
-      name: "abc",
-      type: "Folder",
-      lastEdit: "abc",
-      size: "102MB",
-    },
-    {
-      id: 2,
-      name: "xyz",
-      type: "Folder",
-      lastEdit: "xyz",
-      size: "102MB",
-    },
-    {
-      id: 3,
-      name: "123",
-      type: "Folder",
-      lastEdit: "123",
-      size: "102MB",
-    },
-  ];
-  const Item = ({ id, name, type, lastEdit, size }) => (
+  const [checked, setChecked] = useState("");
+
+  const Item = ({ id, name, type, description, lastEdit, size }) => (
     <View style={styles.table}>
       <View style={styles.columnCheckBox}>
         <RadioButton.Group>
@@ -53,6 +35,9 @@ function RepositoryDetail({ route, navigation }) {
         <Text>{type}</Text>
       </View>
       <View style={styles.column}>
+        <Text>{description}</Text>
+      </View>
+      <View style={styles.column}>
         <Text>{lastEdit}</Text>
       </View>
       <View style={styles.column}>
@@ -61,13 +46,57 @@ function RepositoryDetail({ route, navigation }) {
     </View>
   );
 
+  const ItemFolder = ({
+    folderId,
+    folderName,
+    description,
+    lastModifiedDate,
+  }) => (
+    <View style={styles.table}>
+      <View style={styles.columnCheckBox}>
+        <RadioButton.Group>
+          <RadioButton
+            value={folderId}
+            status={checked === folderId ? "checked" : "unchecked"}
+            onPress={() => setChecked(id)}
+          />
+        </RadioButton.Group>
+      </View>
+      <View style={styles.column}>
+        <Text onPress={() => getFolderByRepository(id)}>{folderName}</Text>
+      </View>
+      <View style={styles.column}>
+        <Text>{"Folder"}</Text>
+      </View>
+      <View style={styles.column}>
+        <Text>{description}</Text>
+      </View>
+      <View style={styles.column}>
+        <Text>{lastModifiedDate}</Text>
+      </View>
+      <View style={styles.column}>
+        <Text>{"--"}</Text>
+      </View>
+    </View>
+  );
+
   const renderItem = ({ item }) => (
     <Item
-      id={item.folderId}
-      name={item.folderName}
-      type={"word"}
-      lastEdit={"yesterday"}
-      size={"40MB"}
+      id={item.fileId}
+      name={item.fileName}
+      type={item.type}
+      description={item.description}
+      lastEdit={item.lastModifiedDate}
+      size={item.size}
+    />
+  );
+
+  const renderItemFolder = ({ item }) => (
+    <ItemFolder
+      folderId={item.folderId}
+      folderName={item.folderName}
+      description={item.description}
+      lastModifiedDate={item.lastModifiedDate}
     />
   );
   return (
@@ -76,7 +105,7 @@ function RepositoryDetail({ route, navigation }) {
       <View style={styles.containerContent}>
         <View style={styles.header}>
           <View>
-            <Text style={styles.myCV}> Repository</Text>
+            <Text style={styles.myCV}> {folderName}/</Text>
           </View>
         </View>
         <View style={styles.containerSearch}>
@@ -91,9 +120,18 @@ function RepositoryDetail({ route, navigation }) {
           <Buttons text={"Search"} />
         </View>
         <View style={styles.bot}>
-          <Text style={styles.myCV}>List All Repository</Text>
           <View style={styles.containerButton}>
             <Buttons style={styles.button} text={"Refresh"} />
+            <Buttons
+              style={styles.button}
+              text={"Create Folder"}
+              onPressTo={() =>
+                navigation.push("CreateSubFolder", {
+                  parentFolderId: parentFolderId,
+                  folderName: folderName,
+                })
+              }
+            />
             <Buttons
               style={styles.button}
               text={"Delete"}
@@ -113,6 +151,9 @@ function RepositoryDetail({ route, navigation }) {
               <Text>File Name</Text>
             </View>
             <View style={[styles.column, styles.borderbot]}>
+              <Text>Description</Text>
+            </View>
+            <View style={[styles.column, styles.borderbot]}>
               <Text>Type</Text>
             </View>
             <View style={[styles.column, styles.borderbot]}>
@@ -122,8 +163,9 @@ function RepositoryDetail({ route, navigation }) {
               <Text>Size</Text>
             </View>
           </View>
-          <SafeAreaView style={styles.flatlist}>
-            <FlatList data={items} renderItem={renderItem} />
+          <SafeAreaView>
+            <FlatList data={itemsFile} renderItem={renderItem} />
+            <FlatList data={itemsFolder} renderItem={renderItemFolder} />
           </SafeAreaView>
         </View>
       </View>
@@ -149,7 +191,7 @@ const styles = StyleSheet.create({
   table: {
     width: "100%",
     flexDirection: "row",
-    justifyContent: "center",
+    marginLeft: "12%",
   },
   columnCheckBox: {
     width: "5%",
@@ -160,9 +202,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   column: {
-    width: "22%",
+    width: "15%",
     borderColor: "black",
     borderRightWidth: 1,
+    borderLeftWidth: 1,
     justifyContent: "center",
     borderBottomWidth: 1,
     alignItems: "center",
@@ -170,7 +213,7 @@ const styles = StyleSheet.create({
   containerContent: {
     flex: 1,
     alignSelf: "center",
-    width: "90%",
+    width: "100%",
     backgroundColor: "white",
   },
   header: {
@@ -183,7 +226,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
     justifyContent: "flex-end",
-    marginRight: 60,
+    marginRight: 30,
   },
   myCV: {
     fontWeight: "bold",

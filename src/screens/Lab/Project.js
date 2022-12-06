@@ -31,10 +31,12 @@ const getCuurentLabId = async () => {
 const storeCurrentProjectId = async (projectId) => {
   try {
     await AsyncStorage.setItem("@currentProjectId", projectId);
-  }catch (e){
-    console.log("Can't save current project id to async storage: "+ JSON.stringify(e))
+  } catch (e) {
+    console.log(
+      "Can't save current project id to async storage: " + JSON.stringify(e)
+    );
   }
-}
+};
 
 export default function Project({ route, navigation }) {
   const listProject = route.params.data;
@@ -46,7 +48,9 @@ export default function Project({ route, navigation }) {
 
   const dispatch = useDispatch();
   const goToProjectDetailPage = (projectId) => {
-    storeCurrentProjectId(projectId).then((r) => console.log("Store current project id success"));
+    storeCurrentProjectId(projectId).then((r) =>
+      console.log("Store current project id success")
+    );
     dispatch(getProjectById(projectId, navigation));
   };
 
@@ -56,7 +60,6 @@ export default function Project({ route, navigation }) {
 
   const Item = ({ projectId, projectName, description, members }) => (
     <View style={styles.item}>
-      <Text>{projectId}</Text>
       <Text style={styles.title}>Project name: {projectName}</Text>
 
       <View style={{ flexDirection: "row" }}>

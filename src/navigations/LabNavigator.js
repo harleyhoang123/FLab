@@ -18,7 +18,16 @@ import {getAllMemberInLaboratoryById, getAllProjectByLabId, getListMaterialByLab
 import AsyncStorage from "@react-native-community/async-storage";
 import {getAccountInfoByAccountId, logout} from "../actions/UserAction";
 import AvatarComponent from "../components/AvatarComponent";
-
+import { getFolderByRepositoryId } from "../actions/RepositoryAction";
+const getRepoId = async () => {
+  try {
+    const repoId = await AsyncStorage.getItem("@currentProjectId");
+    console.log("repoId: " + repoId);
+    return repoId;
+  } catch (e) {
+    console.log("Can't get repo id: " + e);
+  }
+};
 const getLabId = async () => {
   try {
     const labId = await AsyncStorage.getItem("@labId");
@@ -47,6 +56,8 @@ const getAvatar = async () => {
   }
 };
 export default function LabNavigator({ route, navigation }) {
+  const [repoId, setRepoId] = useState("");
+  getRepoId().then((v) => setRepoId(v));
   const [accountId, setAccountId] = useState("");
   const [avatar, setAvatar] = useState('');
   getAvatar().then((v) => setAvatar(v));
@@ -55,7 +66,7 @@ export default function LabNavigator({ route, navigation }) {
   getLabId().then((v) => setLabId(v));
   const dispatch = useDispatch();
   const goToRepository = () => {
-    dispatch(getAllRepository(navigation));
+    dispatch(getFolderByRepositoryId(repoId, navigation));
   };
   const goToViewAllMemberPage = (labId) => {
     dispatch(getAllMemberInLaboratoryById(labId, navigation));
@@ -141,6 +152,12 @@ export default function LabNavigator({ route, navigation }) {
           >
             <Text style={styles.textLogo}>Project</Text>
           </TouchableOpacity>
+          {/* <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.push("Spaces")}
+          >
+            <Text style={styles.textLogo}>Spaces</Text>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.button}
             onPress={()=>goToViewAllMemberPage(labId)}
@@ -149,6 +166,12 @@ export default function LabNavigator({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={goToListMaterial}>
             <Text style={styles.textLogo}>Material</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => goToRepository()}
+          >
+            <Text style={styles.textLogo}>Repository</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.topNavigationContentRight}>

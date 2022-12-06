@@ -26,7 +26,7 @@ export default function ProjectDetail({ route, navigation }) {
     dispatch(getAllMemberInProject(projectId, navigation));
   };
   const goToBacklog = (projectId) => {
-    dispatch(getAllSprint(projectId,null,null,null, navigation));
+    dispatch(getAllSprint(projectId, null, null, null, navigation));
   };
   return (
     <View>
@@ -66,9 +66,9 @@ export default function ProjectDetail({ route, navigation }) {
               onPressTo={() => goToListMemberPage(data.projectId)}
             />
             <Buttons
-                style={styles.button}
-                text={"BackLog"}
-                onPressTo={() => goToBacklog(data.projectId)}
+              style={styles.button}
+              text={"BackLog"}
+              onPressTo={() => goToBacklog(data.projectId)}
             />
           </View>
         </View>
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     marginRight: 10,
     width: 200,
+    marginTop: 10,
   },
   infoLeft: {
     alignItems: "center",

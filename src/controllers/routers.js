@@ -47,11 +47,16 @@ export const routes = {
       host + "8083/flab/lab/public/api/v1/materials/:material-id",
   },
   repository: {
+    getFolderDetail:
+      host + "8082/flab/repository/public/api/v1/folders/:folder-id",
     getFolderByRepositoryId:
       host +
       "8082/flab/repository/public/api/v1/folders/:repository-id/folders",
-    getAllRepository:
-      host + "8082/flab/repository/public/api/v1/repositories",
+    createFolderInRepository:
+      host +
+      "8082/flab/repository/public/api/v1/repositories/:repository-id/folder",
+    createSubFolder:
+      host + "8082/flab/repository/public/api/v1/folders/:folder-id",
   },
   account: {
     getAccountInfo:
@@ -77,9 +82,11 @@ export const routes = {
     getNewsByNewsId: host + "8888/flab/notification/public/api/v1/news/",
     createNews: host + "8888/flab/notification/public/api/v1/news/news",
   },
-  workSpace:{
-    getAllSprint: host + "8085/flab/workspace/public/api/v1/sprints/:workspace-id/sprints",
+  workSpace: {
+    getAllSprint:
+      host + "8085/flab/workspace/public/api/v1/sprints/:workspace-id/sprints",
     getTaskDetail: host + "8085/flab/workspace/public/api/v1/tasks/:task-id",
-    getSubTaskDetail: host + "8085/flab/workspace/public/api/v1/subtasks/:subtask-id"
-  }
+    getSubTaskDetail:
+      host + "8085/flab/workspace/public/api/v1/subtasks/:subtask-id",
+  },
 };
