@@ -146,9 +146,9 @@ export const updateProfile =
             const userController = new UserController(networkService);
             const {data} = await userController.updateProfile({ profileId, accountId, gender, dateOfBirth, address, phoneNumber, studentId, studentCode, major, currentTermNo, specialized});
             console.log("Data Change is: " + JSON.stringify(data));
-            console.log("Data.data is: "+ JSON.stringify(data.data))
-            if(data.data != null){
-                dispatch(getAccountInfoByAccountId(accountId, navigation))
+            console.log("Data updateProfile is: "+ JSON.stringify(data.data))
+            if(data != null){
+                dispatch(getAccountInfoByAccountId(profileId, navigation))
             }
         } catch ({data}) {
             console.log("In catch: "+ JSON.stringify(data))
