@@ -12,12 +12,23 @@ import {
 import { useDispatch } from "react-redux";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
+import {
+  updateLaboratoryByLabId,
+  getAllMemberInLaboratoryById,
+} from "../../actions/LaboratoryAction";
+import { SelectList } from "react-native-dropdown-select-list";
+
+const memberList = [
+  { key: "1", value: "Lam" },
+  { key: "2", value: "Hai" },
+];
 
 export default function UpdateLab({ route, navigation }) {
   const labInfo = route.params.labInfo;
   const [textName, onChangeNameText] = useState("");
   const [textDescription, onChangeDescriptionText] = useState("");
   const [textMajor, onChangeMajorText] = useState("");
+  const [textOwner, onChangeOwnerText] = useState("");
   const dispatch = useDispatch();
 
   const updateLaboratoryHandle = () => {
@@ -25,9 +36,12 @@ export default function UpdateLab({ route, navigation }) {
       labName: textName,
       description: textDescription,
       major: textMajor,
+      ownerBy: textOwner,
     };
     console.log(requestData);
-    dispatch(createLaboratory(requestData, navigation));
+    dispatch(
+      updateLaboratoryByLabId(labInfo.laboratoryId, requestData, navigation)
+    );
   };
   return (
     <View>
@@ -57,11 +71,30 @@ export default function UpdateLab({ route, navigation }) {
               value={labInfo.major}
               placeholder={"Enter lab's major"}
             />
+            <SelectList
+              setSelected={(val) => setSelected(val)}
+              placeholder={"OwnerBy"}
+              data={memberList}
+              save="value"
+              boxStyles={{
+                height: 40,
+                margin: 12,
+                borderWidth: 1,
+                padding: 10,
+                width: "45%",
+                marginLeft: "13%",
+              }}
+              dropdownStyles={{
+                width: 130,
+                marginLeft: "13%",
+              }}
+              search={false}
+            />
           </View>
 
           <View style={styles.btn}>
             <Buttons
-              text={"Create"}
+              text={"Update"}
               style={styles.button}
               onPressTo={updateLaboratoryHandle}
             />

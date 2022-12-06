@@ -26,6 +26,7 @@ export const routes = {
       host +
       "8083/flab/lab/public/api/v1/laboratories/:lab-id/members/:member-id",
     deleteLaboratory: host + "8083/flab/lab/public/api/v1/laboratories/:lab-id",
+    updateLaboratory: host + "8083/flab/lab/public/api/v1/laboratories/:lab-id",
   },
   forum: {
     getQuestionDetail: host + "8081/flab/forum/public/api/v1/questions/",

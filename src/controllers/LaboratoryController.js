@@ -184,4 +184,12 @@ export class LaboratoryController {
       data: null,
     });
   }
+
+  updateLaboratory({ labId }) {
+    return this.networkService.request({
+      method: "PUT",
+      url: routes.project.removeProject.replace(":lab-id", labId),
+      data: null,
+    });
+  }
 }

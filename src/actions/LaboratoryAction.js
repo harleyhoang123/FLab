@@ -261,3 +261,20 @@ export const removeProject =
       );
     }
   };
+
+export const updateLaboratoryByLabId =
+  (labId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const laboratoryController = new LaboratoryController(networkService);
+      const response = await laboratoryController.updateLaboratory({
+        labId,
+      });
+      console.log("updateLaboratoryByLabId: " + JSON.stringify(response));
+      dispatch(getAllProjectByLabId(labId, navigation));
+    } catch ({ data }) {
+      console.log(
+        "ERROR when updateLaboratoryByLabId: " + JSON.stringify(data)
+      );
+    }
+  };

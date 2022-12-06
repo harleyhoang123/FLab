@@ -38,6 +38,7 @@ export default function LabDetail({ route, navigation }) {
   const [accountId, setAccountId] = useState("");
   getAccountId().then((v) => setAccountId(v));
   const data = route.params.data;
+  console.log("labdeatl data:" + JSON.stringify(data));
   const isJoined = route.params.isJoined;
   const isAdmin = true;
 
@@ -48,6 +49,10 @@ export default function LabDetail({ route, navigation }) {
 
   const goToViewAllProjectPage = (labId) => {
     dispatch(getAllProjectByLabId(labId, navigation));
+  };
+
+  const goToLabUpdatePage = (labId) => {
+    dispatch(getAllMemberInLaboratoryById(labId, navigation));
   };
 
   const delteCurrentLab = () => {
