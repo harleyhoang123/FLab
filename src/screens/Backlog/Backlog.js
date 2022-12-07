@@ -1,201 +1,318 @@
 import React from "react";
 import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
+    StyleSheet,
+    View,
+    Text,
+    Image,
 } from "react-native";
 import SprintComponent from "../../components/SprintComponent";
 import TaskDetailComponent from "../../components/TaskDetailComponent";
-import { useState } from "react";
+import {useState} from "react";
 import SubTaskDetailComponent from "../../components/SubTaskDetailComponent";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
+import Buttons from "../../components/Buttons";
+import TextField from "../../components/TextField";
+import AsyncStorage from "@react-native-community/async-storage";
+import axios from "axios";
+import {createSprint} from "../../networking/CustomNetworkService";
 
-const projectName = {
-  name: "FPT Lab Management",
-  ava: "https://reactnative.dev/img/tiny_logo.png",
-  major: "Software Enginner",
+const getToken = async () => {
+    try {
+        const token = await AsyncStorage.getItem("@token");
+        console.log("token: " + token);
+        return token;
+    } catch (e) {
+        console.log("Can't get avatar: " + e);
+    }
+};
+export const getListSprint = async (projectId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.get(
+            'http://192.168.31.197:8085/flab/workspace/public/api/v1/sprints/:workspace-id/sprints'.replace(":workspace-id", projectId),
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in getListSprint: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        alert(error.message);
+    }
+};
+export const getTaskDetail = async (taskId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.get(
+            'http://192.168.31.197:8085/flab/workspace/public/api/v1/tasks/:task-id'.replace(":task-id", taskId),
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in getTaskDetail: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        alert(error.message);
+    }
+};
+export const getSubTaskDetail = async (subTaskId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.get(
+            'http://192.168.31.197:8085/flab/workspace/public/api/v1/subtasks/:subtask-id'.replace(":subtask-id", subTaskId),
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in getSubTaskDetail: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        alert(error.message);
+    }
 };
 
-export default function Backlog({route, navigation }) {
-  const res= route.params.data;
-  const projectId = route.params.projectId;
-  const [sprintId, setSprintId] = useState(route.params.sprintId);
-  console.log("Res in backlog is: "+ JSON.stringify(res))
-  const taskDetail = route.params.taskDetail;
-  const [taskD, setTaskD] = useState(taskDetail);
-  console.log("Task detail in backlog: "+ JSON.stringify(taskDetail));
-  console.log("Expression: "+ taskDetail != null);
-  const subTaskDetail = route.params.subTaskDetail;
-  const [subTaskD, setSubTaskD] = useState(subTaskDetail);
-  console.log("Task detail in backlog: "+ JSON.stringify(subTaskDetail));
-  console.log("Expression: "+ subTaskDetail != null);
-  const [listSPrint, setListSPrint] = useState(res.sprints.items);
-  if(sprintId===null){
-    setSprintId("check");
-  }
-  const callbackCloseTask=(task)=>{
-    setTaskD(task)
-  }
-  const callbackCloseSubTask=(subTask)=>{
-    setSubTaskD(subTask)
-  }
-  return (
-    <View>
-      <ProjectNavigator navigation={navigation} />
-      <View style={styles.container}>
-        <View style={styles.left}>
-          <View style={styles.projectTitle}>
-            <Text style={styles.projectName}>{projectName.name}</Text>
-            <Text style={styles.major}>{projectName.major}</Text>
-            <Image style={styles.tinyLogo} source={{ uri: projectName.ava }} />
-          </View>
-        </View>
-        <View style={styles.right}>
-          <Text style={styles.backlog}>BackLog</Text>
-          <View style={styles.backlogContent}>
-            {listSPrint?.map((item)=>(
-                <View key={item.sprintId}>
-                  <SprintComponent navigation={navigation} isVisible={sprintId} projectId={projectId} memberId={res.memberId} sprintId={item.sprintId} sprintName={item.sprintName}
-                                   goal={item.goal} startDate={item.startDate} endDate={item.endDate} tasks={item.tasks}
-                                   totalNotStartedTask={item.totalNotStartedTask} totalInProgressTask={item.totalInProgressTask} totalDoneTask={item.totalDoneTask}/>
-                </View>
-            ))}
+export default function Backlog({route, navigation}) {
+    const res = route.params.data;
+    const projectId = route.params.projectId;
+    const projectDetail = route.params.projectDetail
+    const [listSPrint, setListSPrint] = useState(res.sprints.items);
+    const [sprintName, setSprintName] = useState('');
+    const [taskId, setTaskId] = useState(null);
+    const [subTaskId, setSubTaskId] = useState(null);
+    const [taskDetail, setTaskDetail] = useState();
+    const [subTaskDetail, setSubTaskDetail] = useState();
+    const [isTextField, setIsTextField] = useState(false);
+    const changeType = () => {
+        setIsTextField(!isTextField);
+    };
+    const addSprint = (projectId, memberId, sprintName) => {
+        createSprint(projectId, memberId, sprintName).then((v) => getListSprint(projectId).then((v) => setListSPrint(v.data.sprints.items)));
+        changeType();
+        setSprintName('');
+    }
+    const callBackGetListSprint = () => {
+        getListSprint(projectId).then((v) => setListSPrint(v.data.sprints.items))
+    }
+    const renderItem = (list) => {
+        return (
+            <View>
+                {list?.map((item) => (
+                    <View style={styles.backlogContent} key={item.sprintId}>
+                        <SprintComponent key={item.sprintId}
+                            projectId={projectId} memberId={res.memberId} sprintId={item.sprintId}
+                                         sprintName={item.sprintName}
+                                         goal={item.goal} startDate={item.startDate} endDate={item.endDate}
+                                         tasks={item.tasks}
+                                         totalNotStartedTask={item.totalNotStartedTask}
+                                         totalInProgressTask={item.totalInProgressTask}
+                                         totalDoneTask={item.totalDoneTask}
+                                         callBackGetListSprint={callBackGetListSprint}
+                                         callbackTaskDetail={callbackTaskDetail}
+                                         callbackDeleteTask={callbackDeleteTask}/>
+                    </View>
+                ))}
+            </View>
+        )
+    };
+    console.log("data list Sprint: " + JSON.stringify(listSPrint))
+    const renderTextField = () => {
+        return isTextField ? (
+            <View style={styles.row}>
+                <TextField onSubmitEditing={() => addSprint(projectId, res.memberId, sprintName)} text={sprintName}
+                           onChangeText={sprintName => setSprintName(sprintName)} style={{width: "100%", height: 40}}/>
+                <Buttons text={"Cancel"} onPressTo={changeType} style={{width: 70, height: 40}}/>
+            </View>
+        ) : (
+            <Buttons text={"+ Create Sprint"} style={styles.buttonCreate} onPressTo={() => changeType()}
+                     styleText={{color: "#4C5C76"}}/>
+        );
+    };
+    const callbackTaskDetail = (taskId) => {
+        setTaskId(taskId);
+        if (taskId != null) {
+            getTaskDetail(taskId).then(value => setTaskDetail(value.data));
+        }
+        else {setTaskDetail(null);}
 
-          </View>
+
+    }
+    const callbackDeleteTask = (taskIdDelete) => {
+        if (taskId===taskIdDelete){
+            setTaskDetail(null)
+        }
+    }
+    const callbackSubTaskDetail = (subtaskId) => {
+        setSubTaskId(subtaskId);
+        setTaskDetail(null);
+        if (subtaskId != null) {
+            getSubTaskDetail(subtaskId).then(value => setSubTaskDetail(value.data));
+        }
+        else {setSubTaskDetail(null);}
+
+
+    }
+    console.log("detail task: " + JSON.stringify(taskDetail))
+    return (
+        <View>
+            <ProjectNavigator navigation={navigation}/>
+            <View style={styles.container}>
+                <View style={styles.left}>
+                    <View style={styles.projectTitle}>
+                        <Text style={styles.projectName}>{projectDetail.projectName}</Text>
+                        <Text style={styles.major}>{projectDetail.description}</Text>
+                    </View>
+                </View>
+                <View style={styles.right}>
+                    <Text style={styles.backlog}>BackLog</Text>
+                    {renderItem(listSPrint)}
+                    {renderTextField()}
+                </View>
+                <View style={styles.taskDetail}>
+                    {taskDetail != null && <TaskDetailComponent taskDetail={taskDetail} callbackTaskDetail={callbackTaskDetail} callbackSubTaskDetail={callbackSubTaskDetail}/>}
+                    {subTaskDetail != null && <SubTaskDetailComponent subTaskDetail={subTaskDetail} callbackSubTaskDetail={callbackSubTaskDetail}/>}
+                </View>
+            </View>
         </View>
-        <View style={styles.taskDetail}>
-          {taskD != null && <TaskDetailComponent taskDetail={taskD} callbackCloseTask={callbackCloseTask} sprintId={sprintId} projectId={projectId} navigation={navigation}/> }
-          {subTaskD != null && <SubTaskDetailComponent subTaskDetail={subTaskD} callbackCloseSubTask={callbackCloseSubTask} /> }
-        </View>
-      </View>
-    </View>
-  );
+    );
 }
 
 const styles = StyleSheet.create({
-  checkbox: {
-    marginLeft: 14,
-  },
-  taskDetail: {
-    width: "25%",
-    marginTop: 88,
-    marginLeft: 50,
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-  description: {
-    fontSize: 16,
-  },
-  sprint: {
-    width: "100%",
-    padding: 5,
-    flexDirection: "row",
-  },
-  taskPosition: {
-    width: "100%",
-    padding: 5,
-    flexDirection: "row",
-    paddingLeft: "15%",
-  },
-  completed: {
-    fontSize: 14,
-    color: "red",
-    width: 50,
-  },
-  tag: {
-    borderRadius: 5,
-    backgroundColor: "yellow",
-    marginLeft: 10,
-  },
-  task: {
-    fontSize: 14,
-  },
-  sprintArea: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "baseline",
-    backgroundColor: "green",
-  },
-  taskArea: {
-    width: "80%",
-    flexDirection: "row",
-    backgroundColor: "#F4F5F7",
-  },
-  timeTxt: {
-    fontSize: 16,
-    paddingTop: 4,
-  },
-  sprTxt: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#fff",
-  },
-  container: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  left: {
-    width: "18%",
-    height: "100vh",
-    borderRadius: 3,
-    borderWidth: 1,
-    borderColor: "#DEE2E6",
-  },
-  right: {
-    width: "53%",
-    height: "100%",
-  },
-  listItem: {
-    width: "80%",
-    flexDirection: "row",
-    borderRadius: 7,
-    borderWidth: 1,
-    marginBottom: 10,
-  },
-  major: {
-    fontSize: 12,
-    paddingBottom: 8,
-  },
-  tinyLogo: {
-    width: 50,
-    height: 50,
-    paddingBottom: 8,
-  },
-  backlog: {
-    color: "#42526E",
-    fontWeight: "bold",
-    fontSize: 20,
-    marginTop: 20,
-    marginBottom: 20,
-    marginLeft: 20,
-    width: "100%",
-  },
-  backlogContent: {
-    marginTop: 20,
-    marginBottom: 20,
-    marginLeft: 20,
-    borderRadius: 3,
-    borderWidth: 1,
-    borderColor: "#DEE2E6",
-    justifyContent: "flex-start",
-    padding: 5,
-  },
-  projectName: {
-    color: "#42526E",
-    fontWeight: "bold",
-    fontSize: 18,
-    paddingTop: 24,
-    paddingBottom: 8,
-    paddingLeft: 8,
-    paddingRight: 8,
-  },
-  projectTitle: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
+    checkbox: {
+        marginLeft: 14,
+    },
+    taskDetail: {
+        width: "28%",
+        margin: 20,
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+    },
+    description: {
+        fontSize: 16,
+    },
+    sprint: {
+        width: "100%",
+        padding: 5,
+        flexDirection: "row",
+    },
+    taskPosition: {
+        width: "100%",
+        padding: 5,
+        flexDirection: "row",
+        paddingLeft: "15%",
+    },
+    completed: {
+        fontSize: 14,
+        color: "red",
+        width: 50,
+    },
+    tag: {
+        borderRadius: 5,
+        backgroundColor: "yellow",
+        marginLeft: 10,
+    },
+    task: {
+        fontSize: 14,
+    },
+    sprintArea: {
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "baseline",
+        backgroundColor: "green",
+    },
+    taskArea: {
+        width: "80%",
+        flexDirection: "row",
+        backgroundColor: "#F4F5F7",
+    },
+    timeTxt: {
+        fontSize: 16,
+        paddingTop: 4,
+    },
+    sprTxt: {
+        fontSize: 20,
+        fontWeight: "bold",
+        color: "#fff",
+    },
+    container: {
+        display: "flex",
+        flexDirection: "row",
+    },
+    left: {
+        width: "15%",
+        height: "100vh",
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: "#DEE2E6",
+    },
+    right: {
+        width: "55%",
+        height: "100%",
+        backgroundColor: "white",
+    },
+    listItem: {
+        width: "80%",
+        flexDirection: "row",
+        borderRadius: 7,
+        borderWidth: 1,
+        marginBottom: 10,
+    },
+    major: {
+        fontSize: 12,
+        paddingBottom: 8,
+    },
+    tinyLogo: {
+        width: 50,
+        height: 50,
+        paddingBottom: 8,
+    },
+    backlog: {
+        color: "#42526E",
+        fontWeight: "bold",
+        fontSize: 20,
+        marginTop: 20,
+        marginBottom: 20,
+        marginLeft: 20,
+        width: "100%",
+    },
+    backlogContent: {
+        margin: 20,
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: "white",
+        backgroundColor: "#F4F5F7",
+        justifyContent: "flex-start",
+        padding: 5,
+    },
+    projectName: {
+        color: "#42526E",
+        fontWeight: "bold",
+        fontSize: 18,
+        paddingTop: 24,
+        paddingBottom: 8,
+        paddingLeft: 8,
+        paddingRight: 8,
+    },
+    projectTitle: {
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    buttonCreate: {
+        width: "93%", alignItems: "flex-start", backgroundColor: '#F4F5F7', margin: 20
+    },
+    row: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 8,
+        marginRight: 20
+    },
 });

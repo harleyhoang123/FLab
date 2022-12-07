@@ -1,29 +1,24 @@
 import {WorkSpaceController} from "../controllers/WorkSpaceController";
 import {NetworkService} from "../networking";
+import {getProjectById} from "./LaboratoryAction";
+import {LaboratoryController} from "../controllers/LaboratoryController";
 
 export const getAllSprint =
-    (projectId, taskId,subTaskId,sprintId, navigation) =>
+    (projectId, navigation) =>
         async (dispatch, _, { networkService }) => {
             try {
                 const workSpaceController = new WorkSpaceController(networkService);
                 console.log("Project ID in getAllSprint: " + projectId);
                 const response = await workSpaceController.getAllSprint({projectId});
                 console.log("Data getAllSprintis : " + JSON.stringify(response));
-                let responseTaskDetail = null;
-                if(taskId != null){
-                    responseTaskDetail = await workSpaceController.getTaskDetail({taskId});
-                }
-                let responseSubTaskDetail = null;
-                if(subTaskId != null){
-                    responseSubTaskDetail = await workSpaceController.getSubTaskDetail({subTaskId});
-                }
-                console.log("Response task detail in get all sprint: "+ JSON.stringify(responseTaskDetail))
+                const laboratoryController = new LaboratoryController(networkService);
+                const projectDetail = await laboratoryController.getProjectDetail({
+                    projectId,
+                });
                 navigation.push("Backlog", {
                     projectId: projectId,
-                    sprintId :sprintId,
                     data: response.data.data,
-                    taskDetail: responseTaskDetail,
-                    subTaskDetail:responseSubTaskDetail
+                    projectDetail:projectDetail.data.data
                 });
             } catch ({ data }) {
                 console.log(

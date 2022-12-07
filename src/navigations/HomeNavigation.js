@@ -39,6 +39,16 @@ const getAvatar = async () => {
     }
 };
 
+const getRoles = async () => {
+    try {
+        const roles = await AsyncStorage.getItem("@roles");
+        console.log("roles: " + roles);
+        return roles;
+    } catch (e) {
+        console.log("Can't get roles: " + e);
+    }
+};
+
 export default function HomeTopNavigator({navigation}) {
     const [accountId, setAccountId] = useState("");
     const [avatar, setAvatar] = useState('');

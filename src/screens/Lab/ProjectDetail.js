@@ -26,7 +26,7 @@ export default function ProjectDetail({ route, navigation }) {
     dispatch(getAllMemberInProject(projectId, navigation));
   };
   const goToBacklog = (projectId) => {
-    dispatch(getAllSprint(projectId, null, null, null, navigation));
+    dispatch(getAllSprint(projectId, navigation));
   };
   return (
     <View>

@@ -31,3 +31,25 @@ export const getDataUsingAsyncAwaitGetCall = async () => {
     }
 };
 
+export const createSprint = async (projectId, memberId, sprintName) => {
+    const token = await getToken();
+    try {
+        const response = await axios.post(
+            'http://192.168.31.197:8085/flab/workspace/public/api/v1/sprints/:workspace-id/sprint'.replace(":workspace-id", projectId),
+            {
+                memberId: memberId,
+                sprintName: sprintName,
+            }
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in createSprint: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when create sprint:"+ JSON.stringify(error));
+    }
+};

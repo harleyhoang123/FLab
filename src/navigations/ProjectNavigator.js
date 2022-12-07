@@ -71,7 +71,7 @@ function ProjectNavigator({ navigation }) {
     dispatch(getAllMemberInProject(projectId, navigation));
   };
   const goToBacklog = (projectId) => {
-    dispatch(getAllSprint(projectId, null, null, null, navigation));
+    dispatch(getAllSprint(projectId, navigation));
   };
   const [modalProfileVisible, setModalProfileVisible] = useState(false);
   const [modalNotifyVisible, setModalNotifyVisible] = useState(false);

@@ -8,27 +8,33 @@ import {
 import Buttons from "./Buttons";
 import {Picker} from '@react-native-picker/picker';
 import TextField from "./TextField";
-import TaskComponent from "./TaskComponent";
 import SubTaskComponent from "./SubTaskComponent";
+import TaskComponent from "./TaskComponent";
 
-export default function TaskDetailComponent({taskDetail,callbackCloseTask,navigation,projectId,sprintId}) {
-  const [selected, setSelected] = useState();
+export default function TaskDetailComponent({taskDetail,callbackTaskDetail,callbackSubTaskDetail}) {
+  console.log("Task detail IS: "+JSON.stringify(taskDetail));
+  console.log("Task Name: "+JSON.stringify(taskDetail.taskName));
+  const [selected, setSelected] = useState(taskDetail.status);
   const [Comments, SetComments] = useState([]);
   const [commentValue, setCommentValue] = useState('');
   const [add, setAdd] = useState(false);
+  const [show, setShow] = useState(false);
+  const [listSubTask, setListSubTask] = useState(taskDetail.subTasks);
   const [visible, setVisible] = useState(true);
+  const [activityResponse, setActivityResponse]= useState(taskDetail.activityResponses)
   const [visibleAll, setVisibleAll] = useState(false);
   const [visibleComment, setVisibleComment] = useState(false);
   const [visibleHistory, setVisibleHistory] = useState(false);
-  console.log("Task detail in task detail component: "+JSON.stringify(taskDetail));
-  console.log("Task name: "+taskDetail.data.data.taskName);
+
 const renderDetail=()=>{
   if(visible){
     return(
         <View>
           <View style={styles.rowDetail}>
             <Text style={[styles.descriptionDetail, {width:100}]}>Assignee:</Text>
-            <Text style={styles.descriptionDetail}>{taskDetail.data.data.assignee}</Text>
+            <Text style={styles.descriptionDetail}>
+              {/*{taskDetail.assignee.userInfo.fullName}*/}
+            </Text>
           </View>
           <View style={styles.rowDetail}>
             <Text style={[styles.descriptionDetail, {width:100}]}></Text>
@@ -38,7 +44,9 @@ const renderDetail=()=>{
           </View>
           <View style={styles.rowDetail}>
             <Text style={[styles.descriptionDetail, {width:100}]}>Labels:</Text>
-            <Text style={styles.descriptionDetail}>{taskDetail.data.data.label}</Text>
+            <Text style={styles.descriptionDetail}>
+              {taskDetail.label}
+            </Text>
           </View>
           {/*<View style={styles.rowDetail}>*/}
           {/*  <Text style={[styles.descriptionDetail, {width:100}]}>Estimate</Text>*/}
@@ -46,7 +54,9 @@ const renderDetail=()=>{
           {/*</View>*/}
           <View style={styles.rowDetail}>
             <Text style={[styles.descriptionDetail, {width:100}]}>Reporter</Text>
-            <Text style={styles.descriptionDetail}>{taskDetail.data.data.reporter}</Text>
+            <Text style={styles.descriptionDetail}>
+              {/*{taskDetail.reporter.userInfo.fullName}*/}
+            </Text>
           </View>
         </View>
     )
@@ -70,9 +80,9 @@ const renderDetail=()=>{
   return(
       <View style={[styles.container]}>
           <View style={styles.wrapper}>
-            <Buttons text={"X"} style={styles.buttonClose} onPressTo={()=>callbackCloseTask(null)}></Buttons>
+            <Buttons text={"X"} style={styles.buttonClose} onPressTo={()=>callbackTaskDetail(null)}></Buttons>
             <Text style={styles.title}>
-              {taskDetail.data.data.taskName}
+              {taskDetail.taskName}
             </Text>
             <Picker
                 style={styles.picker}
@@ -81,26 +91,22 @@ const renderDetail=()=>{
                 onValueChange={(itemValue, itemIndex) =>
                     setSelected(itemValue)
                 }>
-              <Picker.Item label="To Do" value="TODO" />
-              <Picker.Item label="In progress" value="INPROGRESS" />
+              <Picker.Item label="To Do" value="TO_DO" />
+              <Picker.Item label="In progress" value="IN_PROGRESS" />
               <Picker.Item label="Done" value="DONE" />
             </Picker>
             <Text style={styles.description}>Description</Text>
             <Text style={styles.descriptionDetail}>
-              {taskDetail.data.data.description}
+              {taskDetail.description}
             </Text>
             <View style={styles.row}>
                 <Text style={styles.childIssues}>Child Issues</Text>
                 <Buttons text={"+"} style={styles.buttonClose} onPressTo={()=>setAdd(!add)}></Buttons>
             </View>
             <View style={{borderWidth:1, borderRadius:5}}>
-              <FlatList data={taskDetail.data.data.subTasks} renderItem={({item}) => (
-                  <View>
-                    <SubTaskComponent navigation={navigation} projectId={projectId} subTaskId={item.subTaskId} taskName={item.subTaskName}
-                                   sprintId={sprintId} estimate={item.estimate} status={item.status} assignee={item.assignee}/>
-                  </View>
-              )}
-              />
+              {listSubTask?.map((item) => (
+                  <SubTaskComponent key={item.subTaskId} subTaskId={item.subTaskId} status={item.status} estimate={item.estimate} subTaskName={item.subTaskName} assignee={item.assignee} callbackSubTaskDetail={callbackSubTaskDetail}/>
+              ))}
               {renderTextField()}
             </View>
             <View style={styles.borderBot}>
@@ -114,9 +120,17 @@ const renderDetail=()=>{
             <Text style={styles.childIssues}>Activity</Text>
             <View style={styles.rowDetail}>
               <Text style={[styles.descriptionDetail,{ alignSelf: 'center'}]}>Show:</Text>
-              <Buttons style={styles.button} text={"All"}/>
-              <Buttons style={styles.button} text={"Comments"}/>
-              <Buttons style={styles.button} text={"History"}/>
+              <Picker
+                  style={styles.picker}
+                  mode={"dropdown"}
+                  selectedValue={show}
+                  onValueChange={(itemValue, itemIndex) =>
+                      setShow(itemValue)
+                  }>
+                <Picker.Item label="All" value="ALL" />
+                <Picker.Item label="Comments" value="COMMENTS" />
+                <Picker.Item label="History" value="HISTORY" />
+              </Picker>
             </View>
           </View>
       </View>
@@ -127,8 +141,6 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "column",
-    borderWidth: 1,
-    borderColor: "black",
     borderRadius: 5,
     height: "auto",
     backgroundColor:'white'
