@@ -39,10 +39,24 @@ const getAvatar = async () => {
     }
 };
 
+const getRoles = async () => {
+    try {
+        const roles = await AsyncStorage.getItem("@roles");
+        console.log("roles: " + roles);
+        return roles;
+    } catch (e) {
+        console.log("Can't get roles: " + e);
+    }
+};
+
 export default function HomeTopNavigator({navigation}) {
     const [accountId, setAccountId] = useState("");
     const [avatar, setAvatar] = useState('');
     const [data, setData] = useState();
+    const [roles, setRoles] = useState([]);
+
+    //:TODO Get role of user
+    getRoles().then((v) => setRoles(v));
     getAvatar().then((v) => setAvatar(v));
     getAccountId().then((v) => setAccountId(v));
     const dispatch = useDispatch();
@@ -142,12 +156,14 @@ export default function HomeTopNavigator({navigation}) {
                     >
                         <Text style={styles.textLogo}>Forum</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity
+                    {/*TODO: Check role of button*/}
+                    {roles.includes("ADMIN") && <TouchableOpacity
                         style={styles.button}
                         onPress={gotoNews}
                     >
                         <Text style={styles.textLogo}>News</Text>
                     </TouchableOpacity>
+                    }
                 </View>
                 <View style={styles.topNavigationContentRight}>
                     <TouchableOpacity

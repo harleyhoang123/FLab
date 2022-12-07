@@ -1,22 +1,28 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Buttons from "./Buttons";
 import {useDispatch} from "react-redux";
-import {getAllSprint} from "../actions/WorkSpaceAction";
+import {Picker} from "@react-native-picker/picker";
 
-function SubTaskComponent({navigation, projectId, subTaskId,sprintId,taskName,estimate,status,assignee}) {
-    const dispatch = useDispatch();
-    const goToBacklog = (projectId, subTaskId, sprintId) => {
-        dispatch(getAllSprint(projectId,null,subTaskId,sprintId, navigation));
-    };
+function SubTaskComponent({ subTaskId,subTaskName,estimate,status,assignee,callbackSubTaskDetail}) {
+    const [selected, setSelected] = useState(status);
+    const [image, setImage] = useState("");
+
+    const getImage=()=>{
+        if(assignee==null){
+            return "https://pbs.twimg.com/profile_images/486929358120964097/gNLINY67_400x400.png";
+        }else {
+            return assignee.userInfo.avatar;
+        }
+    }
+
     return (
         <View style={styles.containerContent}>
             <View style={styles.sprint}>
-                <TouchableOpacity onPress={() => goToBacklog(projectId, subTaskId, sprintId)} >
+                <TouchableOpacity onPress={()=> callbackSubTaskDetail(subTaskId)}>
                     <View style={styles.container}>
                         <View style={styles.row}>
-                            <Text style={styles.text}>{taskName}</Text>
-                            <Buttons text={"Edit"} style={styles.btn}></Buttons>
+                            <Text style={styles.text}>{subTaskName}</Text>
                         </View>
                         <View style={styles.row}>
                             <View style={styles.view1}>
@@ -27,11 +33,21 @@ function SubTaskComponent({navigation, projectId, subTaskId,sprintId,taskName,es
                                 <Image
                                     style={styles.userImage}
                                     source={{
-                                        uri: "https://pbs.twimg.com/profile_images/486929358120964097/gNLINY67_400x400.png",
+                                        uri: getImage,
                                     }}
                                 />
                             </TouchableOpacity>
-                            <Buttons text={"Done"} style={styles.btn}></Buttons>
+                            <Picker
+                                style={styles.picker}
+                                mode={"dropdown"}
+                                selectedValue={selected}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setSelected(itemValue)
+                                }>
+                                <Picker.Item label="To Do" value="TO_DO" />
+                                <Picker.Item label="In progress" value="IN_PROGRESS" />
+                                <Picker.Item label="Done" value="DONE" />
+                            </Picker>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -61,11 +77,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         margin:2
     },
-    btn: {
-        margin: 5,
-        width: 60,
-        height: 30,
-    },
     text: {
         marginLeft: 20,
         marginRight: 20,
@@ -86,6 +97,11 @@ const styles = StyleSheet.create({
     },
     text1: {
         color: "black",
+    },
+    picker:{
+        width:100,
+        height:30,
+        borderRadius:8,
     },
 });
 export default SubTaskComponent;

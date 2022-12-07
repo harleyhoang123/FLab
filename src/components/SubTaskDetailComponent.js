@@ -4,24 +4,26 @@ import Buttons from "./Buttons";
 import {Picker} from "@react-native-picker/picker";
 import SubTaskComponent from "./SubTaskComponent";
 
-function SubTaskDetailComponent({subTaskDetail,callbackCloseSubTask}) {
-    const [selected, setSelected] = useState();
+function SubTaskDetailComponent({subTaskDetail,callbackSubTaskDetail}) {
+    const [selected, setSelected] = useState(subTaskDetail.status);
     const [Comments, SetComments] = useState([]);
     const [commentValue, setCommentValue] = useState('');
-    const [add, setAdd] = useState(false);
     const [visible, setVisible] = useState(true);
     const [visibleAll, setVisibleAll] = useState(false);
     const [visibleComment, setVisibleComment] = useState(false);
     const [visibleHistory, setVisibleHistory] = useState(false);
+    const [activityResponse, setActivityResponse]= useState(subTaskDetail.activityResponses)
+    const [show, setShow] = useState(false);
     console.log("Task detail in task detail component: "+JSON.stringify(subTaskDetail));
-    console.log("Task name: "+subTaskDetail.data.data.subTaskName);
     const renderDetail=()=>{
         if(visible){
             return(
                 <View>
                     <View style={styles.rowDetail}>
                         <Text style={[styles.descriptionDetail, {width:100}]}>Assignee:</Text>
-                        <Text style={styles.descriptionDetail}>{subTaskDetail.data.data.assignee}</Text>
+                        <Text style={styles.descriptionDetail}>
+                            {/*{subTaskDetail.assignee}*/}
+                        </Text>
                     </View>
                     <View style={styles.rowDetail}>
                         <Text style={[styles.descriptionDetail, {width:100}]}></Text>
@@ -31,15 +33,21 @@ function SubTaskDetailComponent({subTaskDetail,callbackCloseSubTask}) {
                     </View>
                     <View style={styles.rowDetail}>
                         <Text style={[styles.descriptionDetail, {width:100}]}>Labels:</Text>
-                        <Text style={styles.descriptionDetail}>{subTaskDetail.data.data.label}</Text>
+                        <Text style={styles.descriptionDetail}>
+                            {subTaskDetail.label}
+                        </Text>
                     </View>
                     <View style={styles.rowDetail}>
                       <Text style={[styles.descriptionDetail, {width:100}]}>Estimate:</Text>
-                      <Text style={styles.descriptionDetail}>{subTaskDetail.data.data.estimate}</Text>
+                      <Text style={styles.descriptionDetail}>
+                          {subTaskDetail.estimate}
+                      </Text>
                     </View>
                     <View style={styles.rowDetail}>
                         <Text style={[styles.descriptionDetail, {width:100}]}>Reporter:</Text>
-                        <Text style={styles.descriptionDetail}>{subTaskDetail.data.data.reporter}</Text>
+                        <Text style={styles.descriptionDetail}>
+                            {/*{subTaskDetail.reporter}*/}
+                        </Text>
                     </View>
                 </View>
             )
@@ -48,9 +56,9 @@ function SubTaskDetailComponent({subTaskDetail,callbackCloseSubTask}) {
     return (
         <View style={[styles.container]}>
             <View style={styles.wrapper}>
-                <Buttons text={"X"} style={styles.buttonClose} onPressTo={()=>callbackCloseSubTask(null)}></Buttons>
+                <Buttons text={"X"} style={styles.buttonClose} onPressTo={()=>callbackSubTaskDetail(null)}></Buttons>
                 <Text style={styles.title}>
-                    {subTaskDetail.data.data.subTaskName}
+                    {subTaskDetail.subTaskName}
                 </Text>
                 <Picker
                     style={styles.picker}
@@ -65,7 +73,7 @@ function SubTaskDetailComponent({subTaskDetail,callbackCloseSubTask}) {
                 </Picker>
                 <Text style={styles.description}>Description</Text>
                 <Text style={styles.descriptionDetail}>
-                    {subTaskDetail.data.data.description}
+                    {subTaskDetail.description}
                 </Text>
                 <View style={styles.borderBot}>
                     <View style={{borderBottomWidth:1}}>
@@ -75,12 +83,20 @@ function SubTaskDetailComponent({subTaskDetail,callbackCloseSubTask}) {
                     </View>
                     {renderDetail()}
                 </View>
-                <Text style={styles.childIssues}>Activity</Text>
+                <Text style={[styles.childIssues,{margin:10}]}>Activity</Text>
                 <View style={styles.rowDetail}>
-                    <Text style={[styles.descriptionDetail,{ alignSelf: 'center'}]}>Show:</Text>
-                    <Buttons style={styles.button} text={"All"}/>
-                    <Buttons style={styles.button} text={"Comments"}/>
-                    <Buttons style={styles.button} text={"History"}/>
+                    <Text style={[styles.descriptionDetail]}>Show:</Text>
+                    <Picker
+                        style={styles.picker}
+                        mode={"dropdown"}
+                        selectedValue={show}
+                        onValueChange={(itemValue, itemIndex) =>
+                            setShow(itemValue)
+                        }>
+                        <Picker.Item label="All" value="ALL" />
+                        <Picker.Item label="Comments" value="COMMENTS" />
+                        <Picker.Item label="History" value="HISTORY" />
+                    </Picker>
                 </View>
             </View>
         </View>
@@ -115,7 +131,7 @@ const styles = StyleSheet.create({
     },
     descriptionDetail: {
         fontSize: 16,
-        marginBottom: 20,
+        alignSelf: 'center'
     },
     childIssues: {
         fontSize: 16,
