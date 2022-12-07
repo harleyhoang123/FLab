@@ -41,6 +41,7 @@ export default function LabDetail({ route, navigation }) {
   const data = route.params.data;
   console.log("labdeatl data:" + JSON.stringify(data));
   const isJoined = route.params.isJoined;
+  const allMember = route.params.allMember.items;
   const isAdmin = true;
 
   const dispatch = useDispatch();
@@ -150,7 +151,10 @@ export default function LabDetail({ route, navigation }) {
                   <Text
                     style={styles.textStyle}
                     onPress={() => {
-                      navigation.push("UpdateLab", { labInfo: data });
+                      navigation.push("UpdateLab", {
+                        labInfo: data,
+                        listMember: allMember,
+                      });
                     }}
                   >
                     Update

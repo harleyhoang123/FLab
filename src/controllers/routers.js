@@ -45,6 +45,11 @@ export const routes = {
   material: {
     getMaterialById:
       host + "8083/flab/lab/public/api/v1/materials/:material-id",
+    getMaterialByLabId:
+      host + "8083/flab/lab/public/api/v1/materials/:laboratory-id/materials",
+    updateMeterial:
+      host +
+      "8083/flab/lab/public/api/v1/laboratories/:laboratory-id/materials/:material-id",
   },
   repository: {
     getFolderDetail:
@@ -62,7 +67,8 @@ export const routes = {
   account: {
     getAccountInfo:
       host + "8084/flab/account/public/api/v1/profiles/:profile-id",
-    updateAccountInfo: host + "8084/flab/account/public/api/v1/profiles/:profile-id",
+    updateAccountInfo:
+      host + "8084/flab/account/public/api/v1/profiles/:profile-id",
   },
   project: {
     getProjectByLabId:
@@ -78,6 +84,9 @@ export const routes = {
       host + "8083/flab/lab/public/api/v1/projects/:lab-id/:project-id",
     createProject:
       host + "8083/flab/lab/public/api/v1/laboratories/:lab-id/project",
+    updateProject:
+      host +
+      "8083/flab/lab/public/api/v1/laboratories/:laboratory-id/projects/:project-id",
   },
   news: {
     getListNews: host + "8888/flab/notification/public/api/v1/news",

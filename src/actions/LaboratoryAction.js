@@ -26,13 +26,17 @@ export const getLaboratoryById =
     try {
       const laboratoryController = new LaboratoryController(networkService);
       console.log("Lab ID in actions: " + labId);
-        await AsyncStorage.setItem("@labId", labId);
+      await AsyncStorage.setItem("@labId", labId);
       const response = await laboratoryController.getLaboratoryById({
+        labId,
+      });
+      const listMember = await laboratoryController.getAllMemberInLaboratory({
         labId,
       });
       navigation.navigate("LabDetail", {
         data: response.data.data,
         isJoined: isJoined,
+        allMember: listMember.data.data,
       });
     } catch ({ data }) {
       console.log("Error when getLaboratoryById " + JSON.stringify(data));
@@ -264,15 +268,35 @@ export const removeProject =
   };
 
 export const updateLaboratoryByLabId =
-  (labId, navigation) =>
+  (labId, requestData, navigation) =>
   async (dispatch, _, { networkService }) => {
     try {
       const laboratoryController = new LaboratoryController(networkService);
       const response = await laboratoryController.updateLaboratory({
         labId,
+        requestData,
       });
       console.log("updateLaboratoryByLabId: " + JSON.stringify(response));
-      dispatch(getAllProjectByLabId(labId, navigation));
+      dispatch(getLaboratoryById(labId, true, navigation));
+    } catch ({ data }) {
+      console.log(
+        "ERROR when updateLaboratoryByLabId: " + JSON.stringify(data)
+      );
+    }
+  };
+
+export const updateProjectByProjectId =
+  (labId, projectId, requestData, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const laboratoryController = new LaboratoryController(networkService);
+      const response = await laboratoryController.updateProject({
+        labId,
+        projectId,
+        requestData,
+      });
+      console.log("updateLaboratoryByLabId: " + JSON.stringify(response));
+      dispatch(getProjectById(projectId, navigation));
     } catch ({ data }) {
       console.log(
         "ERROR when updateLaboratoryByLabId: " + JSON.stringify(data)

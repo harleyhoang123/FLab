@@ -16,7 +16,7 @@ import LabNavigator from "../../navigations/LabNavigator";
 import { useDispatch } from "react-redux";
 import Buttons from "../../components/Buttons";
 import { getAllMemberInProject } from "../../actions/LaboratoryAction";
-import {getAllSprint} from "../../actions/WorkSpaceAction";
+import { getAllSprint } from "../../actions/WorkSpaceAction";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
 
 export default function ProjectDetail({ route, navigation }) {
@@ -64,6 +64,15 @@ export default function ProjectDetail({ route, navigation }) {
               style={styles.button}
               text={"View All Member"}
               onPressTo={() => goToListMemberPage(data.projectId)}
+            />
+            <Buttons
+              style={styles.button}
+              text={"Update"}
+              onPressTo={() =>
+                navigation.navigate("UpdateProject", {
+                  projectInfo: data,
+                })
+              }
             />
             <Buttons
               style={styles.button}

@@ -3,13 +3,13 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
-import {useDispatch} from "react-redux";
-import {getListMaterialByLabId} from "../../actions/LaboratoryAction";
+import { useDispatch } from "react-redux";
+import { getListMaterialByLabId } from "../../actions/LaboratoryAction";
 function MaterialDetail({ route, navigation }) {
   const dispatch = useDispatch();
-  const goToListMaterial = () =>{
-    dispatch(getListMaterialByLabId("", navigation))
-  }
+  const goToListMaterial = () => {
+    dispatch(getListMaterialByLabId("", navigation));
+  };
   const data = route.params.data;
   const status = data.status;
   const isAdmin = false;
@@ -26,11 +26,13 @@ function MaterialDetail({ route, navigation }) {
       );
     } else {
       return (
-        <Buttons
-          text={"Return"}
-          style={styles.button}
-          onPressTo={goToListMaterial}
-        />
+        <View style={{ flexDirection: "row" }}>
+          <Buttons
+            text={"Return"}
+            style={styles.button}
+            onPressTo={goToListMaterial}
+          />
+        </View>
       );
     }
   };
@@ -54,7 +56,20 @@ function MaterialDetail({ route, navigation }) {
           <Text style={styles.text}>Note: None</Text>
           <View style={styles.row}>
             {handleButton()}
-            <Buttons text={"Cancel"} style={styles.button} onPressTo={()=> {navigation.goBack(navigation)}}/>
+            <Buttons
+              text={"Cancel"}
+              style={styles.button}
+              onPressTo={() => {
+                navigation.goBack(navigation);
+              }}
+            />
+            <Buttons
+              text={"Update"}
+              style={styles.button}
+              onPressTo={() =>
+                navigation.push("UpdateMeterial", { materialInfo: data })
+              }
+            />
           </View>
 
           {isAdmin ? (
@@ -113,14 +128,14 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 50,
     width: 130,
-    marginRight:40,
+    marginRight: 40,
   },
   image: {
     width: 500,
     height: 500,
   },
-  row:{
-    flexDirection:"row",
+  row: {
+    flexDirection: "row",
   },
 });
 export default MaterialDetail;

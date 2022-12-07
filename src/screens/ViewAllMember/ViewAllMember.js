@@ -63,7 +63,7 @@ const ViewAllMember = ({ route, navigation }) => {
       </View>
       <View style={styles.name}>
         <Text
-          style={styles.title}
+          style={[styles.title, styles.blue]}
           onPress={() => {
             navigation.push("MemberDetail");
           }}
@@ -178,6 +178,9 @@ const ViewAllMember = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  blue: {
+    color: "blue",
+  },
   modal: {
     backgroundColor: "#f27474",
     width: "50%",

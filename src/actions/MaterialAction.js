@@ -16,3 +16,22 @@ export const getMaterialById =
       console.log("Error get material by id:" + JSON.stringify(data));
     }
   };
+
+export const updateMaterialByMaterialId =
+  (labId, materialId, requestData, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const materialController = new MaterialController(networkService);
+      const response = await materialController.updateMaterial({
+        labId,
+        materialId,
+        requestData,
+      });
+      console.log("updateMaterialId: " + JSON.stringify(response));
+      dispatch(getMaterialById(materialId, navigation));
+    } catch ({ data }) {
+      console.log(
+        "ERROR when updateLaboratoryByLabId: " + JSON.stringify(data)
+      );
+    }
+  };
