@@ -17,30 +17,6 @@ import LabNavigator from "../../navigations/LabNavigator";
 import { SelectList } from "react-native-dropdown-select-list";
 import Buttons from "../../components/Buttons";
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    name: "First Item",
-    role: "lead",
-    ava: "https://reactnative.dev/img/tiny_logo.png",
-    code: "HE140112",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    name: "Second Item",
-    role: "lead",
-    ava: "https://reactnative.dev/img/tiny_logo.png",
-    code: "HE140112",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    name: "Third Item",
-    role: "lead",
-    ava: "https://reactnative.dev/img/tiny_logo.png",
-    code: "HE140112",
-  },
-];
-
 const ViewAllMember = ({ route, navigation }) => {
   const data = route.params.data;
   const listMember = data.items;
@@ -107,7 +83,6 @@ const ViewAllMember = ({ route, navigation }) => {
       <View>
         <Text style={styles.titleContent}>List all member in your lab</Text>
       </View>
-      <Buttons style={styles.button} text={"Add new member"} />
       <SafeAreaView style={styles.container}>
         <View style={styles.tableForm}>
           <View style={[styles.ava]}>

@@ -65,6 +65,7 @@ export default function ProjectDetail({ route, navigation }) {
               text={"View All Member"}
               onPressTo={() => goToListMemberPage(data.projectId)}
             />
+
             <Buttons
               style={styles.button}
               text={"Update"}

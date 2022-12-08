@@ -212,4 +212,14 @@ export class LaboratoryController {
       },
     });
   }
+
+  addMembersToLab({ labId, requestData }) {
+    return this.networkService.request({
+      method: "POST",
+      url: routes.laboratory.addMemberToLab.replace(":lab-id", labId),
+      data: {
+        accountId: requestData.accountId,
+      },
+    });
+  }
 }

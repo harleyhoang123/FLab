@@ -1,6 +1,7 @@
 import { LaboratoryController } from "../controllers/LaboratoryController";
 import { strings } from "../localization";
 import AsyncStorage from "@react-native-community/async-storage";
+import { ProjectController } from "../controllers/ProjectController";
 
 export const getLaboratoryByAccountId =
   (accountId, navigation) =>
@@ -301,5 +302,40 @@ export const updateProjectByProjectId =
       console.log(
         "ERROR when updateLaboratoryByLabId: " + JSON.stringify(data)
       );
+    }
+  };
+
+export const addMembersToProject =
+  (projectId, requestData, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const projectController = new ProjectController(networkService);
+      const response = await projectController.addMembersToProject({
+        projectId,
+        requestData,
+      });
+      console.log("updateLaboratoryByLabId: " + JSON.stringify(response));
+      dispatch(getAllMemberInProject(projectId, navigation));
+    } catch ({ data }) {
+      console.log(
+        "ERROR when updateLaboratoryByLabId: " + JSON.stringify(data)
+      );
+    }
+  };
+
+export const addMembersToLab =
+  (labId, requestData, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      console.log(" Lab Id in addMembersToLab:" + labId);
+      const labController = new LaboratoryController(networkService);
+      const response = await labController.addMembersToLab({
+        labId,
+        requestData,
+      });
+      console.log("addMembersToLab: " + JSON.stringify(response));
+      dispatch(getAllMemberInLaboratoryById(labId, navigation));
+    } catch ({ data }) {
+      console.log("ERROR when addMembersToLab: " + JSON.stringify(data));
     }
   };

@@ -126,6 +126,14 @@ export default function LabDetail({ route, navigation }) {
                 <Text style={styles.textStyle}>Apply</Text>
               )}
             </Pressable>
+            <Pressable
+              style={[styles.button, styles.buttonOpen]}
+              onPress={() =>
+                navigation.navigate("AddMemberToLab", { labData: data })
+              }
+            >
+              <Text style={styles.textStyle}>Add Member</Text>
+            </Pressable>
           </View>
           {isAdmin ? (
             <View style={{ marginTop: 20, flexDirection: "row" }}>
@@ -251,10 +259,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   leavebtn: {
-    width: 120,
-    height: 66,
-    justifyContent: "center",
     marginTop: 20,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    flexDirection: "row",
   },
   centeredView: {
     flex: 1,
