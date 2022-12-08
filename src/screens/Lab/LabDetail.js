@@ -123,7 +123,16 @@ export default function LabDetail({ route, navigation }) {
               {isJoined ? (
                 <Text style={styles.textStyle}>Leave</Text>
               ) : (
-                <Text style={styles.textStyle}>Apply</Text>
+                <Text
+                  onPress={() =>
+                    navigation.navigate("ApplyToLab", {
+                      labId: data.laboratoryId,
+                    })
+                  }
+                  style={styles.textStyle}
+                >
+                  Apply
+                </Text>
               )}
             </Pressable>
             <Pressable

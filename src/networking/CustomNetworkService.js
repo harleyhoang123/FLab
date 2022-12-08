@@ -12,6 +12,16 @@ const getToken = async () => {
   }
 };
 
+const getAccountId = async () => {
+  try {
+    const accountId = await AsyncStorage.getItem("@accountId");
+    console.log("AccountId: " + accountId);
+    return accountId;
+  } catch (e) {
+    console.log("Can't get account id: " + e);
+  }
+};
+
 export const getDataUsingAsyncAwaitGetCall = async () => {
   const token = await getToken();
   try {
@@ -105,5 +115,28 @@ export const getAllMember = async () => {
     return response.data;
   } catch (error) {
     console.log("error when create sprint:" + JSON.stringify(error));
+  }
+};
+
+export const getAllCVOfAccount = async () => {
+  const token = await getToken();
+  const accountId = await getAccountId();
+  console.log("getAllCVOfAccount: ");
+  try {
+    const response = await axios.get(
+      "http://192.168.31.197:8084/flab/account/public/api/v1/profiles/:account-id/cv".replace(
+        ":account-id",
+        accountId
+      ),
+      {
+        headers: {
+          Authorization: `Bearer ` + token,
+        },
+      }
+    );
+    console.log("Data in getAllCVOfAccount: " + JSON.stringify(response));
+    return response.data;
+  } catch (error) {
+    console.log("error when getAllCVOfAccount:" + JSON.stringify(error));
   }
 };

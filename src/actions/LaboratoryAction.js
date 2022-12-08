@@ -193,7 +193,7 @@ export const createProjectInLab =
   };
 
 export const removeMemberFromLaboratory =
-  (labId, memberId) =>
+  (labId, memberId, navigation) =>
   async (dispatch, _, { networkService }) => {
     try {
       const laboratoryController = new LaboratoryController(networkService);
@@ -204,6 +204,7 @@ export const removeMemberFromLaboratory =
       console.log(
         "Response remove member from laboratory: " + JSON.stringify(response)
       );
+      dispatch(getAllMemberInLaboratoryById(labId, navigation));
     } catch ({ data }) {
       console.log(
         "ERROR when removeMemberFromLaboratory: " + JSON.stringify(data)
@@ -305,6 +306,33 @@ export const updateProjectByProjectId =
     }
   };
 
+const getLabId = async () => {
+  try {
+    const labId = await AsyncStorage.getItem("@currentLabId");
+    console.log("LabId in reate Project: " + labId);
+    return labId;
+  } catch (e) {
+    console.log("Can't get LabId id: " + e);
+  }
+};
+
+export const updateMemberRoleById =
+  (memberId, requestData, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const labId = await getLabId();
+      const laboratoryController = new LaboratoryController(networkService);
+      const response = await laboratoryController.updateMemberRole({
+        memberId,
+        requestData,
+      });
+      console.log("updateMemberRoleById: " + JSON.stringify(response));
+      dispatch(getAllMemberInLaboratoryById(labId, navigation));
+    } catch ({ data }) {
+      console.log("ERROR when updateMemberRoleById: " + JSON.stringify(data));
+    }
+  };
+
 export const addMembersToProject =
   (projectId, requestData, navigation) =>
   async (dispatch, _, { networkService }) => {
@@ -353,6 +381,24 @@ export const getmemberDetailByProfileId =
       navigation.navigate("MemberDetail", {
         data: response.data.data,
       });
+    } catch ({ data }) {
+      console.log(
+        "ERROR when getmemberDetailByProfileId: " + JSON.stringify(data)
+      );
+    }
+  };
+
+export const applyTolAbByLabId =
+  (labId, requestData, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const laboratoryController = new LaboratoryController(networkService);
+      console.log("labId in actions: " + labId);
+      const response = await laboratoryController.applyToLab({
+        labId,
+        requestData,
+      });
+      dispatch(getLaboratoryById(labId, true, navigation));
     } catch ({ data }) {
       console.log(
         "ERROR when getmemberDetailByProfileId: " + JSON.stringify(data)

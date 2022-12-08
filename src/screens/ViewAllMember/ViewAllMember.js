@@ -18,31 +18,61 @@ import { SelectList } from "react-native-dropdown-select-list";
 import Buttons from "../../components/Buttons";
 import { useDispatch } from "react-redux";
 import { getmemberDetailByProfileId } from "../../actions/LaboratoryAction";
+import {
+  updateMemberRoleById,
+  removeMemberFromLaboratory,
+} from "../../actions/LaboratoryAction";
+import AsyncStorage from "@react-native-community/async-storage";
+
+const getLabId = async () => {
+  try {
+    const labId = await AsyncStorage.getItem("@currentLabId");
+    console.log("LabId in reate Project: " + labId);
+    return labId;
+  } catch (e) {
+    console.log("Can't get LabId id: " + e);
+  }
+};
 
 const ViewAllMember = ({ route, navigation }) => {
+  const [labId, setLabId] = useState("");
+  getLabId().then((v) => setLabId(v));
   const data = route.params.data;
   const listMember = data.items;
   const [shouldShow, setShouldShow] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleDelete, setModalVisibleDelete] = useState(false);
   const [selected, setSelected] = React.useState("");
+  const [selectedId, setSelectedId] = useState("");
   const dispatch = useDispatch();
   const dataDrop = [
-    { key: "1", value: "Admin" },
-    { key: "2", value: "Lead" },
-    { key: "3", value: "Slave" },
+    { key: "1", value: "OWNER" },
+    { key: "2", value: "MANAGER" },
+    { key: "3", value: "USER" },
   ];
 
   const goToMemberDetail = (accountId) => {
     dispatch(getmemberDetailByProfileId(accountId, navigation));
   };
 
-  const Item = ({ accountId, id, name, role, ava, code }) => (
+  const removeMemberhandler = () => {
+    dispatch(removeMemberFromLaboratory(labId, selectedId, navigation));
+  };
+
+  const updateRoleHandler = () => {
+    const requestData = {
+      role: selected,
+    };
+    dispatch(updateMemberRoleById(selectedId, requestData, navigation));
+  };
+
+  const Item = ({ accountId, id, name, role, email, username, code }) => (
     <View style={styles.item}>
       <View style={styles.ava}>
-        <Text style={styles.title}>{code}</Text>
+        <Text style={styles.title}>{username}</Text>
       </View>
       <View style={styles.ava}>
-        <Image style={styles.tinyLogo} source={{ uri: ava }} />
+        <Text style={styles.title}>{email}</Text>
       </View>
       <View style={styles.name}>
         <Text
@@ -62,10 +92,22 @@ const ViewAllMember = ({ route, navigation }) => {
         {shouldShow ? (
           <View style={styles.popUp}>
             <View style={{ backgroundColor: "yellow", width: 30 }}>
-              <Text onPress={() => setModalVisible(!modalVisible)}>Edit</Text>
+              <Text
+                onPress={() => {
+                  setModalVisible(!modalVisible), setSelectedId(code);
+                }}
+              >
+                Edit
+              </Text>
             </View>
             <View style={{ backgroundColor: "red" }}>
-              <Text>Remove</Text>
+              <Text
+                onPress={() => {
+                  setModalVisibleDelete(!modalVisible), setSelectedId(code);
+                }}
+              >
+                Remove
+              </Text>
             </View>
           </View>
         ) : null}
@@ -78,9 +120,10 @@ const ViewAllMember = ({ route, navigation }) => {
       id={item.memberId}
       accountId={item.userInfo.accountId}
       name={item.userInfo.userInfo.fullName}
-      role={item.userInfo.userInfo.roles}
-      ava={item.ava}
+      role={item.role}
       code={item.memberId}
+      email={item.userInfo.userInfo.email}
+      username={item.userInfo.userInfo.username}
     />
   );
   return (
@@ -145,9 +188,36 @@ const ViewAllMember = ({ route, navigation }) => {
               flexDirection: "row",
             }}
           >
-            <Button title="Submit"></Button>
+            <Button onPress={removeMemberhandler} title="Submit"></Button>
             <Button
               onPress={() => setModalVisible(!modalVisible)}
+              title="Close"
+              color={"red"}
+            ></Button>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisibleDelete}
+        onRequestClose={() => {
+          this.visibleModal(false);
+        }}
+      >
+        <View style={styles.modal}>
+          <Text style={{ fontSize: 20 }}>Do you want remove this member?</Text>
+          <View
+            style={{
+              marginTop: 20,
+              width: "auto",
+              margin: 20,
+              flexDirection: "row",
+            }}
+          >
+            <Button onPress={removeMemberhandler} title="Submit"></Button>
+            <Button
+              onPress={() => setModalVisibleDelete(!modalVisibleDelete)}
               title="Close"
               color={"red"}
             ></Button>
