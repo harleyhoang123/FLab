@@ -13,83 +13,68 @@ import { useDispatch } from "react-redux";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
 import axios from "axios";
-import {
-  updateLaboratoryByLabId,
-  getAllMemberInLaboratoryById,
-} from "../../actions/LaboratoryAction";
+import { addMembersToProject } from "../../actions/LaboratoryAction";
 import { SelectList } from "react-native-dropdown-select-list";
 import AsyncStorage from "@react-native-community/async-storage";
 import { TouchableOpacity } from "react-native-web";
+import { getAllMemberInLab } from "../../networking/CustomNetworkService";
 
-export default function UpdateLab({ route, navigation }) {
-  const labInfo = route.params.labInfo;
-  const data = route.params.listMember;
+export default function AddMemberToProject({ route, navigation }) {
+  // const data = route.params.allMember;
+  const projectId = route.params.projectId;
+  const raw = route.params.allMember.items;
   console.log("All data:" + JSON.stringify(data));
 
-  const allMember = data.map((item) => {
-    return {
-      key: item.memberId,
-      value: item.userInfo.userInfo.username,
-    };
-  });
+  const [data, setData] = React.useState([]);
 
-  console.log("ALL member" + JSON.stringify(allMember));
-
-  const [textName, onChangeNameText] = useState(labInfo.laboratoryName);
-  const [textDescription, onChangeDescriptionText] = useState(
-    labInfo.description
+  React.useEffect(
+    () =>
+      //Get Values from database
+      getAllMemberInLab()
+        .then((response) => {
+          // Store Values in Temporary Array
+          let newArray = response.data.items.map((item) => {
+            return {
+              key: item.memberId,
+              value: item.userInfo.userInfo.username,
+            };
+          });
+          //Set Data Variable
+          setData(newArray);
+        })
+        .catch((e) => {
+          console.log(e);
+        }),
+    []
   );
-  const [textMajor, onChangeMajorText] = useState(labInfo.major);
+
   const [selected, setSelected] = React.useState("");
   const [key, setKey] = React.useState("");
   const dispatch = useDispatch();
 
-  const updateLaboratoryHandle = () => {
+  const addMemberHandle = () => {
     const requestData = {
-      labName: textName,
-      description: textDescription,
-      major: textMajor,
-      ownerBy: key,
+      memberId: key,
     };
     console.log(requestData);
-    dispatch(
-      updateLaboratoryByLabId(labInfo.laboratoryId, requestData, navigation)
-    );
+    dispatch(addMembersToProject(projectId, requestData, navigation));
   };
   return (
     <View>
       <LabNavigator navigation={navigation} />
       <View style={styles.container}>
-        <Text style={styles.title}>Update your's Lab</Text>
+        <Text style={styles.title}>Add member your's project</Text>
+
         <View>
           <View>
-            <Text style={styles.usage}>Update lab information</Text>
+            <Text style={styles.usage}>Select member</Text>
           </View>
           <View>
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => onChangeNameText(text)}
-              value={textName}
-              placeholder={"Enter lab's name"}
-            />
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => onChangeDescriptionText(text)}
-              value={textDescription}
-              placeholder={"Enter lab's description"}
-            />
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => onChangeMajorText(text)}
-              value={textMajor}
-              placeholder={"Enter lab's major"}
-            />
-
             <SelectList
               setSelected={(val) => setSelected(val)}
               onSelect={() => setKey(selected)}
-              placeholder={"OwnerBy"}
-              data={allMember}
+              placeholder={"List Member"}
+              data={data}
               save="key"
               boxStyles={{
                 height: 40,
@@ -109,9 +94,9 @@ export default function UpdateLab({ route, navigation }) {
 
           <View style={styles.btn}>
             <Buttons
-              text={"Update"}
+              text={"Add"}
               style={styles.button}
-              onPressTo={updateLaboratoryHandle}
+              onPressTo={addMemberHandle}
             />
             <Buttons
               text={"Back"}
@@ -130,6 +115,12 @@ export default function UpdateLab({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    marginLeft: 10,
+    width: 215,
   },
   button: {
     marginTop: 20,

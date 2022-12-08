@@ -12,85 +12,81 @@ import {
 import { useDispatch } from "react-redux";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
-import axios from "axios";
-import {
-  updateLaboratoryByLabId,
-  getAllMemberInLaboratoryById,
-} from "../../actions/LaboratoryAction";
+import { updateMaterialByMaterialId } from "../../actions/MaterialAction";
 import { SelectList } from "react-native-dropdown-select-list";
 import AsyncStorage from "@react-native-community/async-storage";
-import { TouchableOpacity } from "react-native-web";
 
-export default function UpdateLab({ route, navigation }) {
-  const labInfo = route.params.labInfo;
-  const data = route.params.listMember;
-  console.log("All data:" + JSON.stringify(data));
+const getLabId = async () => {
+  try {
+    const labId = await AsyncStorage.getItem("@currentLabId");
+    console.log("LabId in reate Project: " + labId);
+    return labId;
+  } catch (e) {
+    console.log("Can't get LabId id: " + e);
+  }
+};
 
-  const allMember = data.map((item) => {
-    return {
-      key: item.memberId,
-      value: item.userInfo.userInfo.username,
-    };
-  });
-
-  console.log("ALL member" + JSON.stringify(allMember));
-
-  const [textName, onChangeNameText] = useState(labInfo.laboratoryName);
+export default function UpdateMaterial({ route, navigation }) {
+  const materialInfo = route.params.materialInfo;
+  const [textName, onChangeNameText] = useState(materialInfo.materialName);
   const [textDescription, onChangeDescriptionText] = useState(
-    labInfo.description
+    materialInfo.description
   );
-  const [textMajor, onChangeMajorText] = useState(labInfo.major);
-  const [selected, setSelected] = React.useState("");
-  const [key, setKey] = React.useState("");
+  const [selected, setSelected] = React.useState(materialInfo.status);
+  const data = [
+    { key: "1", value: "IN_USED" },
+    { key: "2", value: "FREE" },
+  ];
+  const [amount, setAmount] = useState(materialInfo.amount);
+  const [labId, setLabId] = useState("");
+
+  getLabId().then((v) => setLabId(v));
   const dispatch = useDispatch();
 
-  const updateLaboratoryHandle = () => {
+  const updateMaterial = () => {
     const requestData = {
-      labName: textName,
+      materialName: textName,
       description: textDescription,
-      major: textMajor,
-      ownerBy: key,
+      status: selected,
+      amount: amount,
     };
-    console.log(requestData);
+    console.log("Data Mate:" + JSON.stringify(requestData));
     dispatch(
-      updateLaboratoryByLabId(labInfo.laboratoryId, requestData, navigation)
+      updateMaterialByMaterialId(
+        labId,
+        materialInfo.materialId,
+        requestData,
+        navigation
+      )
     );
   };
   return (
     <View>
       <LabNavigator navigation={navigation} />
       <View style={styles.container}>
-        <Text style={styles.title}>Update your's Lab</Text>
+        <Text style={styles.title}>Update a Project</Text>
         <View>
           <View>
-            <Text style={styles.usage}>Update lab information</Text>
+            <Text style={styles.usage}>Enter project information</Text>
           </View>
           <View>
             <TextInput
               style={styles.input}
               onChangeText={(text) => onChangeNameText(text)}
               value={textName}
-              placeholder={"Enter lab's name"}
+              placeholder={"Enter material's name"}
             />
             <TextInput
               style={styles.input}
               onChangeText={(text) => onChangeDescriptionText(text)}
               value={textDescription}
-              placeholder={"Enter lab's description"}
+              placeholder={"Enter material's description"}
             />
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => onChangeMajorText(text)}
-              value={textMajor}
-              placeholder={"Enter lab's major"}
-            />
-
             <SelectList
               setSelected={(val) => setSelected(val)}
-              onSelect={() => setKey(selected)}
-              placeholder={"OwnerBy"}
-              data={allMember}
-              save="key"
+              placeholder={"STATUS"}
+              data={data}
+              save="value"
               boxStyles={{
                 height: 40,
                 margin: 12,
@@ -105,13 +101,19 @@ export default function UpdateLab({ route, navigation }) {
               }}
               search={false}
             />
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => setAmount(text)}
+              value={amount}
+              placeholder={"Enter amount"}
+            />
           </View>
 
           <View style={styles.btn}>
             <Buttons
               text={"Update"}
               style={styles.button}
-              onPressTo={updateLaboratoryHandle}
+              onPressTo={updateMaterial}
             />
             <Buttons
               text={"Back"}
@@ -128,6 +130,11 @@ export default function UpdateLab({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+  titleDate: {
+    fontSize: 20,
+    marginLeft: "13%",
+    marginTop: 10,
+  },
   container: {
     flexDirection: "column",
   },

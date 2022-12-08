@@ -16,30 +16,8 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import LabNavigator from "../../navigations/LabNavigator";
 import { SelectList } from "react-native-dropdown-select-list";
 import Buttons from "../../components/Buttons";
-
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    name: "First Item",
-    role: "lead",
-    ava: "https://reactnative.dev/img/tiny_logo.png",
-    code: "HE140112",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    name: "Second Item",
-    role: "lead",
-    ava: "https://reactnative.dev/img/tiny_logo.png",
-    code: "HE140112",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    name: "Third Item",
-    role: "lead",
-    ava: "https://reactnative.dev/img/tiny_logo.png",
-    code: "HE140112",
-  },
-];
+import { useDispatch } from "react-redux";
+import { getmemberDetailByProfileId } from "../../actions/LaboratoryAction";
 
 const ViewAllMember = ({ route, navigation }) => {
   const data = route.params.data;
@@ -47,13 +25,18 @@ const ViewAllMember = ({ route, navigation }) => {
   const [shouldShow, setShouldShow] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selected, setSelected] = React.useState("");
+  const dispatch = useDispatch();
   const dataDrop = [
     { key: "1", value: "Admin" },
     { key: "2", value: "Lead" },
     { key: "3", value: "Slave" },
   ];
 
-  const Item = ({ name, role, ava, code }) => (
+  const goToMemberDetail = (accountId) => {
+    dispatch(getmemberDetailByProfileId(accountId, navigation));
+  };
+
+  const Item = ({ accountId, id, name, role, ava, code }) => (
     <View style={styles.item}>
       <View style={styles.ava}>
         <Text style={styles.title}>{code}</Text>
@@ -63,10 +46,8 @@ const ViewAllMember = ({ route, navigation }) => {
       </View>
       <View style={styles.name}>
         <Text
-          style={styles.title}
-          onPress={() => {
-            navigation.push("MemberDetail");
-          }}
+          style={[styles.title, styles.blue]}
+          onPress={() => goToMemberDetail(accountId)}
         >
           {name}
         </Text>
@@ -95,6 +76,7 @@ const ViewAllMember = ({ route, navigation }) => {
   const renderItem = ({ item }) => (
     <Item
       id={item.memberId}
+      accountId={item.userInfo.accountId}
       name={item.userInfo.userInfo.fullName}
       role={item.userInfo.userInfo.roles}
       ava={item.ava}
@@ -107,7 +89,6 @@ const ViewAllMember = ({ route, navigation }) => {
       <View>
         <Text style={styles.titleContent}>List all member in your lab</Text>
       </View>
-      <Buttons style={styles.button} text={"Add new member"} />
       <SafeAreaView style={styles.container}>
         <View style={styles.tableForm}>
           <View style={[styles.ava]}>
@@ -178,6 +159,9 @@ const ViewAllMember = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  blue: {
+    color: "blue",
+  },
   modal: {
     backgroundColor: "#f27474",
     width: "50%",

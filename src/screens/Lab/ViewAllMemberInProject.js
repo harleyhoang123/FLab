@@ -16,6 +16,8 @@ import { useDispatch } from "react-redux";
 import { removeMemberInProjectById } from "../../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
+import Buttons from "../../components/Buttons";
+import { getAllMemberInLab } from "../../networking/CustomNetworkService";
 
 const getProjectId = async () => {
   try {
@@ -30,6 +32,7 @@ const getProjectId = async () => {
 export default function ViewAllMemberInProject({ route, navigation }) {
   const listMember = route.params.data;
   const data = listMember.items;
+
   const dispatch = useDispatch();
   const [projectId, setProjectId] = useState("");
   getProjectId().then((v) => setProjectId(v));
@@ -65,7 +68,16 @@ export default function ViewAllMemberInProject({ route, navigation }) {
       <ProjectNavigator navigation={navigation} />
       <View style={styles.container}>
         <View>
-          <Text style={styles.heading}>List All Member</Text>
+          <Buttons
+            style={styles.button}
+            onPressTo={() =>
+              navigation.navigate("AddMemberToProject", {
+                allMember: listMember,
+                projectId: projectId,
+              })
+            }
+            text={"Add new member"}
+          />
         </View>
         <SafeAreaView>
           <FlatList
@@ -80,6 +92,12 @@ export default function ViewAllMemberInProject({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    marginLeft: 10,
+    width: 215,
+  },
   action: {
     borderRadius: 5,
     color: "white",

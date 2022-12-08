@@ -14,9 +14,13 @@ import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
 import Notification from "../screens/Notification/Notification";
 import { useDispatch } from "react-redux";
 import { getAllRepository } from "../actions/RepositoryAction";
-import {getAllMemberInLaboratoryById, getAllProjectByLabId, getListMaterialByLabId} from "../actions/LaboratoryAction";
+import {
+  getAllMemberInLaboratoryById,
+  getAllProjectByLabId,
+  getListMaterialByLabId,
+} from "../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
-import {getAccountInfoByAccountId, logout} from "../actions/UserAction";
+import { getAccountInfoByAccountId, logout } from "../actions/UserAction";
 import AvatarComponent from "../components/AvatarComponent";
 import { getFolderByRepositoryId } from "../actions/RepositoryAction";
 const getRepoId = async () => {
@@ -56,12 +60,11 @@ const getAvatar = async () => {
   }
 };
 export default function LabNavigator({ route, navigation }) {
-
   const [accountId, setAccountId] = useState("");
-  const [avatar, setAvatar] = useState('');
+  const [avatar, setAvatar] = useState("");
   getAvatar().then((v) => setAvatar(v));
   getAccountId().then((v) => setAccountId(v));
-  const [labId, setLabId] = useState('');
+  const [labId, setLabId] = useState("");
   getLabId().then((v) => setLabId(v));
   const dispatch = useDispatch();
 
@@ -72,7 +75,7 @@ export default function LabNavigator({ route, navigation }) {
   const [modalNotifyVisible, setModalNotifyVisible] = useState(false);
 
   const goToListMaterial = () => {
-    dispatch(getListMaterialByLabId("", navigation));
+    dispatch(getListMaterialByLabId(labId, navigation));
   };
   const goToViewAllProjectPage = (labId) => {
     dispatch(getAllProjectByLabId(labId, navigation));
@@ -87,25 +90,25 @@ export default function LabNavigator({ route, navigation }) {
   return (
     <View style={styles.container}>
       <Modal
-          animationType="fade"
-          transparent={true}
-          visible={modalProfileVisible}
-          onRequestClose={() => {
-            setModalProfileVisible(!modalProfileVisible);
-          }}
+        animationType="fade"
+        transparent={true}
+        visible={modalProfileVisible}
+        onRequestClose={() => {
+          setModalProfileVisible(!modalProfileVisible);
+        }}
       >
         <TouchableOpacity
-            activeOpacity={1}
-            onPress={() => setModalProfileVisible(!modalProfileVisible)}
-            style={styles.modal}
+          activeOpacity={1}
+          onPress={() => setModalProfileVisible(!modalProfileVisible)}
+          style={styles.modal}
         >
           <View style={styles.modalProfileView}>
             <TouchableOpacity
-                onPress={() => {
-                  goToProfile()
-                  setModalProfileVisible(!modalProfileVisible);
-                }}
-                style={[styles.buttonModal]}
+              onPress={() => {
+                goToProfile();
+                setModalProfileVisible(!modalProfileVisible);
+              }}
+              style={[styles.buttonModal]}
             >
               <Text style={styles.textStyle}>My Profile</Text>
             </TouchableOpacity>
@@ -116,11 +119,11 @@ export default function LabNavigator({ route, navigation }) {
               <Text style={styles.textStyle}>My CV</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={() => {
-                  handleLogout();
-                  setModalProfileVisible(!modalProfileVisible);
-                }}
-                style={[styles.buttonModal]}
+              onPress={() => {
+                handleLogout();
+                setModalProfileVisible(!modalProfileVisible);
+              }}
+              style={[styles.buttonModal]}
             >
               <Text style={styles.textStyle}>Log out</Text>
             </TouchableOpacity>
@@ -128,11 +131,11 @@ export default function LabNavigator({ route, navigation }) {
         </TouchableOpacity>
       </Modal>
       <Notification
-          navigation={navigation}
-          modalNotifyVisible={modalNotifyVisible}
-          setModalNotifyVisible={(modalNotifyVisible) =>
-              setModalNotifyVisible(modalNotifyVisible)
-          }
+        navigation={navigation}
+        modalNotifyVisible={modalNotifyVisible}
+        setModalNotifyVisible={(modalNotifyVisible) =>
+          setModalNotifyVisible(modalNotifyVisible)
+        }
       />
       <View style={styles.topNavigationContent}>
         <View style={styles.topNavigationContentLeft}>
@@ -151,7 +154,7 @@ export default function LabNavigator({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={()=>goToViewAllMemberPage(labId)}
+            onPress={() => goToViewAllMemberPage(labId)}
           >
             <Text style={styles.textLogo}>Member</Text>
           </TouchableOpacity>
@@ -161,16 +164,16 @@ export default function LabNavigator({ route, navigation }) {
         </View>
         <View style={styles.topNavigationContentRight}>
           <TouchableOpacity
-              style={[styles.button, { marginHorizontal: 50 }]}
-              onPress={() => setModalNotifyVisible(true)}
+            style={[styles.button, { marginHorizontal: 50 }]}
+            onPress={() => setModalNotifyVisible(true)}
           >
             <FontAwesomeIcon icon={faBell} size={"xl"} />
           </TouchableOpacity>
           <TouchableOpacity
-              style={[styles.button, { flexDirection: "row" }]}
-              onPress={() => setModalProfileVisible(true)}
+            style={[styles.button, { flexDirection: "row" }]}
+            onPress={() => setModalProfileVisible(true)}
           >
-            <AvatarComponent avatarURL={avatar}/>
+            <AvatarComponent avatarURL={avatar} />
             <Text>Profile</Text>
           </TouchableOpacity>
         </View>

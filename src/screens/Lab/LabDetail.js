@@ -41,6 +41,7 @@ export default function LabDetail({ route, navigation }) {
   const data = route.params.data;
   console.log("labdeatl data:" + JSON.stringify(data));
   const isJoined = route.params.isJoined;
+  const allMember = route.params.allMember.items;
   const isAdmin = true;
 
   const dispatch = useDispatch();
@@ -125,6 +126,14 @@ export default function LabDetail({ route, navigation }) {
                 <Text style={styles.textStyle}>Apply</Text>
               )}
             </Pressable>
+            <Pressable
+              style={[styles.button, styles.buttonOpen]}
+              onPress={() =>
+                navigation.navigate("AddMemberToLab", { labData: data })
+              }
+            >
+              <Text style={styles.textStyle}>Add Member</Text>
+            </Pressable>
           </View>
           {isAdmin ? (
             <View style={{ marginTop: 20, flexDirection: "row" }}>
@@ -150,7 +159,10 @@ export default function LabDetail({ route, navigation }) {
                   <Text
                     style={styles.textStyle}
                     onPress={() => {
-                      navigation.push("UpdateLab", { labInfo: data });
+                      navigation.push("UpdateLab", {
+                        labInfo: data,
+                        listMember: allMember,
+                      });
                     }}
                   >
                     Update
@@ -247,10 +259,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   leavebtn: {
-    width: 120,
-    height: 66,
-    justifyContent: "center",
     marginTop: 20,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    flexDirection: "row",
   },
   centeredView: {
     flex: 1,

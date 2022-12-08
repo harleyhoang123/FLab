@@ -12,84 +12,74 @@ import {
 import { useDispatch } from "react-redux";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
-import axios from "axios";
-import {
-  updateLaboratoryByLabId,
-  getAllMemberInLaboratoryById,
-} from "../../actions/LaboratoryAction";
 import { SelectList } from "react-native-dropdown-select-list";
+import { getAllMember } from "../../networking/CustomNetworkService";
+import { addMembersToLab } from "../../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
-import { TouchableOpacity } from "react-native-web";
 
-export default function UpdateLab({ route, navigation }) {
-  const labInfo = route.params.labInfo;
-  const data = route.params.listMember;
-  console.log("All data:" + JSON.stringify(data));
+const getLabId = async () => {
+  try {
+    const labId = await AsyncStorage.getItem("@currentLabId");
+    console.log("LabId in reate Project: " + labId);
+    return labId;
+  } catch (e) {
+    console.log("Can't get LabId id: " + e);
+  }
+};
 
-  const allMember = data.map((item) => {
-    return {
-      key: item.memberId,
-      value: item.userInfo.userInfo.username,
-    };
-  });
-
-  console.log("ALL member" + JSON.stringify(allMember));
-
-  const [textName, onChangeNameText] = useState(labInfo.laboratoryName);
-  const [textDescription, onChangeDescriptionText] = useState(
-    labInfo.description
-  );
-  const [textMajor, onChangeMajorText] = useState(labInfo.major);
+export default function AddMemberTolab({ route, navigation }) {
+  const [labId, setLabId] = useState("");
+  getLabId().then((v) => setLabId(v));
   const [selected, setSelected] = React.useState("");
   const [key, setKey] = React.useState("");
   const dispatch = useDispatch();
 
-  const updateLaboratoryHandle = () => {
+  const [data, setData] = React.useState([]);
+
+  React.useEffect(
+    () =>
+      //Get Values from database
+      getAllMember()
+        .then((response) => {
+          // Store Values in Temporary Array
+          console.log("All member: " + JSON.stringify(response.data.items));
+          let newArray = response.data.items.map((item) => {
+            return {
+              key: item.accountId,
+              value: item.fullName,
+            };
+          });
+          //Set Data Variable
+          setData(newArray);
+        })
+        .catch((e) => {
+          console.log(e);
+        }),
+    []
+  );
+
+  const addMemberHandle = () => {
     const requestData = {
-      labName: textName,
-      description: textDescription,
-      major: textMajor,
-      ownerBy: key,
+      accountId: key,
     };
     console.log(requestData);
-    dispatch(
-      updateLaboratoryByLabId(labInfo.laboratoryId, requestData, navigation)
-    );
+    dispatch(addMembersToLab(labId, requestData, navigation));
   };
   return (
     <View>
       <LabNavigator navigation={navigation} />
       <View style={styles.container}>
-        <Text style={styles.title}>Update your's Lab</Text>
+        <Text style={styles.title}>Add member your's Lab</Text>
         <View>
           <View>
-            <Text style={styles.usage}>Update lab information</Text>
+            <Text style={styles.usage}>Select member</Text>
           </View>
           <View>
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => onChangeNameText(text)}
-              value={textName}
-              placeholder={"Enter lab's name"}
-            />
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => onChangeDescriptionText(text)}
-              value={textDescription}
-              placeholder={"Enter lab's description"}
-            />
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => onChangeMajorText(text)}
-              value={textMajor}
-              placeholder={"Enter lab's major"}
-            />
-
             <SelectList
               setSelected={(val) => setSelected(val)}
               onSelect={() => setKey(selected)}
-              placeholder={"OwnerBy"}
-              data={allMember}
+              placeholder={"List Member"}
+              data={data}
               save="key"
               boxStyles={{
                 height: 40,
@@ -100,7 +90,7 @@ export default function UpdateLab({ route, navigation }) {
                 marginLeft: "13%",
               }}
               dropdownStyles={{
-                width: 130,
+                width: 330,
                 marginLeft: "13%",
               }}
               search={false}
@@ -109,9 +99,9 @@ export default function UpdateLab({ route, navigation }) {
 
           <View style={styles.btn}>
             <Buttons
-              text={"Update"}
+              text={"Add"}
               style={styles.button}
-              onPressTo={updateLaboratoryHandle}
+              onPressTo={addMemberHandle}
             />
             <Buttons
               text={"Back"}

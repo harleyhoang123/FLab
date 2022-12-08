@@ -63,23 +63,22 @@ export default function Project({ route, navigation }) {
       <Text style={styles.title}>Project name: {projectName}</Text>
 
       <View style={{ flexDirection: "row" }}>
-        <View style={{ width: 400 }}>
+        <View style={{ flexDirection: "row", width: "100%" }}>
           <Text style={styles.title}>Description: {description}</Text>
-        </View>
-
-        <View style={{ marginLeft: "60%", flexDirection: "row" }}>
-          <Text
-            onPress={() => goToProjectDetailPage(projectId)}
-            style={styles.action}
-          >
-            Detail
-          </Text>
-          <Text
-            onPress={() => removeProjectById(projectId)}
-            style={styles.action}
-          >
-            Remove
-          </Text>
+          <View style={{ flexDirection: "row", marginLeft: "75%" }}>
+            <Text
+              onPress={() => goToProjectDetailPage(projectId)}
+              style={styles.action}
+            >
+              Detail
+            </Text>
+            <Text
+              onPress={() => removeProjectById(projectId)}
+              style={styles.action}
+            >
+              Remove
+            </Text>
+          </View>
         </View>
       </View>
       <Text style={styles.title}>Member: {members}</Text>
@@ -138,7 +137,7 @@ const styles = StyleSheet.create({
     marginLeft: 50,
   },
   item: {
-    width: "70%",
+    minWidth: "30%",
     borderRadius: 5,
     margin: 30,
     padding: 20,

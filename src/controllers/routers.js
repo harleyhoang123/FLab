@@ -27,6 +27,8 @@ export const routes = {
       "8083/flab/lab/public/api/v1/laboratories/:lab-id/members/:member-id",
     deleteLaboratory: host + "8083/flab/lab/public/api/v1/laboratories/:lab-id",
     updateLaboratory: host + "8083/flab/lab/public/api/v1/laboratories/:lab-id",
+    addMemberToLab:
+      host + "8083/flab/lab/public/api/v1/members/:lab-id/member-to-lab",
   },
   forum: {
     getQuestionDetail: host + "8081/flab/forum/public/api/v1/questions/",
@@ -45,6 +47,12 @@ export const routes = {
   material: {
     getMaterialById:
       host + "8083/flab/lab/public/api/v1/materials/:material-id",
+    getMaterialByLabId:
+      host + "8083/flab/lab/public/api/v1/materials/:laboratory-id/materials",
+    updateMeterial:
+      host +
+      "8083/flab/lab/public/api/v1/laboratories/:laboratory-id/materials/:material-id",
+    addMaterial: host + "/flab/lab/public/api/v1/laboratories/:lab-id/material",
   },
   repository: {
     getFolderDetail:
@@ -62,7 +70,8 @@ export const routes = {
   account: {
     getAccountInfo:
       host + "8084/flab/account/public/api/v1/profiles/:profile-id",
-    updateAccountInfo: host + "8084/flab/account/public/api/v1/profiles/:profile-id",
+    updateAccountInfo:
+      host + "8084/flab/account/public/api/v1/profiles/:profile-id",
   },
   project: {
     getProjectByLabId:
@@ -78,6 +87,12 @@ export const routes = {
       host + "8083/flab/lab/public/api/v1/projects/:lab-id/:project-id",
     createProject:
       host + "8083/flab/lab/public/api/v1/laboratories/:lab-id/project",
+    updateProject:
+      host +
+      "8083/flab/lab/public/api/v1/laboratories/:laboratory-id/projects/:project-id",
+    addMemberToProject:
+      host +
+      "8083/flab/lab/public/api/v1/members/:project-id/member-to-project",
   },
   news: {
     getListNews: host + "8888/flab/notification/public/api/v1/news",
@@ -90,5 +105,9 @@ export const routes = {
     getTaskDetail: host + "8085/flab/workspace/public/api/v1/tasks/:task-id",
     getSubTaskDetail:
       host + "8085/flab/workspace/public/api/v1/subtasks/:subtask-id",
+  },
+  member: {
+    getMemberDetail:
+      host + "8084/flab/account/public/api/v1/profiles/:profile-id",
   },
 };

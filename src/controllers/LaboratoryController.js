@@ -35,7 +35,7 @@ export class LaboratoryController {
   getListMaterialByLabId({ labId }) {
     return this.networkService.request({
       method: "GET",
-      url: routes.laboratory.getListMaterialByLabId,
+      url: routes.material.getMaterialByLabId.replace(":laboratory-id", labId),
       data: null,
     });
   }
@@ -54,6 +54,15 @@ export class LaboratoryController {
         ":project-id",
         projectId
       ),
+      data: null,
+    });
+  }
+
+  getMemberDetail({ accountId }) {
+    console.log("ProfileId in controller: " + accountId);
+    return this.networkService.request({
+      method: "GET",
+      url: routes.member.getMemberDetail.replace(":profile-id", accountId),
       data: null,
     });
   }
@@ -185,11 +194,41 @@ export class LaboratoryController {
     });
   }
 
-  updateLaboratory({ labId }) {
+  updateLaboratory({ labId, requestData }) {
     return this.networkService.request({
       method: "PUT",
-      url: routes.project.removeProject.replace(":lab-id", labId),
-      data: null,
+      url: routes.laboratory.updateLaboratory.replace(":lab-id", labId),
+      data: {
+        laboratoryName: requestData.labName,
+        description: requestData.description,
+        major: requestData.major,
+        ownerBy: requestData.ownerBy,
+      },
+    });
+  }
+
+  updateProject({ labId, projectId, requestData }) {
+    return this.networkService.request({
+      method: "PUT",
+      url: routes.project.updateProject
+        .replace(":laboratory-id", labId)
+        .replace(":project-id", projectId),
+      data: {
+        projectName: requestData.projectName,
+        description: requestData.description,
+        startDate: requestData.startDate,
+        toDate: requestData.toDate,
+      },
+    });
+  }
+
+  addMembersToLab({ labId, requestData }) {
+    return this.networkService.request({
+      method: "POST",
+      url: routes.laboratory.addMemberToLab.replace(":lab-id", labId),
+      data: {
+        accountId: requestData.accountId,
+      },
     });
   }
 }

@@ -31,7 +31,6 @@ export default function CreateFolderInRepo({ navigation }) {
   const dispatch = useDispatch();
 
   const createFolderInRepositoryHandle = () => {
-    console.log("Response from custom network service: "+ JSON.stringify(response))
     const requestData = {
       folderName: textName,
       description: textDescription,
