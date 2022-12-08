@@ -81,13 +81,17 @@ export default function Backlog({route, navigation}) {
     const res = route.params.data;
     const projectId = route.params.projectId;
     const projectDetail = route.params.projectDetail
+    const allMember = route.params.allMember
+    console.log("all Member: " + JSON.stringify(allMember.items))
     const [listSPrint, setListSPrint] = useState(res.sprints.items);
+    const [listMember, setListMember] = useState(allMember.items);
     const [sprintName, setSprintName] = useState('');
-    const [taskId, setTaskId] = useState(null);
+    const [taskIdChange, setTaskIdChange] = useState(null);
     const [subTaskId, setSubTaskId] = useState(null);
     const [taskDetail, setTaskDetail] = useState();
     const [subTaskDetail, setSubTaskDetail] = useState();
     const [isTextField, setIsTextField] = useState(false);
+    const [selected, setSelected] = useState();
     const changeType = () => {
         setIsTextField(!isTextField);
     };
@@ -105,7 +109,7 @@ export default function Backlog({route, navigation}) {
                 {list?.map((item) => (
                     <View style={styles.backlogContent} key={item.sprintId}>
                         <SprintComponent key={item.sprintId}
-                            projectId={projectId} memberId={res.memberId} sprintId={item.sprintId}
+                                         projectId={projectId} memberId={res.memberId} sprintId={item.sprintId}
                                          sprintName={item.sprintName}
                                          goal={item.goal} startDate={item.startDate} endDate={item.endDate}
                                          tasks={item.tasks}
@@ -134,26 +138,38 @@ export default function Backlog({route, navigation}) {
         );
     };
     const callbackTaskDetail = (taskId) => {
-        setTaskId(taskId);
-        if (taskId != null) {
-            getTaskDetail(taskId).then(value => setTaskDetail(value.data));
+        if (taskIdChange == null) {
+            setTaskIdChange(taskId);
+        } else if (taskId !== taskIdChange) {
+            setTaskDetail(null);
+            setTaskIdChange(taskId);
         }
-        else {setTaskDetail(null);}
+        if (taskId != null) {
+            getTaskDetail(taskId).then(value => {
+                setTaskDetail(value.data);
+                setSubTaskDetail(null)
+            });
+        } else {
+            setTaskDetail(null);
+        }
 
 
     }
     const callbackDeleteTask = (taskIdDelete) => {
-        if (taskId===taskIdDelete){
+        if (taskIdChange === taskIdDelete) {
             setTaskDetail(null)
         }
     }
     const callbackSubTaskDetail = (subtaskId) => {
         setSubTaskId(subtaskId);
-        setTaskDetail(null);
         if (subtaskId != null) {
-            getSubTaskDetail(subtaskId).then(value => setSubTaskDetail(value.data));
+            getSubTaskDetail(subtaskId).then(value => {
+                setSubTaskDetail(value.data);
+                setTaskDetail(null)
+            });
+        } else {
+            setSubTaskDetail(null);
         }
-        else {setSubTaskDetail(null);}
 
 
     }
@@ -166,6 +182,7 @@ export default function Backlog({route, navigation}) {
                     <View style={styles.projectTitle}>
                         <Text style={styles.projectName}>{projectDetail.projectName}</Text>
                         <Text style={styles.major}>{projectDetail.description}</Text>
+
                     </View>
                 </View>
                 <View style={styles.right}>
@@ -174,8 +191,15 @@ export default function Backlog({route, navigation}) {
                     {renderTextField()}
                 </View>
                 <View style={styles.taskDetail}>
-                    {taskDetail != null && <TaskDetailComponent taskDetail={taskDetail} callbackTaskDetail={callbackTaskDetail} callbackSubTaskDetail={callbackSubTaskDetail}/>}
-                    {subTaskDetail != null && <SubTaskDetailComponent subTaskDetail={subTaskDetail} callbackSubTaskDetail={callbackSubTaskDetail}/>}
+                    {taskDetail != null && <TaskDetailComponent taskDetail={taskDetail} memberId={res.memberId}
+                                                                listMember={listMember} projectId={projectId}
+                                                                callbackTaskDetail={callbackTaskDetail}
+                                                                callbackSubTaskDetail={callbackSubTaskDetail}/>}
+                    {subTaskDetail != null &&
+                        <SubTaskDetailComponent subTaskDetail={subTaskDetail} taskId={taskIdChange}
+                                                listMember={listMember} projectId={projectId}
+                                                memberId={res.memberId}
+                                                callbackSubTaskDetail={callbackSubTaskDetail}/>}
                 </View>
             </View>
         </View>
@@ -314,5 +338,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 8,
         marginRight: 20
+    },
+    picker: {
+        width: 100,
+        height: 40,
+        borderRadius: 8,
     },
 });

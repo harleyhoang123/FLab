@@ -15,10 +15,15 @@ export const getAllSprint =
                 const projectDetail = await laboratoryController.getProjectDetail({
                     projectId,
                 });
+                const allMember = await laboratoryController.getAllMembersInProject({
+                    projectId,
+                });
+                console.log("all member in getAllSprint"+ JSON.stringify(allMember.data.data))
                 navigation.push("Backlog", {
                     projectId: projectId,
                     data: response.data.data,
-                    projectDetail:projectDetail.data.data
+                    projectDetail:projectDetail.data.data,
+                    allMember:allMember.data.data
                 });
             } catch ({ data }) {
                 console.log(
