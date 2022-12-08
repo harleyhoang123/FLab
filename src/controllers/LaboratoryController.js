@@ -58,6 +58,15 @@ export class LaboratoryController {
     });
   }
 
+  getMemberDetail({ accountId }) {
+    console.log("ProfileId in controller: " + accountId);
+    return this.networkService.request({
+      method: "GET",
+      url: routes.member.getMemberDetail.replace(":profile-id", accountId),
+      data: null,
+    });
+  }
+
   getMembersInLaboratory({ labId }) {
     return this.networkService.request({
       method: "GET",

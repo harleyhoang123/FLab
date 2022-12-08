@@ -15,7 +15,9 @@ import {
 import { SelectList } from "react-native-dropdown-select-list";
 import LabNavigator from "../../navigations/LabNavigator";
 
-export default function MemberDetail({ navigation }) {
+export default function MemberDetail({ route, navigation }) {
+  const data = route.params.data;
+  console.log("data: " + JSON.stringify(data));
   return (
     <View>
       <LabNavigator navigation={navigation} />
@@ -25,29 +27,31 @@ export default function MemberDetail({ navigation }) {
             <Image
               style={styles.tinyLogo}
               source={{
-                uri: "https://scontent.fhan5-2.fna.fbcdn.net/v/t39.30808-6/300232743_3408205352835523_154913047176684005_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=jWga5X8GYPwAX8ojEHl&tn=4MAFI0onnZhJkevD&_nc_ht=scontent.fhan5-2.fna&oh=00_AfBvsivw4ziopD4xonbas0bH24jsgRHNN7J2BRIDbmzk6A&oe=638FEC75",
+                uri: "https://as2.ftcdn.net/v2/jpg/02/15/84/43/1000_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg",
               }}
             />
           </View>
           <View style={styles.infoLeft}>
-            <Text style={styles.txtLeft}>FPT Uni</Text>
-            <Text style={styles.txtLeft}>Major: SE</Text>
+            <Text style={styles.txtLeft}>FPT University</Text>
+            <Text style={styles.txtLeft}>Major: {data.major}</Text>
             <Text style={styles.txtLeft}>Age: 28</Text>
-            <Text style={styles.txtLeft}>Sex: Male</Text>
+            <Text style={styles.txtLeft}>Sex: {data.gender}</Text>
           </View>
         </View>
         <View style={styles.right}>
           <View style={styles.content}>
             <View style={styles.contact}>
-              <Text style={styles.memberName}>Hoang Hai Son</Text>
+              <Text style={styles.memberName}>
+                {data.lastModifiedBy.userInfo.username}
+              </Text>
               <Text style={styles.address}>
-                12 Duong Lang - Ha Noi - 0971943245 - frchoanghaison@gmail.com
+                {data.address} - {data.lastModifiedBy.userInfo.email}
               </Text>
               <Text style={[styles.description]}>
                 I am experienced in leveraging agile frameworks to provide a
                 robust synopsis for high level overviews. Iterative approaches
                 to corporate strategy foster collaborative thinking to further
-                the overall value proposition.
+                the overall value proposition
               </Text>
             </View>
             <View style={styles.detail}>

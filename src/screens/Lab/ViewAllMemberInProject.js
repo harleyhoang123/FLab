@@ -33,8 +33,6 @@ export default function ViewAllMemberInProject({ route, navigation }) {
   const listMember = route.params.data;
   const data = listMember.items;
 
-  //const [data, setData] = React.useState([]);
-
   const dispatch = useDispatch();
   const [projectId, setProjectId] = useState("");
   getProjectId().then((v) => setProjectId(v));

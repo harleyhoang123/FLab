@@ -52,6 +52,7 @@ export const routes = {
     updateMeterial:
       host +
       "8083/flab/lab/public/api/v1/laboratories/:laboratory-id/materials/:material-id",
+    addMaterial: host + "/flab/lab/public/api/v1/laboratories/:lab-id/material",
   },
   repository: {
     getFolderDetail:
@@ -104,5 +105,9 @@ export const routes = {
     getTaskDetail: host + "8085/flab/workspace/public/api/v1/tasks/:task-id",
     getSubTaskDetail:
       host + "8085/flab/workspace/public/api/v1/subtasks/:subtask-id",
+  },
+  member: {
+    getMemberDetail:
+      host + "8084/flab/account/public/api/v1/profiles/:profile-id",
   },
 };

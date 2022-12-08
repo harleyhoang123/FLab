@@ -16,6 +16,8 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import LabNavigator from "../../navigations/LabNavigator";
 import { SelectList } from "react-native-dropdown-select-list";
 import Buttons from "../../components/Buttons";
+import { useDispatch } from "react-redux";
+import { getmemberDetailByProfileId } from "../../actions/LaboratoryAction";
 
 const ViewAllMember = ({ route, navigation }) => {
   const data = route.params.data;
@@ -23,13 +25,18 @@ const ViewAllMember = ({ route, navigation }) => {
   const [shouldShow, setShouldShow] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selected, setSelected] = React.useState("");
+  const dispatch = useDispatch();
   const dataDrop = [
     { key: "1", value: "Admin" },
     { key: "2", value: "Lead" },
     { key: "3", value: "Slave" },
   ];
 
-  const Item = ({ name, role, ava, code }) => (
+  const goToMemberDetail = (accountId) => {
+    dispatch(getmemberDetailByProfileId(accountId, navigation));
+  };
+
+  const Item = ({ accountId, id, name, role, ava, code }) => (
     <View style={styles.item}>
       <View style={styles.ava}>
         <Text style={styles.title}>{code}</Text>
@@ -40,9 +47,7 @@ const ViewAllMember = ({ route, navigation }) => {
       <View style={styles.name}>
         <Text
           style={[styles.title, styles.blue]}
-          onPress={() => {
-            navigation.push("MemberDetail");
-          }}
+          onPress={() => goToMemberDetail(accountId)}
         >
           {name}
         </Text>
@@ -71,6 +76,7 @@ const ViewAllMember = ({ route, navigation }) => {
   const renderItem = ({ item }) => (
     <Item
       id={item.memberId}
+      accountId={item.userInfo.accountId}
       name={item.userInfo.userInfo.fullName}
       role={item.userInfo.userInfo.roles}
       ava={item.ava}

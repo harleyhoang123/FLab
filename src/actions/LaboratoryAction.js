@@ -339,3 +339,23 @@ export const addMembersToLab =
       console.log("ERROR when addMembersToLab: " + JSON.stringify(data));
     }
   };
+
+export const getmemberDetailByProfileId =
+  (accountId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      console.log("ProfileId: " + accountId);
+      const laboratoryController = new LaboratoryController(networkService);
+      console.log("projectId ID in actions: " + accountId);
+      const response = await laboratoryController.getMemberDetail({
+        accountId,
+      });
+      navigation.navigate("MemberDetail", {
+        data: response.data.data,
+      });
+    } catch ({ data }) {
+      console.log(
+        "ERROR when getmemberDetailByProfileId: " + JSON.stringify(data)
+      );
+    }
+  };
