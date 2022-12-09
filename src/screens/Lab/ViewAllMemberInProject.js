@@ -18,6 +18,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
 import Buttons from "../../components/Buttons";
 import { getAllMemberInLab } from "../../networking/CustomNetworkService";
+import { getmemberDetailByProfileId } from "../../actions/LaboratoryAction";
 
 const getProjectId = async () => {
   try {
@@ -40,13 +41,23 @@ export default function ViewAllMemberInProject({ route, navigation }) {
     console.log("data" + projectId + data.memberId);
     dispatch(removeMemberInProjectById(projectId, memberId, navigation));
   };
-  const Item = ({ memberId, memberName, email, roles }) => (
+
+  const goToMemberDetail = (accountId) => {
+    dispatch(getmemberDetailByProfileId(accountId, navigation));
+  };
+
+  const Item = ({ accountId, memberId, memberName, email, roles }) => (
     <View style={styles.item}>
       <Text style={styles.title}>Member name: {memberName}</Text>
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.title}>Email: {email}</Text>
         <View style={{ marginLeft: "60%", flexDirection: "row" }}>
-          <Text style={styles.action}>Detail</Text>
+          <Text
+            onPress={() => goToMemberDetail(accountId)}
+            style={styles.action}
+          >
+            Detail
+          </Text>
           <Text onPress={() => removeMember(memberId)} style={styles.action}>
             Remove
           </Text>
@@ -61,6 +72,7 @@ export default function ViewAllMemberInProject({ route, navigation }) {
       memberName={item.userInfo.userInfo.fullName}
       email={item.userInfo.userInfo.email}
       roles={item.role}
+      accountId={item.userInfo.accountId}
     />
   );
   return (
