@@ -136,7 +136,7 @@ function ProjectNavigator({ navigation }) {
         <View style={styles.topNavigationContentLeft}>
           <TouchableOpacity
             style={styles.btnLogo}
-            onPress={() => navigation.push("Home")}
+            onPress={() => navigation.navigate("Home")}
           >
             <Logo />
             <Text style={styles.textLogo}>FLAB</Text>
