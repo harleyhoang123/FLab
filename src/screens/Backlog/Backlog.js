@@ -14,68 +14,7 @@ import Buttons from "../../components/Buttons";
 import TextField from "../../components/TextField";
 import AsyncStorage from "@react-native-community/async-storage";
 import axios from "axios";
-import {createSprint} from "../../networking/CustomNetworkService";
-
-const getToken = async () => {
-    try {
-        const token = await AsyncStorage.getItem("@token");
-        console.log("token: " + token);
-        return token;
-    } catch (e) {
-        console.log("Can't get avatar: " + e);
-    }
-};
-export const getListSprint = async (projectId) => {
-    const token = await getToken();
-    try {
-        const response = await axios.get(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/sprints/:workspace-id/sprints'.replace(":workspace-id", projectId),
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in getListSprint: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        alert(error.message);
-    }
-};
-export const getTaskDetail = async (taskId) => {
-    const token = await getToken();
-    try {
-        const response = await axios.get(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/tasks/:task-id'.replace(":task-id", taskId),
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in getTaskDetail: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        alert(error.message);
-    }
-};
-export const getSubTaskDetail = async (subTaskId) => {
-    const token = await getToken();
-    try {
-        const response = await axios.get(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/subtasks/:subtask-id'.replace(":subtask-id", subTaskId),
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in getSubTaskDetail: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        alert(error.message);
-    }
-};
+import {createSprint, getListSprint, getSubTaskDetail, getTaskDetail} from "../../networking/CustomNetworkService";
 
 export default function Backlog({route, navigation}) {
     const res = route.params.data;

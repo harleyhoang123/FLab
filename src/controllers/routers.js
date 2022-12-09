@@ -68,6 +68,7 @@ export const routes = {
     createSubFolder:
       host + "8082/flab/repository/public/api/v1/folders/:folder-id",
     downloadFile: host + "8082/flab/repository/public/api/v1/files/:file-id",
+    addFileToFolder: host + "8082/flab/repository/public/api/v1/folders/:folder-id/file",
   },
   account: {
     getAccountInfo:

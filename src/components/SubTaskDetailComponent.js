@@ -4,88 +4,10 @@ import Buttons from "./Buttons";
 import {Picker} from "@react-native-picker/picker";
 import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
-import {getSubTaskDetail, getTaskDetail} from "../screens/Backlog/Backlog";
 import UserInfoComponent from "./UserInfoComponent";
 import TextField from "./TextField";
-import {assignneTask} from "./TaskDetailComponent";
+import {assignneSubTask, deleteSubTask, getSubTaskDetail, updateSubTask} from "../networking/CustomNetworkService";
 
-const getToken = async () => {
-    try {
-        const token = await AsyncStorage.getItem("@token");
-        console.log("token: " + token);
-        return token;
-    } catch (e) {
-        console.log("Can't get avatar: " + e);
-    }
-};
-export const deleteSubTask = async (subTaskId, taskId) => {
-    const token = await getToken();
-    try {
-        const response = await axios.delete(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/subtasks/:task-id/subtasks/:subtask-id'.replace(":subtask-id", subTaskId).replace(':task-id', taskId),
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in deleteSubTask: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        console.log("error when deleteSubTask:" + JSON.stringify(error));
-    }
-};
-export const updateSubTask = async (projectId, subTaskId, subTaskName, status, description, assignee, label, estimate, reporter) => {
-
-    const token = await getToken();
-    try {
-        const response = await axios.put(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/subtasks/:workspace-id/:subtask-id'.replace(":subtask-id", subTaskId)
-                .replace(":workspace-id", projectId),
-            {
-                subTaskName: subTaskName,
-                status: status,
-                description: description,
-                assignee: assignee,
-                label: label,
-                estimate: estimate,
-                reporter: reporter
-            }
-            ,
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in updateSprint: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        console.log("ERROR when updateSprint: " + JSON.stringify(error));
-    }
-};
-export const assignneSubTask = async (projectId, subTaskId,assignee) => {
-    const token = await getToken();
-    try {
-        const response = await axios.put(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/subtasks/:workspace-id/:subtask-id'.replace(":subtask-id", subTaskId)
-                .replace(":workspace-id", projectId),
-            {
-                assignee: assignee,
-            }
-            ,
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in assignneSubTask: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        console.log("ERROR when assignneSubTask: " + JSON.stringify(error));
-    }
-};
 
 function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, listMember, callbackSubTaskDetail}) {
     console.log("List item in update sub task: "+ JSON.stringify(listMember));

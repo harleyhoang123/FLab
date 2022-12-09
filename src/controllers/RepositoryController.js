@@ -62,4 +62,18 @@ export class RepositoryController {
       data: null,
     });
   }
+  addFileToFolder({parentFolderId, description, file}){
+    return this.networkService.request({
+      method: "POST",
+      url: routes.repository.addFileToFolder.replace(
+          ":folder-id",
+          parentFolderId
+      ),
+      data: {
+        file: file,
+        description: description
+
+      },
+    });
+  }
 }

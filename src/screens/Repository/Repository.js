@@ -15,6 +15,18 @@ import LabNavigator from "../../navigations/LabNavigator";
 import { useDispatch } from "react-redux";
 import { getFolderDetailId } from "../../actions/RepositoryAction";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
+import {deleteFolder, getListFolder} from "../../networking/CustomNetworkService";
+import AsyncStorage from "@react-native-community/async-storage";
+
+const getRepoId = async () => {
+  try {
+    const repoId = await AsyncStorage.getItem("@currentProjectId");
+    console.log("repoId: " + repoId);
+    return repoId;
+  } catch (e) {
+    console.log("Can't get repo id: " + e);
+  }
+};
 
 function Repository({ route, navigation }) {
   const data = route.params.data;
@@ -22,14 +34,17 @@ function Repository({ route, navigation }) {
   console.log("Data in repository: "+ JSON.stringify(items))
   const [text, setText] = useState("");
   const dispatch = useDispatch();
+  const [repoId, setRepoId] = useState("");
+  getRepoId().then((v) => setRepoId(v));
   const getFolderDetailIdHandler = (id, name) => {
     dispatch(getFolderDetailId(id, name, navigation));
   };
 
-  // const deleteFolder = () => {
-  //   dispatch(deleteFolderById(id));
-  // };
+  const deleteAFolder = (folderId) => {
+    deleteFolder(folderId).then(r => {getListFolder(repoId).then(v => setItems(v.data.items))})
+  };
   const [checked, setChecked] = useState("");
+
   const Item = ({ id, name, type, lastEdit }) => (
     <View style={styles.table}>
       <View style={styles.columnCheckBox}>
@@ -37,8 +52,9 @@ function Repository({ route, navigation }) {
           <RadioButton
             value={id}
             status={checked === id ? "checked" : "unchecked"}
-            onPress={() => setChecked(id)}
+            onPress={() => {setChecked(id);console.log("Folder ID checked" + checked)}}
           />
+
         </RadioButton.Group>
       </View>
       <View style={styles.column}>
@@ -58,14 +74,6 @@ function Repository({ route, navigation }) {
     </View>
   );
 
-  const renderItem = ({ item }) => (
-    <Item
-      id={item.folderId}
-      name={item.folderName}
-      type={item.description}
-      lastEdit={item.lastModifiedDate}
-    />
-  );
   return (
     <View style={styles.container}>
       <ProjectNavigator navigation={navigation} />
@@ -99,7 +107,7 @@ function Repository({ route, navigation }) {
             <Buttons
               style={styles.button}
               text={"Delete"}
-              onPress={() => deleteFolder(id)}
+              onPressTo={() => deleteAFolder(checked)}
             />
           </View>
           <View style={styles.table}>
@@ -115,7 +123,15 @@ function Repository({ route, navigation }) {
             </View>
           </View>
           <SafeAreaView style={styles.flatlist}>
-            <FlatList data={items} renderItem={renderItem} />
+            {items?.map((item) => (
+                <Item
+                    key ={item.folderId}
+                    id={item.folderId}
+                    name={item.folderName}
+                    type={item.description}
+                    lastEdit={item.lastModifiedDate}
+                />
+            ))}
           </SafeAreaView>
         </View>
       </View>

@@ -4,34 +4,9 @@ import Buttons from "./Buttons";
 import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
 import {Picker} from "@react-native-picker/picker";
+import {deleteTask} from "../networking/CustomNetworkService";
 
-const getToken = async () => {
-    try {
-        const token = await AsyncStorage.getItem("@token");
-        console.log("token: " + token);
-        return token;
-    } catch (e) {
-        console.log("Can't get avatar: " + e);
-    }
-};
-export const deleteTask = async (sprintId, taskId) => {
-    const token = await getToken();
-    try {
-        const response = await axios.delete(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/tasks/:sprint-id/tasks/:task-id'.replace(":sprint-id", sprintId)
-                .replace(":task-id", taskId),
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in deleteTask: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        console.log("error when deleteTask:" + JSON.stringify(error));
-    }
-};
+
 
 function TaskComponent({
                            taskId,

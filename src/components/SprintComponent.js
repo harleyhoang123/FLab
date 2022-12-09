@@ -6,118 +6,9 @@ import TextField from "./TextField";
 import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
 import {DateTimePicker} from "@hashiprobr/react-native-paper-datetimepicker";
+import {createTask, deleteSprint, getListTask, getSprintDetail, updateSprint} from "../networking/CustomNetworkService";
 
-const getToken = async () => {
-    try {
-        const token = await AsyncStorage.getItem("@token");
-        console.log("token: " + token);
-        return token;
-    } catch (e) {
-        console.log("Can't get avatar: " + e);
-    }
-};
-export const deleteSprint = async (projectId, sprintId) => {
-    const token = await getToken();
-    try {
-        const response = await axios.delete(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/sprints/:workspace-id/sprints/:sprint-id'.replace(":workspace-id", projectId)
-                .replace(":sprint-id", sprintId),
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in deleteSprint: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        alert(error.message);
-    }
-};
 
-export const createTask = async (projectId,sprintId, memberId, taskName) => {
-    const token = await getToken();
-    try {
-        const response = await axios.post(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/tasks/:workspace-id/:sprint-id/task'.replace(":sprint-id", sprintId)
-                .replace(":workspace-id", projectId),
-            {
-                memberId: memberId,
-                taskName: taskName,
-            }
-            ,
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in createTask: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        alert(error.message);
-    }
-};
-export const getListTask = async (sprintId) => {
-    const token = await getToken();
-    try {
-        const response = await axios.get(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/sprints/:sprint-id'.replace(":sprint-id", sprintId),
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in createTask: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        alert(error.message);
-    }
-};
-export const updateSprint = async (projectId, sprintId, sprintName, startDate, dueDate, goal) => {
-    const token = await getToken();
-    try {
-        const response = await axios.put(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/sprints/:workspace-id/:sprint-id'.replace(":sprint-id", sprintId)
-                .replace(":workspace-id", projectId),
-            {
-                sprintName: sprintName,
-                startDate: startDate,
-                dueDate: dueDate,
-                goal: goal
-            }
-            ,
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in updateSprint: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        console.log("ERROR when updateSprint: " + JSON.stringify(error));
-    }
-};
-
-export const getSprintDetail = async (sprintId) => {
-    const token = await getToken();
-    try {
-        const response = await axios.get(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/sprints/:sprint-id'.replace(":sprint-id", sprintId),
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in createTask: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        alert(error.message);
-    }
-};
 
 function SprintComponent({
                              projectId,
@@ -172,7 +63,7 @@ function SprintComponent({
 
     const callBackGetListTask = () => {
         getListTask(sprintId).then(r => {
-            setListTask(r.data.tasks), setNotStartTask(r.data.totalNotStartedTask)
+            setListTask(r.data.tasks); setNotStartTask(r.data.totalNotStartedTask)
             setInProgressTask(r.data.totalInProgressTask);
             setDoneTask(r.data.totalDoneTask)
         })

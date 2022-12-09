@@ -91,13 +91,31 @@ export const getFolderDetailId =
       const { data } = await repositoryController.getFolderDetail({
         folderId,
       });
-      console.log("Mate data in act:" + JSON.stringify(data.data));
-      navigation.navigate("RepositoryDetail", {
+      console.log("Data in getFolderDetailId:" + JSON.stringify(data.data));
+      navigation.push("RepositoryDetail", {
         data: data.data,
         folderName: name,
         parentFolderId: folderId,
       });
     } catch ({ data }) {
-      console.log("Error ggetFolderDetailId:" + JSON.stringify(data));
+      console.log("Error getFolderDetailId:" + JSON.stringify(data));
     }
   };
+export const addFileToFolder =
+    (parentFolderId,name, description, file, navigation) =>
+        async (dispatch, _, { networkService }) => {
+            try {
+                const repositoryController = new RepositoryController(networkService);
+                console.log("addFileToFolder in actions: " + parentFolderId);
+                console.log("name in actions: " + name);
+                console.log("description in actions: " + description);
+                console.log("file in actions: " + file);
+                const { data } = await repositoryController.addFileToFolder({
+                    parentFolderId,description,file
+                });
+                console.log("Data in addFileToFolder"+ JSON.stringify(data))
+                dispatch(getFolderDetailId(parentFolderId, name,navigation))
+            } catch ({ data }) {
+                console.log("Error addFileToFolder:" + JSON.stringify(data));
+            }
+        };

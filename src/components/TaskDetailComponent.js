@@ -9,111 +9,15 @@ import Buttons from "./Buttons";
 import {Picker} from '@react-native-picker/picker';
 import TextField from "./TextField";
 import SubTaskComponent from "./SubTaskComponent";
-import axios from "axios";
-import AsyncStorage from "@react-native-community/async-storage";
 import UserInfoComponent from "./UserInfoComponent";
-import {getTaskDetail} from "../screens/Backlog/Backlog";
+import {
+    assignneTask,
+    createSubTask,
+    getListSubTask,
+    getTaskDetail,
+    updateTask
+} from "../networking/CustomNetworkService";
 
-const getToken = async () => {
-    try {
-        const token = await AsyncStorage.getItem("@token");
-        console.log("token: " + token);
-        return token;
-    } catch (e) {
-        console.log("Can't get avatar: " + e);
-    }
-};
-export const createSubTask = async (projectId, taskId, memberId, subTaskName) => {
-    const token = await getToken();
-    try {
-        const response = await axios.post(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/subtasks/:workspace-id/:task-id/subtask'.replace(":task-id", taskId)
-                .replace(":workspace-id", projectId),
-            {
-                memberId: memberId,
-                subTaskName: subTaskName,
-            }
-            ,
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in createSubTask: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        console.log("error when createSubTask:" + JSON.stringify(error));
-    }
-};
-
-export const getListSubTask = async (taskId) => {
-    const token = await getToken();
-    try {
-        const response = await axios.get(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/tasks/:task-id'.replace(":task-id", taskId),
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in getListSubTask: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        alert(error.message);
-    }
-};
-export const updateTask = async (projectId, taskId, taskName, status, description, assignee, label, estimate, reporter) => {
-    const token = await getToken();
-    try {
-        const response = await axios.put(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/tasks/:workspace-id/:task-id'.replace(":task-id", taskId)
-                .replace(":workspace-id", projectId),
-            {
-                taskName: taskName,
-                status: status,
-                description: description,
-                assignee: assignee,
-                label: label,
-                estimate: estimate,
-                reporter: reporter
-            }
-            ,
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in updateTask: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        console.log("ERROR when updateTask: " + JSON.stringify(error));
-    }
-};
-export const assignneTask = async (projectId, taskId,assignee) => {
-    const token = await getToken();
-    try {
-        const response = await axios.put(
-            'http://192.168.31.197:8085/flab/workspace/public/api/v1/tasks/:workspace-id/:task-id'.replace(":task-id", taskId)
-                .replace(":workspace-id", projectId),
-            {
-                assignee: assignee,
-            }
-            ,
-            {
-                headers: {
-                    "Authorization": `Bearer ` + token
-                }
-            }
-        );
-        console.log("Data in assignneTask: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        console.log("ERROR when assignneTask: " + JSON.stringify(error));
-    }
-};
 
 export default function TaskDetailComponent({
                                                 projectId,
