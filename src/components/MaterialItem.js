@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Image, TouchableOpacity, Text, StyleSheet} from "react-native";
 import Separator from "./Separator";
 
 import { useDispatch } from "react-redux";
 import { getMaterialById } from "../actions/MaterialAction";
+import Buttons from "./Buttons";
+import {deleteMaterial} from "../networking/CustomNetworkService";
 
-function MaterialItem({ id, image, title, status, navigation }) {
+
+function MaterialItem({ id, image, title, status, navigation,labId, callbackListMaterial }) {
   console.log("IDL:" + id);
   const dispatch = useDispatch();
   const goToMaterialDetail = () => {
@@ -13,6 +16,9 @@ function MaterialItem({ id, image, title, status, navigation }) {
     dispatch(getMaterialById(id, navigation));
   };
   console.log("In material item");
+  const deleteAMaterial=(labId, materialId)=>{
+    deleteMaterial(labId, materialId).then(v=> callbackListMaterial())
+  }
   return (
     <View style={[styles.container]}>
       <TouchableOpacity onPress={goToMaterialDetail}>
@@ -29,6 +35,7 @@ function MaterialItem({ id, image, title, status, navigation }) {
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.textInfo}>Status: {status}</Text>
           </View>
+          <Buttons text={"Delete"} onPressTo={()=> deleteAMaterial(labId, id)}/>
         </View>
       </TouchableOpacity>
       <Separator />

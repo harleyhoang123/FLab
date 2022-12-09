@@ -6,10 +6,12 @@ import Buttons from "../../components/Buttons";
 import MaterialItem from "../../components/MaterialItem";
 import PaginationBar from "../../components/PaginationBar";
 import LabNavigator from "../../navigations/LabNavigator";
+import {getListMaterial} from "../../networking/CustomNetworkService";
 
 
 function ListMaterial({ route, navigation }) {
   const listsMaterial = route.params.data.items;
+  const labId= route.params.labId;
   console.log(
     "List material in List Material Component is: " +
       JSON.stringify(listsMaterial)
@@ -17,6 +19,9 @@ function ListMaterial({ route, navigation }) {
   const [text, setText] = useState("");
   const [booked, setBooked] = useState(false);
   const [list, setList] = useState(listsMaterial);
+  const callbackListMaterial=()=>{
+    getListMaterial(labId).then(r=> setList(r.data.items))
+  }
   return (
     <View>
       <LabNavigator navigation={navigation} />
@@ -45,19 +50,18 @@ function ListMaterial({ route, navigation }) {
           />
         </View>
       </View>
-      <FlatList
-        data={listsMaterial}
-        renderItem={({ item }) => (
+      {list.map((item)=>(
           <MaterialItem
-            id={item.materialId}
-            navigation={navigation}
-            title={item.materialName}
-            image={item.images}
-            status={item.status}
-            booked={booked}
+              key={item.materialId}
+              id={item.materialId}
+              navigation={navigation}
+              title={item.materialName}
+              image={item.images}
+              status={item.status}
+              labId={labId}
+              callbackListMaterial={callbackListMaterial}
           />
-        )}
-      />
+      ))}
       <PaginationBar />
     </View>
   );

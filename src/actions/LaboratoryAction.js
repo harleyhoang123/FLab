@@ -139,6 +139,7 @@ export const getListMaterialByLabId =
       );
       navigation.push("ListMaterial", {
         data: response.data.data,
+          labId:labId
       });
     } catch ({ data }) {
       console.log("ERROR when getListMaterialByLabId: " + JSON.stringify(data));

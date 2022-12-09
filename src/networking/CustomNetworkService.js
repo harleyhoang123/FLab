@@ -558,3 +558,38 @@ export const getListFolderDetail= async (folderId) => {
         console.log("error when getListFolderDetail:" + JSON.stringify(error));
     }
 };
+export const deleteMaterial = async (labId, materialId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.delete(
+            'http://192.168.31.197:8083/flab/lab/public/api/v1/laboratories/:laboratory-id/materials/:material-id'.replace(":laboratory-id", labId)
+                .replace(":material-id", materialId),
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in deleteMaterial: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when deleteMaterial:" + JSON.stringify(error));
+    }
+};
+export const getListMaterial= async (labId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.get(
+            'http://192.168.31.197:8083/flab/lab/public/api/v1/materials/:laboratory-id/materials'.replace(":laboratory-id", labId),
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in getListMaterial: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when getListMaterial:" + JSON.stringify(error));
+    }
+};
