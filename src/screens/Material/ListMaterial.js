@@ -7,38 +7,6 @@ import MaterialItem from "../../components/MaterialItem";
 import PaginationBar from "../../components/PaginationBar";
 import LabNavigator from "../../navigations/LabNavigator";
 
-const list1 = [
-  {
-    title: "Laptop 1",
-    status: "Free",
-  },
-  {
-    title: "Iphone",
-    status: "Free",
-  },
-  {
-    title: "Ipad",
-    status: "Free",
-  },
-  {
-    title: "PC",
-    status: "Busy",
-  },
-];
-const list2 = [
-  {
-    title: "Laptop 1",
-    status: "Free",
-  },
-  {
-    title: "Iphone",
-    status: "Free",
-  },
-  {
-    title: "Ipad",
-    status: "Free",
-  },
-];
 
 function ListMaterial({ route, navigation }) {
   const listsMaterial = route.params.data.items;
@@ -84,6 +52,7 @@ function ListMaterial({ route, navigation }) {
             id={item.materialId}
             navigation={navigation}
             title={item.materialName}
+            image={item.images}
             status={item.status}
             booked={booked}
           />

@@ -85,6 +85,16 @@ export class LaboratoryController {
       data: null,
     });
   }
+  getAllMembersInWorkspace({ projectId }) {
+    return this.networkService.request({
+      method: "GET",
+      url: routes.workSpace.getAllMemberInWorkspace.replace(
+          ":workspace-id",
+          projectId
+      ),
+      data: null,
+    });
+  }
 
   createProjectInLaboratory({ labId, requestData }) {
     return this.networkService.request({

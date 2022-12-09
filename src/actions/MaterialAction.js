@@ -1,5 +1,6 @@
 import { strings } from "../localization";
 import { MaterialController } from "../controllers/MaterialController";
+import {getListMaterialByLabId} from "./LaboratoryAction";
 
 export const getMaterialById =
   (materialId, navigation) =>
@@ -35,3 +36,19 @@ export const updateMaterialByMaterialId =
       );
     }
   };
+
+export const addMaterial =
+    (labId, materialName, description,amount,note, images, navigation) =>
+        async (dispatch, _, { networkService }) => {
+
+            try {
+                const materialController = new MaterialController(networkService);
+                const response = await materialController.addMaterial({labId, materialName, description,amount,note, images})
+                console.log("addMaterial: " + JSON.stringify(response));
+                dispatch(getListMaterialByLabId(labId, navigation));
+            } catch ({ data }) {
+                console.log(
+                    "ERROR when addMaterial: " + JSON.stringify(data)
+                );
+            }
+        };

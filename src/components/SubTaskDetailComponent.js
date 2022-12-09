@@ -4,9 +4,10 @@ import Buttons from "./Buttons";
 import {Picker} from "@react-native-picker/picker";
 import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
-import {getSubTaskDetail} from "../screens/Backlog/Backlog";
+import {getSubTaskDetail, getTaskDetail} from "../screens/Backlog/Backlog";
 import UserInfoComponent from "./UserInfoComponent";
 import TextField from "./TextField";
+import {assignneTask} from "./TaskDetailComponent";
 
 const getToken = async () => {
     try {
@@ -34,14 +35,15 @@ export const deleteSubTask = async (subTaskId, taskId) => {
         console.log("error when deleteSubTask:" + JSON.stringify(error));
     }
 };
-export const updateSubTask = async (projectId, subTaskId, taskName, status, description, assignee, label, estimate, reporter) => {
+export const updateSubTask = async (projectId, subTaskId, subTaskName, status, description, assignee, label, estimate, reporter) => {
+
     const token = await getToken();
     try {
         const response = await axios.put(
             'http://192.168.31.197:8085/flab/workspace/public/api/v1/subtasks/:workspace-id/:subtask-id'.replace(":subtask-id", subTaskId)
                 .replace(":workspace-id", projectId),
             {
-                taskName: taskName,
+                subTaskName: subTaskName,
                 status: status,
                 description: description,
                 assignee: assignee,
@@ -62,8 +64,31 @@ export const updateSubTask = async (projectId, subTaskId, taskName, status, desc
         console.log("ERROR when updateSprint: " + JSON.stringify(error));
     }
 };
+export const assignneSubTask = async (projectId, subTaskId,assignee) => {
+    const token = await getToken();
+    try {
+        const response = await axios.put(
+            'http://192.168.31.197:8085/flab/workspace/public/api/v1/subtasks/:workspace-id/:subtask-id'.replace(":subtask-id", subTaskId)
+                .replace(":workspace-id", projectId),
+            {
+                assignee: assignee,
+            }
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in assignneSubTask: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("ERROR when assignneSubTask: " + JSON.stringify(error));
+    }
+};
 
 function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, listMember, callbackSubTaskDetail}) {
+    console.log("List item in update sub task: "+ JSON.stringify(listMember));
     const [show, setShow] = useState("ALL");
     const [visible, setVisible] = useState(true);
     const [subTaskNameDetail, setSubTaskNameDetail] = useState(subTaskDetail.subTaskName);
@@ -77,10 +102,10 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
     const [subTaskNameUpdate, setSubTaskUpdate] = useState(subTaskNameDetail);
     const [statusUpdate, setStatusUpdate] = useState(statusDetail);
     const [descriptionUpdate, setDescriptionUpdate] = useState(descriptionDetail);
-    const [assigneeUpdate, setAssigneeUpdate] = useState(assigneeDetail);
+    const [assigneeUpdate, setAssigneeUpdate] = useState();
     const [labelUpdate, setLabelUpdate] = useState(labelDetail);
     const [estimateUpdate, setEstimateUpdate] = useState(estimateDetail);
-    const [reporterUpdate, setReporterUpdate] = useState(reporterDetail);
+    const [reporterUpdate, setReporterUpdate] = useState();
     const [modalVisible, setModalVisible] = useState(false);
     const getStatus = (status) => {
         if (status === "TO_DO") {
@@ -105,7 +130,7 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
     const updateASubTask = (projectId, subTaskId, taskName, status, description, assignee, label, estimate, reporter) => {
         updateSubTask(projectId, subTaskId, taskName, status, description, assignee, label, estimate, reporter).then(value => {
             console.log("updateASubTask:" + JSON.stringify(value));
-            getSubTaskDetail(subTaskId).then(r => console.log("getDetailASubTask:" + JSON.stringify(r.data)));
+            getSubTaskDetail(subTaskId).then(r => {console.log("getDetailASubTask:" + JSON.stringify(r.data));
             setSubTaskNameDetail(r.data.subTaskName);
             setStatusDetail(r.data.status);
             setDescriptionDetail(r.data.description);
@@ -113,7 +138,13 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
             setLabelDetail(r.data.label);
             setEstimateDetail(r.data.estimate);
             setReporterDetail(r.data.reporter);
-        })
+        })})
+    }
+    const assignneInSubTask=(projectId, subTaskId,assignee)=>{
+        assignneSubTask(projectId, subTaskId,assignee).then(value => {
+            getSubTaskDetail(subTaskId).then(r => {
+                setAssigneeDetail(r.data.assignee);}
+            )})
     }
     const renderDetail = () => {
         if (visible) {
@@ -127,7 +158,7 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
                     </View>
                     <View style={styles.rowDetail}>
                         <Text style={[styles.descriptionDetail, {width: 100}]}></Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{assignneInSubTask(projectId, subTaskDetail.subTaskId, memberId)}}>
                             <Text style={[styles.descriptionDetail, {color: 'blue'}]}>Assignee to me</Text>
                         </TouchableOpacity>
                     </View>
@@ -180,7 +211,6 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
                             onValueChange={(itemValue, itemIndex) =>
                                 setStatusUpdate(itemValue)
                             }>
-                            <Picker.Item label={statusUpdate} value={statusUpdate}/>
                             <Picker.Item label="To do" value="TO_DO"/>
                             <Picker.Item label="In progress" value="IN_PROGRESS"/>
                             <Picker.Item label="Done" value="DONE"/>
@@ -193,11 +223,9 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
                             style={styles.pickerUpdate}
                             mode={"dropdown"}
                             selectedValue={assigneeUpdate}
-
                             onValueChange={(itemValue, itemIndex) =>
                                 setAssigneeUpdate(itemValue)
                             }>
-                            <Picker.Item label={assigneeUpdate} value={assigneeUpdate}/>
                             {listMember?.map((item) => (
                                 <Picker.Item key={item.memberId} label={item.userInfo.userInfo.fullName}
                                              value={item.memberId}/>
@@ -219,7 +247,6 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
                             onValueChange={(itemValue, itemIndex) =>
                                 setReporterUpdate(itemValue)
                             }>
-                            <Picker.Item label={reporterUpdate} value={reporterUpdate}/>
                             {listMember?.map((item) => (
                                 <Picker.Item key={item.memberId} label={item.userInfo.userInfo.fullName}
                                              value={item.memberId}/>

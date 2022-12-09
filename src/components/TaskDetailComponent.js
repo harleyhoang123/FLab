@@ -86,10 +86,32 @@ export const updateTask = async (projectId, taskId, taskName, status, descriptio
                 }
             }
         );
-        console.log("Data in updateSprint: " + JSON.stringify(response.data));
+        console.log("Data in updateTask: " + JSON.stringify(response.data));
         return response.data;
     } catch (error) {
-        console.log("ERROR when updateSprint: " + JSON.stringify(error));
+        console.log("ERROR when updateTask: " + JSON.stringify(error));
+    }
+};
+export const assignneTask = async (projectId, taskId,assignee) => {
+    const token = await getToken();
+    try {
+        const response = await axios.put(
+            'http://192.168.31.197:8085/flab/workspace/public/api/v1/tasks/:workspace-id/:task-id'.replace(":task-id", taskId)
+                .replace(":workspace-id", projectId),
+            {
+                assignee: assignee,
+            }
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in assignneTask: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("ERROR when assignneTask: " + JSON.stringify(error));
     }
 };
 
@@ -103,6 +125,7 @@ export default function TaskDetailComponent({
                                             }) {
     console.log("Task detail IS: " + JSON.stringify(taskDetail));
     console.log("Task Name: " + JSON.stringify(taskDetail.taskName));
+    console.log("List member in TaskDetailComponent:"+ JSON.stringify(listMember))
     const [add, setAdd] = useState(false);
     const [show, setShow] = useState("ALL");
     const [taskNameDetail, setTaskNameDetail] = useState(taskDetail.taskName);
@@ -138,15 +161,22 @@ export default function TaskDetailComponent({
     const updateATask = (projectId, taskId, taskName, status, description, assignee, label, estimate, reporter) => {
         updateTask(projectId, taskId, taskName, status, description, assignee, label, estimate, reporter).then(value => {
             console.log("updateATask:" + JSON.stringify(value));
-            getTaskDetail(taskId).then(r => console.log("getDetailATask:" + JSON.stringify(r.data)));
+            console.log("projectId in TaskDetail:" + JSON.stringify(projectId));
+            getTaskDetail(taskId).then(r => {console.log("getDetailATask:" + JSON.stringify(r.data));
             setTaskNameDetail(r.data.taskName);
             setStatusDetail(r.data.status);
             setDescriptionDetail(r.data.description);
             setAssigneeDetail(r.data.assignee);
             setLabelDetail(r.data.label);
             setEstimateDetail(r.data.estimate);
-            setReporterDetail(r.data.reporter);
-        })
+            setReporterDetail(r.data.reporter);}
+        )})
+    }
+    const assignneInTask=(projectId, taskId,assignee)=>{
+        assignneTask(projectId, taskId,assignee).then(value => {
+            getTaskDetail(taskId).then(r => {
+                setAssigneeDetail(r.data.assignee);}
+            )})
     }
     const handleNone = (none) => {
         if (none === null) {
@@ -167,7 +197,7 @@ export default function TaskDetailComponent({
                     </View>
                     <View style={styles.rowDetail}>
                         <Text style={[styles.descriptionDetail, {width: 100}]}></Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{assignneInTask(projectId, taskDetail.taskId, memberId)}}>
                             <Text style={[styles.descriptionDetail, {color: 'blue'}]}>Assignee to me</Text>
                         </TouchableOpacity>
                     </View>
@@ -241,7 +271,6 @@ export default function TaskDetailComponent({
                             onValueChange={(itemValue, itemIndex) =>
                                 setStatusUpdate(itemValue)
                             }>
-                            <Picker.Item label={statusUpdate} value={statusUpdate}/>
                             <Picker.Item label="To do" value="TO_DO"/>
                             <Picker.Item label="In progress" value="IN_PROGRESS"/>
                             <Picker.Item label="Done" value="DONE"/>
@@ -258,7 +287,6 @@ export default function TaskDetailComponent({
                             onValueChange={(itemValue, itemIndex) =>
                                 setAssigneeUpdate(itemValue)
                             }>
-                            <Picker.Item label={assigneeUpdate} value={assigneeUpdate}/>
                             {listMember?.map((item) => (
                                 <Picker.Item key={item.memberId} label={item.userInfo.userInfo.fullName}
                                              value={item.memberId}/>
@@ -280,7 +308,6 @@ export default function TaskDetailComponent({
                             onValueChange={(itemValue, itemIndex) =>
                                 setReporterUpdate(itemValue)
                             }>
-                            <Picker.Item label={reporterUpdate} value={reporterUpdate}/>
                             {listMember?.map((item) => (
                                 <Picker.Item key={item.memberId} label={item.userInfo.userInfo.fullName}
                                              value={item.memberId}/>

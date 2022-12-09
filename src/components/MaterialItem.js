@@ -5,7 +5,7 @@ import Separator from "./Separator";
 import { useDispatch } from "react-redux";
 import { getMaterialById } from "../actions/MaterialAction";
 
-function MaterialItem({ id, title, status, navigation }) {
+function MaterialItem({ id, image, title, status, navigation }) {
   console.log("IDL:" + id);
   const dispatch = useDispatch();
   const goToMaterialDetail = () => {
@@ -21,7 +21,7 @@ function MaterialItem({ id, title, status, navigation }) {
             <Image
               style={styles.tinyLogo}
               source={{
-                uri: "https://flab-forum-bucket.s3.eu-central-1.amazonaws.com/83739451-4303-439f-b96d-a4e33e8799df",
+                uri: {image},
               }}
             />
           </View>

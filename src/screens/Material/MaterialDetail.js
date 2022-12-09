@@ -44,7 +44,7 @@ function MaterialDetail({ route, navigation }) {
           <Image
             style={styles.image}
             source={{
-              uri: "https://pbs.twimg.com/profile_images/486929358120964097/gNLINY67_400x400.png",
+              uri: data.images.url,
             }}
           />
         </View>

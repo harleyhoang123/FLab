@@ -1,6 +1,5 @@
 import {WorkSpaceController} from "../controllers/WorkSpaceController";
 import {NetworkService} from "../networking";
-import {getProjectById} from "./LaboratoryAction";
 import {LaboratoryController} from "../controllers/LaboratoryController";
 
 export const getAllSprint =
@@ -15,7 +14,7 @@ export const getAllSprint =
                 const projectDetail = await laboratoryController.getProjectDetail({
                     projectId,
                 });
-                const allMember = await laboratoryController.getAllMembersInProject({
+                const allMember = await laboratoryController.getAllMembersInWorkspace({
                     projectId,
                 });
                 console.log("all member in getAllSprint"+ JSON.stringify(allMember.data.data))

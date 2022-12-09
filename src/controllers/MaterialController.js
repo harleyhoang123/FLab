@@ -27,4 +27,18 @@ export class MaterialController {
       },
     });
   }
+  addMaterial({ labId, materialName, description,amount, note, images }) {
+    return this.networkService.request({
+      method: "POST",
+      url: routes.material.addMaterial
+          .replace(":lab-id", labId),
+      data: {
+        materialName: materialName,
+        description: description,
+        amount: amount,
+        note: note,
+        images: images,
+      },
+    });
+  }
 }
