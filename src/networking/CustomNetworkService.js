@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
-
+const host= "http://192.168.31.197:"
 const getToken = async () => {
   try {
     const token = await AsyncStorage.getItem("@token");
@@ -26,7 +26,7 @@ export const getDataUsingAsyncAwaitGetCall = async () => {
   const token = await getToken();
   try {
     const response = await axios.get(
-      "http://192.168.31.197:8083/flab/lab/public/api/v1/projects",
+        host+"8083/flab/lab/public/api/v1/projects",
       {
         headers: {
           Authorization: `Bearer ` + token,
@@ -46,7 +46,7 @@ export const createSprint = async (projectId, memberId, sprintName) => {
   const token = await getToken();
   try {
     const response = await axios.post(
-      "http://192.168.31.197:8085/flab/workspace/public/api/v1/sprints/:workspace-id/sprint".replace(
+        host+"8085/flab/workspace/public/api/v1/sprints/:workspace-id/sprint".replace(
         ":workspace-id",
         projectId
       ),
@@ -83,7 +83,7 @@ export const getAllMemberInLab = async () => {
   console.log("Lab id service :" + labId);
   try {
     const response = await axios.get(
-      "http://192.168.31.197:8083/flab/lab/public/api/v1/laboratories/:lab-id/members".replace(
+        host+"8083/flab/lab/public/api/v1/laboratories/:lab-id/members".replace(
         ":lab-id",
         labId
       ),
@@ -104,7 +104,7 @@ export const getAllMember = async () => {
   const token = await getToken();
   try {
     const response = await axios.get(
-      "http://192.168.31.197:8080/flab/authentication/public/api/v1/accounts",
+        host+"8080/flab/authentication/public/api/v1/accounts",
       {
         headers: {
           Authorization: `Bearer ` + token,
@@ -124,7 +124,7 @@ export const getAllCVOfAccount = async () => {
   console.log("getAllCVOfAccount: ");
   try {
     const response = await axios.get(
-      "http://192.168.31.197:8084/flab/account/public/api/v1/profiles/:account-id/cv".replace(
+        host+"8084/flab/account/public/api/v1/profiles/:account-id/cv".replace(
         ":account-id",
         accountId
       ),
@@ -144,7 +144,7 @@ export const getListSprint = async (projectId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/sprints/:workspace-id/sprints'.replace(":workspace-id", projectId),
+        host+'8085/flab/workspace/public/api/v1/sprints/:workspace-id/sprints'.replace(":workspace-id", projectId),
         {
           headers: {
             "Authorization": `Bearer ` + token
@@ -161,7 +161,7 @@ export const getTaskDetail = async (taskId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/tasks/:task-id'.replace(":task-id", taskId),
+        host+'8085/flab/workspace/public/api/v1/tasks/:task-id'.replace(":task-id", taskId),
         {
           headers: {
             "Authorization": `Bearer ` + token
@@ -178,7 +178,7 @@ export const getSubTaskDetail = async (subTaskId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/subtasks/:subtask-id'.replace(":subtask-id", subTaskId),
+        host+'8085/flab/workspace/public/api/v1/subtasks/:subtask-id'.replace(":subtask-id", subTaskId),
         {
           headers: {
             "Authorization": `Bearer ` + token
@@ -195,7 +195,7 @@ export const deleteSprint = async (projectId, sprintId) => {
   const token = await getToken();
   try {
     const response = await axios.delete(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/sprints/:workspace-id/sprints/:sprint-id'.replace(":workspace-id", projectId)
+        host+'8085/flab/workspace/public/api/v1/sprints/:workspace-id/sprints/:sprint-id'.replace(":workspace-id", projectId)
             .replace(":sprint-id", sprintId),
         {
           headers: {
@@ -214,7 +214,7 @@ export const createTask = async (projectId,sprintId, memberId, taskName) => {
   const token = await getToken();
   try {
     const response = await axios.post(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/tasks/:workspace-id/:sprint-id/task'.replace(":sprint-id", sprintId)
+        host+'8085/flab/workspace/public/api/v1/tasks/:workspace-id/:sprint-id/task'.replace(":sprint-id", sprintId)
             .replace(":workspace-id", projectId),
         {
           memberId: memberId,
@@ -237,7 +237,7 @@ export const getListTask = async (sprintId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/sprints/:sprint-id'.replace(":sprint-id", sprintId),
+        host+'8085/flab/workspace/public/api/v1/sprints/:sprint-id'.replace(":sprint-id", sprintId),
         {
           headers: {
             "Authorization": `Bearer ` + token
@@ -254,7 +254,7 @@ export const updateSprint = async (projectId, sprintId, sprintName, startDate, d
   const token = await getToken();
   try {
     const response = await axios.put(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/sprints/:workspace-id/:sprint-id'.replace(":sprint-id", sprintId)
+        host+'8085/flab/workspace/public/api/v1/sprints/:workspace-id/:sprint-id'.replace(":sprint-id", sprintId)
             .replace(":workspace-id", projectId),
         {
           sprintName: sprintName,
@@ -280,7 +280,7 @@ export const getSprintDetail = async (sprintId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/sprints/:sprint-id'.replace(":sprint-id", sprintId),
+        host+'8085/flab/workspace/public/api/v1/sprints/:sprint-id'.replace(":sprint-id", sprintId),
         {
           headers: {
             "Authorization": `Bearer ` + token
@@ -297,7 +297,7 @@ export const deleteSubTask = async (subTaskId, taskId) => {
   const token = await getToken();
   try {
     const response = await axios.delete(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/subtasks/:task-id/subtasks/:subtask-id'.replace(":subtask-id", subTaskId).replace(':task-id', taskId),
+        host+'8085/flab/workspace/public/api/v1/subtasks/:task-id/subtasks/:subtask-id'.replace(":subtask-id", subTaskId).replace(':task-id', taskId),
         {
           headers: {
             "Authorization": `Bearer ` + token
@@ -315,7 +315,7 @@ export const updateSubTask = async (projectId, subTaskId, subTaskName, status, d
   const token = await getToken();
   try {
     const response = await axios.put(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/subtasks/:workspace-id/:subtask-id'.replace(":subtask-id", subTaskId)
+        host+'8085/flab/workspace/public/api/v1/subtasks/:workspace-id/:subtask-id'.replace(":subtask-id", subTaskId)
             .replace(":workspace-id", projectId),
         {
           subTaskName: subTaskName,
@@ -343,7 +343,7 @@ export const assignneSubTask = async (projectId, subTaskId,assignee) => {
   const token = await getToken();
   try {
     const response = await axios.put(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/subtasks/:workspace-id/:subtask-id'.replace(":subtask-id", subTaskId)
+        host+'8085/flab/workspace/public/api/v1/subtasks/:workspace-id/:subtask-id'.replace(":subtask-id", subTaskId)
             .replace(":workspace-id", projectId),
         {
           assignee: assignee,
@@ -365,7 +365,7 @@ export const createSubTask = async (projectId, taskId, memberId, subTaskName) =>
   const token = await getToken();
   try {
     const response = await axios.post(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/subtasks/:workspace-id/:task-id/subtask'.replace(":task-id", taskId)
+        host+'8085/flab/workspace/public/api/v1/subtasks/:workspace-id/:task-id/subtask'.replace(":task-id", taskId)
             .replace(":workspace-id", projectId),
         {
           memberId: memberId,
@@ -389,7 +389,7 @@ export const getListSubTask = async (taskId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/tasks/:task-id'.replace(":task-id", taskId),
+        host+'8085/flab/workspace/public/api/v1/tasks/:task-id'.replace(":task-id", taskId),
         {
           headers: {
             "Authorization": `Bearer ` + token
@@ -406,7 +406,7 @@ export const updateTask = async (projectId, taskId, taskName, status, descriptio
   const token = await getToken();
   try {
     const response = await axios.put(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/tasks/:workspace-id/:task-id'.replace(":task-id", taskId)
+        host+'8085/flab/workspace/public/api/v1/tasks/:workspace-id/:task-id'.replace(":task-id", taskId)
             .replace(":workspace-id", projectId),
         {
           taskName: taskName,
@@ -434,7 +434,7 @@ export const assignneTask = async (projectId, taskId,assignee) => {
   const token = await getToken();
   try {
     const response = await axios.put(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/tasks/:workspace-id/:task-id'.replace(":task-id", taskId)
+        host+'8085/flab/workspace/public/api/v1/tasks/:workspace-id/:task-id'.replace(":task-id", taskId)
             .replace(":workspace-id", projectId),
         {
           assignee: assignee,
@@ -456,7 +456,7 @@ export const deleteTask = async (sprintId, taskId) => {
   const token = await getToken();
   try {
     const response = await axios.delete(
-        'http://192.168.31.197:8085/flab/workspace/public/api/v1/tasks/:sprint-id/tasks/:task-id'.replace(":sprint-id", sprintId)
+        host+'8085/flab/workspace/public/api/v1/tasks/:sprint-id/tasks/:task-id'.replace(":sprint-id", sprintId)
             .replace(":task-id", taskId),
         {
           headers: {
@@ -475,7 +475,7 @@ export const deleteFolder = async (folderId) => {
     const token = await getToken();
     try {
         const response = await axios.delete(
-            'http://192.168.31.197:8082/flab/repository/public/api/v1/folders/:folder-id'.replace(":folder-id", folderId),
+            host+'8082/flab/repository/public/api/v1/folders/:folder-id'.replace(":folder-id", folderId),
             {
                 headers: {
                     "Authorization": `Bearer ` + token
@@ -492,7 +492,7 @@ export const getListFolder= async (repoId) => {
     const token = await getToken();
     try {
         const response = await axios.get(
-            'http://192.168.31.197:8082/flab/repository/public/api/v1/folders/:repository-id/folders'.replace(":repository-id", repoId),
+            host+'8082/flab/repository/public/api/v1/folders/:repository-id/folders'.replace(":repository-id", repoId),
             {
                 headers: {
                     "Authorization": `Bearer ` + token
@@ -511,7 +511,7 @@ export const deleteFolderOrFile = async (Id, type) => {
     if(type==="Folder"){
         try {
             const response = await axios.delete(
-                'http://192.168.31.197:8082/flab/repository/public/api/v1/folders/:folder-id'.replace(":folder-id", Id),
+                host+'8082/flab/repository/public/api/v1/folders/:folder-id'.replace(":folder-id", Id),
                 {
                     headers: {
                         "Authorization": `Bearer ` + token
@@ -526,7 +526,7 @@ export const deleteFolderOrFile = async (Id, type) => {
     }else {
         try {
             const response = await axios.delete(
-                'http://192.168.31.197:8082/flab/repository/public/api/v1/files/:file-id'.replace(":file-id", Id),
+                host+'8082/flab/repository/public/api/v1/files/:file-id'.replace(":file-id", Id),
                 {
                     headers: {
                         "Authorization": `Bearer ` + token
@@ -545,7 +545,7 @@ export const getListFolderDetail= async (folderId) => {
     const token = await getToken();
     try {
         const response = await axios.get(
-            'http://192.168.31.197:8082/flab/repository/public/api/v1/folders/:folder-id'.replace(":folder-id", folderId),
+            host+'8082/flab/repository/public/api/v1/folders/:folder-id'.replace(":folder-id", folderId),
             {
                 headers: {
                     "Authorization": `Bearer ` + token
@@ -562,7 +562,7 @@ export const deleteMaterial = async (labId, materialId) => {
     const token = await getToken();
     try {
         const response = await axios.delete(
-            'http://192.168.31.197:8083/flab/lab/public/api/v1/laboratories/:laboratory-id/materials/:material-id'.replace(":laboratory-id", labId)
+            host+'8083/flab/lab/public/api/v1/laboratories/:laboratory-id/materials/:material-id'.replace(":laboratory-id", labId)
                 .replace(":material-id", materialId),
             {
                 headers: {
@@ -580,7 +580,7 @@ export const getListMaterial= async (labId) => {
     const token = await getToken();
     try {
         const response = await axios.get(
-            'http://192.168.31.197:8083/flab/lab/public/api/v1/materials/:laboratory-id/materials'.replace(":laboratory-id", labId),
+            host+'8083/flab/lab/public/api/v1/materials/:laboratory-id/materials'.replace(":laboratory-id", labId),
             {
                 headers: {
                     "Authorization": `Bearer ` + token
