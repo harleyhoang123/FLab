@@ -232,12 +232,34 @@ export class LaboratoryController {
     });
   }
 
+  updateMemberRole({ memberId, requestData }) {
+    return this.networkService.request({
+      method: "PUT",
+      url: routes.laboratory.updateMemberRole.replace(":member-id", memberId),
+      data: {
+        role: requestData.role,
+      },
+    });
+  }
+
   addMembersToLab({ labId, requestData }) {
     return this.networkService.request({
       method: "POST",
       url: routes.laboratory.addMemberToLab.replace(":lab-id", labId),
       data: {
         accountId: requestData.accountId,
+      },
+    });
+  }
+
+  applyToLab({ labId, requestData }) {
+    return this.networkService.request({
+      method: "POST",
+      url: routes.laboratory.applyToLab.replace(":lab-id", labId),
+      data: {
+        accountId: requestData.accountId,
+        reason: requestData.reason,
+        cvKey: requestData.cvKey,
       },
     });
   }
