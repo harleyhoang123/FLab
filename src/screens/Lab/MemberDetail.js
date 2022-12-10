@@ -5,6 +5,7 @@ import {
   Image,
   FlatList,
   StyleSheet,
+  useState,
   Text,
   Icon,
   StatusBar,
@@ -14,10 +15,34 @@ import {
 } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import LabNavigator from "../../navigations/LabNavigator";
+import {
+  updateMemberRoleById,
+  removeMemberFromLaboratory,
+} from "../../actions/LaboratoryAction";
+import Buttons from "../../components/Buttons";
+import AsyncStorage from "@react-native-community/async-storage";
+import { useDispatch } from "react-redux";
+
+const getLabId = async () => {
+  try {
+    const labId = await AsyncStorage.getItem("@currentLabId");
+    console.log("LabId in reate Project: " + labId);
+    return labId;
+  } catch (e) {
+    console.log("Can't get LabId id: " + e);
+  }
+};
 
 export default function MemberDetail({ route, navigation }) {
   const data = route.params.data;
-  console.log("data: " + JSON.stringify(data));
+  const memberId = route.params.memberId;
+  const labId = route.params.labId;
+  const dispatch = useDispatch();
+  console.log("data memberId: " + JSON.stringify(memberId));
+
+  const removeMemberhandler = () => {
+    dispatch(removeMemberFromLaboratory(labId, memberId, navigation));
+  };
   return (
     <View>
       <LabNavigator navigation={navigation} />
@@ -47,37 +72,28 @@ export default function MemberDetail({ route, navigation }) {
               <Text style={styles.address}>
                 {data.address} - {data.lastModifiedBy.userInfo.email}
               </Text>
-              <Text style={[styles.description]}>
-                I am experienced in leveraging agile frameworks to provide a
-                robust synopsis for high level overviews. Iterative approaches
-                to corporate strategy foster collaborative thinking to further
-                the overall value proposition
-              </Text>
+              <Text style={[styles.description]}>{data.description}</Text>
             </View>
             <View style={styles.detail}>
-              <Text style={styles.subTitle}>Experience</Text>
-              <Text style={styles.description}>
-                Capitalize on low hanging fruit to identify a ballpark value
-                added activity to beta test. Override the digital divide with
-                additional clickthroughs from DevOps. Nanotechnology immersion
-                along the information highway will close the loop on focusing
-                solely on the bottom line..
-              </Text>
               <Text style={styles.subTitle}>Interests</Text>
-              <Text style={styles.description}>
-                Apart from being a web developer, I enjoy most of my time being
-                outdoors. In the winter, I am an avid skier and novice ice
-                climber. During the warmer months here in Colorado, I enjoy
-                mountain biking, free climbing, and kayaking. When forced
-                indoors, I follow a number of sci-fi and fantasy genre movies
-                and television shows, I am an aspiring chef, and I spend a large
-                amount of my free time exploring the latest technology
-                advancements in the front-end web development world..
-              </Text>
+              <Text style={styles.description}>{data.interest}</Text>
               <Text style={styles.subTitle}>Certification & Awards</Text>
-              <Text style={styles.description}>
-                1st PGC Pubg 2020 - 1st Major CSO Kantowice 2017
-              </Text>
+              <Text style={styles.description}>{data.award}</Text>
+            </View>
+            <View style={{ flexDirection: "row", marginLeft: 60 }}>
+              <Buttons
+                text={"Back"}
+                style={styles.button}
+                onPressTo={() => {
+                  navigation.goBack(null);
+                }}
+              />
+
+              <Buttons
+                text={"Remove"}
+                style={styles.button}
+                onPressTo={removeMemberhandler}
+              />
             </View>
           </View>
         </View>
@@ -87,6 +103,11 @@ export default function MemberDetail({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    marginTop: 20,
+    width: 130,
+    marginLeft: 10,
+  },
   subTitle: {
     fontSize: 40,
     fontWeight: 400,

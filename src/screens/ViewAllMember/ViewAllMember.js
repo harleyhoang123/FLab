@@ -39,20 +39,12 @@ const ViewAllMember = ({ route, navigation }) => {
   getLabId().then((v) => setLabId(v));
   const data = route.params.data;
   const listMember = data.items;
-  const [shouldShow, setShouldShow] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalVisibleDelete, setModalVisibleDelete] = useState(false);
   const [selected, setSelected] = React.useState("");
   const [selectedId, setSelectedId] = useState("");
   const dispatch = useDispatch();
-  const dataDrop = [
-    { key: "1", value: "OWNER" },
-    { key: "2", value: "MANAGER" },
-    { key: "3", value: "USER" },
-  ];
 
-  const goToMemberDetail = (accountId) => {
-    dispatch(getmemberDetailByProfileId(accountId, navigation));
+  const goToMemberDetail = (accountId, code) => {
+    dispatch(getmemberDetailByProfileId(accountId, code, labId, navigation));
   };
 
   const removeMemberhandler = () => {
@@ -77,40 +69,22 @@ const ViewAllMember = ({ route, navigation }) => {
       <View style={styles.name}>
         <Text
           style={[styles.title, styles.blue]}
-          onPress={() => goToMemberDetail(accountId)}
+          onPress={() => {
+            goToMemberDetail(accountId, code);
+          }}
         >
           {name}
         </Text>
       </View>
       <View style={styles.role}>
         <Text style={styles.title}>{role}</Text>
-        <Icon
-          onPress={() => setShouldShow(!shouldShow)}
-          style={{ paddingLeft: 5 }}
-          name="wrench"
-        ></Icon>
-        {shouldShow ? (
-          <View style={styles.popUp}>
-            <View style={{ backgroundColor: "yellow", width: 30 }}>
-              <Text
-                onPress={() => {
-                  setModalVisible(!modalVisible), setSelectedId(code);
-                }}
-              >
-                Edit
-              </Text>
-            </View>
-            <View style={{ backgroundColor: "red" }}>
-              <Text
-                onPress={() => {
-                  setModalVisibleDelete(!modalVisible), setSelectedId(code);
-                }}
-              >
-                Remove
-              </Text>
-            </View>
-          </View>
-        ) : null}
+        <Buttons
+          text={"Update Role"}
+          style={styles.buttonUpdate}
+          onPressTo={() => {
+            navigation.navigate("UpdateMemberRole", { memberid: code });
+          }}
+        />
       </View>
     </View>
   );
@@ -153,82 +127,29 @@ const ViewAllMember = ({ route, navigation }) => {
           keyExtractor={(item) => item.memberId}
         />
       </SafeAreaView>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          this.visibleModal(false);
+
+      <Buttons
+        text={"Back"}
+        style={styles.button}
+        onPressTo={() => {
+          navigation.goBack(null);
         }}
-      >
-        <View style={styles.modal}>
-          <Text style={{ fontSize: 20 }}>Enter new role</Text>
-          <SelectList
-            setSelected={(val) => setSelected(val)}
-            placeholder={"Task status"}
-            data={dataDrop}
-            save="value"
-            boxStyles={{
-              width: 530,
-              height: 45,
-              marginTop: 10,
-              marginBottom: 10,
-              marginRight: 5,
-            }}
-            dropdownStyles={{
-              width: 130,
-            }}
-            search={false}
-          />
-          <View
-            style={{
-              marginTop: 20,
-              width: "auto",
-              margin: 20,
-              flexDirection: "row",
-            }}
-          >
-            <Button onPress={removeMemberhandler} title="Submit"></Button>
-            <Button
-              onPress={() => setModalVisible(!modalVisible)}
-              title="Close"
-              color={"red"}
-            ></Button>
-          </View>
-        </View>
-      </Modal>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisibleDelete}
-        onRequestClose={() => {
-          this.visibleModal(false);
-        }}
-      >
-        <View style={styles.modal}>
-          <Text style={{ fontSize: 20 }}>Do you want remove this member?</Text>
-          <View
-            style={{
-              marginTop: 20,
-              width: "auto",
-              margin: 20,
-              flexDirection: "row",
-            }}
-          >
-            <Button onPress={removeMemberhandler} title="Submit"></Button>
-            <Button
-              onPress={() => setModalVisibleDelete(!modalVisibleDelete)}
-              title="Close"
-              color={"red"}
-            ></Button>
-          </View>
-        </View>
-      </Modal>
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  buttonUpdate: {
+    width: 130,
+    margin: 5,
+    fontSize: 11,
+  },
+  button: {
+    marginTop: 20,
+    width: 130,
+    marginLeft: 5,
+  },
   blue: {
     color: "blue",
   },
@@ -309,6 +230,7 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     marginLeft: 10,
     marginRight: 10,
+    marginBottom: 20,
   },
   item: {
     display: "flex",

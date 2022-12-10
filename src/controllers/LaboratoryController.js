@@ -89,8 +89,8 @@ export class LaboratoryController {
     return this.networkService.request({
       method: "GET",
       url: routes.workSpace.getAllMemberInWorkspace.replace(
-          ":workspace-id",
-          projectId
+        ":workspace-id",
+        projectId
       ),
       data: null,
     });
