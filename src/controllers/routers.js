@@ -31,6 +31,13 @@ export const routes = {
       host + "8083/flab/lab/public/api/v1/members/:lab-id/member-to-lab",
     applyToLab: host + "8083/flab/lab/public/api/v1/laboratories/:lab-id/apply",
     updateMemberRole: host + "8083/flab/lab/public/api/v1/members/:member-id",
+    getAllRequest:
+      host + "8083/flab/lab/public/api/v1/laboratories/:lab-id/applications",
+    getRequestDetail:
+      host +
+      "8083/flab/lab/public/api/v1/laboratories/applications/:application-id",
+    reviewRequest:
+      host + "8083/flab/lab/public/api/v1/laboratories/:lab-id/:application-id",
   },
   forum: {
     getQuestionDetail: host + "8081/flab/forum/public/api/v1/questions/",

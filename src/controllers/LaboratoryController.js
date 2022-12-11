@@ -263,4 +263,35 @@ export class LaboratoryController {
       },
     });
   }
+
+  getAllRequest({ labId }) {
+    return this.networkService.request({
+      method: "GET",
+      url: routes.laboratory.getAllRequest.replace(":lab-id", labId),
+      data: null,
+    });
+  }
+
+  getRequestDetail({ applicationId, requestData }) {
+    return this.networkService.request({
+      method: "GET",
+      url: routes.laboratory.getRequestDetail.replace(
+        ":application-id",
+        applicationId
+      ),
+    });
+  }
+
+  reviewRequestInLab({ labId, applicationId, requestData }) {
+    return this.networkService.request({
+      method: "POST",
+      url: routes.laboratory.reviewRequest
+        .replace(":lab-id", labId)
+        .replace(":application-id", applicationId),
+      data: {
+        status: requestData.status,
+        comment: requestData.comment,
+      },
+    });
+  }
 }
