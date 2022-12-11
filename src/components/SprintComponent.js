@@ -54,7 +54,7 @@ function SprintComponent({
         if (d < 10) {
             d = "0" + d;
         }
-        let m = formattedDate.getMonth();
+        let m = formattedDate.getMonth()+1;
         if (m < 10) {
             m = "0" + m;
         }

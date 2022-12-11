@@ -506,7 +506,7 @@ export const getListFolder= async (repoId) => {
     }
 };
 
-export const deleteFolderOrFile = async (Id, type) => {
+export const deleteFolderOrFile = async (folderId,Id, type) => {
     const token = await getToken();
     if(type==="Folder"){
         try {
@@ -526,7 +526,7 @@ export const deleteFolderOrFile = async (Id, type) => {
     }else {
         try {
             const response = await axios.delete(
-                host+'8082/flab/repository/public/api/v1/files/:file-id'.replace(":file-id", Id),
+                host+'8082/flab/repository/public/api/v1/files/:folder-id/:file-id'.replace(":file-id", Id).replace(":folder-id", folderId),
                 {
                     headers: {
                         "Authorization": `Bearer ` + token

@@ -1,167 +1,160 @@
-import React, { useState } from "react";
-import {
-  SafeAreaView,
-  View,
-  FlatList,
-  TextInput,
-  Button,
-  StyleSheet,
-  Text,
-  StatusBar,
-} from "react-native";
-import { useDispatch } from "react-redux";
+import {View, Text, StyleSheet, Image} from "react-native";
+import AddComponent from "../../components/AddComponent";
 import Buttons from "../../components/Buttons";
+import React, {useState} from "react";
 import LabNavigator from "../../navigations/LabNavigator";
-import { updateMaterialByMaterialId } from "../../actions/MaterialAction";
-import { SelectList } from "react-native-dropdown-select-list";
+import * as DocumentPicker from "expo-document-picker";
+import {useDispatch} from "react-redux";
+import {addMaterial, updateMaterialByMaterialId} from "../../actions/MaterialAction";
 import AsyncStorage from "@react-native-community/async-storage";
+import {Dropdown} from "react-native-element-dropdown";
 
 const getLabId = async () => {
   try {
-    const labId = await AsyncStorage.getItem("@currentLabId");
-    console.log("LabId in reate Project: " + labId);
+    const labId = await AsyncStorage.getItem("@labId");
+    console.log("labId: " + labId);
     return labId;
   } catch (e) {
-    console.log("Can't get LabId id: " + e);
+    console.log("Can't get labId: " + e);
   }
 };
 
 export default function UpdateMaterial({ route, navigation }) {
   const materialInfo = route.params.materialInfo;
-  const [textName, onChangeNameText] = useState(materialInfo.materialName);
-  const [textDescription, onChangeDescriptionText] = useState(
-    materialInfo.description
-  );
-  const [selected, setSelected] = React.useState(materialInfo.status);
-  const data = [
-    { key: "1", value: "IN_USED" },
-    { key: "2", value: "FREE" },
-  ];
+  const [materialName, setMaterialName] = useState(materialInfo.materialName);
   const [amount, setAmount] = useState(materialInfo.amount);
-  const [labId, setLabId] = useState("");
-
-  getLabId().then((v) => setLabId(v));
-  const dispatch = useDispatch();
-
-  const updateMaterial = () => {
-    const requestData = {
-      materialName: textName,
-      description: textDescription,
-      status: selected,
-      amount: amount,
-    };
-    console.log("Data Mate:" + JSON.stringify(requestData));
-    dispatch(
-      updateMaterialByMaterialId(
-        labId,
-        materialInfo.materialId,
-        requestData,
-        navigation
-      )
-    );
+  const [description, setDescription] = useState(materialInfo.description);
+  const [note, setNote] = useState(materialInfo.note);
+  const [status, setStatus] = useState(materialInfo.status);
+  const [image, setImage] = useState();
+  const [labId, setLabId] = useState();
+  getLabId().then(v => setLabId(v))
+  console.log("lab ID in UpdateMaterial" + labId)
+  const data=[
+    {label: 'Free', value: 'FREE'},
+    {label: 'In used', value: 'IN_USED'},
+  ]
+  const pickImage = async () => {
+    let result = await DocumentPicker.getDocumentAsync({type: 'image/*', multiple: false});
+    console.log(result);
+    if (!result.cancelled) {
+      console.log("Picked: " + result);
+      console.log("name: " + result.name);
+      console.log("uri: " + result.uri);
+      console.log("size: " + result.size);
+      console.log("mimeType: " + result.mimeType);
+      const imagePicked = {
+        name: result.name,
+        base64: result.uri,
+        size: result.size,
+        mimeType: result.mimeType
+      };
+      setImage(imagePicked);
+    }
   };
+  const dispatch = useDispatch();
+const updateMaterial=(labId,materialId,materialName,status,amount, description,note,image,navigation )=>{
+  dispatch(updateMaterialByMaterialId(labId,materialId,materialName,status,amount, description,note,image,navigation ))
+}
   return (
-    <View>
-      <LabNavigator navigation={navigation} />
       <View style={styles.container}>
-        <Text style={styles.title}>Update a Project</Text>
-        <View>
-          <View>
-            <Text style={styles.usage}>Enter project information</Text>
-          </View>
-          <View>
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => onChangeNameText(text)}
-              value={textName}
-              placeholder={"Enter material's name"}
-            />
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => onChangeDescriptionText(text)}
-              value={textDescription}
-              placeholder={"Enter material's description"}
-            />
-            <SelectList
-              setSelected={(val) => setSelected(val)}
-              placeholder={"STATUS"}
+        <LabNavigator navigation={navigation}/>
+        <View style={styles.containerContent}>
+          <Text style={styles.text}>Add a Material</Text>
+          <AddComponent
+              title={"Material Name"}
+              multiline={false}
+              style={{width: "97%"}}
+              text={materialName}
+              onChangeText={(materialName) => setMaterialName(materialName)}
+          />
+          <Dropdown
+              style={styles.dropdown}
+              value={status}
               data={data}
-              save="value"
-              boxStyles={{
-                height: 40,
-                margin: 12,
-                borderWidth: 1,
-                padding: 10,
-                width: "45%",
-                marginLeft: "13%",
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              onChange={item => {
+                setStatus(item.value)
               }}
-              dropdownStyles={{
-                width: 130,
-                marginLeft: "13%",
-              }}
-              search={false}
-            />
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => setAmount(text)}
-              value={amount}
-              placeholder={"Enter amount"}
-            />
+          />
+          <AddComponent
+              title={"Amount"}
+              multiline={false}
+              style={{width: "30%"}}
+              text={amount}
+              onChangeText={(amount) => setAmount(amount)}
+          />
+          <AddComponent
+              title={"Description"}
+              multiline={true}
+              style={{width: "97%", height: 200}}
+              text={description}
+              onChangeText={(description) => setDescription(description)}
+          />
+          <AddComponent
+              title={"Note"}
+              multiline={true}
+              style={{width: "97%", height: 200}}
+              text={note}
+              onChangeText={(note) => setNote(note)}
+          />
+          <View style={styles.row}>
+            <View>
+              <Buttons text={"Add Image"} onPressTo={pickImage} style={styles.button}/>
+            </View>
+            <View>{image &&
+                <Image source={{uri: image.base64}}
+                       style={{width: 200, height: 200, marginLeft: 50,}}/>}</View>
           </View>
-
-          <View style={styles.btn}>
+          <View style={styles.row}>
             <Buttons
-              text={"Update"}
-              style={styles.button}
-              onPressTo={updateMaterial}
+                text={"Update"}
+                style={styles.button}
+                onPressTo={()=>updateMaterial(labId,materialInfo.materialId,materialName,status,amount,description,note,image,navigation)}
             />
             <Buttons
-              text={"Back"}
-              style={styles.button}
-              onPressTo={() => {
-                navigation.goBack(null);
-              }}
+                text={"Cancel"}
+                style={styles.button}
+                onPressTo={() => {
+                  navigation.goBack(navigation);
+                }}
             />
           </View>
         </View>
       </View>
-    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleDate: {
-    fontSize: 20,
-    marginLeft: "13%",
-    marginTop: 10,
-  },
   container: {
-    flexDirection: "column",
+    flex: 1,
+  },
+  containerContent: {
+    flex: 0.65,
+    paddingLeft: 300,
+    marginRight: 300,
+  },
+  text: {
+    fontSize: 30,
+    fontWeight: "bold",
+    margin: 30,
   },
   button: {
-    marginTop: 20,
-    width: 130,
-    marginLeft: 5,
+    margin: 30,
+    width: 250,
   },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    width: "45%",
-    marginLeft: "13%",
+  row: {
+    flexDirection: "row",
   },
-  title: {
-    fontSize: 30,
-    marginLeft: "10%",
-    marginTop: "3%",
-  },
-  usage: {
-    fontSize: 20,
-    marginLeft: "13%",
-    marginTop: 10,
-  },
-  btn: {
-    marginLeft: "13%",
+  dropdown: {
+    width:"30%",
+    height: 50,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    marginLeft:20
   },
 });

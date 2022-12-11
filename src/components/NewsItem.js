@@ -11,7 +11,8 @@ function NewsItem({newsId, title, author, thumbnail, createdDate,views,comments,
     }
     const formatTime=(date)=>{
         const d= new Date(date);
-        return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
+        const month= d.getMonth()+1;
+        return d.getDate() + "/" + month + "/" + d.getFullYear();
     }
     return (
         <View style={[styles.container,style]}>

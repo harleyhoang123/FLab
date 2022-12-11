@@ -6,6 +6,7 @@ import React, {useState} from "react";
 import * as DocumentPicker from "expo-document-picker";
 import {addFileToFolder} from "../../actions/RepositoryAction";
 import {useDispatch} from "react-redux";
+import ProjectNavigator from "../../navigations/ProjectNavigator";
 function Upload({route,navigation}) {
     const folderName = route.params.folderName;
     const parentFolderId = route.params.parentFolderId;
@@ -36,17 +37,20 @@ function Upload({route,navigation}) {
         }
     };
     return (
-        <View style={styles.container}>
-            <HomeTopNavigator navigation={navigation}/>
+        <View >
+            <ProjectNavigator navigation={navigation}/>
             <View style={styles.containerContent}>
                 <Text style={styles.text}>Upload A File</Text>
                 <AddComponent title={"Description"}
                               multiline={false}
                               style={{width: "97%"}}
                               text={description} onChangeText={description => setDescription(description)}/>
+                {file &&<Text style={{marginLeft:30,fontSize: 20, backgroundColor:'white'}}>{file.name}</Text>}
                 <Buttons text={"Choose A File"} style={styles.button} onPressTo={pickFile} />
-                {file &&<Text>{file.name}</Text>}
-                <Buttons text={"Upload"} style={styles.button} onPressTo={()=> {uploadFile(parentFolderId, folderName,description,file,navigation); console.log("Click Upload")}}/>
+                <View style={{flexDirection:"row"}}>
+                    <Buttons text={"Upload"} style={[styles.button,{marginRight:30 }]} onPressTo={()=> {uploadFile(parentFolderId, folderName,description,file,navigation); console.log("Click Upload")}}/>
+                    <Buttons text={"Cancel"} style={styles.button} onPressTo={()=> navigation.goBack(null)}/>
+                 </View>
             </View>
         </View>
     );
@@ -56,9 +60,10 @@ const styles = StyleSheet.create({
         flex:1,
     },
     containerContent:{
-        flex:0.65,
-        paddingLeft:300,
-        marginRight:300,
+        alignSelf:"center",
+        width:"70%",
+        backgroundColor: "white",
+        flex: 1,
     },
     text:{
         fontSize:30,

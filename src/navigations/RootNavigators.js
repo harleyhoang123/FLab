@@ -51,6 +51,9 @@ import UpdateMaterial from "../screens/Material/UpdateMeterial";
 import AddMemberTolab from "../screens/Lab/AddMemberToLab";
 import AddMemberToProject from "../screens/Lab/AddMemberToProject";
 import ApplyToALab from "../screens/Lab/ApplyToLab";
+import UpdateFolderInRepo from "../screens/Repository/UpdateFolderInRepo";
+import UpdateSubFolder from "../screens/Repository/UpdateSubFolder";
+import UpdateFile from "../screens/Repository/UpdateFile";
 function RootNavigators() {
   const Stack = createStackNavigator();
   return (
@@ -103,8 +106,11 @@ function RootNavigators() {
         <Stack.Screen name="CreateSubFolder" component={CreateSubFolder} />
         <Stack.Screen name="CreateProject" component={CreateProject} />
         <Stack.Screen name="UpdateProject" component={UpdateProject} />
-        <Stack.Screen name="UpdateMeterial" component={UpdateMaterial} />
+        <Stack.Screen name="UpdateMaterial" component={UpdateMaterial} />
         <Stack.Screen name="ApplyToLab" component={ApplyToALab} />
+        <Stack.Screen name="UpdateFolderInRepo" component={UpdateFolderInRepo} />
+        <Stack.Screen name="UpdateSubFolder" component={UpdateSubFolder} />
+        <Stack.Screen name="UpdateFile" component={UpdateFile} />
         <Stack.Screen
           name="AddMemberToProject"
           component={AddMemberToProject}

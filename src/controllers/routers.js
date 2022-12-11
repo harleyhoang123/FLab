@@ -55,6 +55,7 @@ export const routes = {
       host +
       "8083/flab/lab/public/api/v1/laboratories/:laboratory-id/materials/:material-id",
     addMaterial: host + "8083/flab/lab/public/api/v1/laboratories/:lab-id/material",
+    orderMaterial: host + "8083/flab/lab/public/api/v1/materials/:laboratory-id/:material-id/order",
   },
   repository: {
     getFolderDetail:
@@ -69,6 +70,8 @@ export const routes = {
       host + "8082/flab/repository/public/api/v1/folders/:folder-id",
     downloadFile: host + "8082/flab/repository/public/api/v1/files/:file-id",
     addFileToFolder: host + "8082/flab/repository/public/api/v1/folders/:folder-id/file",
+    updateFolder:host + "8082/flab/repository/public/api/v1/folders/:folder-id",
+    updateFile:host + "8082/flab/repository/public/api/v1/files/:file-id",
   },
   account: {
     getAccountInfo:

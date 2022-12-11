@@ -11,7 +11,8 @@ import {useDispatch} from "react-redux";
 function AnswerComponent({answerId, votes, createdBy, content, createdDate, userAnswerComment,questionId, navigation}) {
     const formatTime = (date) => {
         const d = new Date(date);
-        return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
+        const month= d.getMonth()+1;
+        return d.getDate() + "/" + month + "/" + d.getFullYear();
     }
     const dispatch= useDispatch();
     const [userComment, setUserComment] = useState(userAnswerComment);

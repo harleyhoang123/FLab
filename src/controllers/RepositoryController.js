@@ -76,4 +76,32 @@ export class RepositoryController {
       },
     });
   }
+  updateFolder({folderId, folderName,description}){
+    return this.networkService.request({
+      method: "PUT",
+      url: routes.repository.updateFolder.replace(
+          ":folder-id",
+          folderId
+      ),
+      data: {
+        folderName: folderName,
+        description: description
+
+      },
+    });
+  }
+  updateFile({fileId, fileName,description}){
+    return this.networkService.request({
+      method: "PUT",
+      url: routes.repository.updateFile.replace(
+          ":file-id",
+          fileId
+      ),
+      data: {
+        fileName: fileName,
+        description: description
+      },
+    });
+  }
+
 }

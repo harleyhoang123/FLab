@@ -56,7 +56,7 @@ function ListMaterial({ route, navigation }) {
               id={item.materialId}
               navigation={navigation}
               title={item.materialName}
-              image={item.images}
+              image={item.image}
               status={item.status}
               labId={labId}
               callbackListMaterial={callbackListMaterial}

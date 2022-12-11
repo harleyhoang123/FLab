@@ -70,10 +70,11 @@ function QuestionDetail({route,navigation}) {
     const tags = res.data.tags;
     const numberAnswer=res.data.answers.length;
     const votes=res.data.score;
-    const [value, setValue] = useState('Highest score (default)');
+    const [value, setValue] = useState('');
     const formatTime=(date)=>{
         const d= new Date(date);
-        return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
+        const month= d.getMonth()+1;
+        return d.getDate() + "/" + month + "/" + d.getFullYear();
     }
     const dispatch = useDispatch();
     const handleEdit = () => {

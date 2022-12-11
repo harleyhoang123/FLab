@@ -28,7 +28,7 @@ function AddMaterial({navigation}) {
     getLabId().then(v => setLabId(v))
     console.log("lab ID in AddMaterial" + labId)
     const pickImage = async () => {
-        let result = await DocumentPicker.getDocumentAsync({type: 'image/*', multiple: false});
+        let result = await DocumentPicker.getDocumentAsync({type: 'image/*', multiple: true});
         console.log(result);
         if (!result.cancelled) {
             console.log("Picked: " + result);

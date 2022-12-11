@@ -19,20 +19,18 @@ export const getMaterialById =
   };
 
 export const updateMaterialByMaterialId =
-  (labId, materialId, requestData, navigation) =>
+  (labId,materialId,materialName,status,amount, description,note,image,navigation ) =>
   async (dispatch, _, { networkService }) => {
     try {
       const materialController = new MaterialController(networkService);
       const response = await materialController.updateMaterial({
-        labId,
-        materialId,
-        requestData,
+          labId,materialId,materialName,status,amount, description,note,image
       });
-      console.log("updateMaterialId: " + JSON.stringify(response));
+      console.log("updateMaterialByMaterialId: " + JSON.stringify(response));
       dispatch(getMaterialById(materialId, navigation));
     } catch ({ data }) {
       console.log(
-        "ERROR when updateLaboratoryByLabId: " + JSON.stringify(data)
+        "ERROR when updateMaterialByMaterialId: " + JSON.stringify(data)
       );
     }
   };
@@ -52,3 +50,17 @@ export const addMaterial =
                 );
             }
         };
+export const orderMaterial=(labId, materialId, amount, reason, orderFrom, orderTo, navigation)=>
+    async (dispatch, _, { networkService }) => {
+
+        try {
+            const materialController = new MaterialController(networkService);
+            const response = await materialController.orderMaterial({labId, materialId, amount,reason,orderFrom, orderTo})
+            console.log("addMaterial: " + JSON.stringify(response));
+            dispatch(getListMaterialByLabId(labId, navigation));
+        } catch ({ data }) {
+            console.log(
+                "ERROR when addMaterial: " + JSON.stringify(data)
+            );
+        }
+    };
