@@ -139,7 +139,7 @@ export const getListMaterialByLabId =
       );
       navigation.push("ListMaterial", {
         data: response.data.data,
-          labId:labId
+        labId: labId,
       });
     } catch ({ data }) {
       console.log("ERROR when getListMaterialByLabId: " + JSON.stringify(data));
@@ -196,6 +196,7 @@ export const createProjectInLab =
 export const removeMemberFromLaboratory =
   (labId, memberId, navigation) =>
   async (dispatch, _, { networkService }) => {
+    console.log("LabId in controller:" + labId);
     try {
       const laboratoryController = new LaboratoryController(networkService);
       const response = await laboratoryController.removeMemberFromLaboratory({
@@ -224,9 +225,7 @@ export const deleteLaboratory =
       );
       dispatch(getLaboratoryByAccountId(accountId, navigation));
     } catch ({ data }) {
-      console.log(
-        "ERROR when removeMemberFromLaboratory: " + JSON.stringify(data)
-      );
+      console.log("ERROR when deleteLaboratory: " + JSON.stringify(data));
     }
   };
 
@@ -245,7 +244,7 @@ export const removeMemberInProjectById =
       dispatch(getAllMemberInProject(projectId, navigation));
     } catch ({ data }) {
       console.log(
-        "ERROR when removeMemberFromLaboratory: " + JSON.stringify(data)
+        "ERROR when removeMemberInProjectById: " + JSON.stringify(data)
       );
     }
   };
@@ -264,9 +263,7 @@ export const removeProject =
       );
       dispatch(getAllProjectByLabId(labId, navigation));
     } catch ({ data }) {
-      console.log(
-        "ERROR when removeMemberFromLaboratory: " + JSON.stringify(data)
-      );
+      console.log("ERROR when removeProject: " + JSON.stringify(data));
     }
   };
 
@@ -370,7 +367,7 @@ export const addMembersToLab =
   };
 
 export const getmemberDetailByProfileId =
-  (accountId, navigation) =>
+  (accountId, code, labId, navigation) =>
   async (dispatch, _, { networkService }) => {
     try {
       console.log("ProfileId: " + accountId);
@@ -381,6 +378,8 @@ export const getmemberDetailByProfileId =
       });
       navigation.navigate("MemberDetail", {
         data: response.data.data,
+        labId: labId,
+        memberId: code,
       });
     } catch ({ data }) {
       console.log(
