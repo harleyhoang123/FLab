@@ -17,7 +17,6 @@ function ListMaterial({ route, navigation }) {
       JSON.stringify(listsMaterial)
   );
   const [text, setText] = useState("");
-  const [booked, setBooked] = useState(false);
   const [list, setList] = useState(listsMaterial);
   const callbackListMaterial=()=>{
     getListMaterial(labId).then(r=> setList(r.data.items))
@@ -50,9 +49,8 @@ function ListMaterial({ route, navigation }) {
           />
         </View>
       </View>
-      {list.map((item)=>(
+      <FlatList data={list} renderItem={({item})=>(
           <MaterialItem
-              key={item.materialId}
               id={item.materialId}
               navigation={navigation}
               title={item.materialName}
@@ -60,8 +58,8 @@ function ListMaterial({ route, navigation }) {
               status={item.status}
               labId={labId}
               callbackListMaterial={callbackListMaterial}
-          />
-      ))}
+          />)}
+      />
       <PaginationBar />
     </View>
   );

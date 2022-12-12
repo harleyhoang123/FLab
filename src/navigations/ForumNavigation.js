@@ -28,6 +28,12 @@ function ForumNavigation({ navigation }) {
       >
         <Text style={styles.textLogo}>Questions</Text>
       </TouchableOpacity>
+        <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.push("Forum")}
+        >
+            <Text style={styles.textLogo}>Setting</Text>
+        </TouchableOpacity>
     </View>
   );
 }

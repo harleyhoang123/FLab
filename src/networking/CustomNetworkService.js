@@ -593,3 +593,432 @@ export const getListMaterial= async (labId) => {
         console.log("error when getListMaterial:" + JSON.stringify(error));
     }
 };
+
+export const getQuestionDetail= async (questionId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.get(
+            host+'8081/flab/forum/public/api/v1/questions/:question-id'.replace(":question-id", questionId),
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in getQuestionDetail: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when getQuestionDetail:" + JSON.stringify(error));
+    }
+};
+
+export const addAnswer = async (questionId, answer) => {
+    const token = await getToken();
+    try {
+        const response = await axios.post(
+            host+'8081/flab/forum/public/api/v1/questions/:question-id/answer'.replace(":question-id", questionId),
+            {
+                content: answer
+            }
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in postAnswer: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when postAnswer:" + JSON.stringify(error));
+    }
+};
+export const addCommentToQuestion = async (questionId, comment) => {
+    const token = await getToken();
+    try {
+        const response = await axios.post(
+            host+'8081/flab/forum/public/api/v1/questions/:question-id/comment'.replace(":question-id", questionId),
+            {
+                content: comment
+            }
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in addCommentToQuestion: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when addCommentToQuestion:" + JSON.stringify(error));
+    }
+};
+export const addCommentToAnswer = async (answerId, comment) => {
+    const token = await getToken();
+    try {
+        const response = await axios.post(
+            host+'8081/flab/forum/public/api/v1/answers/:answer-id'.replace(":answer-id", answerId),
+            {
+                content: comment
+            }
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in addCommentToAnswer: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when addCommentToAnswer:" + JSON.stringify(error));
+    }
+};
+export const deleteAnswer = async (questionId,answerId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.delete(
+            host+'8081/flab/forum/public/api/v1/questions/:question-id/:answer-id'.replace(":answer-id", answerId).
+            replace(":question-id", questionId),
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in deleteAnswer: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when deleteAnswer:" + JSON.stringify(error));
+    }
+};
+export const deleteCommentInQuestion = async (questionId, commentId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.delete(
+            host+'8081/flab/forum/public/api/v1/comments/:question-id/:comment-id'.replace(":comment-id", commentId)
+                .replace(":question-id", questionId),
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in deleteComment: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when deleteComment:" + JSON.stringify(error));
+    }
+};
+export const deleteCommentInAnswer = async (answerId, commentId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.delete(
+            host+'8081/flab/forum/public/api/v1/answers/:answer-id/:comment-id'.replace(":comment-id", commentId)
+                .replace(":answer-id", answerId),
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in deleteComment: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when deleteComment:" + JSON.stringify(error));
+    }
+};
+export const editComment = async (commentId, comment) => {
+    const token = await getToken();
+    try {
+        const response = await axios.put(
+            host+'8081/flab/forum/public/api/v1/comments/:comment-id'.replace(":comment-id", commentId),
+            {
+                content: comment
+            }
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in deleteComment: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when deleteComment:" + JSON.stringify(error));
+    }
+};
+export const editAnswer = async (answerId, answer) => {
+    const token = await getToken();
+    try {
+        const response = await axios.put(
+            host+'8081/flab/forum/public/api/v1/answers/:answer-id'.replace(":answer-id", answerId),
+            {
+                content: answer
+            }
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in deleteComment: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when deleteComment:" + JSON.stringify(error));
+    }
+};
+export const voteQuestion = async (questionId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.post(
+            host+'8081/flab/forum/public/api/v1/questions/:question-id/vote'.replace(":question-id", questionId),
+            {
+            }
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in voteQuestion: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when voteQuestion:" + JSON.stringify(error));
+    }
+};
+export const updateNews = async (newsId,title,content,thumbnail) => {
+    const token = await getToken();
+    try {
+        const response = await axios.put(
+            host+'8888/flab/notification/public/api/v1/news/:news-id'.replace(":news-id", newsId),
+            {
+                title:title,
+                content:content,
+                thumbnail:thumbnail
+            }
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in updateNews: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when updateNews:" + JSON.stringify(error));
+    }
+};
+export const getNewsDetail = async (newsId,navigation) => {
+    const token = await getToken();
+    try {
+        const response = await axios.get(
+            host+'8888/flab/notification/public/api/v1/news/:news-id'.replace(":news-id", newsId)
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in getNewsDetail: " + JSON.stringify(response.data));
+        navigation.push("NewsDetail", {data: response.data.data});
+    } catch (error) {
+        console.log("error when getNewsDetail:" + JSON.stringify(error));
+    }
+};
+export const getNewsDetailComment = async (newsId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.get(
+            host+'8888/flab/notification/public/api/v1/news/:news-id'.replace(":news-id", newsId)
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in getNewsDetailComment: " + JSON.stringify(response.data));
+        return response.data
+    } catch (error) {
+        console.log("error when getNewsDetailComment:" + JSON.stringify(error));
+    }
+};
+export const deleteNews = async (newsId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.delete(
+            host+'8888/flab/notification/public/api/v1/news/:news-id'.replace(":news-id", newsId)
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in deleteNews: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when deleteNews:" + JSON.stringify(error));
+    }
+};
+export const getListNews = async (navigation) => {
+    const token = await getToken();
+    try {
+        const response = await axios.get(
+            host+'8888/flab/notification/public/api/v1/news'
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in getListNews: " + JSON.stringify(response.data));
+        navigation.push("ListNews", {data: response.data.data});
+    } catch (error) {
+        console.log("error when getListNews:" + JSON.stringify(error));
+    }
+};
+export const commentToNews = async (newsId, content) => {
+    const token = await getToken();
+    try {
+        const response = await axios.post(
+            host+'8888/flab/notification/public/api/v1/news/:news-id/comment'.replace(":news-id", newsId),
+            {
+                content:content
+            }
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in commentToNews: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when commentToNews:" + JSON.stringify(error));
+    }
+};
+export const commentToComment = async (commentId, content) => {
+    const token = await getToken();
+    try {
+        const response = await axios.post(
+            host+'8888/flab/notification/public/api/v1/comments/:comment-id/comment'.replace(":comment-id", commentId),
+            {
+                content:content
+            }
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in commentToComment: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when commentToComment:" + JSON.stringify(error));
+    }
+};
+export const editCommentNews = async (commentId, content) => {
+    const token = await getToken();
+    try {
+        const response = await axios.put(
+            host+'8888/flab/notification/public/api/v1/comments/:comment-id'.replace(":comment-id", commentId),
+            {
+                content: content
+            }
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in editCommentNews: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when editCommentNews:" + JSON.stringify(error));
+    }
+};
+export const deleteCommentInNews = async (newsId, commentId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.delete(
+            host+'8888/flab/notification/public/api/v1/news/:new-id/:comment-id'.replace(":comment-id", commentId)
+                .replace(":new-id", newsId),
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in deleteCommentInNews: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when deleteCommentInNews:" + JSON.stringify(error));
+    }
+};
+export const deleteCommentInComment= async ( commentId, subCommentId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.delete(
+            host+'8888/flab/notification/public/api/v1/comments/:comment-id/:subcomment-id'.replace(":comment-id", commentId)
+                .replace(":subcomment-id", subCommentId),
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in deleteCommentInComment: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when deleteCommentInComment:" + JSON.stringify(error));
+    }
+};
+export const getListOrderByLabId= async (labId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.get(
+            host+'8083/flab/lab/public/api/v1/materials/:laboratory-id/orders'.replace(":laboratory-id", labId),
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in getListOrderByLabId: " + JSON.stringify(response.data));
+        return response.data
+    } catch (error) {
+        console.log("error when getListOrderByLabId:" + JSON.stringify(error));
+    }
+};
+export const responseOrder= async (orderId,status) => {
+    const token = await getToken();
+    try {
+        const response = await axios.put(
+            host+'8083/flab/lab/public/api/v1/materials/:order-id'.replace(":order-id", orderId),
+            {
+                status:status
+            },
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in responseOrder: " + JSON.stringify(response.data));
+        return response.data
+    } catch (error) {
+        console.log("error when responseOrder:" + JSON.stringify(error));
+    }
+};

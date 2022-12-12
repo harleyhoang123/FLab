@@ -1,26 +1,69 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
-import {useDispatch} from "react-redux";
-import {deleteComment} from "../actions/ForumAction";
+import {
+    deleteCommentInAnswer,
+    deleteCommentInComment,
+    deleteCommentInQuestion,
+    editComment, editCommentNews
+} from "../networking/CustomNetworkService";
+import TextField from "./TextField";
+import Buttons from "./Buttons";
 
 
-function CommentItem({commentId, username, content, time,questionId, navigation}) {
+function CommentItem({parentId, commentId, username, content, time,parentType, callBackComment}) {
 
-    const dispatch= useDispatch();
     const handleDelete=() =>{
-        dispatch(deleteComment(commentId,questionId, navigation));
+        if(parentType==="QUESTION"){
+            deleteCommentInQuestion(parentId, commentId).then(()=>callBackComment())
+        }else  if(parentType==="ANSWER"){
+            deleteCommentInAnswer(parentId, commentId).then(()=>callBackComment())
+        }else  if(parentType==="NEWS"){
+            deleteCommentInComment(parentId, commentId).then(()=>callBackComment())
+        }
+
+    }
+    const handleEdit=()=>{
+        if(parentType==="NEWS"){
+            editCommentNews(commentId,text).then(()=> callBackComment())
+        }else{
+            editComment(commentId,text).then(()=> callBackComment())
+        }
+
+    }
+    const [isEdit,setIsEdit]=useState(false);
+    const [text, setText]=useState(content)
+    const isEditComment =(isEdit)=>{
+        if (isEdit){
+            return(
+                <View style={styles.containerComment}>
+                    <TextField text={text} onChangeText={text=>setText(text)}
+                               placeholder={" Edit Comment"}
+                               secureTextEntry={false}
+                               multiline={false}
+                               onSubmitEditing={()=>{handleEdit(); setText("");setIsEdit(!isEdit)}}
+                               style={[styles.comment]}/>
+                    <Buttons text={"Edit"} onPressTo={()=>{handleEdit(); setText("");setIsEdit(!isEdit)} } style={styles.button}/>
+                    <Buttons text={"Cancel"} onPressTo={()=>{setIsEdit(!isEdit)} } style={styles.button}/>
+                </View>
+            )
+        }else{
+            return (
+                <Text style={styles.text}>{content}</Text>
+            )
+        }
     }
     return (
         <View style={styles.container}>
             <View>
                 <View style={styles.containerComment}>
                     <Text style={styles.textUsername}>{username}</Text>
-                    <Text style={styles.text}>{content}</Text>
+                    {isEditComment(isEdit)}
                 </View>
                 <View style={styles.containerComment}>
                     <Text style={styles.text}>{time}</Text>
+
                     <View style={styles.login}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=> setIsEdit(!isEdit)}>
                             <Text style={styles.txt}>Edit</Text>
                         </TouchableOpacity>
                     </View>
@@ -67,6 +110,15 @@ const styles = StyleSheet.create(
             fontWeight: "bold",
             borderBottomWidth: 1,
             fontSize: 15,
+        },
+        comment: {
+            width: 400,
+            height: 40,
+        },
+        button: {
+            width: 100,
+            height: 40,
+            marginLeft:20,
         },
     }
 );

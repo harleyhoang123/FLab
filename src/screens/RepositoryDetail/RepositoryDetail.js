@@ -13,7 +13,7 @@ import {deleteFolderOrFile, getListFolderDetail} from "../../networking/CustomNe
 
 function RepositoryDetail({route, navigation}) {
     const data = route.params.data;
-    //const fileId = "638ee951dcab483f62c0aab3";
+    const fId = "638ee951dcab483f62c0aab3";
     const parentFolderId = route.params.parentFolderId;
     const folderName = route.params.folderName;
     const [itemsFile, setItemsFile] = useState(data.listFile);
@@ -28,7 +28,7 @@ function RepositoryDetail({route, navigation}) {
     console.log("parentFolderId in Detail" + parentFolderId);
     const downLoadFileHandler = () => {
         console.log("An");
-        dispatch(downLoadFileByFileId(fileId));
+        dispatch(downLoadFileByFileId(fId));
     };
     const deleteAFileOrFolder = (id, type, parentFolderId) => {
         deleteFolderOrFile(parentFolderId, id, type).then(v => getListFolderDetail(parentFolderId).then(r => {

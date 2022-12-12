@@ -1,31 +1,29 @@
 import React, {useState} from 'react';
-import CommentItem from "./CommentItem";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import CommentItem from "./CommentItem";
 import TextField from "./TextField";
 import Buttons from "./Buttons";
 import Separator from "./Separator";
-import VoteComponent from "./VoteComponent";
-import {addCommentToAnswer, deleteAnswer, editAnswer} from "../networking/CustomNetworkService";
+import {commentToComment, deleteCommentInNews, editCommentNews} from "../networking/CustomNetworkService";
 
-function AnswerComponent({questionId,answerId, votes, createdBy, content, createdDate, userAnswerComment,callbackAnswer}) {
+function CommentNewsComponent({newsId, commentId, username, content, createdDate, listSubComment,callBackCommentNews}) {
     const formatTime = (date) => {
         const d = new Date(date);
         const month= d.getMonth()+1;
         return d.getDate() + "/" + month + "/" + d.getFullYear();
     }
     const [comment, setComment] = useState("");
-    const handleDelete = () => {
-        deleteAnswer(questionId,answerId).then(()=>callbackAnswer())
-    };
-    const handleComment = () => {
-        addCommentToAnswer(answerId,comment).then(()=>{setComment("");callbackAnswer()});
-
-    };
-    const handleEdit=(commentId,text)=>{
-        editAnswer(commentId,text).then(()=>callbackAnswer() )
-    }
     const [isEdit,setIsEdit]=useState(false);
     const [text, setText]=useState(content)
+    const handleComment = () => {
+        commentToComment(commentId,comment).then(()=> callBackCommentNews())
+    };
+    const handleEdit = () => {
+        editCommentNews(commentId,text).then(()=> callBackCommentNews())
+    };
+    const handleDelete = () => {
+        deleteCommentInNews(newsId,commentId).then(()=> callBackCommentNews())
+    };
     const isEditComment =(isEdit)=>{
         if (isEdit){
             return(
@@ -35,9 +33,9 @@ function AnswerComponent({questionId,answerId, votes, createdBy, content, create
                                    placeholder={" Edit Answer"}
                                    secureTextEntry={false}
                                    multiline={true}
-                                   onSubmitEditing={()=>{handleEdit(answerId,text); setText("");setIsEdit(!isEdit)} }
+                                   onSubmitEditing={()=>{handleEdit(); setText("");setIsEdit(!isEdit)} }
                                    style={[styles.comment2]}/>
-                        <Buttons text={"Edit"} onPressTo={()=>{handleEdit(answerId,text); setText("");setIsEdit(!isEdit)} } style={styles.button2}/>
+                        <Buttons text={"Edit"} onPressTo={()=>{handleEdit(); setText("");setIsEdit(!isEdit)} } style={styles.button2}/>
                         <Buttons text={"Cancel"} onPressTo={()=>{setIsEdit(!isEdit)} } style={styles.button2}/>
                     </View>
                 </View>
@@ -51,18 +49,16 @@ function AnswerComponent({questionId,answerId, votes, createdBy, content, create
     }
     return (
         <View>
-            <View style={styles.row}>
-                <VoteComponent votes={votes} size={"2x"} style={{marginRight: 5}}/>
-                <View style={styles.container}>
-                    <View>
+            <View style={styles.container}>
+                <View>
                     <View style={styles.containerComment}>
-                        <Text style={styles.textUsername}>{createdBy}</Text>
+                        <Text style={styles.textUsername}>{username}</Text>
                         {isEditComment(isEdit)}
                     </View>
                     <View style={styles.containerComment}>
                         <Text style={styles.text}>{formatTime(createdDate)}</Text>
                         <View style={styles.login}>
-                            <TouchableOpacity onPress={()=> setIsEdit(!isEdit)}>
+                            <TouchableOpacity onPress={() => setIsEdit(!isEdit)}>
                                 <Text style={styles.txt}>Edit</Text>
                             </TouchableOpacity>
                         </View>
@@ -72,41 +68,41 @@ function AnswerComponent({questionId,answerId, votes, createdBy, content, create
                             </TouchableOpacity>
                         </View>
                     </View>
-                    </View>
                 </View>
             </View>
-            <View style={{marginLeft:"5%"}}>
-                {userAnswerComment?.map((item) => (
+            <View style={{marginLeft: "5%"}}>
+                {listSubComment?.map((item) => (
                     <View key={item.commentId}>
-                        <CommentItem parentId={answerId} parentType={"ANSWER"} commentId={item.commentId} username={item.createdBy.fullName} content={item.content}
-                                     time={formatTime(item.createdDate)} callBackComment={callbackAnswer}/>
+                        <CommentItem parentId={commentId} parentType={"NEWS"} commentId={item.commentId}
+                                     username={item.createdBy.fullName} content={item.content}
+                                     time={formatTime(item.createdDate)} callBackComment={callBackCommentNews}/>
                     </View>
                 ))
                 }
                 <View style={styles.containerComment}>
-                    <TextField text={comment} onChangeText={comment=>setComment(comment)}
-                               placeholder={" Comment Here"}
+                    <TextField text={comment} onChangeText={comment => setComment(comment)}
+                               placeholder={" Reply Here"}
                                secureTextEntry={false}
                                multiline={false}
-                               onSubmitEditing={() =>handleComment() }
+                               onSubmitEditing={() => {handleComment(); setComment("")}}
                                style={[styles.comment]}/>
-                    <Buttons text={"Comment"} onPressTo={() =>handleComment() } style={styles.button}/>
+                    <Buttons text={"Reply"} onPressTo={() => {handleComment(); setComment("")}} style={styles.button}/>
                 </View>
             </View>
 
             <Separator/>
         </View>
-
     );
 }
 
 const styles = StyleSheet.create({
     comment: {
         width: "95%",
-        height: 50,
+        height: 40,
     },
     button: {
-        width: 200,
+        width: 80,
+        height:40
     },
     comment2: {
         width: 400,
@@ -115,7 +111,7 @@ const styles = StyleSheet.create({
     button2: {
         width: 100,
         height: 40,
-        marginLeft:20,
+        marginLeft: 20,
     },
     containerComment: {
         flexDirection: "row",
@@ -154,4 +150,4 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
 });
-export default AnswerComponent;
+export default CommentNewsComponent;

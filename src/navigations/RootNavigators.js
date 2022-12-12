@@ -55,6 +55,7 @@ import UpdateFolderInRepo from "../screens/Repository/UpdateFolderInRepo";
 import UpdateSubFolder from "../screens/Repository/UpdateSubFolder";
 import UpdateFile from "../screens/Repository/UpdateFile";
 import UpdateMemberRole from "../screens/Lab/UpdateMemberRole";
+import UpdateNews from "../screens/News/UpdateNews";
 function RootNavigators() {
   const Stack = createStackNavigator();
   return (
@@ -113,6 +114,7 @@ function RootNavigators() {
         <Stack.Screen name="UpdateSubFolder" component={UpdateSubFolder} />
         <Stack.Screen name="UpdateFile" component={UpdateFile} />
         <Stack.Screen name="UpdateMemberRole" component={UpdateMemberRole} />
+        <Stack.Screen name="UpdateNews" component={UpdateNews} />
         <Stack.Screen
           name="AddMemberToProject"
           component={AddMemberToProject}

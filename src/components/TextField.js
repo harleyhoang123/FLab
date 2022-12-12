@@ -5,7 +5,7 @@ function TextField({placeholder, text,onChangeText, secureTextEntry, style,multi
     return (
         <TextInput style={[styles.textInput,style]} placeholder={placeholder}
                    onChangeText={onChangeText}
-                   defaultValue={text}
+                   value={text}
                    secureTextEntry ={secureTextEntry}
                    multiline={multiline}
                    onSubmitEditing={onSubmitEditing}
