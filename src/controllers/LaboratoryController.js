@@ -5,13 +5,15 @@ export class LaboratoryController {
     this.networkService = networkService;
   }
 
-  getLaboratoryByAccountId({ accountId }) {
+  getLaboratoryByAccountId({ accountId, page, size }) {
     return this.networkService.request({
       method: "GET",
       url: routes.laboratory.getLaboratory,
       data: null,
       params: {
         "account-id": accountId,
+        page: page,
+        size: size,
       },
     });
   }

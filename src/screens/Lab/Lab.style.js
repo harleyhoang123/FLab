@@ -86,4 +86,10 @@ export const styles = StyleSheet.create({
     width: 130,
     marginLeft: 5,
   },
+  headerStyle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
 });

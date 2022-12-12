@@ -11,6 +11,8 @@ export const getLaboratoryByAccountId =
       console.log("Account ID in actions: " + accountId);
       const response = await laboratoryController.getLaboratoryByAccountId({
         accountId,
+        page,
+        size,
       });
       navigation.navigate("Lab", { data: response.data.data });
     } catch ({ data }) {
@@ -219,7 +221,7 @@ export const deleteLaboratory =
       console.log(
         "Response remove member from laboratory: " + JSON.stringify(response)
       );
-      dispatch(getLaboratoryByAccountId(accountId, navigation));
+      navigation.push("Lab", { data: accountId });
     } catch ({ data }) {
       console.log("ERROR when deleteLaboratory: " + JSON.stringify(data));
     }

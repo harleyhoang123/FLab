@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
 import { getRequestDetailByApplicationId } from "../actions/LaboratoryAction";
+import { routes } from "../controllers";
 
 const host = "http://192.168.31.197:";
 
@@ -733,4 +734,72 @@ export const reviewRequest = async (
   } catch (error) {
     console.log("error when Request:" + JSON.stringify(error));
   }
+};
+
+export const getLaboratoryByAccountId = async (accountId, page, size) => {
+  const token = await getToken();
+  return await axios.get(routes.laboratory.getLaboratory, {
+    params: {
+      "account-id": accountId,
+      page: page,
+      size: size,
+    },
+
+    headers: {
+      Authorization: `Bearer ` + token,
+    },
+  });
+};
+
+export const getLaboratorySuggestionByAccountId = async (
+  accountId,
+  page,
+  size
+) => {
+  const token = await getToken();
+  return await axios.get(routes.laboratory.getLaboratorySuggestion, {
+    params: {
+      "account-id": accountId,
+      page: page,
+      size: size,
+    },
+
+    headers: {
+      Authorization: `Bearer ` + token,
+    },
+  });
+};
+
+export const getAllMemberByLabId = async (page, size) => {
+  const token = await getToken();
+  const labId = await getLabId();
+  return await axios.get(
+    routes.laboratory.getAllMemberInLaboratory.replace(":lab-id", labId),
+    {
+      params: {
+        page: page,
+        size: size,
+      },
+      headers: {
+        Authorization: `Bearer ` + token,
+      },
+    }
+  );
+};
+
+export const getAllRequestInLab = async (page, size) => {
+  const token = await getToken();
+  const labId = await getLabId();
+  return await axios.get(
+    routes.laboratory.getAllRequest.replace(":lab-id", labId),
+    {
+      params: {
+        page: page,
+        size: size,
+      },
+      headers: {
+        Authorization: `Bearer ` + token,
+      },
+    }
+  );
 };

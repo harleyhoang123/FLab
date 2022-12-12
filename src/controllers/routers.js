@@ -13,6 +13,8 @@ export const routes = {
   },
   laboratory: {
     getLaboratory: host + "8083/flab/lab/public/api/v1/laboratories",
+    getLaboratorySuggestion:
+      host + "8083/flab/lab/public/api/v1/laboratories/suggestion",
     getLaboratoryById:
       host + "8083/flab/lab/public/api/v1/laboratories/:lab-id",
     getAllMemberInLaboratory:
