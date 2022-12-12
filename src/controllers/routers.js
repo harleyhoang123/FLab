@@ -30,7 +30,7 @@ export const routes = {
     deleteLaboratory: host + "8083/flab/lab/public/api/v1/laboratories/:lab-id",
     updateLaboratory: host + "8083/flab/lab/public/api/v1/laboratories/:lab-id",
     addMemberToLab:
-      host + "8083/flab/lab/public/api/v1/members/:lab-id/member-to-lab",
+      host + "8083/flab/lab/public/api/v1/laboratories/:lab-id/members/member",
     applyToLab: host + "8083/flab/lab/public/api/v1/laboratories/:lab-id/apply",
     updateMemberRole: host + "8083/flab/lab/public/api/v1/members/:member-id",
     getAllRequest:
@@ -105,8 +105,7 @@ export const routes = {
       host +
       "8083/flab/lab/public/api/v1/laboratories/:laboratory-id/projects/:project-id",
     addMemberToProject:
-      host +
-      "8083/flab/lab/public/api/v1/members/:project-id/member-to-project",
+      host + "8083/flab/lab/public/api/v1/projects/:project-id/members/member",
   },
   news: {
     getListNews: host + "8888/flab/notification/public/api/v1/news",
