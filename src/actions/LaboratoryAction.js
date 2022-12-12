@@ -51,7 +51,7 @@ export const getAllMemberInLaboratoryById =
       const response = await laboratoryController.getAllMemberInLaboratory({
         labId,
       });
-      navigation.navigate("ViewAllMember", {
+      navigation.push("ViewAllMember", {
         data: response.data.data,
       });
     } catch ({ data }) {
