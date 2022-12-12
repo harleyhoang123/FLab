@@ -155,7 +155,10 @@ export default function LabNavigator({ route, navigation }) {
           >
             <Text style={styles.textLogo}>Member</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={goToListMaterial}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.push("ListMaterial", { data: labId })}
+          >
             <Text style={styles.textLogo}>Material</Text>
           </TouchableOpacity>
         </View>

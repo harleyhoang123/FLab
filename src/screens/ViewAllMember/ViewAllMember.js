@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -12,19 +12,17 @@ import {
   Image,
   Button,
 } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
 import LabNavigator from "../../navigations/LabNavigator";
-import { SelectList } from "react-native-dropdown-select-list";
 import Buttons from "../../components/Buttons";
 import { useDispatch } from "react-redux";
 import { getmemberDetailByProfileId } from "../../actions/LaboratoryAction";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { PaginationControl } from "react-bootstrap-pagination-control";
+import { getAllMemberByLabId } from "../../networking/CustomNetworkService";
 import {
   updateMemberRoleById,
   removeMemberFromLaboratory,
 } from "../../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
+import PaginationBar from "../../components/PaginationBar";
 
 const getLabId = async () => {
   try {
@@ -37,28 +35,33 @@ const getLabId = async () => {
 };
 
 const ViewAllMember = ({ route, navigation }) => {
-  const [page, setPage] = useState(1);
+  const [numberOfElement, setNumberOfElement] = useState(0);
   const [labId, setLabId] = useState("");
+  const [items, setItem] = useState([]);
   getLabId().then((v) => setLabId(v));
   const data = route.params.data;
-  const listMember = data.items;
-  const [selected, setSelected] = React.useState("");
-  const [selectedId, setSelectedId] = useState("");
+  const listMember = data.items; //data
   const dispatch = useDispatch();
+
+  const [selectedPage, setSelectedPage] = useState(1);
+
+  const getAllMemberInLab = (selectedPage) => {
+    getAllMemberByLabId(selectedPage - 1, 5).then((v) => {
+      setItem(v.data.data.items);
+      setNumberOfElement(v.data.data.totalPage * 5);
+    });
+  };
+
+  useEffect(() => {
+    getAllMemberInLab(1);
+  }, []);
+
+  const changeSelectedPage = (selectedPageNumber) => {
+    getAllMemberInLab(selectedPageNumber);
+  };
 
   const goToMemberDetail = (accountId, code) => {
     dispatch(getmemberDetailByProfileId(accountId, code, labId, navigation));
-  };
-
-  const removeMemberhandler = () => {
-    dispatch(removeMemberFromLaboratory(labId, selectedId, navigation));
-  };
-
-  const updateRoleHandler = () => {
-    const requestData = {
-      role: selected,
-    };
-    dispatch(updateMemberRoleById(selectedId, requestData, navigation));
   };
 
   const Item = ({ accountId, id, name, role, email, username, code }) => (
@@ -132,22 +135,17 @@ const ViewAllMember = ({ route, navigation }) => {
           </View>
         </View>
         <FlatList
-          data={listMember}
+          data={items}
           renderItem={renderItem}
           keyExtractor={(item) => item.memberId}
         />
-        <PaginationControl
-          page={page}
-          between={4}
-          total={250}
-          limit={20}
-          changePage={(page) => {
-            setPage(page);
-            console.log(page);
-          }}
-          ellipsis={1}
-        />
       </SafeAreaView>
+
+      <PaginationBar
+        currentSizes={5}
+        numberOfElement={numberOfElement}
+        callbackSelectedPage={changeSelectedPage}
+      />
 
       <Buttons
         text={"Back"}

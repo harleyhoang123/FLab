@@ -1,30 +1,19 @@
 import React, { useState, useEffect } from "react";
-import {
-  SafeAreaView,
-  View,
-  FlatList,
-  StyleSheet,
-  Text,
-  Button,
-  Icon,
-  StatusBar,
-  Modal,
-  Pressable,
-  TextField,
-} from "react-native";
+import { SafeAreaView, View, FlatList, StyleSheet, Text } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
-import LabNavigator from "../../navigations/LabNavigator";
 import { useDispatch } from "react-redux";
-import { removeMemberInProjectById } from "../../actions/LaboratoryAction";
-import AsyncStorage from "@react-native-community/async-storage";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
 import Buttons from "../../components/Buttons";
-import { getmemberDetailByProfileId } from "../../actions/LaboratoryAction";
 import { getRequestDetailByApplicationId } from "../../actions/LaboratoryAction";
-import { TouchableOpacity } from "react-native-web";
+import { getAllRequestInLab } from "../../networking/CustomNetworkService";
+import PaginationBar from "../../components/PaginationBar";
 
 export default function ViewAllRequest({ route, navigation }) {
   const listRequest = route.params.data;
+  const [items, setItem] = useState([]);
+  const [numberOfElement, setNumberOfElement] = useState(0);
+  const [selected, setSelected] = React.useState("");
+  const [selectedId, setSelectedId] = useState("");
 
   const allStatus = [
     { key: "1", value: "APPROVED" },
@@ -32,19 +21,33 @@ export default function ViewAllRequest({ route, navigation }) {
     { key: "3", value: "WAITING_FOR_APPROVAL" },
   ];
 
-  const [selected, setSelected] = React.useState("");
   let data = listRequest.items;
 
-  function filterStatus(data) {
-    const filData = data.filter((item) => {
-      return item.status === selected;
+  // function filterStatus(data) {
+  //   const filData = data.filter((item) => {
+  //     return item.status === selected;
+  //   });
+  //   console.log("List all req:" + JSON.stringify(data));
+  //   console.log("Data test:" + JSON.stringify(filData));
+  //   setData(filData);
+  // }
+
+  const getAllRequestInLabHandler = (selectedPage) => {
+    getAllRequestInLab(selectedPage - 1, 5).then((v) => {
+      setItem(v.data.data.items);
+      setNumberOfElement(v.data.data.totalPage * 5);
     });
-    console.log("List all req:" + JSON.stringify(data));
-    console.log("Data test:" + JSON.stringify(filData));
-    setData(filData);
-  }
+  };
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    getAllRequestInLabHandler(1);
+  }, []);
+
+  const changeSelectedPage = (selectedPageNumber) => {
+    getAllRequestInLabHandler(selectedPageNumber);
+  };
 
   const goToRequestDetail = (applicationId) => {
     console.log("RqId: " + JSON.stringify(applicationId));
@@ -80,38 +83,18 @@ export default function ViewAllRequest({ route, navigation }) {
 
       <View style={styles.container}>
         <Text style={{ fontSize: 25 }}>List all request</Text>
-        <SelectList
-          setSelected={(val) => setSelected(val)}
-          placeholder={"APPROVED"}
-          data={allStatus}
-          save="key"
-          boxStyles={{
-            height: 40,
-            margin: 12,
-            borderWidth: 1,
-            padding: 10,
-            width: "15%",
-            marginLeft: 30,
-          }}
-          dropdownStyles={{
-            width: 130,
-            marginLeft: 30,
-          }}
-          search={false}
-        />
-        <TouchableOpacity
-          style={styles.buttonFilter}
-          onPress={() => filterStatus(data)}
-        >
-          <Text style={{ color: "white" }}>Search</Text>
-        </TouchableOpacity>
         <SafeAreaView>
           <FlatList
-            data={data}
+            data={items}
             renderItem={renderItem}
             keyExtractor={(item) => item.applicationId}
           />
         </SafeAreaView>
+        <PaginationBar
+          currentSizes={5}
+          numberOfElement={numberOfElement}
+          callbackSelectedPage={changeSelectedPage}
+        />
         <Buttons
           text={"Back"}
           style={styles.buttonBack}

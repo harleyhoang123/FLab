@@ -18,7 +18,6 @@ import { getAccountInfoByAccountId, logout } from "../actions/UserAction";
 import AvatarComponent from "../components/AvatarComponent";
 import { getListQuestion } from "../actions/ForumAction";
 import { getListNews } from "../actions/NewsAction";
-import { getDataUsingAsyncAwaitGetCall } from "../networking/CustomNetworkService";
 
 const getAccountId = async () => {
   try {
@@ -52,7 +51,6 @@ const getRoles = async () => {
 export default function HomeTopNavigator({ navigation }) {
   const [accountId, setAccountId] = useState("");
   const [avatar, setAvatar] = useState("");
-  const [data, setData] = useState();
   const [roles, setRoles] = useState([]);
 
   //:TODO Get role of user
@@ -61,11 +59,9 @@ export default function HomeTopNavigator({ navigation }) {
   getAccountId().then((v) => setAccountId(v));
   const dispatch = useDispatch();
   const goToLabPage = () => {
-    getDataUsingAsyncAwaitGetCall().then((v) => setData(v));
     dispatch(getLaboratoryByAccountId(accountId, navigation));
   };
 
-  console.log("Data call without dispatch for test:  " + JSON.stringify(data));
   const goToProfile = () => {
     dispatch(getAccountInfoByAccountId(accountId, navigation));
   };
@@ -153,7 +149,10 @@ export default function HomeTopNavigator({ navigation }) {
           >
             <Text style={styles.textLogo}>Home</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => goToLabPage()}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.push("Lab", { data: accountId })}
+          >
             <Text style={styles.textLogo}>Lab</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={goToForum}>

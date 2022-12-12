@@ -79,7 +79,7 @@ export default function LabDetail({ route, navigation }) {
   const delteCurrentLab = () => {
     console.log("data.laboratoryId");
     console.log(data.laboratoryId);
-    dispatch(deleteLaboratory(accountId, data.laboratoryId, navigation));
+    dispatch(deleteLaboratory(accountId, labIdRequest, navigation));
   };
   return (
     <View style={styles.container}>

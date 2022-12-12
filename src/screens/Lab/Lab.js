@@ -1,30 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Button, Linking } from "react-native";
 import { styles } from "../Lab/Lab.style";
 import { useDispatch } from "react-redux";
-import {
-  SafeAreaView,
-  View,
-  FlatList,
-  StyleSheet,
-  Text,
-  StatusBar,
-} from "react-native";
+import { SafeAreaView, View, FlatList, Text } from "react-native";
 import LabNavigator from "../../navigations/LabNavigator";
 import { getLaboratoryById } from "../../actions/LaboratoryAction";
 import Buttons from "../../components/Buttons";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
+import {
+  getLaboratoryByAccountId,
+  getLaboratorySuggestionByAccountId,
+} from "../../networking/CustomNetworkService";
+import PaginationBar from "../../components/PaginationBar";
 
 const Lab = ({ route, navigation }) => {
-  const data = route.params.data;
-  const items = data.joinedLaboratories.items;
-  const itemsSugges = data.suggestLaboratories.items;
+  const [numberOfElement, setNumberOfElement] = useState(0);
+  const [numberOfElementSuggestion, setNumberOfElementSuggestion] = useState(0);
+  const [items, setItem] = useState([]);
+  const [itemsSugges, setItemsSugges] = useState([]);
+  const [selectedPage, setSelectedPage] = useState(1);
+  const [suggestionPage, setSuggestionPage] = useState(1);
   const dispatch = useDispatch();
   const goToLabDetailPage = (labId, isJoined) => {
     dispatch(getLaboratoryById(labId, isJoined, navigation));
+  };
+
+  const getLaboratory = (selectedPage) => {
+    console.log("Account id: " + route.params.data);
+    getLaboratoryByAccountId(route.params.data, selectedPage - 1, 5).then(
+      (v) => {
+        setItem(v.data.data.items);
+        setNumberOfElement(v.data.data.totalPage * 5);
+      }
+    );
+  };
+
+  const getLaboratorySuggestion = (selectedPage) => {
+    getLaboratorySuggestionByAccountId(
+      route.params.data,
+      selectedPage - 1,
+      5
+    ).then((v) => {
+      setItemsSugges(v.data.data.items),
+        setNumberOfElementSuggestion(v.data.data.totalPage * 5);
+    });
+  };
+  useEffect(() => {
+    getLaboratory(1);
+    getLaboratorySuggestion(1);
+  }, []);
+
+  // const callbackSelectedPage = (pageNumber, suggestionPageNumber) => {
+  //   getLaboratory(pageNumber, suggestionPageNumber);
+  // };
+
+  const changeSuggestionPage = (suggestionPageNumber) => {
+    getLaboratorySuggestion(suggestionPageNumber);
+  };
+
+  const changeSelectednPage = (selectedPageNumber) => {
+    getLaboratory(selectedPageNumber);
   };
 
   const Item = ({
@@ -175,6 +213,11 @@ const Lab = ({ route, navigation }) => {
               renderItem={renderItem}
             />
           </SafeAreaView>
+          <PaginationBar
+            currentSizes={5}
+            numberOfElement={numberOfElementSuggestion}
+            callbackSelectedPage={changeSuggestionPage}
+          />
         </View>
         <View style={styles.bot}>
           <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 120 }}>
@@ -188,6 +231,11 @@ const Lab = ({ route, navigation }) => {
               keyExtractor={(item) => item.id}
             />
           </SafeAreaView>
+          <PaginationBar
+            currentSizes={5}
+            numberOfElement={numberOfElement}
+            callbackSelectedPage={changeSelectednPage}
+          />
         </View>
         <View style={styles.btn}>
           <Buttons
