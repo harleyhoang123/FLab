@@ -22,13 +22,13 @@ const getAccountId = async () => {
 };
 function Profile({ route, navigation }) {
   const response = route.params.data;
-  const fullName = response.lastModifiedBy.userInfo.fullName;
+  const fullName = response.fullName;
   const avatar = response.avatar;
   const profileId = response.profileId;
   const gender = response.gender;
   const dateOfBirth = response.dateOfBirth;
   const address = response.address;
-  const emailInfo = response.createdBy.userInfo.email;
+  const emailInfo = response.email;
   const phoneNumberInfo = response.phoneNumber;
   const studentId = response.studentId;
   const studentCode = response.studentCode;
