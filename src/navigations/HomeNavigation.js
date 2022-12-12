@@ -80,6 +80,9 @@ export default function HomeTopNavigator({ navigation }) {
     dispatch(logout);
     navigation.push("Login");
   };
+  const goToCV=()=>{
+    navigation.push("CurriculumVitae");
+  }
   const [modalProfileVisible, setModalProfileVisible] = useState(false);
   const [modalNotifyVisible, setModalNotifyVisible] = useState(false);
   return (
@@ -108,10 +111,11 @@ export default function HomeTopNavigator({ navigation }) {
             >
               <Text style={styles.textStyle}>My Profile</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.buttonModal]}>
-              <Text style={styles.textStyle}>My Rewards</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.buttonModal]}>
+            <TouchableOpacity style={[styles.buttonModal]}
+                              onPress={()=> {goToCV();
+                                setModalProfileVisible(!modalProfileVisible);
+                              }}
+             >
               <Text style={styles.textStyle}>My CV</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -123,6 +127,7 @@ export default function HomeTopNavigator({ navigation }) {
             >
               <Text style={styles.textStyle}>Log out</Text>
             </TouchableOpacity>
+
           </View>
         </TouchableOpacity>
       </Modal>

@@ -1053,3 +1053,26 @@ export const reviewRequest = async (
         console.log("error when Request:" + JSON.stringify(error));
     }
 };
+export const uploadProfileCv = async (profileId, navigation,cvName,description,cv) => {
+    const token = await getToken();
+    try {
+        const response = await axios.post(
+            host+'8084/flab/account/public/api/v1/cv/:profile-id'.replace(":profile-id", profileId),
+            {
+                cvName:cvName,
+                description:description,
+                cv:cv
+            }
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in uploadCv: " + JSON.stringify(response.data));
+        navigation.push("ProfileCV");
+    } catch (error) {
+        console.log("error when uploadCv:" + JSON.stringify(error));
+    }
+};
