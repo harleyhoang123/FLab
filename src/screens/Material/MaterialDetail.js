@@ -1,10 +1,20 @@
-import React from "react";
+import React, {useState} from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
 import { useDispatch } from "react-redux";
 import { getListMaterialByLabId } from "../../actions/LaboratoryAction";
+import AsyncStorage from "@react-native-community/async-storage";
+const getLabId = async () => {
+  try {
+    const labId = await AsyncStorage.getItem("@labId");
+    console.log("labId: " + labId);
+    return labId;
+  } catch (e) {
+    console.log("Can't get labId: " + e);
+  }
+};
 function MaterialDetail({ route, navigation }) {
   const dispatch = useDispatch();
   const goToListMaterial = () => {
@@ -13,6 +23,8 @@ function MaterialDetail({ route, navigation }) {
   const data = route.params.data;
   const status = data.status;
   const isAdmin = false;
+  const [labId, setLabId] = useState();
+  getLabId().then(v => setLabId(v))
   const handleButton = () => {
     if (status === "FREE") {
       return (
@@ -20,7 +32,7 @@ function MaterialDetail({ route, navigation }) {
           text={"Request"}
           style={styles.button}
           onPressTo={() => {
-            navigation.push("RequestMaterial");
+            navigation.push("RequestMaterial", {data: data, labId: labId});
           }}
         />
       );
@@ -30,7 +42,6 @@ function MaterialDetail({ route, navigation }) {
           <Buttons
             text={"Return"}
             style={styles.button}
-            onPressTo={goToListMaterial}
           />
         </View>
       );
@@ -53,7 +64,7 @@ function MaterialDetail({ route, navigation }) {
           <Text style={styles.text}>Status: {data.status}</Text>
           <Text style={styles.text}>Amount: {data.amount}</Text>
           <Text style={styles.text}>Description: {data.description}</Text>
-          <Text style={styles.text}>Note: None</Text>
+          <Text style={styles.text}>Note: {data.note}</Text>
           <View style={styles.row}>
             {handleButton()}
             <Buttons
@@ -67,7 +78,7 @@ function MaterialDetail({ route, navigation }) {
               text={"Update"}
               style={styles.button}
               onPressTo={() =>
-                navigation.push("UpdateMeterial", { materialInfo: data })
+                navigation.push("UpdateMaterial", { materialInfo: data })
               }
             />
           </View>
@@ -103,7 +114,7 @@ const styles = StyleSheet.create({
   },
   containerContent: {
     backgroundColor: "white",
-    width: "60%",
+    width: "70%",
     alignSelf: "center",
     marginTop: 20,
     flexDirection: "row",
@@ -118,12 +129,12 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   containerImage: {
-    flex: 0.5,
+    flex: 0.35,
     justifyContent: "center",
     alignItems: "center",
   },
   containerInfo: {
-    flex: 0.5,
+    flex: 0.65,
   },
   button: {
     marginTop: 50,
@@ -131,8 +142,8 @@ const styles = StyleSheet.create({
     marginRight: 40,
   },
   image: {
-    width: 500,
-    height: 500,
+    width: "60%",
+    height: "60%",
   },
   row: {
     flexDirection: "row",

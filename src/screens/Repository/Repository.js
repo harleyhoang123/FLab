@@ -40,19 +40,25 @@ function Repository({ route, navigation }) {
     dispatch(getFolderDetailId(id, name, navigation));
   };
 
+  const formatterDate=(date)=>{
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const d= new Date(date);
+    return d.toLocaleDateString("en-US", options) +", "+ d.toTimeString().split("G")[0];
+  }
   const deleteAFolder = (folderId) => {
     deleteFolder(folderId).then(r => {getListFolder(repoId).then(v => setItems(v.data.items))})
   };
   const [checked, setChecked] = useState("");
-
-  const Item = ({ id, name, type, lastEdit }) => (
+  const [folderName, setFolderName] = useState("");
+  const [description, setDescription] = useState("");
+  const Item = ({ id, name, description, lastEdit }) => (
     <View style={styles.table}>
       <View style={styles.columnCheckBox}>
         <RadioButton.Group>
           <RadioButton
             value={id}
             status={checked === id ? "checked" : "unchecked"}
-            onPress={() => {setChecked(id);console.log("Folder ID checked" + checked)}}
+            onPress={() => {setChecked(id);setFolderName(name); setDescription(description)}}
           />
 
         </RadioButton.Group>
@@ -66,10 +72,10 @@ function Repository({ route, navigation }) {
         </Text>
       </View>
       <View style={styles.column}>
-        <Text>{type}</Text>
+        <Text>{description}</Text>
       </View>
       <View style={styles.column}>
-        <Text>{lastEdit}</Text>
+        <Text>{formatterDate(lastEdit)}</Text>
       </View>
     </View>
   );
@@ -101,8 +107,13 @@ function Repository({ route, navigation }) {
             <Buttons style={styles.button} text={"Refresh"} />
             <Buttons
               style={styles.button}
-              onPressTo={() => navigation.navigate("CreateFolderInRepo")}
+              onPressTo={() => navigation.push("CreateFolderInRepo")}
               text={"Create Folder"}
+            />
+            <Buttons
+                style={styles.button}
+                text={"Update"}
+                onPressTo={()=> navigation.push("UpdateFolderInRepo", {repoId: repoId, folderId: checked, folderName: folderName, description: description} )}
             />
             <Buttons
               style={styles.button}
@@ -116,7 +127,7 @@ function Repository({ route, navigation }) {
               <Text style={{ marginTop: 10, marginBottom: 10 }}>File Name</Text>
             </View>
             <View style={[styles.column, styles.borderbot]}>
-              <Text>Type</Text>
+              <Text>Description</Text>
             </View>
             <View style={[styles.column, styles.borderbot]}>
               <Text>Last Edit</Text>
@@ -128,7 +139,7 @@ function Repository({ route, navigation }) {
                     key ={item.folderId}
                     id={item.folderId}
                     name={item.folderName}
-                    type={item.description}
+                    description={item.description}
                     lastEdit={item.lastModifiedDate}
                 />
             ))}

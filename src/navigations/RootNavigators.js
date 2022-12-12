@@ -32,7 +32,6 @@ import LabDetail from "../screens/Lab/LabDetail";
 import ViewAllMember from "../screens/ViewAllMember/ViewAllMember";
 import Backlog from "../screens/Backlog/Backlog";
 import RepositoryDetail from "../screens/RepositoryDetail/RepositoryDetail";
-import MyCV from "../screens/CV/MyCV";
 import Upload from "../screens/CV/Upload";
 import Repository from "../screens/Repository/Repository";
 import UpdateQuestion from "../screens/Forum/UpdateQuestion";
@@ -51,9 +50,16 @@ import UpdateMaterial from "../screens/Material/UpdateMeterial";
 import AddMemberTolab from "../screens/Lab/AddMemberToLab";
 import AddMemberToProject from "../screens/Lab/AddMemberToProject";
 import ApplyToALab from "../screens/Lab/ApplyToLab";
+import UpdateFolderInRepo from "../screens/Repository/UpdateFolderInRepo";
+import UpdateSubFolder from "../screens/Repository/UpdateSubFolder";
+import UpdateFile from "../screens/Repository/UpdateFile";
 import UpdateMemberRole from "../screens/Lab/UpdateMemberRole";
 import ViewAllRequest from "../screens/Lab/ViewAllRequest";
 import RequestDetail from "../screens/Lab/RequestDetail";
+import UpdateNews from "../screens/News/UpdateNews";
+import UploadFileCV from "../screens/CV/UploadFileCV";
+import CurriculumVitae from "../screens/CV/CurriculumVitae";
+
 function RootNavigators() {
   const Stack = createStackNavigator();
   return (
@@ -92,7 +98,6 @@ function RootNavigators() {
         <Stack.Screen name="LabDetail" component={LabDetail} />
         <Stack.Screen name="ViewAllMember" component={ViewAllMember} />
         <Stack.Screen name="Backlog" component={Backlog} />
-        <Stack.Screen name="MyCV" component={MyCV} />
         <Stack.Screen name="Upload" component={Upload} />
         <Stack.Screen name="Repository" component={Repository} />
         <Stack.Screen name="RepositoryDetail" component={RepositoryDetail} />
@@ -106,11 +111,17 @@ function RootNavigators() {
         <Stack.Screen name="CreateSubFolder" component={CreateSubFolder} />
         <Stack.Screen name="CreateProject" component={CreateProject} />
         <Stack.Screen name="UpdateProject" component={UpdateProject} />
-        <Stack.Screen name="UpdateMeterial" component={UpdateMaterial} />
+        <Stack.Screen name="UpdateMaterial" component={UpdateMaterial} />
         <Stack.Screen name="ApplyToLab" component={ApplyToALab} />
+        <Stack.Screen name="UpdateFolderInRepo" component={UpdateFolderInRepo} />
+        <Stack.Screen name="UpdateSubFolder" component={UpdateSubFolder} />
+        <Stack.Screen name="UpdateFile" component={UpdateFile} />
         <Stack.Screen name="UpdateMemberRole" component={UpdateMemberRole} />
         <Stack.Screen name="ViewAllRequest" component={ViewAllRequest} />
         <Stack.Screen name="RequestDetail" component={RequestDetail} />
+        <Stack.Screen name="UpdateNews" component={UpdateNews} />
+        <Stack.Screen name="UploadFileCV" component={UploadFileCV} />
+        <Stack.Screen name="CurriculumVitae" component={CurriculumVitae} />
         <Stack.Screen
           name="AddMemberToProject"
           component={AddMemberToProject}
@@ -125,6 +136,7 @@ function RootNavigators() {
           component={ViewAllMemberInProject}
         />
       </Stack.Navigator>
+
     </NavigationContainer>
   );
 }

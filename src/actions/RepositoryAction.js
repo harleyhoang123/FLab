@@ -119,3 +119,72 @@ export const addFileToFolder =
                 console.log("Error addFileToFolder:" + JSON.stringify(data));
             }
         };
+export const updateFolderInRepo =
+    (repositoryId, folderId,folderName,description, navigation) =>
+        async (dispatch, _, { networkService }) => {
+            try {
+                const repositoryController = new RepositoryController(networkService);
+                console.log(
+                    "Request data of UpdateFolderInRepo actions: " +
+                    JSON.stringify(folderId)
+                );
+                const response = await repositoryController.updateFolder({
+                    folderId,
+                    folderName,
+                    description
+                });
+                console.log(
+                    "Response from UpdateFolderInRepo: " + JSON.stringify(response)
+                );
+                console.log("Data: " + JSON.stringify(response.data.data));
+                dispatch(getFolderByRepositoryId(repositoryId ,navigation));
+            } catch ({ data }) {
+                console.log("ERROR when UpdateFolderInRepo: " + JSON.stringify(data));
+            }
+        };
+export const updateSubFolder =
+    (parentFolderName, parentFolderId, folderId,folderName,description, navigation) =>
+        async (dispatch, _, { networkService }) => {
+            try {
+                const repositoryController = new RepositoryController(networkService);
+                console.log(
+                    "Request data of updateSubFolder actions: " +
+                    JSON.stringify(folderId)
+                );
+                const response = await repositoryController.updateFolder({
+                    folderId,
+                    folderName,
+                    description
+                });
+                console.log(
+                    "Response from updateSubFolder: " + JSON.stringify(response)
+                );
+                console.log("Data: " + JSON.stringify(response.data.data));
+                dispatch(getFolderDetailId(parentFolderId, parentFolderName, navigation));
+            } catch ({ data }) {
+                console.log("ERROR when updateSubFolder: " + JSON.stringify(data));
+            }
+        };
+export const updateFileInFolder =
+    (parentFolderName, parentFolderId, fileId,fileName,description, navigation) =>
+        async (dispatch, _, { networkService }) => {
+            try {
+                const repositoryController = new RepositoryController(networkService);
+                console.log(
+                    "Request data of updateFileInFolder actions: " +
+                    JSON.stringify(fileId)
+                );
+                const response = await repositoryController.updateFile({
+                    fileId,
+                    fileName,
+                    description
+                });
+                console.log(
+                    "Response from updateFileInFolder: " + JSON.stringify(response)
+                );
+                console.log("Data: " + JSON.stringify(response.data.data));
+                dispatch(getFolderDetailId(parentFolderId, parentFolderName, navigation));
+            } catch ({ data }) {
+                console.log("ERROR when updateFileInFolder: " + JSON.stringify(data));
+            }
+        };

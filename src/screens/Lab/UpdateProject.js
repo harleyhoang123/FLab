@@ -41,7 +41,7 @@ export default function UpdateProject({ route, navigation }) {
     if (day < 10) {
       day = "0" + day;
     }
-    let month = d.getMonth();
+    let month = d.getMonth()+1;
     if (month < 10) {
       month = "0" + month;
     }

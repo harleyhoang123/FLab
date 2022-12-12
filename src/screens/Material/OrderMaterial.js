@@ -1,65 +1,122 @@
-import {View, Text, StyleSheet} from "react-native";
+import {View, Text, StyleSheet, FlatList} from "react-native";
 import AddComponent from "../../components/AddComponent";
 import Buttons from "../../components/Buttons";
-import React,{useState} from "react";
+import React, {useEffect, useState} from "react";
 import LabNavigator from "../../navigations/LabNavigator";
-import {useDispatch} from "react-redux";
-import {getListMaterialByLabId} from "../../actions/LaboratoryAction";
-
-function OrderMaterial({navigation}) {
-    const [title, setTitle] = useState("")
-    const [amount, setAmount] = useState("")
-    const [description, setDescription] = useState("")
-    const dispatch = useDispatch();
-    const goToListMaterial = () =>{
-        dispatch(getListMaterialByLabId("", navigation))
+import MaterialItem from "../../components/MaterialItem";
+import PaginationBar from "../../components/PaginationBar";
+import {Dropdown} from "react-native-element-dropdown";
+import CommentItem from "../../components/CommentItem";
+import OrderItem from "../../components/OrderItem";
+import AsyncStorage from "@react-native-community/async-storage";
+import {getListOrderByLabId} from "../../networking/CustomNetworkService";
+const getLabId = async () => {
+    try {
+        const labId = await AsyncStorage.getItem("@labId");
+        console.log("labId: " + labId);
+        return labId;
+    } catch (e) {
+        console.log("Can't get labId: " + e);
     }
+};
+function OrderMaterial({navigation}) {
+
+
+    const [value, setValue] = useState('WAITING_FOR_APPROVAL');
+    const [listOrder, setListOrder] = useState();
+    const [listItem, setListItem] = useState();
+    const [labId, setLabId] = useState();
+    getLabId().then(v=>setLabId(v))
+    useEffect(() => {
+        getListOrderByLabId(labId).then(v=>filterStatus(value))
+    },[]);
+    function filterStatus(value) {
+        const filData = listItem.filter(function (item) {
+            return item.status === value;
+        })
+        setListOrder(filData);
+    }
+    const data = [
+        {label: 'Waiting for approval', value: 'WAITING_FOR_APPROVAL'},
+        {label: 'Approved', value: 'APPROVED'},
+        {label: 'Rejected', value: 'REJECTED'},
+    ]
     return (
-        <View style={styles.container}>
+        <View>
             <LabNavigator navigation={navigation}/>
-            <View style={styles.containerContent}>
-                <Text style={styles.text}>Order a Material</Text>
-                <AddComponent title={"Title"}
-                              multiline={false}
-                              style={{width: "97%"}}
-                              text={title} onChangeText={title => setTitle(title)}/>
-                <AddComponent title={"Amount"}
-                              multiline={false}
-                              style={{width: "30%"}}
-                              text={amount} onChangeText={amount => setAmount(amount)}/>
-                <AddComponent title={"Description"}
-                              multiline={true}
-                              style={{width: "97%", height:200}}
-                              text={description} onChangeText={description => setDescription(description)}/>
-                <Buttons text={"Add Image"} style={styles.button} />
-                <View style={styles.row}>
-                <Buttons text={"Order Material"} style={styles.button} onPressTo={goToListMaterial}/>
-                    <Buttons text={"Cancel"} style={styles.button} onPressTo={()=> {navigation.goBack(navigation)}}/>
+            <View style={styles.container}>
+                <Dropdown
+                    style={styles.dropdown}
+                    value={value}
+                    data={data}
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    onChange={item => {
+                        setValue(item.value)
+                        filterStatus(item.value)
+                    }}
+                />
+                <View style={styles.containerSearch}>
+                    <Buttons
+                        text={"Back"}
+                        style={[styles.button, {marginLeft: 20}]}
+                        onPressTo={() => navigation.goBack()}
+                    />
                 </View>
             </View>
+            <FlatList
+                data={listOrder}
+                numColumns={5}
+                renderItem={({item}) => (
+                <OrderItem
+                    orderId={item.orderId}
+                    materialName={item.materialName}
+                    borrowBy={item.borrowBy}
+                    amount={item.amount}
+                    reason={item.reason}
+                    fromDate={item.fromDate}
+                />)}
+            />
+            <PaginationBar/>
         </View>
     );
 }
+
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
+    container: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
     },
-    containerContent:{
-        flex:0.65,
-        paddingLeft:300,
-        marginRight:300,
+    containerSearch: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginRight: 100,
     },
-    text:{
-        fontSize:30,
-        fontWeight:"bold",
-        margin:30,
+    text: {
+        fontSize: 25,
+        fontWeight: "bold",
+        marginLeft: 150,
+        marginTop: 10,
+        marginBottom: 20,
     },
-    button:{
-        margin:30,
-        width:250,
+    containerButton: {
+        alignItems: "center",
+        justifyContent: "center",
     },
-    row:{
-        flexDirection:"row",
-    }
+    button: {
+        width: 180,
+    },
+    dropdown: {
+        marginTop: 30,
+        marginLeft: 100,
+        width: "25%",
+        height: 50,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        paddingHorizontal: 8,
+    },
 });
 export default OrderMaterial;

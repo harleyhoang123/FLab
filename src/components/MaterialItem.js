@@ -12,7 +12,7 @@ function MaterialItem({ id, image, title, status, navigation,labId, callbackList
   console.log("IDL:" + id);
   const dispatch = useDispatch();
   const goToMaterialDetail = () => {
-    console.log("Call go to materail detail: " + id);
+    console.log("Call go to material detail: " + id);
     dispatch(getMaterialById(id, navigation));
   };
   console.log("In material item");
@@ -27,7 +27,7 @@ function MaterialItem({ id, image, title, status, navigation,labId, callbackList
             <Image
               style={styles.tinyLogo}
               source={{
-                uri: {image},
+                uri: image,
               }}
             />
           </View>

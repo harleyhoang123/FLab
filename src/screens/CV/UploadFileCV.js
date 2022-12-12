@@ -1,23 +1,27 @@
-import {View, Text, StyleSheet} from "react-native";
-import HomeTopNavigator from "../../navigations/HomeNavigation";
+import React, {useState} from 'react';
+import * as DocumentPicker from "expo-document-picker";
+import ProjectNavigator from "../../navigations/ProjectNavigator";
+import {StyleSheet, Text, View} from "react-native";
 import AddComponent from "../../components/AddComponent";
 import Buttons from "../../components/Buttons";
-import React, {useState} from "react";
-import * as DocumentPicker from "expo-document-picker";
-import {addFileToFolder} from "../../actions/RepositoryAction";
-import {useDispatch} from "react-redux";
-import ProjectNavigator from "../../navigations/ProjectNavigator";
-function Upload({route,navigation}) {
-    const folderName = route.params.folderName;
-    const parentFolderId = route.params.parentFolderId;
-    const [description, setDescription] = useState("")
-    const [file, setFile] = useState();
-    const dispatch = useDispatch();
-    const uploadFile=(parentFolderId, folderName,description,file,navigation)=>{
-        dispatch(addFileToFolder(parentFolderId, folderName,description,file,navigation))
+import HomeTopNavigator from "../../navigations/HomeNavigation";
+import {uploadProfileCv} from "../../networking/CustomNetworkService";
+import AsyncStorage from "@react-native-community/async-storage";
+const getAccountId = async () => {
+    try {
+        const accountId = await AsyncStorage.getItem("@accountId");
+        console.log("AccountId: " + accountId);
+        return accountId;
+    } catch (e) {
+        console.log("Can't get account id: " + e);
     }
-    console.log("folderName in Upload" + folderName);
-    console.log("parentFolderId in Upload" + parentFolderId);
+};
+function UploadFileCV({navigation}) {
+    const [cvName, setCvName] = useState("")
+    const [description, setDescription] = useState("")
+    const [profileId, setProfileId] = useState("")
+    getAccountId().then(v=> setProfileId(v));
+    const [file, setFile] = useState();
     const pickFile = async () => {
         let result = await DocumentPicker.getDocumentAsync({type: '*/*', multiple: false});
         console.log(result);
@@ -36,21 +40,28 @@ function Upload({route,navigation}) {
             setFile(filePicked);
         }
     };
+    const uploadFileCV=()=>{
+        uploadProfileCv(profileId,navigation,cvName,description,file).then()
+    }
     return (
         <View >
-            <ProjectNavigator navigation={navigation}/>
+            <HomeTopNavigator navigation={navigation}/>
             <View style={styles.containerContent}>
-                <Text style={styles.text}>Upload A File</Text>
-                <AddComponent title={"Description"}
+                <Text style={styles.text}>Upload Your CV</Text>
+                <AddComponent title={"CV Name"}
                               multiline={false}
                               style={{width: "97%"}}
+                              text={cvName} onChangeText={cvName => setCvName(cvName)}/>
+                <AddComponent title={"Description"}
+                              multiline={true}
+                              style={{width: "97%", height:200}}
                               text={description} onChangeText={description => setDescription(description)}/>
                 {file &&<Text style={{marginLeft:30,fontSize: 20, backgroundColor:'white'}}>{file.name}</Text>}
                 <Buttons text={"Choose A File"} style={styles.button} onPressTo={pickFile} />
                 <View style={{flexDirection:"row"}}>
-                    <Buttons text={"Upload"} style={[styles.button,{marginRight:30 }]} onPressTo={()=> {uploadFile(parentFolderId, folderName,description,file,navigation); console.log("Click Upload")}}/>
+                    <Buttons text={"Upload"} style={[styles.button,{marginRight:30 }]} onPressTo={()=> uploadFileCV()}/>
                     <Buttons text={"Cancel"} style={styles.button} onPressTo={()=> navigation.goBack(null)}/>
-                 </View>
+                </View>
             </View>
         </View>
     );
@@ -75,4 +86,4 @@ const styles = StyleSheet.create({
         width:250,
     },
 });
-export default Upload;
+export default UploadFileCV;

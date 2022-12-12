@@ -113,9 +113,6 @@ export default function LabNavigator({ route, navigation }) {
               <Text style={styles.textStyle}>My Profile</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.buttonModal]}>
-              <Text style={styles.textStyle}>My Rewards</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.buttonModal]}>
               <Text style={styles.textStyle}>My CV</Text>
             </TouchableOpacity>
             <TouchableOpacity

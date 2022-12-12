@@ -4,54 +4,42 @@ import HTMLReactParser from 'html-react-parser';
 import Separator from "../../components/Separator";
 import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
-import CommentItem from "../../components/CommentItem";
-import NewsItem from "../../components/NewsItem";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
-const listNews =[{
-    title: "Lionel Messi là ngôi sao mới nhất xuất hiện trong game sinh tồn PUBG Mobile ở bản cập nhật sắp tới.",
-    time: "1",
-    author: "s",
-    view: "10",
-    comment:"10",
-},
-    {
-        title: "Vụ 3 con gái đổ xăng đốt nhà mẹ: Người dân vẫn bủn rủn khi kể lại lúc đưa các nạn nhân ra ngoài",
-        time: "1",
-        author: "s",
-        view: "10",
-        comment:"10",
-    },
-    {
-        title: "Chiều 31/10, khắp các nẻo đường, từ quán trà đá cho tới những người đi đổ xăng ở xã Trung Hòa (huyện Yên Mỹ, tỉnh Hưng Yên) vẫn bàn tán xôn xao về vụ việc 3 người con gái đốt nhà mẹ đẻ ở thôn Thiên Lộc.  ",
-        time: "1",
-        author: "s",
-        view: "10",
-        comment:"10",
-    },
-    {
-        title: "fgh",
-        time: "1",
-        author: "s",
-        view: "10",
-        comment:"10",
-    },
-]
+import {
+    commentToNews,
+    deleteNews,
+    getListNews,
+    getNewsDetailComment
+} from "../../networking/CustomNetworkService";
+import CommentNewsComponent from "../../components/CommentNewsComponent";
+
 
 function NewsDetail({route,navigation}) {
-    const res = route.params;
+    const res = route.params.data;
     console.log("Data in News detail: "+JSON.stringify(res));
     const [modalVisible, setModalVisible] = useState(false);
     const [comment, setComment] = useState('');
     const formatTime=(date)=>{
         const d= new Date(date);
-        return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
+        const month= d.getMonth()+1;
+        return d.getDate() + "/" + month + "/" + d.getFullYear();
     }
-    const title = res.data.title;
-    const author= res.data.author;
-    const time = res.data.createdDate;
-    const content= res.data.content;
-    const views= res.data.views
-    const [userComment, setUserComment] = useState(res.data.comments);
+    const newsId= res.newsId
+    const [title, setTitle] = useState(res.title);
+    const [author, setAuthor]= useState(res.author);
+    const [time,setTime] = useState(res.createdDate);
+    const [content, setContent]= useState(res.content);
+    const [views, setViews]= useState(res.views);
+    const [userComment, setUserComment] = useState(res.comments);
+    const deleteANews=(newsId, navigation)=>{
+        deleteNews(newsId).then(()=> getListNews(navigation))
+    }
+    const commentNews=(newsId,content)=>{
+        commentToNews(newsId,content).then(v=> getNewsDetailComment(newsId).then(r=>{setUserComment(r.data.comments)}))
+    }
+    const callBackCommentNews=()=>{
+        getNewsDetailComment(newsId).then(r=>{setUserComment(r.data.comments)})
+    }
     return (
         <View>
             <HomeTopNavigator navigation={navigation}/>
@@ -59,16 +47,16 @@ function NewsDetail({route,navigation}) {
                 <View style={styles.containerTitle}>
                     <View style={styles.row}>
                         <View style={styles.containerT}>
-                            <Text style={{fontSize:20, fontWeight:"Bold", marginTop:20}}>
+                            <Text style={{fontSize:24, fontWeight:"Bold", marginTop:20, marginBottom:10}}>
                                 {title}
                             </Text>
                             <Text style={styles.txt}>
-                                Post by {author} on {formatTime(time)}              Views : {views}
+                                Post by {author} on {formatTime(time)} Views : {views}
                             </Text>
                         </View>
                         <View>
                             <Buttons text={"..."} style={styles.btnModal} onPressTo={() => setModalVisible(true)}/>
-                            <Buttons text={"Back"} style={styles.btnModal} onPressTo={() => navigation.goBack(navigation)}/>
+                            <Buttons text={"Back"} style={[styles.btnModal,{width: 50}]} onPressTo={() => navigation.goBack(navigation)}/>
                             <View styles={{position: "absolute"}}>
                                 <Modal
                                     animationType="fade"
@@ -84,11 +72,13 @@ function NewsDetail({route,navigation}) {
                                         style={styles.modal}>
                                         <View style={styles.modalView}>
                                             <TouchableOpacity onPress={() => {
+                                                navigation.push("UpdateNews",{data: res})
                                                 setModalVisible(!modalVisible)}}
                                                               style={[styles.buttonModal]}>
                                                 <Text style={styles.textStyle}>Edit</Text>
                                             </TouchableOpacity>
                                             <TouchableOpacity onPress={() => {
+                                                deleteANews(newsId,navigation)
                                                 setModalVisible(!modalVisible)}}
                                                               style={[styles.buttonModal]}>
                                                 <Text style={styles.textStyle}>Delete</Text>
@@ -111,37 +101,17 @@ function NewsDetail({route,navigation}) {
                     <TextField text={comment} onChangeText={newText => setComment(newText)}
                                placeholder={" Comment Here"}
                                secureTextEntry={false}
-                               multiline={true}
+                               multiline={false}
                                style={styles.comment}/>
-                    <Buttons text={"Comment"} style={styles.button}/>
+                    <Buttons text={"Comment"} style={styles.button} onPressTo={()=> commentNews(newsId,comment)}/>
                 </View>
-                {/*<FlatList*/}
-                {/*    data={userComment}*/}
-                {/*    renderItem={({ item }) => (*/}
-                {/*        <View>*/}
-                {/*            <CommentItem username={item.username} content={item.cmt} time={item.time}/>*/}
-                {/*            <FlatList*/}
-                {/*                style={styles.flatList}*/}
-                {/*                data={item.reply}*/}
-                {/*                renderItem={({ item }) => (*/}
-                {/*                    <CommentItem username={item.username} content={item.cmt} time={item.time}/>*/}
-                {/*                )}*/}
-                {/*            />*/}
-                {/*        </View>*/}
-                {/*    )}*/}
-                {/*/>*/}
-
-                <View style={styles.userComment}>
-                    <Separator/>
-                    <Text style={styles.text}>Other News:</Text>
-                    <FlatList
-                        data={listNews}
-                        renderItem={({ item }) => (
-                            <NewsItem title={item.title} time={item.time} author={item.author} view={item.view} comments={item.comment} navigation={navigation} style={{marginLeft: 0,}} />
-                        )}
-                    />
-                </View>
-
+                {userComment?.map((item)=>(
+                    <View key={item.commentId}>
+                        <CommentNewsComponent newsId={newsId} commentId={item.commentId} username={item.createdBy.fullName}
+                                              content={item.content} createdDate={formatTime(item.createdDate)} listSubComment={item.comments}
+                        callBackCommentNews={callBackCommentNews}/>
+                    </View>
+                ))}
             </View>
         </View>
 
@@ -161,12 +131,13 @@ const styles= StyleSheet.create(
         },
         comment:{
             width: "80%",
-            height:50,
+            height:40,
         },
         button:{
-            height:50,
+            height:40,
         },
         containerComment:{
+            marginTop:20,
             flexDirection:"row",
             alignItems:"center",
         },
@@ -183,7 +154,6 @@ const styles= StyleSheet.create(
             marginBottom: 20,
         },
         txt:{
-            marginTop:20,
             fontSize:17,
         },
         row:{
@@ -192,8 +162,9 @@ const styles= StyleSheet.create(
         },
         btnModal:{
             width:30,
-            height:40,
+            height:30,
             marginBottom:10,
+            alignSelf:"flex-end"
         },
         modal:{
             alignItems: "flex-end",
@@ -201,7 +172,7 @@ const styles= StyleSheet.create(
         },
         modalView: {
             position:"absolute",
-            marginTop: 110,
+            marginTop: 100,
             marginRight:"18%",
             backgroundColor: "white",
             borderRadius: 20,
