@@ -10,6 +10,7 @@ import {
   Modal,
   Pressable,
   TextField,
+  TouchableOpacity,
 } from "react-native";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import ProfileComponent from "../../components/ProfileComponent";
@@ -23,6 +24,9 @@ import {
 } from "../../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
 import LabNavigator from "../../navigations/LabNavigator";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
+import { getAllRequestInLab } from "../../actions/LaboratoryAction";
 
 const getAccountId = async () => {
   try {
@@ -34,14 +38,25 @@ const getAccountId = async () => {
   }
 };
 
+const getLabId = async () => {
+  try {
+    const labId = await AsyncStorage.getItem("@currentLabId");
+    console.log("LabId in reate Project: " + labId);
+    return labId;
+  } catch (e) {
+    console.log("Can't get LabId id: " + e);
+  }
+};
+
 export default function LabDetail({ route, navigation }) {
+  const [labIdRequest, setLabIdRequest] = useState("");
+  getLabId().then((v) => setLabIdRequest(v));
   const [modalVisible, setModalVisible] = useState(false);
   const [accountId, setAccountId] = useState("");
   getAccountId().then((v) => setAccountId(v));
   const data = route.params.data;
   console.log("labdeatl data:" + JSON.stringify(data));
   const isJoined = route.params.isJoined;
-  const allMember = route.params.allMember.items;
   const isAdmin = true;
 
   const dispatch = useDispatch();
@@ -51,6 +66,10 @@ export default function LabDetail({ route, navigation }) {
 
   const goToViewAllProjectPage = (labId) => {
     dispatch(getAllProjectByLabId(labId, navigation));
+  };
+
+  const goToViewAllRequestPage = () => {
+    dispatch(getAllRequestInLab(labIdRequest, navigation));
   };
 
   const goToLabUpdatePage = (labId) => {
@@ -66,9 +85,17 @@ export default function LabDetail({ route, navigation }) {
     <View style={styles.container}>
       <LabNavigator navigation={navigation} />
       <View style={styles.containerProfile}>
+        <TouchableOpacity
+          onPress={goToViewAllRequestPage}
+          style={styles.request}
+        >
+          <FontAwesomeIcon icon={faBell} size={"xl"} />
+          <Text style={styles.badge}>5</Text>
+        </TouchableOpacity>
         <View style={styles.containerName}>
           <Text style={styles.textName}>{data.laboratoryName}</Text>
         </View>
+
         <View style={styles.containerInfo}>
           <View style={styles.info}>
             <ProfileComponent
@@ -97,7 +124,7 @@ export default function LabDetail({ route, navigation }) {
             <ProfileComponent title={"Major"} information={data.major} />
             <ProfileComponent
               title={"Number of member"}
-              information={data.projects.members}
+              information={data.members}
             />
           </View>
         </View>
@@ -120,7 +147,7 @@ export default function LabDetail({ route, navigation }) {
               style={[styles.button, styles.buttonOpen]}
               onPress={() => setModalVisible(true)}
             >
-              {isJoined ? (
+              {!isJoined ? (
                 <Text style={styles.textStyle}>Leave</Text>
               ) : (
                 <Text
@@ -170,7 +197,6 @@ export default function LabDetail({ route, navigation }) {
                     onPress={() => {
                       navigation.push("UpdateLab", {
                         labInfo: data,
-                        listMember: allMember,
                       });
                     }}
                   >
@@ -224,6 +250,33 @@ export default function LabDetail({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+  request: {
+    width: 60,
+    height: 57,
+    borderRadius: "50%",
+    backgroundColor: "#555",
+    flexDirection: "row",
+    color: "white",
+    padding: 15,
+    position: "relative",
+    textAlign: "center",
+    justifyContent: "center",
+    alignSelf: "flex-end",
+    margin: 20,
+  },
+  badge: {
+    width: 29,
+    height: 29,
+    borderRadius: "50%",
+    position: "absolute",
+    top: -10,
+    right: -10,
+    padding: 5,
+    bordeRadius: "50%",
+    backgroundColor: "red",
+    color: "white",
+    textAlign: "center",
+  },
   container: {
     alignContent: "center",
     flex: 1,

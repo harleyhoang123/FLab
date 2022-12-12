@@ -506,7 +506,7 @@ export const getListFolder= async (repoId) => {
     }
 };
 
-export const deleteFolderOrFile = async (folderId,Id, type) => {
+export const deleteFolderOrFile = async (Id, type) => {
     const token = await getToken();
     if(type==="Folder"){
         try {
@@ -526,7 +526,7 @@ export const deleteFolderOrFile = async (folderId,Id, type) => {
     }else {
         try {
             const response = await axios.delete(
-                host+'8082/flab/repository/public/api/v1/files/:folder-id/:file-id'.replace(":file-id", Id).replace(":folder-id", folderId),
+                host+'8082/flab/repository/public/api/v1/files/:file-id'.replace(":file-id", Id),
                 {
                     headers: {
                         "Authorization": `Bearer ` + token
@@ -1020,5 +1020,36 @@ export const responseOrder= async (orderId,status) => {
         return response.data
     } catch (error) {
         console.log("error when responseOrder:" + JSON.stringify(error));
+    }
+};
+
+export const reviewRequest = async (
+    labId,
+    applicationId,
+    requestData,
+    navigation
+) => {
+    const token = await getToken();
+    try {
+        console.log("request DATA:" + labId + applicationId);
+        console.log("TOKENNNN: " + token);
+        const response = await axios.post(
+            host +
+            "8083/flab/lab/public/api/v1/laboratories/:lab-id/:application-id"
+                .replace(":lab-id", labId)
+                .replace(":application-id", applicationId),
+            {
+                status: requestData.status,
+                comment: requestData.comment,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ` + token,
+                },
+            }
+        );
+        navigation.goBack(null);
+    } catch (error) {
+        console.log("error when Request:" + JSON.stringify(error));
     }
 };

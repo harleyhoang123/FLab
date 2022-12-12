@@ -55,7 +55,10 @@ import UpdateFolderInRepo from "../screens/Repository/UpdateFolderInRepo";
 import UpdateSubFolder from "../screens/Repository/UpdateSubFolder";
 import UpdateFile from "../screens/Repository/UpdateFile";
 import UpdateMemberRole from "../screens/Lab/UpdateMemberRole";
+import ViewAllRequest from "../screens/Lab/ViewAllRequest";
+import RequestDetail from "../screens/Lab/RequestDetail";
 import UpdateNews from "../screens/News/UpdateNews";
+
 function RootNavigators() {
   const Stack = createStackNavigator();
   return (
@@ -114,6 +117,8 @@ function RootNavigators() {
         <Stack.Screen name="UpdateSubFolder" component={UpdateSubFolder} />
         <Stack.Screen name="UpdateFile" component={UpdateFile} />
         <Stack.Screen name="UpdateMemberRole" component={UpdateMemberRole} />
+        <Stack.Screen name="ViewAllRequest" component={ViewAllRequest} />
+        <Stack.Screen name="RequestDetail" component={RequestDetail} />
         <Stack.Screen name="UpdateNews" component={UpdateNews} />
         <Stack.Screen
           name="AddMemberToProject"
@@ -129,6 +134,7 @@ function RootNavigators() {
           component={ViewAllMemberInProject}
         />
       </Stack.Navigator>
+
     </NavigationContainer>
   );
 }

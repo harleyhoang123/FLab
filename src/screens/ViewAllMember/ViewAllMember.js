@@ -18,6 +18,8 @@ import { SelectList } from "react-native-dropdown-select-list";
 import Buttons from "../../components/Buttons";
 import { useDispatch } from "react-redux";
 import { getmemberDetailByProfileId } from "../../actions/LaboratoryAction";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { PaginationControl } from "react-bootstrap-pagination-control";
 import {
   updateMemberRoleById,
   removeMemberFromLaboratory,
@@ -35,6 +37,7 @@ const getLabId = async () => {
 };
 
 const ViewAllMember = ({ route, navigation }) => {
+  const [page, setPage] = useState(1);
   const [labId, setLabId] = useState("");
   getLabId().then((v) => setLabId(v));
   const data = route.params.data;
@@ -105,6 +108,13 @@ const ViewAllMember = ({ route, navigation }) => {
       <LabNavigator navigation={navigation} />
       <View>
         <Text style={styles.titleContent}>List all member in your lab</Text>
+        <Buttons
+          text={"Add new member"}
+          style={styles.button}
+          onPressTo={() => {
+            navigation.navigate("AddMemberToLab");
+          }}
+        />
       </View>
       <SafeAreaView style={styles.container}>
         <View style={styles.tableForm}>
@@ -125,6 +135,17 @@ const ViewAllMember = ({ route, navigation }) => {
           data={listMember}
           renderItem={renderItem}
           keyExtractor={(item) => item.memberId}
+        />
+        <PaginationControl
+          page={page}
+          between={4}
+          total={250}
+          limit={20}
+          changePage={(page) => {
+            setPage(page);
+            console.log(page);
+          }}
+          ellipsis={1}
         />
       </SafeAreaView>
 

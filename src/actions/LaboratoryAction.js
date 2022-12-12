@@ -31,13 +31,9 @@ export const getLaboratoryById =
       const response = await laboratoryController.getLaboratoryById({
         labId,
       });
-      const listMember = await laboratoryController.getAllMemberInLaboratory({
-        labId,
-      });
       navigation.navigate("LabDetail", {
         data: response.data.data,
         isJoined: isJoined,
-        allMember: listMember.data.data,
       });
     } catch ({ data }) {
       console.log("Error when getLaboratoryById " + JSON.stringify(data));
@@ -405,3 +401,56 @@ export const applyTolAbByLabId =
       );
     }
   };
+
+export const getAllRequestInLab =
+  (labId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const laboratoryController = new LaboratoryController(networkService);
+      console.log("Lab ID in actions: " + labId);
+      const response = await laboratoryController.getAllRequest({
+        labId,
+      });
+      navigation.navigate("ViewAllRequest", {
+        data: response.data.data,
+      });
+    } catch ({ data }) {
+      console.log("Error when getAllRequestInLab " + JSON.stringify(data));
+    }
+  };
+
+export const getRequestDetailByApplicationId =
+  (applicationId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const laboratoryController = new LaboratoryController(networkService);
+      console.log("application ID in actions: " + applicationId);
+      const response = await laboratoryController.getRequestDetail({
+        applicationId,
+      });
+      navigation.navigate("RequestDetail", {
+        data: response.data.data,
+      });
+    } catch ({ data }) {
+      console.log(
+        "Error when getRequestDetailByApplicationId " + JSON.stringify(data)
+      );
+    }
+  };
+
+// export const reviewRequest =
+//   (labId, applicationId, requestData, navigation) =>
+//   async (dispatch, _, { networkService }) => {
+//     try {
+//       const laboratoryController = new LaboratoryController(networkService);
+//       console.log("labId in actions: " + labId);
+//       const response = await laboratoryController.reviewRequestInLab({
+//         labId,
+//         applicationId,
+//         requestData,
+//       });
+//       dispatch(getRequestDetailByApplicationId(applicationId, navigation));
+//     } catch ({ data }) {
+//       console.log("ERROR when reviewRequest: " + JSON.stringify(data));
+//     }
+//   };
