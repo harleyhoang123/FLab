@@ -52,12 +52,7 @@ function Profile({ route, navigation }) {
   };
   const goToEditProfile = () => {
     console.log("EditProfile: ");
-    dispatch(
-      getAccountInfoByAccountIdToEdit(
-        response.lastModifiedBy.accountId,
-        navigation
-      )
-    );
+    dispatch(getAccountInfoByAccountIdToEdit(accountId, navigation));
   };
   return (
     <View style={styles.container}>
