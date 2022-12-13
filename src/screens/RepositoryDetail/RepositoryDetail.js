@@ -225,7 +225,7 @@ function RepositoryDetail({route, navigation}) {
                             <Text>Size</Text>
                         </View>
                     </View>
-                    <SafeAreaView>
+                    <View>
                         {itemsFile?.map((item) => (
                             <Item
                                 key={item.fileId}
@@ -248,7 +248,7 @@ function RepositoryDetail({route, navigation}) {
                                 parentFolderName={folderName}
                             />
                         ))}
-                    </SafeAreaView>
+                    </View>
                 </View>
             </View>
         </View>

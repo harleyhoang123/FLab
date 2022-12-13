@@ -695,7 +695,7 @@ export const getListMaterial = async (labId) => {
       {
         headers: {
           Authorization: `Bearer ` + token,
-        },
+        }
       }
     );
     console.log("Data in getListMaterial: " + JSON.stringify(response.data));
@@ -1250,8 +1250,69 @@ export const uploadProfileCv = async (profileId, navigation,cvName,description,c
         }
     );
     console.log("Data in uploadCv: " + JSON.stringify(response.data));
-    navigation.push("ProfileCV");
+    navigation.push("CurriculumVitae");
   } catch (error) {
     console.log("error when uploadCv:" + JSON.stringify(error));
+  }
+};
+
+export const getCVbyAccountId = async (accountId) => {
+  const token = await getToken();
+  try {
+    const response = await axios.get(
+        host+'8084/flab/account/public/api/v1/profiles/:account-id/cv'.replace(":account-id", accountId)
+        ,
+        {
+          headers: {
+            "Authorization": `Bearer ` + token
+          }
+        }
+    );
+    console.log("Data in getCVbyAccountId: " + JSON.stringify(response.data));
+    return response.data
+  } catch (error) {
+    console.log("error when getCVbyAccountId:" + JSON.stringify(error));
+  }
+};
+export const deleteCVbyAccountId = async (profileId,cvId) => {
+  const token = await getToken();
+  try {
+    const response = await axios.delete(
+        host+'8084/flab/account/public/api/v1/cv/:profile-id/:cv-id'.replace(":cv-id", cvId).replace(":profile-id",profileId)
+        ,
+        {
+          headers: {
+            "Authorization": `Bearer ` + token
+          }
+        }
+    );
+    console.log("Data in deleteCVbyAccountId: " + JSON.stringify(response.data));
+    return response.data
+  } catch (error) {
+    console.log("error when deleteCVbyAccountId:" + JSON.stringify(error));
+  }
+};
+
+export const updateProfileCv = async (cvId, navigation,cvName,description,cv) => {
+  const token = await getToken();
+  try {
+    const response = await axios.put(
+        host+'8084/flab/account/public/api/v1/cv/:cv-id'.replace(":cv-id", cvId),
+        {
+          cvName:cvName,
+          description:description,
+          cv:cv
+        }
+        ,
+        {
+          headers: {
+            "Authorization": `Bearer ` + token
+          }
+        }
+    );
+    console.log("Data in updateProfileCv: " + JSON.stringify(response.data));
+    navigation.push("CurriculumVitae");
+  } catch (error) {
+    console.log("error when updateProfileCv:" + JSON.stringify(error));
   }
 };

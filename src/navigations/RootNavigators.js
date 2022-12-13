@@ -59,6 +59,7 @@ import RequestDetail from "../screens/Lab/RequestDetail";
 import UpdateNews from "../screens/News/UpdateNews";
 import UploadFileCV from "../screens/CV/UploadFileCV";
 import CurriculumVitae from "../screens/CV/CurriculumVitae";
+import UpdateCv from "../screens/CV/UpdateCV";
 
 function RootNavigators() {
   const Stack = createStackNavigator();
@@ -122,6 +123,7 @@ function RootNavigators() {
         <Stack.Screen name="UpdateNews" component={UpdateNews} />
         <Stack.Screen name="UploadFileCV" component={UploadFileCV} />
         <Stack.Screen name="CurriculumVitae" component={CurriculumVitae} />
+        <Stack.Screen name="UpdateCv" component={UpdateCv} />
         <Stack.Screen
           name="AddMemberToProject"
           component={AddMemberToProject}

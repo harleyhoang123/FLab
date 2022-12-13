@@ -56,7 +56,7 @@ function CommentNewsComponent({newsId, commentId, username, content, createdDate
                         {isEditComment(isEdit)}
                     </View>
                     <View style={styles.containerComment}>
-                        <Text style={styles.text}>{formatTime(createdDate)}</Text>
+                        <Text style={styles.text}>{createdDate}</Text>
                         <View style={styles.login}>
                             <TouchableOpacity onPress={() => setIsEdit(!isEdit)}>
                                 <Text style={styles.txt}>Edit</Text>
