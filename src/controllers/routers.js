@@ -15,6 +15,7 @@ export const routes = {
     getLaboratory: host + "8083/flab/lab/public/api/v1/laboratories",
     getLaboratorySuggestion:
       host + "8083/flab/lab/public/api/v1/laboratories/suggestion",
+    //Testing
     getLaboratoryById:
       host + "8083/flab/lab/public/api/v1/laboratories/:lab-id",
     getAllMemberInLaboratory:
@@ -63,8 +64,11 @@ export const routes = {
     updateMeterial:
       host +
       "8083/flab/lab/public/api/v1/laboratories/:laboratory-id/materials/:material-id",
-    addMaterial: host + "8083/flab/lab/public/api/v1/laboratories/:lab-id/material",
-    orderMaterial: host + "8083/flab/lab/public/api/v1/materials/:laboratory-id/:material-id/order",
+    addMaterial:
+      host + "8083/flab/lab/public/api/v1/laboratories/:lab-id/material",
+    orderMaterial:
+      host +
+      "8083/flab/lab/public/api/v1/materials/:laboratory-id/:material-id/order",
   },
   repository: {
     getFolderDetail:
@@ -78,9 +82,11 @@ export const routes = {
     createSubFolder:
       host + "8082/flab/repository/public/api/v1/folders/:folder-id",
     downloadFile: host + "8082/flab/repository/public/api/v1/files/:file-id",
-    addFileToFolder: host + "8082/flab/repository/public/api/v1/folders/:folder-id/file",
-    updateFolder:host + "8082/flab/repository/public/api/v1/folders/:folder-id",
-    updateFile:host + "8082/flab/repository/public/api/v1/files/:file-id",
+    addFileToFolder:
+      host + "8082/flab/repository/public/api/v1/folders/:folder-id/file",
+    updateFolder:
+      host + "8082/flab/repository/public/api/v1/folders/:folder-id",
+    updateFile: host + "8082/flab/repository/public/api/v1/files/:file-id",
   },
   account: {
     getAccountInfo:
@@ -119,7 +125,8 @@ export const routes = {
     getTaskDetail: host + "8085/flab/workspace/public/api/v1/tasks/:task-id",
     getSubTaskDetail:
       host + "8085/flab/workspace/public/api/v1/subtasks/:subtask-id",
-    getAllMemberInWorkspace:host + "8085/flab/workspace/public/api/v1/workspaces/:workspace-id",
+    getAllMemberInWorkspace:
+      host + "8085/flab/workspace/public/api/v1/workspaces/:workspace-id",
   },
   member: {
     getMemberDetail:

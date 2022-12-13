@@ -38,6 +38,16 @@ const getAccountId = async () => {
   }
 };
 
+const getRoles = async () => {
+  try {
+    const roles = await AsyncStorage.getItem("@roles");
+    console.log("roles: " + roles);
+    return roles;
+  } catch (e) {
+    console.log("Can't get roles: " + e);
+  }
+};
+
 const getLabId = async () => {
   try {
     const labId = await AsyncStorage.getItem("@currentLabId");
@@ -58,6 +68,9 @@ export default function LabDetail({ route, navigation }) {
   console.log("labdeatl data:" + JSON.stringify(data));
   const isJoined = route.params.isJoined;
   const isAdmin = true;
+  const [roles, setRoles] = useState([]);
+  getRoles().then((v) => setRoles(v));
+  console.log("ROLE: " + roles);
 
   const dispatch = useDispatch();
   const goToViewAllMemberPage = (labId) => {
@@ -171,7 +184,7 @@ export default function LabDetail({ route, navigation }) {
               <Text style={styles.textStyle}>Add Member</Text>
             </Pressable>
           </View>
-          {isAdmin ? (
+          {roles.includes("ADMIN") ? (
             <View style={{ marginTop: 20, flexDirection: "row" }}>
               <Pressable
                 style={[styles.button, styles.buttonOpen]}

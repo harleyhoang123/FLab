@@ -59,6 +59,7 @@ import RequestDetail from "../screens/Lab/RequestDetail";
 import UpdateNews from "../screens/News/UpdateNews";
 import UploadFileCV from "../screens/CV/UploadFileCV";
 import CurriculumVitae from "../screens/CV/CurriculumVitae";
+import ErrorPage from "../reducers/ErrorPage";
 
 function RootNavigators() {
   const Stack = createStackNavigator();
@@ -113,7 +114,10 @@ function RootNavigators() {
         <Stack.Screen name="UpdateProject" component={UpdateProject} />
         <Stack.Screen name="UpdateMaterial" component={UpdateMaterial} />
         <Stack.Screen name="ApplyToLab" component={ApplyToALab} />
-        <Stack.Screen name="UpdateFolderInRepo" component={UpdateFolderInRepo} />
+        <Stack.Screen
+          name="UpdateFolderInRepo"
+          component={UpdateFolderInRepo}
+        />
         <Stack.Screen name="UpdateSubFolder" component={UpdateSubFolder} />
         <Stack.Screen name="UpdateFile" component={UpdateFile} />
         <Stack.Screen name="UpdateMemberRole" component={UpdateMemberRole} />
@@ -122,6 +126,7 @@ function RootNavigators() {
         <Stack.Screen name="UpdateNews" component={UpdateNews} />
         <Stack.Screen name="UploadFileCV" component={UploadFileCV} />
         <Stack.Screen name="CurriculumVitae" component={CurriculumVitae} />
+        <Stack.Screen name="ErrorPage" component={ErrorPage} />
         <Stack.Screen
           name="AddMemberToProject"
           component={AddMemberToProject}
@@ -136,7 +141,6 @@ function RootNavigators() {
           component={ViewAllMemberInProject}
         />
       </Stack.Navigator>
-
     </NavigationContainer>
   );
 }

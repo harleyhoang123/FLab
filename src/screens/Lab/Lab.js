@@ -23,9 +23,11 @@ const Lab = ({ route, navigation }) => {
   const [itemsSugges, setItemsSugges] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
   const [suggestionPage, setSuggestionPage] = useState(1);
+
   const dispatch = useDispatch();
   const goToLabDetailPage = (labId, isJoined) => {
     dispatch(getLaboratoryById(labId, isJoined, navigation));
+    //dispatch(getLaboratoryById("123456789", isJoined, navigation));
   };
 
   const getLaboratory = (selectedPage) => {
