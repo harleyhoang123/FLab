@@ -67,6 +67,7 @@ export default function LabDetail({ route, navigation }) {
   const data = route.params.data;
   console.log("labdeatl data:" + JSON.stringify(data));
   const isJoined = route.params.isJoined;
+  const allMember = route.params.allMember.items;
   const isAdmin = true;
   const [roles, setRoles] = useState([]);
   getRoles().then((v) => setRoles(v));
@@ -210,6 +211,7 @@ export default function LabDetail({ route, navigation }) {
                     onPress={() => {
                       navigation.push("UpdateLab", {
                         labInfo: data,
+                        listMember: allMember,
                       });
                     }}
                   >

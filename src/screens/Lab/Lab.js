@@ -27,7 +27,6 @@ const Lab = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const goToLabDetailPage = (labId, isJoined) => {
     dispatch(getLaboratoryById(labId, isJoined, navigation));
-    //dispatch(getLaboratoryById("123456789", isJoined, navigation));
   };
 
   const getLaboratory = (selectedPage) => {
