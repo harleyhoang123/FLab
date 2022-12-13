@@ -30,9 +30,21 @@ const getProjectId = async () => {
   }
 };
 
+const getLabId = async () => {
+  try {
+    const labId = await AsyncStorage.getItem("@currentLabId");
+    console.log("LabId in reate Project: " + labId);
+    return labId;
+  } catch (e) {
+    console.log("Can't get LabId id: " + e);
+  }
+};
+
 export default function ViewAllMemberInProject({ route, navigation }) {
   const listMember = route.params.data;
   const data = listMember.items;
+  const [labId, setLabId] = useState("");
+  getLabId().then((v) => setLabId(v));
 
   const dispatch = useDispatch();
   const [projectId, setProjectId] = useState("");
@@ -42,8 +54,10 @@ export default function ViewAllMemberInProject({ route, navigation }) {
     dispatch(removeMemberInProjectById(projectId, memberId, navigation));
   };
 
-  const goToMemberDetail = (accountId) => {
-    dispatch(getmemberDetailByProfileId(accountId, navigation));
+  const goToMemberDetail = (accountId, memberId) => {
+    dispatch(
+      getmemberDetailByProfileId(accountId, labId, memberId, navigation)
+    );
   };
 
   const Item = ({ accountId, memberId, memberName, email, roles }) => (
@@ -53,7 +67,7 @@ export default function ViewAllMemberInProject({ route, navigation }) {
         <Text style={styles.title}>Email: {email}</Text>
         <View style={{ marginLeft: "60%", flexDirection: "row" }}>
           <Text
-            onPress={() => goToMemberDetail(accountId)}
+            onPress={() => goToMemberDetail(accountId, memberId)}
             style={styles.action}
           >
             Detail

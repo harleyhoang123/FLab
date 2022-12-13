@@ -39,11 +39,7 @@ const ViewAllMember = ({ route, navigation }) => {
   const [labId, setLabId] = useState("");
   const [items, setItem] = useState([]);
   getLabId().then((v) => setLabId(v));
-  const data = route.params.data;
-  const listMember = data.items; //data
   const dispatch = useDispatch();
-
-  const [selectedPage, setSelectedPage] = useState(1);
 
   const getAllMemberInLab = (selectedPage) => {
     getAllMemberByLabId(selectedPage - 1, 5).then((v) => {

@@ -41,7 +41,7 @@ export const login =
       if (data.data !== null) {
         try {
           await AsyncStorage.setItem("@accountId", data.data.accountId);
-          await AsyncStorage.setItem("@roles", data.data.roles);
+          await AsyncStorage.setItem("@roles", data.data.role);
           await AsyncStorage.setItem("@avatar", data.data.avatar);
           await AsyncStorage.setItem("@token", data.data.token);
           console.log("Set account id success: " + JSON.stringify(data.data));
@@ -53,7 +53,7 @@ export const login =
       networkService.setAccessToken(data.data.token);
       dispatch(loginSuccess(data));
     } catch ({ data }) {
-      dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+      console.log("In catch: " + JSON.stringify(data));
     }
   };
 

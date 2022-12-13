@@ -26,6 +26,7 @@ export const getLaboratoryById =
   (labId, isJoined, navigation) =>
   async (dispatch, _, { networkService }) => {
     await AsyncStorage.setItem("@currentLabId", labId);
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       console.log("Lab ID in actions: " + labId);
@@ -38,7 +39,12 @@ export const getLaboratoryById =
         isJoined: isJoined,
       });
     } catch ({ data }) {
-      console.log("Error when getLaboratoryById " + JSON.stringify(data));
+      errorCode = data.status.status;
+      console.log("Error " + errorCode);
+      navigation.push("ErrorPage", {
+        status: errorCode,
+        displayMessage: "SOMETHING WENT WRONG",
+      });
     }
   };
 
@@ -51,7 +57,7 @@ export const getAllMemberInLaboratoryById =
       const response = await laboratoryController.getAllMemberInLaboratory({
         labId,
       });
-      navigation.navigate("ViewAllMember", {
+      navigation.push("ViewAllMember", {
         data: response.data.data,
       });
     } catch ({ data }) {
@@ -374,7 +380,8 @@ export const getmemberDetailByProfileId =
       const response = await laboratoryController.getMemberDetail({
         accountId,
       });
-      navigation.navigate("MemberDetail", {
+      console.log("response: " + JSON.stringify(response));
+      navigation.push("MemberDetail", {
         data: response.data.data,
         labId: labId,
         memberId: code,
@@ -398,9 +405,7 @@ export const applyTolAbByLabId =
       });
       dispatch(getLaboratoryById(labId, true, navigation));
     } catch ({ data }) {
-      console.log(
-        "ERROR when getmemberDetailByProfileId: " + JSON.stringify(data)
-      );
+      console.log("ERROR when applyTolAbByLabId: " + JSON.stringify(data));
     }
   };
 
