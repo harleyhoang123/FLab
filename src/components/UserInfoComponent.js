@@ -1,11 +1,19 @@
 import React from 'react';
 import {View, Image, Text, StyleSheet} from "react-native";
+
 function UserInfoComponent({info}) {
     const getImage = (image) => {
         if (image == null) {
-            return "https://pbs.twimg.com/profile_images/486929358120964097/gNLINY67_400x400.png";
+            return (
+                <Image source={require("../assets/avatarDefault.png")} style={styles.userImage} />
+            )
         } else {
-            return image.userInfo.avatar;
+            return (
+                <Image style={styles.userImage}
+                       source={{
+                           uri: image.userInfo.avatar,
+                       }}/>
+            )
         }
     }
     const getName = (name) => {
@@ -17,10 +25,7 @@ function UserInfoComponent({info}) {
     }
     return (
         <View style={styles.container}>
-            <Image style={styles.userImage}
-                   source={{
-                uri: getImage(info),
-            }}/>
+            {getImage(info)}
             <Text style={styles.text}>
                 {getName(info)}
             </Text>

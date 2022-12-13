@@ -157,7 +157,7 @@ export default function LabNavigator({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.push("ListMaterial", { data: labId })}
+            onPress={() => goToListMaterial()}
           >
             <Text style={styles.textLogo}>Material</Text>
           </TouchableOpacity>

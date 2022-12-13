@@ -3,10 +3,8 @@ import AddComponent from "../../components/AddComponent";
 import Buttons from "../../components/Buttons";
 import React, {useEffect, useState} from "react";
 import LabNavigator from "../../navigations/LabNavigator";
-import MaterialItem from "../../components/MaterialItem";
 import PaginationBar from "../../components/PaginationBar";
 import {Dropdown} from "react-native-element-dropdown";
-import CommentItem from "../../components/CommentItem";
 import OrderItem from "../../components/OrderItem";
 import AsyncStorage from "@react-native-community/async-storage";
 import {getListOrderByLabId} from "../../networking/CustomNetworkService";
@@ -20,21 +18,24 @@ const getLabId = async () => {
     }
 };
 function OrderMaterial({navigation}) {
-
-
     const [value, setValue] = useState('WAITING_FOR_APPROVAL');
     const [listOrder, setListOrder] = useState();
     const [listItem, setListItem] = useState();
     const [labId, setLabId] = useState();
-    getLabId().then(v=>setLabId(v))
+    const callBackOrder=()=>{
+        getListOrderByLabId(labId).then(r=>{setListItem(r.data.items); filterStatus(r.data.items,value)})
+    }
     useEffect(() => {
-        getListOrderByLabId(labId).then(v=>filterStatus(value))
+        getLabId().then(v=>{{setLabId(v);getListOrderByLabId(v).then(r=>{setListItem(r.data.items); filterStatus(r.data.items,value)})}});
     },[]);
-    function filterStatus(value) {
-        const filData = listItem.filter(function (item) {
-            return item.status === value;
-        })
-        setListOrder(filData);
+    function filterStatus(list,value) {
+        if (list!=null){
+            const filData = list.filter(function (item) {
+                return item.status === value;
+            })
+            setListOrder(filData);
+        }
+
     }
     const data = [
         {label: 'Waiting for approval', value: 'WAITING_FOR_APPROVAL'},
@@ -54,7 +55,7 @@ function OrderMaterial({navigation}) {
                     valueField="value"
                     onChange={item => {
                         setValue(item.value)
-                        filterStatus(item.value)
+                        filterStatus(listItem,item.value)
                     }}
                 />
                 <View style={styles.containerSearch}>
@@ -76,6 +77,7 @@ function OrderMaterial({navigation}) {
                     amount={item.amount}
                     reason={item.reason}
                     fromDate={item.fromDate}
+                    callBackOrder={callBackOrder}
                 />)}
             />
             <PaginationBar/>
