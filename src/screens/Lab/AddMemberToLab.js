@@ -38,10 +38,8 @@ export default function AddMemberTolab({ route, navigation }) {
 
   React.useEffect(
     () =>
-      //Get Values from database
       getAllMember()
         .then((response) => {
-          // Store Values in Temporary Array
           console.log("All member: " + JSON.stringify(response.data.items));
           let newArray = response.data.items.map((item) => {
             return {
@@ -49,7 +47,6 @@ export default function AddMemberTolab({ route, navigation }) {
               value: item.fullName,
             };
           });
-          //Set Data Variable
           setData(newArray);
         })
         .catch((e) => {
