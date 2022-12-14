@@ -42,7 +42,7 @@ function CommentItem({parentId, commentId, username, content, time,parentType, c
                                multiline={false}
                                onSubmitEditing={()=>{handleEdit(); setText("");setIsEdit(!isEdit)}}
                                style={[styles.comment]}/>
-                    <Buttons text={"Edit"} onPressTo={()=>{handleEdit(); setText("");setIsEdit(!isEdit)} } style={styles.button}/>
+                    <Buttons text={"Save"} onPressTo={()=>{handleEdit(); setText("");setIsEdit(!isEdit)} } style={styles.button}/>
                     <Buttons text={"Cancel"} onPressTo={()=>{setIsEdit(!isEdit)} } style={styles.button}/>
                 </View>
             )

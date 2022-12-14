@@ -309,6 +309,33 @@ export const updateSprint = async (
     console.log("ERROR when updateSprint: " + JSON.stringify(error));
   }
 };
+export const updateStatusSprint = async (
+    projectId,
+    sprintId,
+    status
+) => {
+  const token = await getToken();
+  try {
+    const response = await axios.put(
+        host +
+        "8085/flab/workspace/public/api/v1/sprints/:workspace-id/:sprint-id"
+            .replace(":sprint-id", sprintId)
+            .replace(":workspace-id", projectId),
+        {
+          status: status
+        },
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+        }
+    );
+    console.log("Data in updateSprint: " + JSON.stringify(response.data));
+    return response.data;
+  } catch (error) {
+    console.log("ERROR when updateSprint: " + JSON.stringify(error));
+  }
+};
 
 export const getSprintDetail = async (sprintId) => {
   const token = await getToken();
@@ -1096,7 +1123,7 @@ export const getListOrderByLabId= async (labId) => {
     const token = await getToken();
     try {
         const response = await axios.get(
-            host+'8083/flab/lab/public/api/v1/materials/:laboratory-id/orders'.replace(":laboratory-id", labId),
+            host+'8083/flab/lab/public/api/v1/laboratories/:laboratory-id/orders'.replace(":laboratory-id", labId),
             {
                 headers: {
                     "Authorization": `Bearer ` + token
@@ -1308,6 +1335,44 @@ export const updateProfileCv = async (cvId, navigation,cvName,description,cv) =>
     );
     console.log("Data in updateProfileCv: " + JSON.stringify(response.data));
     navigation.push("CurriculumVitae");
+  } catch (error) {
+    console.log("error when updateProfileCv:" + JSON.stringify(error));
+  }
+};
+export const changeAvatar = async (profileId, image) => {
+  const token = await getToken();
+  try {
+    const response = await axios.post(
+        host+'8084/flab/account/public/api/v1/profiles/:profile-id/avatar'.replace(":profile-id", profileId),
+        {
+          avatar:image
+        }
+        ,
+        {
+          headers: {
+            "Authorization": `Bearer ` + token
+          }
+        }
+    );
+    console.log("Data in updateProfileCv: " + JSON.stringify(response.data));
+    return response.data
+  } catch (error) {
+    console.log("error when updateProfileCv:" + JSON.stringify(error));
+  }
+};
+export const getProfileDetail = async (profileId) => {
+  const token = await getToken();
+  try {
+    const response = await axios.get(
+        host+'8084/flab/account/public/api/v1/profiles/:profile-id'.replace(":profile-id", profileId),
+        {
+          headers: {
+            "Authorization": `Bearer ` + token
+          }
+        }
+    );
+    console.log("Data in updateProfileCv: " + JSON.stringify(response.data));
+    return response.data
   } catch (error) {
     console.log("error when updateProfileCv:" + JSON.stringify(error));
   }

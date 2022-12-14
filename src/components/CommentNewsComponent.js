@@ -35,7 +35,7 @@ function CommentNewsComponent({newsId, commentId, username, content, createdDate
                                    multiline={true}
                                    onSubmitEditing={()=>{handleEdit(); setText("");setIsEdit(!isEdit)} }
                                    style={[styles.comment2]}/>
-                        <Buttons text={"Edit"} onPressTo={()=>{handleEdit(); setText("");setIsEdit(!isEdit)} } style={styles.button2}/>
+                        <Buttons text={"Save"} onPressTo={()=>{handleEdit(); setText("");setIsEdit(!isEdit)} } style={styles.button2}/>
                         <Buttons text={"Cancel"} onPressTo={()=>{setIsEdit(!isEdit)} } style={styles.button2}/>
                     </View>
                 </View>

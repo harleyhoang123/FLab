@@ -68,19 +68,18 @@ export class UserController {
   }
 
   updateProfile({
-    profileId,
-    gender,
-    dateOfBirth,
-    address,
-    phoneNumber,
-    studentId,
-    memberCode,
-    major,
-    currentTermNo,
-    specialized,
-    description,
-    award,
-    interest,
+                  profileId,
+                  gender,
+                  dateOfBirth,
+                  address,
+                  studentId,
+                  memberCode,
+                  major,
+                  currentTermNo,
+                  specialized,
+                  description,
+                  award,
+                  interest
   }) {
     console.log("cotrlooo:" + studentId);
     return this.networkService.request({
@@ -90,7 +89,6 @@ export class UserController {
         gender: gender,
         dateOfBirth: dateOfBirth,
         address: address,
-        phoneNumber: phoneNumber,
         studentId: studentId,
         studentCode: memberCode,
         major: major,

@@ -18,7 +18,7 @@ const getLabId = async () => {
     }
 };
 function OrderMaterial({navigation}) {
-    const [value, setValue] = useState('WAITING_FOR_APPROVAL');
+    const [value, setValue] = useState('ALL');
     const [listOrder, setListOrder] = useState();
     const [listItem, setListItem] = useState();
     const [labId, setLabId] = useState();
@@ -26,21 +26,32 @@ function OrderMaterial({navigation}) {
         getListOrderByLabId(labId).then(r=>{setListItem(r.data.items); filterStatus(r.data.items,value)})
     }
     useEffect(() => {
-        getLabId().then(v=>{{setLabId(v);getListOrderByLabId(v).then(r=>{setListItem(r.data.items); filterStatus(r.data.items,value)})}});
+        getLabId().then(v=>{{setLabId(v);getListOrderByLabId(v).then(r=>{checkDataNull(r)})}});
     },[]);
-    function filterStatus(list,value) {
-        if (list!=null){
-            const filData = list.filter(function (item) {
-                return item.status === value;
-            })
-            setListOrder(filData);
+    const checkDataNull=(r)=>{
+        if(r!==null){
+            setListItem(r.data.items); filterStatus(r.data.items,value)
         }
+    }
+    function filterStatus(list,value) {
+        if(value==="ALL"){
+            setListOrder(list)
+        }else{
+            if (list!=null){
+                const filData = list.filter(function (item) {
+                    return item.status === value;
+                })
+                setListOrder(filData);
+            }
+        }
+
 
     }
     const data = [
-        {label: 'Waiting for approval', value: 'WAITING_FOR_APPROVAL'},
-        {label: 'Approved', value: 'APPROVED'},
-        {label: 'Rejected', value: 'REJECTED'},
+        {label: 'ALL', value: 'ALL'},
+        {label: 'WAITING FOR APPROVAL', value: 'WAITING_FOR_APPROVAL'},
+        {label: 'APPROVED', value: 'APPROVED'},
+        {label: 'REJECTED', value: 'REJECTED'},
     ]
     return (
         <View>
@@ -76,7 +87,8 @@ function OrderMaterial({navigation}) {
                     borrowBy={item.borrowBy}
                     amount={item.amount}
                     reason={item.reason}
-                    fromDate={item.fromDate}
+                    fromDate={item.orderFromDate}
+                    toDate={item.orderToDate}
                     callBackOrder={callBackOrder}
                 />)}
             />

@@ -103,7 +103,7 @@ function NewsDetail({route,navigation}) {
                                secureTextEntry={false}
                                multiline={false}
                                style={styles.comment}/>
-                    <Buttons text={"Comment"} style={styles.button} onPressTo={()=> commentNews(newsId,comment)}/>
+                    <Buttons text={"Comment"} style={styles.button} onPressTo={()=> {commentNews(newsId,comment); setComment("")}}/>
                 </View>
                 {userComment?.map((item)=>(
                     <View key={item.commentId}>

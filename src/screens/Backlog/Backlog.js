@@ -57,6 +57,7 @@ export default function Backlog({route, navigation}) {
                                          totalNotStartedTask={item.totalNotStartedTask}
                                          totalInProgressTask={item.totalInProgressTask}
                                          totalDoneTask={item.totalDoneTask}
+                                         status={item.status}
                                          callBackGetListSprint={callBackGetListSprint}
                                          callbackTaskDetail={callbackTaskDetail}
                                          callbackDeleteTask={callbackDeleteTask}/>
