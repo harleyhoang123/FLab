@@ -60,8 +60,8 @@ export const routes = {
     getMaterialById:
       host + "8083/flab/lab/public/api/v1/materials/:material-id",
     getMaterialByLabId:
-      host + "8083/flab/lab/public/api/v1/materials/:laboratory-id/materials",
-    updateMeterial:
+      host + "8083/flab/lab/public/api/v1/laboratories/:laboratory-id/materials",
+    updateMaterial:
       host +
       "8083/flab/lab/public/api/v1/laboratories/:laboratory-id/materials/:material-id",
     addMaterial:

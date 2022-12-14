@@ -1,23 +1,16 @@
-import React, { useEffect, useState } from "react";
-import {
-  Image,
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import React, {useState} from "react";
+import {Modal, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import Logo from "../assets/Logo";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faBell} from "@fortawesome/free-solid-svg-icons/faBell";
 import Notification from "../screens/Notification/Notification";
-import { useDispatch } from "react-redux";
-import { getLaboratoryByAccountId } from "../actions/LaboratoryAction";
+import {useDispatch} from "react-redux";
+import {getLaboratoryByAccountId} from "../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
-import { getAccountInfoByAccountId, logout } from "../actions/UserAction";
+import {getAccountInfoByAccountId, logout} from "../actions/UserAction";
 import AvatarComponent from "../components/AvatarComponent";
-import { getListQuestion } from "../actions/ForumAction";
-import { getListNews } from "../actions/NewsAction";
+import {getListQuestion} from "../actions/ForumAction";
+import {getListNews} from "../actions/NewsAction";
 
 const getAccountId = async () => {
   try {
@@ -37,7 +30,13 @@ const getAvatar = async () => {
     console.log("Can't get avatar: " + e);
   }
 };
-
+const getUsername = async () => {
+  try {
+    return await AsyncStorage.getItem("@username");
+  } catch (e) {
+    console.log("Can't get username: " + e);
+  }
+};
 const getRoles = async () => {
   try {
     const roles = await AsyncStorage.getItem("@roles");
@@ -50,6 +49,7 @@ const getRoles = async () => {
 
 export default function HomeTopNavigator({ navigation }) {
   const [accountId, setAccountId] = useState("");
+  const [username, setUsername] = useState("");
   const [avatar, setAvatar] = useState("");
   const [roles, setRoles] = useState([]);
 
@@ -57,6 +57,7 @@ export default function HomeTopNavigator({ navigation }) {
   getRoles().then((v) => setRoles(v));
   getAvatar().then((v) => setAvatar(v));
   getAccountId().then((v) => setAccountId(v));
+  getUsername().then(v=>setUsername(v))
   const dispatch = useDispatch();
   const goToLabPage = () => {
     dispatch(getLaboratoryByAccountId(accountId, navigation));
@@ -177,7 +178,7 @@ export default function HomeTopNavigator({ navigation }) {
             onPress={() => setModalProfileVisible(true)}
           >
             <AvatarComponent avatarURL={avatar} />
-            <Text>Profile</Text>
+            <Text>{username}</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Text, StyleSheet, View, FlatList, SafeAreaView} from "react-native";
+import {Text, StyleSheet, View, FlatList, SafeAreaView, Linking} from "react-native";
 import Buttons from "../../components/Buttons";
 import {Table, TableWrapper, Row, Cell} from "react-native-table-component";
 import {RadioButton} from "react-native-paper";
@@ -24,11 +24,12 @@ function RepositoryDetail({route, navigation}) {
     const [checked, setChecked] = useState("");
     const [fName, setFName] = useState("");
     const [description, setDescription] = useState("");
+    const [urlDownload, setUrlDownload]= useState("")
+    const [disable, setDisable]= useState(true)
     console.log("folderName in Detail" + folderName);
     console.log("parentFolderId in Detail" + parentFolderId);
     const downLoadFileHandler = () => {
-        console.log("An");
-        dispatch(downLoadFileByFileId(fId));
+        Linking.openURL(urlDownload).then(r => {});
     };
     const deleteAFileOrFolder = (id, type, parentFolderId) => {
         deleteFolderOrFile(parentFolderId, id, type).then(v => getListFolderDetail(parentFolderId).then(r => {
@@ -65,7 +66,7 @@ function RepositoryDetail({route, navigation}) {
         }
     }
 
-    const Item = ({id, name, type, description, lastEdit, size}) => (
+    const ItemFile = ({id, name, type, description, lastEdit, size, publicURL}) => (
         <View style={styles.table}>
             <View style={styles.columnCheckBox}>
                 <RadioButton.Group>
@@ -77,6 +78,8 @@ function RepositoryDetail({route, navigation}) {
                             setTypeChecked(type);
                             setFName(name);
                             setDescription(description);
+                            setUrlDownload(publicURL)
+                            setDisable(false)
                             console.log("File ID in RepositoryDetail " + checked)
                         }}
                     />
@@ -119,6 +122,7 @@ function RepositoryDetail({route, navigation}) {
                             setTypeChecked(type);
                             setFName(folderName);
                             setDescription(description);
+                            setDisable(true)
                             console.log("File ID in RepositoryDetail " + checked)
                         }}
                     />
@@ -197,6 +201,7 @@ function RepositoryDetail({route, navigation}) {
                             onPressTo={downLoadFileHandler}
                             style={styles.button}
                             text={"Download"}
+                            disabled={disable}
                         />
                         <Buttons
                             style={styles.button}
@@ -210,7 +215,7 @@ function RepositoryDetail({route, navigation}) {
                     <View style={styles.table}>
                         <View style={[styles.columnCheckBox, styles.borderbot]}></View>
                         <View style={[styles.column, styles.borderbot]}>
-                            <Text style={{marginTop: 10, marginBottom: 10}}>File Name</Text>
+                            <Text style={{marginTop: 10, marginBottom: 10}}>Name</Text>
                         </View>
                         <View style={[styles.column, styles.borderbot]}>
                             <Text>Description</Text>
@@ -227,7 +232,7 @@ function RepositoryDetail({route, navigation}) {
                     </View>
                     <View>
                         {itemsFile?.map((item) => (
-                            <Item
+                            <ItemFile
                                 key={item.fileId}
                                 id={item.fileId}
                                 name={item.fileName}
@@ -235,6 +240,7 @@ function RepositoryDetail({route, navigation}) {
                                 description={item.description}
                                 lastEdit={item.lastModifiedDate}
                                 size={item.size}
+                                publicURL={item.publicURL}
                             />
                         ))}
                         {itemsFolder?.map((item) => (

@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useEffect} from "react";
 import {
     StyleSheet,
     Text,
@@ -17,6 +17,7 @@ import {
     getTaskDetail,
     updateTask
 } from "../networking/CustomNetworkService";
+import {SelectCountry} from "react-native-element-dropdown";
 
 
 export default function TaskDetailComponent({
@@ -25,11 +26,12 @@ export default function TaskDetailComponent({
                                                 memberId,
                                                 taskDetail,
                                                 callbackTaskDetail,
-                                                callbackSubTaskDetail
+                                                callbackSubTaskDetail,
+                                                callBackUpdateTask
                                             }) {
-    console.log("Task detail IS: " + JSON.stringify(taskDetail));
-    console.log("Task Name: " + JSON.stringify(taskDetail.taskName));
-    console.log("List member in TaskDetailComponent:"+ JSON.stringify(listMember))
+    // console.log("Task detail IS: " + JSON.stringify(taskDetail));
+    // console.log("Task Name: " + JSON.stringify(taskDetail.taskName));
+    // console.log("List member in TaskDetailComponent:"+ JSON.stringify(listMember))
     const [add, setAdd] = useState(false);
     const [show, setShow] = useState("ALL");
     const [taskNameDetail, setTaskNameDetail] = useState(taskDetail.taskName);
@@ -44,13 +46,68 @@ export default function TaskDetailComponent({
     const [taskNameUpdate, setTaskUpdate] = useState(taskNameDetail);
     const [statusUpdate, setStatusUpdate] = useState(statusDetail);
     const [descriptionUpdate, setDescriptionUpdate] = useState(descriptionDetail);
-    const [assigneeUpdate, setAssigneeUpdate] = useState(assigneeDetail);
+    const [assigneeUpdate, setAssigneeUpdate] = useState();
     const [labelUpdate, setLabelUpdate] = useState(labelDetail);
     const [estimateUpdate, setEstimateUpdate] = useState(estimateDetail);
-    const [reporterUpdate, setReporterUpdate] = useState(reporterDetail);
+    const [reporterUpdate, setReporterUpdate] = useState();
     const [visible, setVisible] = useState(true);
     const [subTaskName, setSubTaskName] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
+    const [data,setData]=useState();
+    const [listActivity, setListActivity] = useState();
+    function filterActivity(list,value) {
+        if (value==="ALL"){
+            setListActivity(list);
+        }else if (value==="HISTORY"){
+            const filData = list.filter(function (item) {
+                return item.activityType === value;
+            })
+            setListActivity(filData);
+        }else if (value==="COMMENTS"){
+            const filData = list.filter(function (item) {
+                return item.activityType === value;
+            })
+            setListActivity(filData);
+        }
+    }
+    const getCurrentMemberAssignee=()=>{
+        if(assigneeDetail!==null){
+            setAssigneeUpdate(assigneeDetail.memberId);
+        }
+    }
+    const getCurrentMemberReporter=()=>{
+        if(reporterDetail!==null){
+            setReporterUpdate(reporterDetail.memberId);
+        }
+    }
+    const checkNullTextField=()=>{
+        if (descriptionDetail===null){
+            setDescriptionUpdate("")
+        }
+        if (labelDetail===null){
+            setLabelUpdate("")
+        }
+        if (estimateDetail===null){
+            setEstimateUpdate("")
+        }
+    }
+    useEffect(
+        () =>{
+            let newArray = listMember.map((item) => {
+                return {
+                    label: item.userInfo.userInfo.fullName,
+                    value: item.memberId,
+                    image: {
+                        uri: item.userInfo.userInfo.avatar,
+                    },
+                };
+            });
+            getCurrentMemberAssignee();
+            getCurrentMemberReporter();
+            checkNullTextField();
+            setData(newArray);
+            filterActivity(activityResponse,show);
+        }, [])
     const getStatus = (status) => {
         if (status === "TO_DO") {
             return "To do"
@@ -63,9 +120,8 @@ export default function TaskDetailComponent({
         }
     }
     const updateATask = (projectId, taskId, taskName, status, description, assignee, label, estimate, reporter) => {
-        updateTask(projectId, taskId, taskName, status, description, assignee, label, estimate, reporter).then(value => {
-            console.log("updateATask:" + JSON.stringify(value));
-            console.log("projectId in TaskDetail:" + JSON.stringify(projectId));
+        updateTask(projectId, taskId, taskName, status, description, assignee, label, estimate, reporter).then(v => {
+            callBackUpdateTask();
             getTaskDetail(taskId).then(r => {console.log("getDetailATask:" + JSON.stringify(r.data));
             setTaskNameDetail(r.data.taskName);
             setStatusDetail(r.data.status);
@@ -76,8 +132,9 @@ export default function TaskDetailComponent({
             setReporterDetail(r.data.reporter);}
         )})
     }
-    const assignneInTask=(projectId, taskId,assignee)=>{
-        assignneTask(projectId, taskId,assignee).then(value => {
+    const assigneeInTask=(projectId, taskId,assignee)=>{
+        assignneTask(projectId, taskId,assignee).then(v => {
+            callBackUpdateTask()
             getTaskDetail(taskId).then(r => {
                 setAssigneeDetail(r.data.assignee);}
             )})
@@ -101,7 +158,7 @@ export default function TaskDetailComponent({
                     </View>
                     <View style={styles.rowDetail}>
                         <Text style={[styles.descriptionDetail, {width: 100}]}></Text>
-                        <TouchableOpacity onPress={()=>{assignneInTask(projectId, taskDetail.taskId, memberId)}}>
+                        <TouchableOpacity onPress={()=>{assigneeInTask(projectId, taskDetail.taskId, memberId)}}>
                             <Text style={[styles.descriptionDetail, {color: 'blue'}]}>Assignee to me</Text>
                         </TouchableOpacity>
                     </View>
@@ -148,6 +205,11 @@ export default function TaskDetailComponent({
         setAdd(!add)
         setSubTaskName('')
     }
+    const formatterDate=(date)=>{
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const d= new Date(date);
+        return d.toLocaleDateString("en-US", options) +", "+ d.toTimeString().split("G")[0];
+    }
     return (
         <View style={[styles.container]}>
             <Modal
@@ -183,19 +245,21 @@ export default function TaskDetailComponent({
                         <TextField multiline={true} style={{height: 100}} text={descriptionUpdate}
                                    onChangeText={descriptionUpdate => setDescriptionUpdate(descriptionUpdate)}/>
                         <Text style={{fontSize: 12}}>Assignee</Text>
-                        <Picker
-                            style={styles.pickerUpdate}
-                            mode={"dropdown"}
-                            selectedValue={assigneeUpdate}
-
-                            onValueChange={(itemValue, itemIndex) =>
-                                setAssigneeUpdate(itemValue)
-                            }>
-                            {listMember?.map((item) => (
-                                <Picker.Item key={item.memberId} label={item.userInfo.userInfo.fullName}
-                                             value={item.memberId}/>
-                            ))}
-                        </Picker>
+                        <SelectCountry
+                            style={styles.dropdown}
+                            value={assigneeUpdate}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            imageStyle={styles.imageStyle}
+                            data={data}
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            imageField="image"
+                            placeholder="Select member"
+                            onChange={item => {
+                                setAssigneeUpdate(item.value)
+                            }}
+                        />
                         <Text style={{fontSize: 12}}>Label</Text>
                         <TextField text={labelUpdate}
                                    style={{height: 40}}
@@ -205,18 +269,21 @@ export default function TaskDetailComponent({
                                    style={{height: 40}}
                                    onChangeText={estimateUpdate => setEstimateUpdate(estimateUpdate)}/>
                         <Text style={{fontSize: 12}}>Reporter</Text>
-                        <Picker
-                            style={styles.pickerUpdate}
-                            mode={"dropdown"}
-                            selectedValue={reporterUpdate}
-                            onValueChange={(itemValue, itemIndex) =>
-                                setReporterUpdate(itemValue)
-                            }>
-                            {listMember?.map((item) => (
-                                <Picker.Item key={item.memberId} label={item.userInfo.userInfo.fullName}
-                                             value={item.memberId}/>
-                            ))}
-                        </Picker>
+                        <SelectCountry
+                            style={styles.dropdown}
+                            value={reporterUpdate}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            imageStyle={styles.imageStyle}
+                            data={data}
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            imageField="image"
+                            placeholder="Select member"
+                            onChange={item => {
+                                setReporterUpdate(item.value)
+                            }}
+                        />
                         <View style={{alignItems: "flex-end", flexDirection: "row"}}>
                             <Buttons text={"Update"} style={{marginRight: 40}} onPressTo={() => {
                                 console.log("ProjectId: " + projectId);
@@ -281,14 +348,23 @@ export default function TaskDetailComponent({
                         style={styles.picker}
                         mode={"dropdown"}
                         selectedValue={show}
-                        onValueChange={(itemValue, itemIndex) =>
+                        onValueChange={(itemValue, itemIndex) =>{
+                            filterActivity(activityResponse,itemValue);
+                            console.log("Pick value"+itemValue);
                             setShow(itemValue)
-                        }>
+                        }}>
                         <Picker.Item label="All" value="ALL"/>
                         <Picker.Item label="Comments" value="COMMENTS"/>
                         <Picker.Item label="History" value="HISTORY"/>
                     </Picker>
                 </View>
+                <FlatList data={listActivity}
+                          renderItem={({ item }) => (
+                              <View>
+                                  <Text style={styles.descriptionDetail}><Text style={styles.childIssues}>{item.userInfo.fullName}</Text> {item.edited} at {formatterDate(item.createdDate)}</Text>
+                              </View>
+                          )
+                          }/>
             </View>
         </View>
     );
@@ -382,5 +458,23 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         padding: 50,
+    },
+    dropdown: {
+        width:"50%",
+        height: 40,
+        margin:20,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        paddingHorizontal: 8,
+    },
+    imageStyle: {
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+    },
+    selectedTextStyle: {
+        fontSize: 16,
+        marginLeft: 8,
     },
 });

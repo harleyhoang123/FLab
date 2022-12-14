@@ -547,15 +547,15 @@ export const deleteTask = async (sprintId, taskId) => {
   }
 };
 
-export const deleteFolder = async (folderId) => {
+export const deleteFolderInRepository = async (repoId, folderId) => {
   const token = await getToken();
   try {
     const response = await axios.delete(
       host +
-        "8082/flab/repository/public/api/v1/folders/:folder-id".replace(
+        "8082/flab/repository/public/api/v1/repositories/:repository-id/:folder-id".replace(
           ":folder-id",
           folderId
-        ),
+        ).replace(":repository-id", repoId),
       {
         headers: {
           Authorization: `Bearer ` + token,
@@ -590,16 +590,14 @@ export const getListFolder = async (repoId) => {
   }
 };
 
-export const deleteFolderOrFile = async (Id, type) => {
+export const deleteFolderOrFile = async (parentFolderId,Id, type) => {
   const token = await getToken();
   if (type === "Folder") {
     try {
       const response = await axios.delete(
         host +
-          "8082/flab/repository/public/api/v1/folders/:folder-id".replace(
-            ":folder-id",
-            Id
-          ),
+          "8082/flab/repository/public/api/v1/folders/:folder-id/:sub-folder-id".replace(
+            ":folder-id", parentFolderId).replace(":sub-folder-id",Id),
         {
           headers: {
             Authorization: `Bearer ` + token,
@@ -619,10 +617,8 @@ export const deleteFolderOrFile = async (Id, type) => {
     try {
       const response = await axios.delete(
         host +
-          "8082/flab/repository/public/api/v1/files/:file-id".replace(
-            ":file-id",
-            Id
-          ),
+          "8082/flab/repository/public/api/v1/folders/:folder-id/files/:file-id".replace(
+            ":file-id", Id).replace(":folder-id",parentFolderId),
         {
           headers: {
             Authorization: `Bearer ` + token,

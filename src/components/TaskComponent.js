@@ -1,10 +1,7 @@
-import React, {useState} from "react";
+import React, {forwardRef, useEffect, useImperativeHandle, useState} from "react";
 import {StyleSheet, Text, TouchableOpacity, View, Image} from "react-native";
 import Buttons from "./Buttons";
-import axios from "axios";
-import AsyncStorage from "@react-native-community/async-storage";
-import {Picker} from "@react-native-picker/picker";
-import {deleteTask} from "../networking/CustomNetworkService";
+import {deleteTask, getTaskDetail} from "../networking/CustomNetworkService";
 
 
 
@@ -17,7 +14,7 @@ function TaskComponent({
                            assignee,
                            callBackGetListTask,
                            callbackTaskDetail,
-                           callbackDeleteTask
+                           callbackDeleteTask,update
                        }) {
     const [taskNameDetail, setTaskDetail] = useState(taskName);
     const [estimateDetail, setEstimateDetail] = useState(estimate);
@@ -30,11 +27,30 @@ function TaskComponent({
         });
 
     }
-    const getImage = (assignee) => {
-        if (assignee == null) {
-            return "https://pbs.twimg.com/profile_images/486929358120964097/gNLINY67_400x400.png";
+    useEffect(() => {
+        callUpdate()
+    }, [update]);
+    const callUpdate =()=>{
+        getTaskDetail(taskId).then(v=>{
+            setTaskDetail(v.data.taskName);
+            setEstimateDetail(v.data.estimate);
+            setStatusDetail(v.data.status);
+            setAssigneeDetail(v.data.assignee);
+        })
+    }
+
+    const getImage = (user) => {
+        if (user == null) {
+            return (
+                <Image source={require("../assets/avatarDefault.png")} style={styles.userImage} />
+            )
         } else {
-            return assignee.userInfo.avatar;
+            return (
+                <Image style={styles.userImage}
+                       source={{
+                           uri: user.userInfo.avatar,
+                       }}/>
+            )
         }
     }
     const getStatus=(status)=>{
@@ -59,12 +75,7 @@ function TaskComponent({
                                     {getStatus(statusDetail)}
                                 </Text>
                             </View >
-                            <Image
-                                style={styles.userImage}
-                                source={{
-                                    uri: getImage(assigneeDetail),
-                                }}
-                            />
+                            {getImage(assigneeDetail)}
                             <Buttons text={"X"} onPressTo={() => (deleteATask(sprintId, taskId))}
                                      style={styles.btn}></Buttons>
                         </View>

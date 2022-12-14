@@ -16,7 +16,7 @@ export class MaterialController {
   updateMaterial({ labId,materialId,materialName,status,amount, description,note,image }) {
     return this.networkService.request({
       method: "PUT",
-      url: routes.material.updateMeterial
+      url: routes.material.updateMaterial
         .replace(":laboratory-id", labId)
         .replace(":material-id", materialId),
       data: {

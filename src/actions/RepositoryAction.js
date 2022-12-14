@@ -102,7 +102,7 @@ export const getFolderDetailId =
     }
   };
 export const addFileToFolder =
-    (parentFolderId,name, description, file, navigation) =>
+    (parentFolderId,name,fileName, description, file, navigation) =>
         async (dispatch, _, { networkService }) => {
             try {
                 const repositoryController = new RepositoryController(networkService);
@@ -110,7 +110,7 @@ export const addFileToFolder =
                 console.log("name in actions: " + name);
                 console.log("description in actions: " + description);
                 console.log("file in actions: " + file);
-                const { data } = await repositoryController.addFileToFolder({
+                const { data } = await repositoryController.addFileToFolder({fileName,
                     parentFolderId,description,file
                 });
                 console.log("Data in addFileToFolder"+ JSON.stringify(data))

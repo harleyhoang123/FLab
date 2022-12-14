@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import {Modal, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
 import Buttons from "./Buttons";
 import TaskComponent from "./TaskComponent";
@@ -24,7 +24,8 @@ function SprintComponent({
                              totalDoneTask,
                              callBackGetListSprint,
                              callbackTaskDetail,
-                             callbackDeleteTask
+                             callbackDeleteTask,
+                             update
                          }) {
     const [notStartTask, setNotStartTask] = useState(totalNotStartedTask);
     const [inProgressTask, setInProgressTask] = useState(totalInProgressTask);
@@ -42,6 +43,7 @@ function SprintComponent({
     const [startDateUpdate, setStartDateUpdate] = useState(new Date());
     const [endDateUpdate, setEndDateUpdate] = useState(new Date());
     const [goalUpdate, setGoalUpdate] = useState(goalDetail);
+
     const formatDate = (date) => {
         const formattedDate = new Date(date);
         return formattedDate.toLocaleDateString('en-GB', {
@@ -63,15 +65,27 @@ function SprintComponent({
 
     const callBackGetListTask = () => {
         getListTask(sprintId).then(r => {
-            setListTask(r.data.tasks); setNotStartTask(r.data.totalNotStartedTask)
+            setListTask(r.data.tasks);
+            setNotStartTask(r.data.totalNotStartedTask)
             setInProgressTask(r.data.totalInProgressTask);
             setDoneTask(r.data.totalDoneTask)
         })
     }
 
+    useEffect(() => {
+        callUpdateTask()
+    }, [update]);
+    const callUpdateTask=()=>{
+        getListTask(sprintId).then(r => {
+            setNotStartTask(r.data.totalNotStartedTask)
+            setInProgressTask(r.data.totalInProgressTask);
+            setDoneTask(r.data.totalDoneTask)
+        })
+    }
     const deleteASprint = (projectId, sprintId) => {
         deleteSprint(projectId, sprintId).then(() => callBackGetListSprint());
     }
+
     const changeType = () => {
         setIsTextField(!isTextField);
     };
@@ -118,7 +132,7 @@ function SprintComponent({
                         <TaskComponent key={item.taskId} taskId={item.taskId} taskName={item.taskName}
                                        sprintId={sprintId} estimate={item.estimate} status={item.status}
                                        assignee={item.assignee} callBackGetListTask={callBackGetListTask}
-                                       callbackTaskDetail={callbackTaskDetail}
+                                       callbackTaskDetail={callbackTaskDetail} update={update}
                                        callbackDeleteTask={callbackDeleteTask}/>
                     ))}
                     {renderTextField(isTextField)}
@@ -191,11 +205,11 @@ function SprintComponent({
                 <View style={styles.view3}>
                     <Text style={styles.text3}>{doneTask}</Text>
                 </View>
-                <Buttons text={"Complete sprint"} style={styles.btn} styleText={{fontSize: 14}}/>
+                <Buttons text={"Complete sprint"} style={styles.btn} styleText={{fontSize: 12}}/>
                 <Buttons text={"Edit"} onPressTo={() => setModalVisible(!modalVisible)}
-                         style={[styles.button, {width: 35}]} styleText={{fontSize: 14}}/>
+                         style={[styles.button, {width: 35}]} styleText={{fontSize: 12}}/>
                 <Buttons text={"X"} onPressTo={() => deleteASprint(projectId, sprintId)} style={styles.button}
-                         styleText={{fontSize: 14}}/>
+                         styleText={{fontSize: 13}}/>
             </View>
             <Text style={{marginLeft: 20}}>{goalDetail}</Text>
             {renderDropdown()}

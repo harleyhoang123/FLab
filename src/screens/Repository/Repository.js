@@ -15,7 +15,7 @@ import LabNavigator from "../../navigations/LabNavigator";
 import { useDispatch } from "react-redux";
 import { getFolderDetailId } from "../../actions/RepositoryAction";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
-import {deleteFolder, getListFolder} from "../../networking/CustomNetworkService";
+import {deleteFolderInRepository, getListFolder} from "../../networking/CustomNetworkService";
 import AsyncStorage from "@react-native-community/async-storage";
 
 const getRepoId = async () => {
@@ -46,7 +46,7 @@ function Repository({ route, navigation }) {
     return d.toLocaleDateString("en-US", options) +", "+ d.toTimeString().split("G")[0];
   }
   const deleteAFolder = (folderId) => {
-    deleteFolder(folderId).then(r => {getListFolder(repoId).then(v => setItems(v.data.items))})
+    deleteFolderInRepository(repoId,folderId).then(r => {getListFolder(repoId).then(v => setItems(v.data.items))})
   };
   const [checked, setChecked] = useState("");
   const [folderName, setFolderName] = useState("");
@@ -118,13 +118,14 @@ function Repository({ route, navigation }) {
             <Buttons
               style={styles.button}
               text={"Delete"}
+
               onPressTo={() => deleteAFolder(checked)}
             />
           </View>
           <View style={styles.table}>
             <View style={[styles.columnCheckBox, styles.borderbot]}></View>
             <View style={[styles.column, styles.borderbot]}>
-              <Text style={{ marginTop: 10, marginBottom: 10 }}>File Name</Text>
+              <Text style={{ marginTop: 10, marginBottom: 10 }}>Name</Text>
             </View>
             <View style={[styles.column, styles.borderbot]}>
               <Text>Description</Text>

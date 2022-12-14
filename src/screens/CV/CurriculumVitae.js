@@ -45,7 +45,7 @@ function CurriculumVitae({navigation}) {
     }, []);
 
     const openURL = (url) => {
-        Linking.openURL(url);
+        Linking.openURL(url).then(r => {});
     }
     const deleteCV = () => {
         deleteCVbyAccountId(accountId, checked).then(v => {

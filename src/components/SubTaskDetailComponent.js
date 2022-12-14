@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import React, {useEffect, useState} from 'react';
+import {FlatList, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Buttons from "./Buttons";
 import {Picker} from "@react-native-picker/picker";
 import axios from "axios";
@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import UserInfoComponent from "./UserInfoComponent";
 import TextField from "./TextField";
 import {assignneSubTask, deleteSubTask, getSubTaskDetail, updateSubTask} from "../networking/CustomNetworkService";
+import {SelectCountry} from "react-native-element-dropdown";
 
 
 function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, listMember, callbackSubTaskDetail}) {
@@ -29,6 +30,61 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
     const [estimateUpdate, setEstimateUpdate] = useState(estimateDetail);
     const [reporterUpdate, setReporterUpdate] = useState();
     const [modalVisible, setModalVisible] = useState(false);
+    const [data,setData]=useState();
+    const [listActivity, setListActivity] = useState();
+    function filterActivity(list,value) {
+        if (value==="ALL"){
+            setListActivity(list);
+        }else if (value==="HISTORY"){
+            const filData = list.filter(function (item) {
+                return item.activityType === value;
+            })
+            setListActivity(filData);
+        }else if (value==="COMMENTS"){
+            const filData = list.filter(function (item) {
+                return item.activityType === value;
+            })
+            setListActivity(filData);
+        }
+    }
+    const getCurrentMemberAssignee=()=>{
+        if(assigneeDetail!==null){
+            setAssigneeUpdate(assigneeDetail.memberId);
+        }
+    }
+    const getCurrentMemberReporter=()=>{
+        if(reporterDetail!==null){
+            setReporterUpdate(reporterDetail.memberId);
+        }
+    }
+    const checkNullTextField=()=>{
+        if (descriptionDetail===null){
+            setDescriptionUpdate("")
+        }
+        if (labelDetail===null){
+            setLabelUpdate("")
+        }
+        if (estimateDetail===null){
+            setEstimateUpdate("")
+        }
+    }
+    useEffect(
+        () =>{
+            let newArray = listMember.map((item) => {
+                return {
+                    label: item.userInfo.userInfo.fullName,
+                    value: item.memberId,
+                    image: {
+                        uri: item.userInfo.userInfo.avatar,
+                    },
+                };
+            });
+            getCurrentMemberAssignee();
+            getCurrentMemberReporter();
+            checkNullTextField();
+            setData(newArray);
+            filterActivity(activityResponse,show);
+        }, [])
     const getStatus = (status) => {
         if (status === "TO_DO") {
             return "To do"
@@ -39,6 +95,11 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
         if (status === "DONE") {
             return "Done"
         }
+    }
+    const formatterDate=(date)=>{
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const d= new Date(date);
+        return d.toLocaleDateString("en-US", options) +", "+ d.toTimeString().split("G")[0];
     }
     const handleNone = (none) => {
         if (none === null) {
@@ -62,7 +123,7 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
             setReporterDetail(r.data.reporter);
         })})
     }
-    const assignneInSubTask=(projectId, subTaskId,assignee)=>{
+    const assigneeInSubTask=(projectId, subTaskId,assignee)=>{
         assignneSubTask(projectId, subTaskId,assignee).then(value => {
             getSubTaskDetail(subTaskId).then(r => {
                 setAssigneeDetail(r.data.assignee);}
@@ -80,7 +141,7 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
                     </View>
                     <View style={styles.rowDetail}>
                         <Text style={[styles.descriptionDetail, {width: 100}]}></Text>
-                        <TouchableOpacity onPress={()=>{assignneInSubTask(projectId, subTaskDetail.subTaskId, memberId)}}>
+                        <TouchableOpacity onPress={()=>{assigneeInSubTask(projectId, subTaskDetail.subTaskId, memberId)}}>
                             <Text style={[styles.descriptionDetail, {color: 'blue'}]}>Assignee to me</Text>
                         </TouchableOpacity>
                     </View>
@@ -141,18 +202,21 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
                         <TextField multiline={true} style={{height: 100}} text={descriptionUpdate}
                                    onChangeText={descriptionUpdate => setDescriptionUpdate(descriptionUpdate)}/>
                         <Text style={{fontSize: 12}}>Assignee</Text>
-                        <Picker
-                            style={styles.pickerUpdate}
-                            mode={"dropdown"}
-                            selectedValue={assigneeUpdate}
-                            onValueChange={(itemValue, itemIndex) =>
-                                setAssigneeUpdate(itemValue)
-                            }>
-                            {listMember?.map((item) => (
-                                <Picker.Item key={item.memberId} label={item.userInfo.userInfo.fullName}
-                                             value={item.memberId}/>
-                            ))}
-                        </Picker>
+                        <SelectCountry
+                            style={styles.dropdown}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            imageStyle={styles.imageStyle}
+                            value={assigneeUpdate}
+                            data={data}
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            imageField="image"
+                            placeholder="Select member"
+                            onChange={item => {
+                                setAssigneeUpdate(item.value)
+                            }}
+                        />
                         <Text style={{fontSize: 12}}>Label</Text>
                         <TextField text={labelUpdate}
                                    style={{height: 40}}
@@ -162,18 +226,21 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
                                    style={{height: 40}}
                                    onChangeText={estimateUpdate => setEstimateUpdate(estimateUpdate)}/>
                         <Text style={{fontSize: 12}}>Reporter</Text>
-                        <Picker
-                            style={styles.pickerUpdate}
-                            mode={"dropdown"}
-                            selectedValue={reporterUpdate}
-                            onValueChange={(itemValue, itemIndex) =>
-                                setReporterUpdate(itemValue)
-                            }>
-                            {listMember?.map((item) => (
-                                <Picker.Item key={item.memberId} label={item.userInfo.userInfo.fullName}
-                                             value={item.memberId}/>
-                            ))}
-                        </Picker>
+                        <SelectCountry
+                            style={styles.dropdown}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            imageStyle={styles.imageStyle}
+                            value={reporterUpdate}
+                            data={data}
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            imageField="image"
+                            placeholder="Select member"
+                            onChange={item => {
+                                setReporterUpdate(item.value)
+                            }}
+                        />
                         <View style={{alignItems: "flex-end", flexDirection: "row"}}>
                             <Buttons text={"Update"} style={{marginRight: 40}} onPressTo={() => {
                                 console.log("ProjectId: " + projectId);
@@ -231,14 +298,22 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
                         style={styles.picker}
                         mode={"dropdown"}
                         selectedValue={show}
-                        onValueChange={(itemValue, itemIndex) =>
+                        onValueChange={(itemValue, itemIndex) =>{
+                            filterActivity(activityResponse,itemValue);
                             setShow(itemValue)
-                        }>
+                        }}>
                         <Picker.Item label="All" value="ALL"/>
                         <Picker.Item label="Comments" value="COMMENTS"/>
                         <Picker.Item label="History" value="HISTORY"/>
                     </Picker>
                 </View>
+                <FlatList data={listActivity}
+                          renderItem={({ item }) => (
+                              <View>
+                                  <Text style={styles.descriptionDetail}><Text style={styles.childIssues}>{item.userInfo.fullName}</Text> {item.edited} at {formatterDate(item.createdDate)}</Text>
+                              </View>
+                          )
+                          }/>
             </View>
         </View>
     );
@@ -332,6 +407,33 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         padding: 50,
+    },
+    dropdown: {
+        width:"35%",
+        height: 40,
+        margin:20,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        paddingHorizontal: 8,
+    },
+    dropdown: {
+        width:"50%",
+        height: 40,
+        margin:20,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        paddingHorizontal: 8,
+    },
+    imageStyle: {
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+    },
+    selectedTextStyle: {
+        fontSize: 16,
+        marginLeft: 8,
     },
 });
 export default SubTaskDetailComponent;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import {
     StyleSheet,
     View,
@@ -12,8 +12,7 @@ import SubTaskDetailComponent from "../../components/SubTaskDetailComponent";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
 import Buttons from "../../components/Buttons";
 import TextField from "../../components/TextField";
-import AsyncStorage from "@react-native-community/async-storage";
-import axios from "axios";
+
 import {createSprint, getListSprint, getSubTaskDetail, getTaskDetail} from "../../networking/CustomNetworkService";
 
 export default function Backlog({route, navigation}) {
@@ -30,7 +29,7 @@ export default function Backlog({route, navigation}) {
     const [taskDetail, setTaskDetail] = useState();
     const [subTaskDetail, setSubTaskDetail] = useState();
     const [isTextField, setIsTextField] = useState(false);
-    const [selected, setSelected] = useState();
+    const [update,setUpdate]=useState(0);
     const changeType = () => {
         setIsTextField(!isTextField);
     };
@@ -42,6 +41,9 @@ export default function Backlog({route, navigation}) {
     const callBackGetListSprint = () => {
         getListSprint(projectId).then((v) => setListSPrint(v.data.sprints.items))
     }
+    const callBackUpdate=()=>{
+        setUpdate(update+1);
+    }
     const renderItem = (list) => {
         return (
             <View>
@@ -51,7 +53,7 @@ export default function Backlog({route, navigation}) {
                                          projectId={projectId} memberId={res.memberId} sprintId={item.sprintId}
                                          sprintName={item.sprintName}
                                          goal={item.goal} startDate={item.startDate} endDate={item.endDate}
-                                         tasks={item.tasks}
+                                         tasks={item.tasks} update={update}
                                          totalNotStartedTask={item.totalNotStartedTask}
                                          totalInProgressTask={item.totalInProgressTask}
                                          totalDoneTask={item.totalDoneTask}
@@ -133,7 +135,9 @@ export default function Backlog({route, navigation}) {
                     {taskDetail != null && <TaskDetailComponent taskDetail={taskDetail} memberId={res.memberId}
                                                                 listMember={listMember} projectId={projectId}
                                                                 callbackTaskDetail={callbackTaskDetail}
-                                                                callbackSubTaskDetail={callbackSubTaskDetail}/>}
+                                                                callbackSubTaskDetail={callbackSubTaskDetail}
+                                                                callBackUpdateTask={callBackUpdate}
+                    />}
                     {subTaskDetail != null &&
                         <SubTaskDetailComponent subTaskDetail={subTaskDetail} taskId={taskIdChange}
                                                 listMember={listMember} projectId={projectId}

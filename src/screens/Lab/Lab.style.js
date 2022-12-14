@@ -58,7 +58,7 @@ export const styles = StyleSheet.create({
   flatlist: {
     flex: 1,
     flexDirection: "row",
-    marginLeft: 120,
+    marginLeft: 20,
   },
   item: {
     borderColor: "#DEE2E6",
@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
     marginRight: 15,
     marginBottom: 30,
     borderWidth: 1,
-    width: 350,
+    width: "18%",
     height: "auto",
     margin: 4,
   },

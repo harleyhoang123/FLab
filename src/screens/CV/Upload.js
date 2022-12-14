@@ -10,11 +10,12 @@ import ProjectNavigator from "../../navigations/ProjectNavigator";
 function Upload({route,navigation}) {
     const folderName = route.params.folderName;
     const parentFolderId = route.params.parentFolderId;
+    const [fileName, setFileName] = useState("")
     const [description, setDescription] = useState("")
     const [file, setFile] = useState();
     const dispatch = useDispatch();
-    const uploadFile=(parentFolderId, folderName,description,file,navigation)=>{
-        dispatch(addFileToFolder(parentFolderId, folderName,description,file,navigation))
+    const uploadFile=(parentFolderId, folderName,fileName,description,file,navigation)=>{
+        dispatch(addFileToFolder(parentFolderId, folderName,fileName,description,file,navigation))
     }
     console.log("folderName in Upload" + folderName);
     console.log("parentFolderId in Upload" + parentFolderId);
@@ -41,6 +42,10 @@ function Upload({route,navigation}) {
             <ProjectNavigator navigation={navigation}/>
             <View style={styles.containerContent}>
                 <Text style={styles.text}>Upload A File</Text>
+                <AddComponent title={"File Name"}
+                              multiline={false}
+                              style={{width: "97%"}}
+                              text={fileName} onChangeText={fileName => setFileName(fileName)}/>
                 <AddComponent title={"Description"}
                               multiline={false}
                               style={{width: "97%"}}
@@ -48,7 +53,7 @@ function Upload({route,navigation}) {
                 {file &&<Text style={{marginLeft:30,fontSize: 20, backgroundColor:'white'}}>{file.name}</Text>}
                 <Buttons text={"Choose A File"} style={styles.button} onPressTo={pickFile} />
                 <View style={{flexDirection:"row"}}>
-                    <Buttons text={"Upload"} style={[styles.button,{marginRight:30 }]} onPressTo={()=> {uploadFile(parentFolderId, folderName,description,file,navigation); console.log("Click Upload")}}/>
+                    <Buttons text={"Upload"} style={[styles.button,{marginRight:30 }]} onPressTo={()=> {uploadFile(parentFolderId, folderName,fileName,description,file,navigation); console.log("Click Upload")}}/>
                     <Buttons text={"Cancel"} style={styles.button} onPressTo={()=> navigation.goBack(null)}/>
                  </View>
             </View>

@@ -62,7 +62,7 @@ export class RepositoryController {
       data: null,
     });
   }
-  addFileToFolder({parentFolderId, description, file}){
+  addFileToFolder({parentFolderId,fileName, description, file}){
     return this.networkService.request({
       method: "POST",
       url: routes.repository.addFileToFolder.replace(
@@ -70,6 +70,7 @@ export class RepositoryController {
           parentFolderId
       ),
       data: {
+        fileName:fileName,
         file: file,
         description: description
 

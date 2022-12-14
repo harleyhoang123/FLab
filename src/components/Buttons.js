@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-function Buttons({ text, onPressTo, style, styleText }) {
+function Buttons({ text, onPressTo, style, styleText,disabled }) {
   return (
-    <TouchableOpacity style={[styles.button, style]} onPress={onPressTo}>
+    <TouchableOpacity disabled={disabled} style={[styles.button, style]} onPress={onPressTo}>
       <Text style={[styles.text, styleText]}>{text}</Text>
     </TouchableOpacity>
   );

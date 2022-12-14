@@ -37,13 +37,14 @@ export const login =
       dispatch(loginRequest());
       const userController = new UserController(networkService);
       const { data } = await userController.login({ username, password });
-      console.log("Data is: " + JSON.stringify(data));
+      console.log("Data is Login : " + JSON.stringify(data));
       if (data.data !== null) {
         try {
           await AsyncStorage.setItem("@accountId", data.data.accountId);
           await AsyncStorage.setItem("@roles", data.data.role);
           await AsyncStorage.setItem("@avatar", data.data.avatar);
           await AsyncStorage.setItem("@token", data.data.token);
+          await AsyncStorage.setItem("@username", data.data.fullName);
           console.log("Set account id success: " + JSON.stringify(data.data));
         } catch ({ err }) {
           console.log("Can't store accountId:" + err);

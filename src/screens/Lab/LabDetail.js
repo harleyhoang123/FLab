@@ -185,7 +185,7 @@ export default function LabDetail({ route, navigation }) {
               <Text style={styles.textStyle}>Add Member</Text>
             </Pressable>
           </View>
-          {roles.includes("ADMIN") ? (
+          {/*{roles.includes("ADMIN") ? (*/}
             <View style={{ marginTop: 20, flexDirection: "row" }}>
               <Pressable
                 style={[styles.button, styles.buttonOpen]}
@@ -203,7 +203,6 @@ export default function LabDetail({ route, navigation }) {
               </Pressable>
               <Pressable
                 style={[styles.button, styles.buttonOpen]}
-                onPress={() => setModalVisible(true)}
               >
                 <View>
                   <Text
@@ -221,9 +220,9 @@ export default function LabDetail({ route, navigation }) {
                 <Text></Text>
               </Pressable>
             </View>
-          ) : (
-            <Text></Text>
-          )}
+          {/*) : (*/}
+          {/*  <Text></Text>*/}
+          {/*)}*/}
         </View>
         <Modal
           animationType="slide"

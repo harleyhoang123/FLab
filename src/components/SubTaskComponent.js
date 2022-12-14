@@ -10,11 +10,18 @@ function SubTaskComponent({subTaskId, subTaskName, estimate, status, assignee, c
     const [statusDetail, setStatusDetail] = useState(status);
     const [assigneeDetail, setAssigneeDetail] = useState(assignee);
 
-    const getImage = (assignee) => {
-        if (assignee == null) {
-            return "https://pbs.twimg.com/profile_images/486929358120964097/gNLINY67_400x400.png";
+    const getImage = (user) => {
+        if (user == null) {
+            return (
+                <Image source={require("../assets/avatarDefault.png")} style={styles.userImage} />
+            )
         } else {
-            return assignee.userInfo.avatar;
+            return (
+                <Image style={styles.userImage}
+                       source={{
+                           uri: user.userInfo.avatar,
+                       }}/>
+            )
         }
     }
     const getStatus=(status)=>{
@@ -34,14 +41,7 @@ function SubTaskComponent({subTaskId, subTaskName, estimate, status, assignee, c
                             <View style={[styles.view1,{width: 20}]}>
                                 <Text style={styles.text1}>{estimateDetail}</Text>
                             </View>
-                            <TouchableOpacity>
-                                <Image
-                                    style={styles.userImage}
-                                    source={{
-                                        uri: getImage(assigneeDetail),
-                                    }}
-                                />
-                            </TouchableOpacity>
+                            {getImage(assigneeDetail)}
                             <View style={styles.view1}>
                                 <Text style={styles.text}>
                                     {getStatus(statusDetail)}
