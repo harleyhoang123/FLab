@@ -86,10 +86,6 @@ export default function LabDetail({ route, navigation }) {
     dispatch(getAllRequestInLab(labIdRequest, navigation));
   };
 
-  const goToLabUpdatePage = (labId) => {
-    dispatch(getAllMemberInLaboratoryById(labId, navigation));
-  };
-
   const delteCurrentLab = () => {
     console.log("data.laboratoryId");
     console.log(data.laboratoryId);
