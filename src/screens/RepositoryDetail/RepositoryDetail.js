@@ -1,10 +1,8 @@
 import React, {useState} from "react";
 import {Text, StyleSheet, View, FlatList, SafeAreaView, Linking} from "react-native";
 import Buttons from "../../components/Buttons";
-import {Table, TableWrapper, Row, Cell} from "react-native-table-component";
 import {RadioButton} from "react-native-paper";
 import TextField from "../../components/TextField";
-import {Touchable, TouchableOpacity} from "react-native-web";
 import LabNavigator from "../../navigations/LabNavigator";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
 import {downLoadFileByFileId, getFolderDetailId} from "../../actions/RepositoryAction";

@@ -50,7 +50,10 @@ function CurriculumVitae({navigation}) {
     const deleteCV = () => {
         deleteCVbyAccountId(accountId, checked).then(v => {
             getCVbyAccountId(accountId).then(r => {
-                setListCV(r.data.items)
+                setListCV(r.data.items);
+                setChecked("");
+                setCvName("");
+                setDescription("");
             })
         })
     }
@@ -115,6 +118,7 @@ function CurriculumVitae({navigation}) {
                     <Buttons
                         style={styles.button}
                         text={"Delete"}
+
                         onPressTo={() => deleteCV()}
                     />
                     <Buttons

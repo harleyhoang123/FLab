@@ -19,7 +19,7 @@ function ListMaterial({ route, navigation }) {
   const [text, setText] = useState("");
   const [list, setList] = useState(listsMaterial);
   const callbackListMaterial=()=>{
-    getListMaterial(labId).then(r=> setList(r?.data?.items))
+    getListMaterial(labId).then(r=> setList(r.data.items))
   }
   return (
     <View>
@@ -49,8 +49,9 @@ function ListMaterial({ route, navigation }) {
           />
         </View>
       </View>
-      <FlatList data={list} renderItem={({item})=>(
+      {list?.map((item)=>(
           <MaterialItem
+              key={item.materialId}
               id={item.materialId}
               navigation={navigation}
               title={item.materialName}
@@ -58,8 +59,8 @@ function ListMaterial({ route, navigation }) {
               status={item.status}
               labId={labId}
               callbackListMaterial={callbackListMaterial}
-          />)}
-      />
+          />
+      ))}
       <PaginationBar />
     </View>
   );

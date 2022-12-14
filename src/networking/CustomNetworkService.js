@@ -711,7 +711,7 @@ export const getListMaterial = async (labId) => {
   try {
     const response = await axios.get(
       host +
-        "8083/flab/lab/public/api/v1/materials/:laboratory-id/materials".replace(
+        "8083/flab/lab/public/api/v1/laboratories/:laboratory-id/materials".replace(
           ":laboratory-id",
           labId
         ),
@@ -1375,5 +1375,32 @@ export const getProfileDetail = async (profileId) => {
     return response.data
   } catch (error) {
     console.log("error when updateProfileCv:" + JSON.stringify(error));
+  }
+};
+const getProjectId = async () => {
+  try {
+    const projectId = await AsyncStorage.getItem("@projectId");
+    console.log("projectId: " + projectId);
+    return projectId;
+  } catch (e) {
+    console.log("Can't get account id: " + e);
+  }
+};
+export const getAllMemberInProject = async () => {
+  const token = await getToken();
+  const projectId = await getProjectId();
+  try {
+    const response = await axios.get(
+        host+'8083/flab/lab/public/api/v1/projects/:project-id/members'.replace(":project-id", projectId),
+        {
+          headers: {
+            "Authorization": `Bearer ` + token
+          }
+        }
+    );
+    console.log("Data in getAllMemberInProject: " + JSON.stringify(response.data));
+    return response.data
+  } catch (error) {
+    console.log("error when getAllMemberInProject:" + JSON.stringify(error));
   }
 };
