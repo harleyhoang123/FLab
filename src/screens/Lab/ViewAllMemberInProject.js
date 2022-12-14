@@ -65,7 +65,7 @@ export default function ViewAllMemberInProject({ route, navigation }) {
       <Text style={styles.title}>Member name: {memberName}</Text>
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.title}>Email: {email}</Text>
-        <View style={{ marginLeft: "60%", flexDirection: "row" }}>
+        <View style={{ marginLeft: "auto", flexDirection: "row" }}>
           <Text
             onPress={() => goToMemberDetail(accountId, memberId)}
             style={styles.action}
@@ -74,6 +74,14 @@ export default function ViewAllMemberInProject({ route, navigation }) {
           </Text>
           <Text onPress={() => removeMember(memberId)} style={styles.action}>
             Remove
+          </Text>
+          <Text
+            onPress={() =>
+              navigation.navigate("UpdateMemberRole", { memberid: memberId })
+            }
+            style={styles.action}
+          >
+            Update Role
           </Text>
         </View>
       </View>
@@ -112,12 +120,24 @@ export default function ViewAllMemberInProject({ route, navigation }) {
             keyExtractor={(item) => item.memberId}
           />
         </SafeAreaView>
+        <Buttons
+          text={"Back"}
+          style={styles.buttonBack}
+          onPressTo={() => {
+            navigation.goBack(null);
+          }}
+        />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  buttonBack: {
+    marginTop: 20,
+    width: 130,
+    marginLeft: 5,
+  },
   button: {
     borderRadius: 20,
     padding: 10,
@@ -137,7 +157,7 @@ const styles = StyleSheet.create({
     marginLeft: 50,
   },
   item: {
-    width: "70%",
+    width: "45%",
     borderRadius: 5,
     margin: 30,
     padding: 20,

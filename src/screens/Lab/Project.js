@@ -65,7 +65,7 @@ export default function Project({ route, navigation }) {
       <View style={{ flexDirection: "row" }}>
         <View style={{ flexDirection: "row", width: "100%" }}>
           <Text style={styles.title}>Description: {description}</Text>
-          <View style={{ flexDirection: "row", marginLeft: "75%" }}>
+          <View style={{ flexDirection: "row", marginLeft: "auto" }}>
             <Text
               onPress={() => goToProjectDetailPage(projectId)}
               style={styles.action}
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     marginLeft: 50,
   },
   item: {
-    minWidth: "30%",
+    width: "45%",
     borderRadius: 5,
     margin: 30,
     padding: 20,
