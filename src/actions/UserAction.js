@@ -155,11 +155,10 @@ export const getAccountInfoByAccountIdToEdit =
   };
 export const updateProfile =
   (
-    profileId,
-    gender,
-    dateOfBirth,
+      profileId,
+      gender,
+      dateOfBirth,
     address,
-    phoneNumber,
     studentId,
     memberCode,
     major,
@@ -179,7 +178,6 @@ export const updateProfile =
         gender,
         dateOfBirth,
         address,
-        phoneNumber,
         studentId,
         memberCode,
         major,
@@ -187,11 +185,11 @@ export const updateProfile =
         specialized,
         description,
         award,
-        interest,
+        interest
       });
       console.log("Data Change is: " + JSON.stringify(data));
       console.log("Data updateProfile is: " + JSON.stringify(data.data));
-      if (data != null) {
+      if (data !== null) {
         dispatch(getAccountInfoByAccountId(profileId, navigation));
       }
     } catch ({ data }) {

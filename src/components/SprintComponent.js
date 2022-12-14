@@ -6,7 +6,14 @@ import TextField from "./TextField";
 import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
 import {DateTimePicker} from "@hashiprobr/react-native-paper-datetimepicker";
-import {createTask, deleteSprint, getListTask, getSprintDetail, updateSprint} from "../networking/CustomNetworkService";
+import {
+    createTask,
+    deleteSprint,
+    getListTask,
+    getSprintDetail,
+    updateSprint,
+    updateStatusSprint
+} from "../networking/CustomNetworkService";
 
 
 
@@ -19,6 +26,7 @@ function SprintComponent({
                              startDate,
                              endDate,
                              tasks,
+                             status,
                              totalNotStartedTask,
                              totalInProgressTask,
                              totalDoneTask,
@@ -38,6 +46,7 @@ function SprintComponent({
     const [sprintNameDetail, setSprintNameDetail] = useState(sprintName);
     const [startDateDetail, setStartDateDetail] = useState(startDate);
     const [endDateDetail, setEndDateDetail] = useState(endDate);
+    const [statusDetail, setStatusDetail] = useState(status);
     const [goalDetail, setGoalDetail] = useState(goal);
     const [sprintNameUpdate, setSprintNameUpdate] = useState(sprintNameDetail);
     const [startDateUpdate, setStartDateUpdate] = useState(new Date());
@@ -49,6 +58,15 @@ function SprintComponent({
         return formattedDate.toLocaleDateString('en-GB', {
             day: 'numeric', month: 'short'
         });
+    }
+    const checkStatusSprint=(statusSprint)=>{
+        if(statusSprint==="NOT_START"){
+            return "Start Sprint"
+        }else if(statusSprint==="STARTING"){
+            return "Complete Sprint"
+        }else if(statusSprint==="COMPLETED"){
+            return "Completed"
+        }
     }
     const formatDateUpdate = (date) => {
         const formattedDate = new Date(date);
@@ -109,6 +127,18 @@ function SprintComponent({
             setEndDateDetail(formatDate(r.data.dueDate));
             setGoalDetail(r.data.goal)
         }))
+    }
+    const updateStatusOfSprint = (sprintId, status) => {
+        if(status==="NOT_START"){
+            updateStatusSprint(projectId,sprintId,"STARTING" ).then(r => getSprintDetail(sprintId).then(r => {
+                setStatusDetail(r.data.status);
+            }))
+        }else if(status==="STARTING"){
+            updateStatusSprint(projectId,sprintId,"COMPLETED" ).then(r => getSprintDetail(sprintId).then(r => {
+                setStatusDetail(r.data.status);
+            }))
+        }
+
     }
     const renderTextField = () => {
         return isTextField ? (
@@ -205,7 +235,8 @@ function SprintComponent({
                 <View style={styles.view3}>
                     <Text style={styles.text3}>{doneTask}</Text>
                 </View>
-                <Buttons text={"Complete sprint"} style={styles.btn} styleText={{fontSize: 12}}/>
+                <Buttons text={checkStatusSprint(statusDetail)} style={styles.btn} styleText={{fontSize: 12}}
+                onPressTo={()=>updateStatusOfSprint(sprintId,statusDetail)}/>
                 <Buttons text={"Edit"} onPressTo={() => setModalVisible(!modalVisible)}
                          style={[styles.button, {width: 35}]} styleText={{fontSize: 12}}/>
                 <Buttons text={"X"} onPressTo={() => deleteASprint(projectId, sprintId)} style={styles.button}

@@ -60,7 +60,7 @@ const updateMaterial=(labId,materialId,materialName,status,amount, description,n
       <View style={styles.container}>
         <LabNavigator navigation={navigation}/>
         <View style={styles.containerContent}>
-          <Text style={styles.text}>Add a Material</Text>
+          <Text style={styles.text}>Update a Material</Text>
           <AddComponent
               title={"Material Name"}
               multiline={false}

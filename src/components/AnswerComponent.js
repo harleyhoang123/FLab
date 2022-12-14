@@ -37,7 +37,7 @@ function AnswerComponent({questionId,answerId, votes, createdBy, content, create
                                    multiline={true}
                                    onSubmitEditing={()=>{handleEdit(answerId,text); setText("");setIsEdit(!isEdit)} }
                                    style={[styles.comment2]}/>
-                        <Buttons text={"Edit"} onPressTo={()=>{handleEdit(answerId,text); setText("");setIsEdit(!isEdit)} } style={styles.button2}/>
+                        <Buttons text={"Save"} onPressTo={()=>{handleEdit(answerId,text); setText("");setIsEdit(!isEdit)} } style={styles.button2}/>
                         <Buttons text={"Cancel"} onPressTo={()=>{setIsEdit(!isEdit)} } style={styles.button2}/>
                     </View>
                 </View>

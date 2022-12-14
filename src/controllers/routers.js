@@ -68,7 +68,7 @@ export const routes = {
       host + "8083/flab/lab/public/api/v1/laboratories/:lab-id/material",
     orderMaterial:
       host +
-      "8083/flab/lab/public/api/v1/materials/:laboratory-id/:material-id/order",
+      "8083/flab/lab/public/api/v1/laboratories/:laboratory-id/:material-id/order",
   },
   repository: {
     getFolderDetail:

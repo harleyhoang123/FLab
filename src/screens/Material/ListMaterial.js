@@ -19,7 +19,7 @@ function ListMaterial({ route, navigation }) {
   const [text, setText] = useState("");
   const [list, setList] = useState(listsMaterial);
   const callbackListMaterial=()=>{
-    getListMaterial(labId).then(r=> setList(r.data.items))
+    getListMaterial(labId).then(r=> setList(r?.data?.items))
   }
   return (
     <View>
