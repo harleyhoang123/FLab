@@ -59,7 +59,7 @@ export default function LabDetail({ route, navigation }) {
   const isJoined = route.params.isJoined;
   const allMember = route.params.allMember.items;
   const isAdmin = true;
-  const roles = data.memberInfo.role;
+  const roles = data?.memberInfo?.role;
   console.log("ROLE: " + roles);
 
   const dispatch = useDispatch();
@@ -171,40 +171,38 @@ export default function LabDetail({ route, navigation }) {
             </Pressable>
           </View>
           {/*{roles.includes("OWNER") ? (*/}
-            <View style={{ marginTop: 20, flexDirection: "row" }}>
-              <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={() => setModalVisible(true)}
-              >
-                <View>
-                  <Text
-                    style={styles.textStyle}
-                    onPress={() => delteCurrentLab()}
-                  >
-                    Delete
-                  </Text>
-                </View>
-                <Text></Text>
-              </Pressable>
-              <Pressable
-                style={[styles.button, styles.buttonOpen]}
-              >
-                <View>
-                  <Text
-                    style={styles.textStyle}
-                    onPress={() => {
-                      navigation.push("UpdateLab", {
-                        labInfo: data,
-                        listMember: allMember,
-                      });
-                    }}
-                  >
-                    Update
-                  </Text>
-                </View>
-                <Text></Text>
-              </Pressable>
-            </View>
+          <View style={{ marginTop: 20, flexDirection: "row" }}>
+            <Pressable
+              style={[styles.button, styles.buttonOpen]}
+              onPress={() => setModalVisible(true)}
+            >
+              <View>
+                <Text
+                  style={styles.textStyle}
+                  onPress={() => delteCurrentLab()}
+                >
+                  Delete
+                </Text>
+              </View>
+              <Text></Text>
+            </Pressable>
+            <Pressable style={[styles.button, styles.buttonOpen]}>
+              <View>
+                <Text
+                  style={styles.textStyle}
+                  onPress={() => {
+                    navigation.push("UpdateLab", {
+                      labInfo: data,
+                      listMember: allMember,
+                    });
+                  }}
+                >
+                  Update
+                </Text>
+              </View>
+              <Text></Text>
+            </Pressable>
+          </View>
           {/*) : (*/}
           {/*  <Text></Text>*/}
           {/*)}*/}
