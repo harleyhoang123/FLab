@@ -38,15 +38,21 @@ export default function CreateProject({ route, navigation }) {
     if (day < 10) {
       day = "0" + day;
     }
-    let month = d.getMonth()+1;
+    let month = d.getMonth() + 1;
     if (month < 10) {
       month = "0" + month;
     }
     return d.getFullYear() + "-" + month + "-" + day;
-    //yyyy-MM-dd hh:mm:ss SSS
   };
   getLabId().then((v) => setLabId(v));
   const dispatch = useDispatch();
+
+  const reset = () => {
+    onChangeNameText("");
+    onChangeDescriptionText("");
+    setStartDate(new Date());
+    setEndDate(new Date());
+  };
 
   const createProject = () => {
     const requestData = {
@@ -110,7 +116,10 @@ export default function CreateProject({ route, navigation }) {
             <Buttons
               text={"Create"}
               style={styles.button}
-              onPressTo={createProject}
+              onPressTo={() => {
+                createProject();
+                reset();
+              }}
             />
             <Buttons
               text={"Back"}
