@@ -1404,3 +1404,39 @@ export const getAllMemberInProject = async () => {
     console.log("error when getAllMemberInProject:" + JSON.stringify(error));
   }
 };
+
+export const getListOrderByAccountId= async (labId,accountId) => {
+  const token = await getToken();
+  try {
+    const response = await axios.get(
+        host+'8083/flab/lab/public/api/v1/laboratories/:laboratory-id/:account-id/materials'.replace(":laboratory-id", labId)
+            .replace(":account-id", accountId),
+        {
+          headers: {
+            "Authorization": `Bearer ` + token
+          }
+        }
+    );
+    console.log("Data in getListOrderByAccountId: " + JSON.stringify(response.data));
+    return response.data
+  } catch (error) {
+    console.log("error when getListOrderByAccountId:" + JSON.stringify(error));
+  }
+};
+export const returnOrder= async (orderId) => {
+  const token = await getToken();
+  try {
+    const response = await axios.post(
+        host+'8083/flab/lab/public/api/v1/materials/orders/:order-id'.replace(":order-id", orderId),{},
+        {
+          headers: {
+            "Authorization": `Bearer ` + token
+          }
+        }
+    );
+    console.log("Data in returnOrder: " + JSON.stringify(response.data));
+    return response.data
+  } catch (error) {
+    console.log("error when returnOrder:" + JSON.stringify(error));
+  }
+};

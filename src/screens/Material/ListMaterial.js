@@ -38,7 +38,12 @@ function ListMaterial({ route, navigation }) {
           />
           <Buttons text={"Search"} />
           <Buttons
-            text={"Order Material"}
+              text={"My Order"}
+              style={[styles.button, { marginLeft: 20 }]}
+              onPressTo={() => navigation.push("MyOrder")}
+          />
+          <Buttons
+            text={"List Order"}
             style={[styles.button, { marginLeft: 20 }]}
             onPressTo={() => navigation.push("OrderMaterial")}
           />

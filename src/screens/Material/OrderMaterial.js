@@ -52,6 +52,7 @@ function OrderMaterial({navigation}) {
         {label: 'WAITING FOR APPROVAL', value: 'WAITING_FOR_APPROVAL'},
         {label: 'APPROVED', value: 'APPROVED'},
         {label: 'REJECTED', value: 'REJECTED'},
+        {label: 'COMPLETED', value: 'COMPLETED'},
     ]
     return (
         <View>
@@ -87,6 +88,7 @@ function OrderMaterial({navigation}) {
                     borrowBy={item.borrowBy}
                     amount={item.amount}
                     reason={item.reason}
+                    status={item.status}
                     fromDate={item.orderFromDate}
                     toDate={item.orderToDate}
                     callBackOrder={callBackOrder}

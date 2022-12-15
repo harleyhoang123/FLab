@@ -61,6 +61,7 @@ import UploadFileCV from "../screens/CV/UploadFileCV";
 import CurriculumVitae from "../screens/CV/CurriculumVitae";
 import UpdateCv from "../screens/CV/UpdateCV";
 import ErrorPage from "../reducers/ErrorPage";
+import MyOrder from "../screens/Material/MyOrder";
 function RootNavigators() {
   const Stack = createStackNavigator();
   return (
@@ -125,6 +126,7 @@ function RootNavigators() {
         <Stack.Screen name="CurriculumVitae" component={CurriculumVitae} />
         <Stack.Screen name="UpdateCv" component={UpdateCv} />
         <Stack.Screen name="ErrorPage" component={ErrorPage} />
+        <Stack.Screen name="MyOrder" component={MyOrder} />
         <Stack.Screen
           name="AddMemberToProject"
           component={AddMemberToProject}
