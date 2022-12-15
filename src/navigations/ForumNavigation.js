@@ -10,27 +10,27 @@ function ForumNavigation({ navigation }) {
       >
         <Text style={styles.textLogo}>Home</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.push("Forum")}
-      >
-        <Text style={styles.textLogo}>Recent question</Text>
-      </TouchableOpacity>
+      {/*<TouchableOpacity*/}
+      {/*  style={styles.button}*/}
+      {/*  onPress={() => navigation.push("Forum")}*/}
+      {/*>*/}
+      {/*  <Text style={styles.textLogo}>Recent question</Text>*/}
+      {/*</TouchableOpacity>*/}
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.push("Forum")}
       >
         <Text style={styles.textLogo}>My question</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.push("Forum")}
-      >
-        <Text style={styles.textLogo}>Questions</Text>
-      </TouchableOpacity>
+      {/*<TouchableOpacity*/}
+      {/*  style={styles.button}*/}
+      {/*  onPress={() => navigation.push("Forum")}*/}
+      {/*>*/}
+      {/*  <Text style={styles.textLogo}>Questions</Text>*/}
+      {/*</TouchableOpacity>*/}
         <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.push("Forum")}
+            onPress={() => navigation.push("ListTag")}
         >
             <Text style={styles.textLogo}>Setting</Text>
         </TouchableOpacity>

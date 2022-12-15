@@ -1440,3 +1440,96 @@ export const returnOrder= async (orderId) => {
     console.log("error when returnOrder:" + JSON.stringify(error));
   }
 };
+
+export const getAllTag= async () => {
+  const token = await getToken();
+  try {
+    const response = await axios.get(
+        host+'8081/flab/forum/public/api/v1/tags',
+        {
+          headers: {
+            "Authorization": `Bearer ` + token
+          }
+        }
+    );
+    console.log("Data in getAllTag: " + JSON.stringify(response.data));
+    return response.data
+  } catch (error) {
+    console.log("error when getAllTag:" + JSON.stringify(error));
+  }
+};
+export const addTag= async (tagName,ownerBy) => {
+  const token = await getToken();
+  try {
+    const response = await axios.post(
+        host+'8081/flab/forum/public/api/v1/tags/tag',{
+          tagName:tagName,
+          ownerBy:ownerBy
+        },
+        {
+          headers: {
+            "Authorization": `Bearer ` + token
+          }
+        }
+    );
+    console.log("Data in addTag: " + JSON.stringify(response.data));
+    return response.data
+  } catch (error) {
+    console.log("error when addTag:" + JSON.stringify(error));
+  }
+};
+export const updateTag= async (tagId,tagName,ownerBy) => {
+  const token = await getToken();
+  try {
+    const response = await axios.put(
+        host+'8081/flab/forum/public/api/v1/tags/:tag-id'.replace(":tag-id",tagId),{
+          tagName:tagName,
+          ownerBy:ownerBy
+        },
+        {
+          headers: {
+            "Authorization": `Bearer ` + token
+          }
+        }
+    );
+    console.log("Data in addTag: " + JSON.stringify(response.data));
+    return response.data
+  } catch (error) {
+    console.log("error when addTag:" + JSON.stringify(error));
+  }
+};
+export const deleteTag= async (tagId) => {
+  const token = await getToken();
+  try {
+    const response = await axios.delete(
+        host+'8081/flab/forum/public/api/v1/tags/:tag-id'.replace(":tag-id",tagId),
+        {
+          headers: {
+            "Authorization": `Bearer ` + token
+          }
+        }
+    );
+    console.log("Data in addTag: " + JSON.stringify(response.data));
+    return response.data
+  } catch (error) {
+    console.log("error when addTag:" + JSON.stringify(error));
+  }
+};
+
+export const getAccountAdmin= async () => {
+  const token = await getToken();
+  try {
+    const response = await axios.get(
+        host+'8080/flab/authentication/public/api/v1/accounts?role=ADMIN',
+        {
+          headers: {
+            "Authorization": `Bearer ` + token
+          }
+        }
+    );
+    console.log("Data in addTag: " + JSON.stringify(response.data));
+    return response.data
+  } catch (error) {
+    console.log("error when addTag:" + JSON.stringify(error));
+  }
+};
