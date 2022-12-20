@@ -31,7 +31,7 @@ const getAccountId = async () => {
 
 export default function ApplyToALab({ route, navigation }) {
   const labId = route.params.labId;
-  //   const data = route.params.listMember;
+  let isValid = true;
   console.log("All data:" + JSON.stringify(labId));
 
   const [accountId, setAccountId] = useState("");
@@ -43,6 +43,29 @@ export default function ApplyToALab({ route, navigation }) {
   const dispatch = useDispatch();
 
   const [data, setData] = React.useState([]);
+
+  const [isReason, setReason] = useState(false);
+  const [isCVValid, setCVValid] = useState(false);
+
+  function validateData() {
+    if (!reason) {
+      setReason(true);
+      isValid = false;
+    }
+    if (!selected) {
+      setCVValid(true);
+      isValid = false;
+    }
+    if (isValid) {
+      createApplication();
+      reset();
+    }
+  }
+
+  const reset = () => {
+    onChangeReasonText("");
+    setSelected("");
+  };
 
   React.useEffect(
     () =>
@@ -90,6 +113,9 @@ export default function ApplyToALab({ route, navigation }) {
               value={reason}
               placeholder={"Reason"}
             />
+            {isReason && (
+              <Text style={styles.inputInvalid}>Please enter your reason</Text>
+            )}
             <SelectList
               setSelected={(val) => setSelected(val)}
               onSelect={() => setKey(selected)}
@@ -110,13 +136,16 @@ export default function ApplyToALab({ route, navigation }) {
               }}
               search={false}
             />
+            {isCVValid && (
+              <Text style={styles.inputInvalid}>Please select your CV</Text>
+            )}
           </View>
 
           <View style={styles.btn}>
             <Buttons
               text={"Submit"}
               style={styles.button}
-              onPressTo={createApplication}
+              onPressTo={validateData}
             />
             <Buttons
               text={"Back"}
@@ -140,6 +169,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: 130,
     marginLeft: 5,
+  },
+  inputInvalid: {
+    marginLeft: "13%",
+    color: "red",
+    fontSize: 12,
   },
   input: {
     height: 40,

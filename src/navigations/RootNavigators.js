@@ -66,6 +66,7 @@ import ListTag from "../screens/Tag/ListTag";
 import IssueStatistics from "../screens/Dashboards/IssueStatistics";
 import ActivityStreams from "../screens/Dashboards/ActivityStreams";
 import AssignedToMe from "../screens/Dashboards/AssignedToMe";
+import MemberDetailProject from "../screens/Lab/MemberDetailProject";
 function RootNavigators() {
   const Stack = createStackNavigator();
   return (
@@ -120,7 +121,10 @@ function RootNavigators() {
         <Stack.Screen name="UpdateProject" component={UpdateProject} />
         <Stack.Screen name="UpdateMaterial" component={UpdateMaterial} />
         <Stack.Screen name="ApplyToLab" component={ApplyToALab} />
-        <Stack.Screen name="UpdateFolderInRepo" component={UpdateFolderInRepo} />
+        <Stack.Screen
+          name="UpdateFolderInRepo"
+          component={UpdateFolderInRepo}
+        />
         <Stack.Screen name="UpdateSubFolder" component={UpdateSubFolder} />
         <Stack.Screen name="UpdateFile" component={UpdateFile} />
         <Stack.Screen name="UpdateMemberRole" component={UpdateMemberRole} />
@@ -137,6 +141,10 @@ function RootNavigators() {
         <Stack.Screen name="ActivityStreams" component={ActivityStreams} />
         <Stack.Screen name="AssignedToMe" component={AssignedToMe} />
         <Stack.Screen
+          name="MemberDetailProject"
+          component={MemberDetailProject}
+        />
+        <Stack.Screen
           name="AddMemberToProject"
           component={AddMemberToProject}
         />
@@ -150,7 +158,6 @@ function RootNavigators() {
           component={ViewAllMemberInProject}
         />
       </Stack.Navigator>
-
     </NavigationContainer>
   );
 }

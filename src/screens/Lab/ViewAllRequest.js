@@ -59,7 +59,7 @@ export default function ViewAllRequest({ route, navigation }) {
       <Text style={styles.title}>{fullName} is waitting your response</Text>
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.title}>Email: {email}</Text>
-        <View style={{ marginLeft: "60%", flexDirection: "row" }}>
+        <View style={{ marginLeft: "auto", flexDirection: "row" }}>
           <Text
             onPress={() => goToRequestDetail(applicationId)}
             style={styles.action}
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     marginLeft: 50,
   },
   item: {
-    width: "70%",
+    width: "45%",
     borderRadius: 5,
     margin: 30,
     padding: 20,

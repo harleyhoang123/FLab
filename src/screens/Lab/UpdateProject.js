@@ -28,6 +28,10 @@ const getLabId = async () => {
 
 export default function UpdateProject({ route, navigation }) {
   const projectInfo = route.params.projectInfo;
+  const regx = new RegExp("^[a-zA-Z0-9 ]{6,30}$");
+  let isValid = true;
+  const [isProjectNameValid, setProjectNameValid] = useState(false);
+  const [isValidDate, setValidDate] = useState(false);
   const [textName, onChangeNameText] = useState(projectInfo.projectName);
   const [textDescription, onChangeDescriptionText] = useState(
     projectInfo.description
@@ -41,7 +45,7 @@ export default function UpdateProject({ route, navigation }) {
     if (day < 10) {
       day = "0" + day;
     }
-    let month = d.getMonth()+1;
+    let month = d.getMonth() + 1;
     if (month < 10) {
       month = "0" + month;
     }
@@ -49,6 +53,20 @@ export default function UpdateProject({ route, navigation }) {
   };
   getLabId().then((v) => setLabId(v));
   const dispatch = useDispatch();
+
+  function validateData() {
+    if (!textName.match(regx)) {
+      setProjectNameValid(true);
+      isValid = false;
+    }
+    if (startDate > endDate) {
+      setValidDate(true);
+      isValid = false;
+    }
+    if (isValid) {
+      updateProject();
+    }
+  }
 
   const updateProject = () => {
     const requestData = {
@@ -83,6 +101,9 @@ export default function UpdateProject({ route, navigation }) {
               value={textName}
               placeholder={"Enter project's name"}
             />
+            {isProjectNameValid && (
+              <Text style={styles.inputInvalid}>Invalid lab's name</Text>
+            )}
             <TextInput
               style={styles.input}
               onChangeText={(text) => onChangeDescriptionText(text)}
@@ -101,6 +122,9 @@ export default function UpdateProject({ route, navigation }) {
               value={startDate}
               onChangeDate={(startDate) => setStartDate(startDate)}
             />
+            {isValidDate && (
+              <Text style={styles.inputInvalid}>Invalid start date</Text>
+            )}
             <Text style={styles.titleDate}>End Date</Text>
             <DateTimePicker
               style={{
@@ -114,12 +138,15 @@ export default function UpdateProject({ route, navigation }) {
               onChangeDate={(endDate) => setEndDate(endDate)}
             />
           </View>
+          {isValidDate && (
+            <Text style={styles.inputInvalid}>Invalid end date</Text>
+          )}
 
           <View style={styles.btn}>
             <Buttons
               text={"Update"}
               style={styles.button}
-              onPressTo={updateProject}
+              onPressTo={validateData}
             />
             <Buttons
               text={"Back"}
@@ -156,6 +183,11 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "45%",
     marginLeft: "13%",
+  },
+  inputInvalid: {
+    marginLeft: "13%",
+    color: "red",
+    fontSize: 12,
   },
   title: {
     fontSize: 30,
