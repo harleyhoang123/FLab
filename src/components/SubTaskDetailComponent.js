@@ -123,8 +123,8 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
             setReporterDetail(r.data.reporter);
         })})
     }
-    const assigneeInSubTask=(projectId, subTaskId,assignee)=>{
-        assignneSubTask(projectId, subTaskId,assignee).then(value => {
+    const assignInSubTask=(projectId, subTaskId,assignee)=>{
+        assignSubTask(projectId, subTaskId,assignee).then(value => {
             getSubTaskDetail(subTaskId).then(r => {
                 setAssigneeDetail(r.data.assignee);}
             )})
@@ -141,7 +141,7 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
                     </View>
                     <View style={styles.rowDetail}>
                         <Text style={[styles.descriptionDetail, {width: 100}]}></Text>
-                        <TouchableOpacity onPress={()=>{assigneeInSubTask(projectId, subTaskDetail.subTaskId, memberId)}}>
+                        <TouchableOpacity onPress={()=>{assignInSubTask(projectId, subTaskDetail.subTaskId, memberId)}}>
                             <Text style={[styles.descriptionDetail, {color: 'blue'}]}>Assign to me</Text>
                         </TouchableOpacity>
                     </View>

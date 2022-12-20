@@ -1,26 +1,25 @@
 import { LaboratoryController } from "../controllers/LaboratoryController";
 import { strings } from "../localization";
 import AsyncStorage from "@react-native-community/async-storage";
-import { ProjectController } from "../controllers/ProjectController";
 
-export const getLaboratoryByAccountId =
-  (accountId, navigation) =>
-  async (dispatch, _, { networkService }) => {
-    try {
-      const laboratoryController = new LaboratoryController(networkService);
-      console.log("Account ID in actions: " + accountId);
-      const response = await laboratoryController.getLaboratoryByAccountId({
-        accountId,
-        page,
-        size,
-      });
-      navigation.navigate("Lab", { data: response.data.data });
-    } catch ({ data }) {
-      console.log(
-        "Error when getLaboratoryByAccountId " + JSON.stringify(data)
-      );
-    }
-  };
+// export const getLaboratoryByAccountId =
+//   (accountId, navigation) =>
+//   async (dispatch, _, { networkService }) => {
+//     try {
+//       const laboratoryController = new LaboratoryController(networkService);
+//       console.log("Account ID in actions: " + accountId);
+//       const response = await laboratoryController.getLaboratoryByAccountId({
+//         accountId,
+//         page,
+//         size,
+//       });
+//       navigation.navigate("Lab", { data: response.data.data });
+//     } catch ({ data }) {
+//       console.log(
+//         "Error when getLaboratoryByAccountId " + JSON.stringify(data)
+//       );
+//     }
+//   };
 
 export const getLaboratoryById =
   (labId, isJoined, navigation) =>
@@ -343,8 +342,8 @@ export const addMembersToProject =
   (projectId, requestData, navigation) =>
   async (dispatch, _, { networkService }) => {
     try {
-      const projectController = new ProjectController(networkService);
-      const response = await projectController.addMembersToProject({
+      const laboratoryController = new LaboratoryController(networkService);
+      const response = await laboratoryController.addMembersToProject({
         projectId,
         requestData,
       });
@@ -448,6 +447,68 @@ export const getRequestDetailByApplicationId =
       );
     }
   };
+export const getMaterialById =
+    (materialId, navigation) =>
+        async (dispatch, _, { networkService }) => {
+            try {
+                const laboratoryController = new LaboratoryController(networkService);
+                console.log("Material Id ID in actions: " + materialId);
+                const { data } = await laboratoryController.getMaterialById({
+                    materialId,
+                });
+                console.log("Mate data in act:" + JSON.stringify(data.data));
+                navigation.navigate("MaterialDetail", { data: data.data });
+            } catch ({ data }) {
+                console.log("Error get material by id:" + JSON.stringify(data));
+            }
+        };
+
+export const updateMaterialByMaterialId =
+    (labId,materialId,materialName,status,amount, description,note,image,navigation ) =>
+        async (dispatch, _, { networkService }) => {
+            try {
+                const laboratoryController = new LaboratoryController(networkService);
+                const response = await laboratoryController.updateMaterial({
+                    labId,materialId,materialName,status,amount, description,note,image
+                });
+                console.log("updateMaterialByMaterialId: " + JSON.stringify(response));
+                dispatch(getMaterialById(materialId, navigation));
+            } catch ({ data }) {
+                console.log(
+                    "ERROR when updateMaterialByMaterialId: " + JSON.stringify(data)
+                );
+            }
+        };
+
+export const addMaterial =
+    (labId, materialName, description,amount,note, images, navigation) =>
+        async (dispatch, _, { networkService }) => {
+
+            try {
+                const laboratoryController = new LaboratoryController(networkService);
+                const response = await laboratoryController.addMaterial({labId, materialName, description,amount,note, images})
+                console.log("addMaterial: " + JSON.stringify(response));
+                dispatch(getListMaterialByLabId(labId, navigation));
+            } catch ({ data }) {
+                console.log(
+                    "ERROR when addMaterial: " + JSON.stringify(data)
+                );
+            }
+        };
+export const orderMaterial=(labId, materialId, amount, reason, orderFrom, orderTo, navigation)=>
+    async (dispatch, _, { networkService }) => {
+
+        try {
+            const laboratoryController = new LaboratoryController(networkService);
+            const response = await laboratoryController.orderMaterial({labId, materialId, amount,reason,orderFrom, orderTo})
+            console.log("addMaterial: " + JSON.stringify(response));
+            dispatch(getListMaterialByLabId(labId, navigation));
+        } catch ({ data }) {
+            console.log(
+                "ERROR when addMaterial: " + JSON.stringify(data)
+            );
+        }
+    };
 
 // export const reviewRequest =
 //   (labId, applicationId, requestData, navigation) =>

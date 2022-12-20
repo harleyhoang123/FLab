@@ -4,7 +4,7 @@ import React,{useState} from "react";
 import TextField from "../../components/TextField";
 import { DateTimePicker } from '@hashiprobr/react-native-paper-datetimepicker';
 import LabNavigator from "../../navigations/LabNavigator";
-import {orderMaterial} from "../../actions/MaterialAction";
+import {orderMaterial} from "../../actions/LaboratoryAction";
 import {useDispatch} from "react-redux";
 
 function RequestMaterial({route, navigation}) {

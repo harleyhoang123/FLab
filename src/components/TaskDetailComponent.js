@@ -129,8 +129,8 @@ export default function TaskDetailComponent({
             setReporterDetail(r.data.reporter);}
         )})
     }
-    const assigneeInTask=(projectId, taskId,assignee)=>{
-        assignneTask(projectId, taskId,assignee).then(v => {
+    const assignInTask=(projectId, taskId,assignee)=>{
+        assignTask(projectId, taskId,assignee).then(v => {
             callBackUpdateTask()
             getTaskDetail(taskId).then(r => {
                 setAssigneeDetail(r.data.assignee);}
@@ -155,7 +155,7 @@ export default function TaskDetailComponent({
                     </View>
                     <View style={styles.rowDetail}>
                         <Text style={[styles.descriptionDetail, {width: 100}]}></Text>
-                        <TouchableOpacity onPress={()=>{assigneeInTask(projectId, taskDetail.taskId, memberId)}}>
+                        <TouchableOpacity onPress={()=>{assignInTask(projectId, taskDetail.taskId, memberId)}}>
                             <Text style={[styles.descriptionDetail, {color: 'blue'}]}>Assign to me</Text>
                         </TouchableOpacity>
                     </View>

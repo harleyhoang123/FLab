@@ -1,4 +1,5 @@
 import {routes} from './routers';
+import {notification} from "./ip";
 export class NewsController {
     constructor(networkService) {
         this.networkService = networkService;
@@ -7,7 +8,7 @@ export class NewsController {
         return this.networkService.request(
             {
                 method: 'GET',
-                url: routes.news.getNewsByNewsId + newsId,
+                url: routes.notification.getNewsByNewsId + newsId,
                 data: null
             }
         );
@@ -16,7 +17,7 @@ export class NewsController {
         return this.networkService.request(
             {
                 method: 'GET',
-                url: routes.news.getListNews,
+                url: routes.notification.getListNews,
                 data: null
             }
         );
@@ -24,7 +25,7 @@ export class NewsController {
     createNews({title, content,thumbnail}) {
         return this.networkService.request({
             method: 'POST',
-            url: routes.news.createNews,
+            url: routes.notification.createNews,
             data: {
                 title: title,
                 content: content,

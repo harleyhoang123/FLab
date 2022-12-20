@@ -5,7 +5,7 @@ import React, {useState} from "react";
 import LabNavigator from "../../navigations/LabNavigator";
 import * as DocumentPicker from "expo-document-picker";
 import {useDispatch} from "react-redux";
-import {addMaterial, updateMaterialByMaterialId} from "../../actions/MaterialAction";
+import {updateMaterialByMaterialId} from "../../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
 import {Dropdown} from "react-native-element-dropdown";
 

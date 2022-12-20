@@ -25,31 +25,31 @@ const getAccountId = async () => {
   }
 };
 
-export const getDataUsingAsyncAwaitGetCall = async () => {
-  const token = await getToken();
-  try {
-    const response = await axios.get(
-      laboratory + "/flab/lab/public/api/v1/projects",
-      {
-        headers: {
-          Authorization: `Bearer ` + token,
-        },
-      }
-    );
-    console.log(
-      "Data in custom network service: " + JSON.stringify(response.data)
-    );
-    return response.data;
-  } catch (error) {
-    alert(error.message);
-  }
-};
+// export const getDataUsingAsyncAwaitGetCall = async () => {
+//   const token = await getToken();
+//   try {
+//     const response = await axios.get(
+//       laboratory + "/flab/lab/public/api/v1/projects",
+//       {
+//         headers: {
+//           Authorization: `Bearer ` + token,
+//         },
+//       }
+//     );
+//     console.log(
+//       "Data in custom network service: " + JSON.stringify(response.data)
+//     );
+//     return response.data;
+//   } catch (error) {
+//     alert(error.message);
+//   }
+// };
 
 export const createSprint = async (projectId, memberId, sprintName) => {
   const token = await getToken();
   try {
     const response = await axios.post(
-        workspace + "/flab/workspace/public/api/v1/sprints/:workspace-id/sprint".replace(
+        routes.workSpace.createSprint.replace(
           ":workspace-id",
           projectId
         ),
@@ -86,7 +86,7 @@ export const getAllMemberInLab = async () => {
   console.log("Lab id service :" + labId);
   try {
     const response = await axios.get(
-        laboratory + "/flab/lab/public/api/v1/laboratories/:lab-id/members".replace(
+        routes.laboratory.getAllMemberInLab.replace(
           ":lab-id",
           labId
         ),
@@ -107,7 +107,7 @@ export const getAllMember = async () => {
   const token = await getToken();
   try {
     const response = await axios.get(
-      host + "8080/flab/authentication/public/api/v1/accounts",
+      routes.account.getAllMember,
       {
         headers: {
           Authorization: `Bearer ` + token,
@@ -127,7 +127,7 @@ export const getAllCVOfAccount = async () => {
   console.log("getAllCVOfAccount: ");
   try {
     const response = await axios.get(
-        account +"/flab/account/public/api/v1/profiles/:account-id/cv".replace(
+        routes.account.getAllCVOfAccount.replace(
           ":account-id",
           accountId
         ),
@@ -147,7 +147,7 @@ export const getListSprint = async (projectId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        workspace + "/flab/workspace/public/api/v1/sprints/:workspace-id/sprints".replace(
+        routes.workSpace.getListSprint.replace(
           ":workspace-id",
           projectId
         ),
@@ -167,7 +167,7 @@ export const getTaskDetail = async (taskId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        workspace + "/flab/workspace/public/api/v1/tasks/:task-id".replace(
+        routes.workSpace.getTaskDetail.replace(
           ":task-id",
           taskId
         ),
@@ -187,7 +187,7 @@ export const getSubTaskDetail = async (subTaskId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        workspace + "/flab/workspace/public/api/v1/subtasks/:subtask-id".replace(
+        routes.workSpace.getSubTaskDetail.replace(
           ":subtask-id",
           subTaskId
         ),
@@ -207,7 +207,7 @@ export const deleteSprint = async (projectId, sprintId) => {
   const token = await getToken();
   try {
     const response = await axios.delete(
-        workspace + "/flab/workspace/public/api/v1/sprints/:workspace-id/sprints/:sprint-id"
+        routes.workSpace.deleteSprint
           .replace(":workspace-id", projectId)
           .replace(":sprint-id", sprintId),
       {
@@ -227,7 +227,7 @@ export const createTask = async (projectId, sprintId, memberId, taskName) => {
   const token = await getToken();
   try {
     const response = await axios.post(
-        workspace + "/flab/workspace/public/api/v1/tasks/:workspace-id/:sprint-id/task"
+        routes.workSpace.createTask
           .replace(":sprint-id", sprintId)
           .replace(":workspace-id", projectId),
       {
@@ -250,7 +250,8 @@ export const getListTask = async (sprintId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        workspace + "/flab/workspace/public/api/v1/sprints/:sprint-id".replace(
+        routes.workSpace.getListTask
+            .replace(
           ":sprint-id",
           sprintId
         ),
@@ -277,7 +278,7 @@ export const updateSprint = async (
   const token = await getToken();
   try {
     const response = await axios.put(
-        workspace + "/flab/workspace/public/api/v1/sprints/:workspace-id/:sprint-id"
+        routes.workSpace.updateSprint
           .replace(":sprint-id", sprintId)
           .replace(":workspace-id", projectId),
       {
@@ -306,7 +307,7 @@ export const updateStatusSprint = async (
   const token = await getToken();
   try {
     const response = await axios.put(
-        workspace + "/flab/workspace/public/api/v1/sprints/:workspace-id/:sprint-id"
+        routes.workSpace.updateStatusSprint
             .replace(":sprint-id", sprintId)
             .replace(":workspace-id", projectId),
         {
@@ -329,7 +330,8 @@ export const getSprintDetail = async (sprintId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        workspace + "/flab/workspace/public/api/v1/sprints/:sprint-id".replace(
+        routes.workSpace.getSprintDetail
+            .replace(
           ":sprint-id",
           sprintId
         ),
@@ -349,7 +351,7 @@ export const deleteSubTask = async (subTaskId, taskId) => {
   const token = await getToken();
   try {
     const response = await axios.delete(
-        workspace + "/flab/workspace/public/api/v1/subtasks/:task-id/subtasks/:subtask-id"
+        routes.workSpace.deleteSubTask
           .replace(":subtask-id", subTaskId)
           .replace(":task-id", taskId),
       {
@@ -378,7 +380,7 @@ export const updateSubTask = async (
   const token = await getToken();
   try {
     const response = await axios.put(
-        workspace + "/flab/workspace/public/api/v1/subtasks/:workspace-id/:subtask-id"
+        routes.workSpace.updateSubTask
           .replace(":subtask-id", subTaskId)
           .replace(":workspace-id", projectId),
       {
@@ -402,11 +404,11 @@ export const updateSubTask = async (
     console.log("ERROR when updateSprint: " + JSON.stringify(error));
   }
 };
-export const assignneSubTask = async (projectId, subTaskId, assignee) => {
+export const assignSubTask = async (projectId, subTaskId, assignee) => {
   const token = await getToken();
   try {
     const response = await axios.put(
-        workspace + "/flab/workspace/public/api/v1/subtasks/:workspace-id/:subtask-id"
+        routes.workSpace.updateSubTask
           .replace(":subtask-id", subTaskId)
           .replace(":workspace-id", projectId),
       {
@@ -433,7 +435,7 @@ export const createSubTask = async (
   const token = await getToken();
   try {
     const response = await axios.post(
-        workspace + "/flab/workspace/public/api/v1/subtasks/:workspace-id/:task-id/subtask"
+        routes.workSpace.createSubTask
           .replace(":task-id", taskId)
           .replace(":workspace-id", projectId),
       {
@@ -457,7 +459,7 @@ export const getListSubTask = async (taskId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        workspace + "/flab/workspace/public/api/v1/tasks/:task-id".replace(
+        routes.workSpace.getListSubTask.replace(
           ":task-id",
           taskId
         ),
@@ -487,7 +489,7 @@ export const updateTask = async (
   const token = await getToken();
   try {
     const response = await axios.put(
-        workspace + "/flab/workspace/public/api/v1/tasks/:workspace-id/:task-id"
+        routes.workSpace.updateTask
           .replace(":task-id", taskId)
           .replace(":workspace-id", projectId),
       {
@@ -511,11 +513,11 @@ export const updateTask = async (
     console.log("ERROR when updateTask: " + JSON.stringify(error));
   }
 };
-export const assignneTask = async (projectId, taskId, assignee) => {
+export const assignTask = async (projectId, taskId, assignee) => {
   const token = await getToken();
   try {
     const response = await axios.put(
-        workspace + "/flab/workspace/public/api/v1/tasks/:workspace-id/:task-id"
+        routes.workSpace.assignTask
           .replace(":task-id", taskId)
           .replace(":workspace-id", projectId),
       {
@@ -537,7 +539,7 @@ export const deleteTask = async (sprintId, taskId) => {
   const token = await getToken();
   try {
     const response = await axios.delete(
-        workspace + "/flab/workspace/public/api/v1/tasks/:sprint-id/tasks/:task-id"
+        routes.workSpace.deleteTask
           .replace(":sprint-id", sprintId)
           .replace(":task-id", taskId),
       {
@@ -557,7 +559,8 @@ export const deleteFolderInRepository = async (repoId, folderId) => {
   const token = await getToken();
   try {
     const response = await axios.delete(
-        repository + "/flab/repository/public/api/v1/repositories/:repository-id/:folder-id".replace(
+        routes.repository.deleteFolderInRepository
+            .replace(
           ":folder-id",
           folderId
         ).replace(":repository-id", repoId),
@@ -577,7 +580,8 @@ export const getListFolder = async (repoId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        repository + "/flab/repository/public/api/v1/folders/:repository-id/folders".replace(
+        routes.repository.getListFolder
+            .replace(
           ":repository-id",
           repoId
         ),
@@ -599,7 +603,7 @@ export const deleteFolderOrFile = async (parentFolderId,Id, type) => {
   if (type === "Folder") {
     try {
       const response = await axios.delete(
-          repository + "/flab/repository/public/api/v1/folders/:folder-id/:sub-folder-id".replace(
+          routes.repository.deleteFolder.replace(
             ":folder-id", parentFolderId).replace(":sub-folder-id",Id),
         {
           headers: {
@@ -619,7 +623,7 @@ export const deleteFolderOrFile = async (parentFolderId,Id, type) => {
   } else {
     try {
       const response = await axios.delete(
-          repository + "/flab/repository/public/api/v1/folders/:folder-id/files/:file-id".replace(
+          routes.repository.deleteFile.replace(
             ":file-id", Id).replace(":folder-id",parentFolderId),
         {
           headers: {
@@ -642,7 +646,7 @@ export const getListFolderDetail = async (folderId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        repository + "/flab/repository/public/api/v1/folders/:folder-id".replace(
+        routes.repository.getListFolderDetail.replace(
           ":folder-id",
           folderId
         ),
@@ -664,7 +668,7 @@ export const deleteMaterial = async (labId, materialId) => {
   const token = await getToken();
   try {
     const response = await axios.delete(
-        laboratory + "/flab/lab/public/api/v1/laboratories/:laboratory-id/materials/:material-id"
+        routes.laboratory.deleteMaterial
           .replace(":laboratory-id", labId)
           .replace(":material-id", materialId),
       {
@@ -683,7 +687,7 @@ export const getListMaterial = async (labId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        laboratory + "/flab/lab/public/api/v1/laboratories/:laboratory-id/materials".replace(
+        routes.laboratory.getListMaterial.replace(
           ":laboratory-id",
           labId
         ),
@@ -704,7 +708,7 @@ export const getQuestionDetail= async (questionId) => {
     const token = await getToken();
     try {
         const response = await axios.get(
-            forum+ "/flab/forum/public/api/v1/questions/:question-id".replace(":question-id", questionId),
+           routes.forum.getQuestionDetailCustom.replace(":question-id", questionId),
             {
                 headers: {
                     "Authorization": `Bearer ` + token
@@ -722,7 +726,7 @@ export const addAnswer = async (questionId, answer) => {
     const token = await getToken();
     try {
         const response = await axios.post(
-            forum+ "/flab/forum/public/api/v1/questions/:question-id/answer".replace(":question-id", questionId),
+            routes.forum.addAnswer.replace(":question-id", questionId),
             {
                 content: answer
             }
@@ -743,7 +747,7 @@ export const addCommentToQuestion = async (questionId, comment) => {
     const token = await getToken();
     try {
         const response = await axios.post(
-            forum+ "/flab/forum/public/api/v1/questions/:question-id/comment".replace(":question-id", questionId),
+            routes.forum.addCommentToQuestion.replace(":question-id", questionId),
             {
                 content: comment
             }
@@ -764,7 +768,7 @@ export const addCommentToAnswer = async (answerId, comment) => {
     const token = await getToken();
     try {
         const response = await axios.post(
-            forum+ "/flab/forum/public/api/v1/answers/:answer-id".replace(":answer-id", answerId),
+            routes.forum.addCommentToAnswer.replace(":answer-id", answerId),
             {
                 content: comment
             }
@@ -785,7 +789,8 @@ export const deleteAnswer = async (questionId,answerId) => {
     const token = await getToken();
     try {
         const response = await axios.delete(
-            forum+ "/flab/forum/public/api/v1/questions/:question-id/:answer-id".replace(":answer-id", answerId).
+            routes.forum.deleteAnswerCustom
+                .replace(":answer-id", answerId).
             replace(":question-id", questionId),
             {
                 headers: {
@@ -803,7 +808,7 @@ export const deleteCommentInQuestion = async (questionId, commentId) => {
     const token = await getToken();
     try {
         const response = await axios.delete(
-            forum+ "/flab/forum/public/api/v1/comments/:question-id/:comment-id".replace(":comment-id", commentId)
+            routes.forum.deleteCommentInQuestion.replace(":comment-id", commentId)
                 .replace(":question-id", questionId),
             {
                 headers: {
@@ -821,7 +826,7 @@ export const deleteCommentInAnswer = async (answerId, commentId) => {
     const token = await getToken();
     try {
         const response = await axios.delete(
-            forum+ "/flab/forum/public/api/v1/answers/:answer-id/:comment-id".replace(":comment-id", commentId)
+            routes.forum.deleteCommentInAnswer.replace(":comment-id", commentId)
                 .replace(":answer-id", answerId),
             {
                 headers: {
@@ -839,7 +844,7 @@ export const editComment = async (commentId, comment) => {
     const token = await getToken();
     try {
         const response = await axios.put(
-            forum+ "/flab/forum/public/api/v1/comments/:comment-id".replace(":comment-id", commentId),
+            routes.forum.editComment.replace(":comment-id", commentId),
             {
                 content: comment
             }
@@ -860,7 +865,7 @@ export const editAnswer = async (answerId, answer) => {
     const token = await getToken();
     try {
         const response = await axios.put(
-            forum+ "/flab/forum/public/api/v1/answers/:answer-id".replace(":answer-id", answerId),
+            routes.forum.editAnswer.replace(":answer-id", answerId),
             {
                 content: answer
             }
@@ -881,7 +886,7 @@ export const voteQuestion = async (questionId) => {
     const token = await getToken();
     try {
         const response = await axios.post(
-            forum+ "/flab/forum/public/api/v1/questions/:question-id/vote".replace(":question-id", questionId),
+            routes.forum.voteQuestion.replace(":question-id", questionId),
             {
             }
             ,
@@ -901,7 +906,7 @@ export const updateNews = async (newsId,title,content,thumbnail) => {
     const token = await getToken();
     try {
         const response = await axios.put(
-            notification +"/flab/notification/public/api/v1/news/:news-id".replace(":news-id", newsId),
+            routes.notification.updateNews.replace(":news-id", newsId),
             {
                 title:title,
                 content:content,
@@ -924,7 +929,7 @@ export const getNewsDetail = async (newsId,navigation) => {
     const token = await getToken();
     try {
         const response = await axios.get(
-            notification +"/flab/notification/public/api/v1/news/:news-id".replace(":news-id", newsId)
+            routes.notification.getNewsDetail.replace(":news-id", newsId)
             ,
             {
                 headers: {
@@ -942,7 +947,7 @@ export const getNewsDetailComment = async (newsId) => {
     const token = await getToken();
     try {
         const response = await axios.get(
-            notification +"/flab/notification/public/api/v1/news/:news-id".replace(":news-id", newsId)
+            routes.notification.getNewsDetail.replace(":news-id", newsId)
             ,
             {
                 headers: {
@@ -960,7 +965,7 @@ export const deleteNews = async (newsId) => {
     const token = await getToken();
     try {
         const response = await axios.delete(
-            notification +"/flab/notification/public/api/v1/news/:news-id".replace(":news-id", newsId)
+            routes.notification.deleteNews.replace(":news-id", newsId)
             ,
             {
                 headers: {
@@ -978,7 +983,7 @@ export const getListNews = async (navigation) => {
     const token = await getToken();
     try {
         const response = await axios.get(
-            notification +"/flab/notification/public/api/v1/news"
+            routes.notification.getListNews
             ,
             {
                 headers: {
@@ -996,7 +1001,7 @@ export const commentToNews = async (newsId, content) => {
     const token = await getToken();
     try {
         const response = await axios.post(
-            notification +"/flab/notification/public/api/v1/news/:news-id/comment".replace(":news-id", newsId),
+            routes.notification.commentToNews.replace(":news-id", newsId),
             {
                 content:content
             }
@@ -1017,7 +1022,7 @@ export const commentToComment = async (commentId, content) => {
     const token = await getToken();
     try {
         const response = await axios.post(
-            notification +"/flab/notification/public/api/v1/comments/:comment-id/comment".replace(":comment-id", commentId),
+            routes.notification.commentToComment.replace(":comment-id", commentId),
             {
                 content:content
             }
@@ -1038,7 +1043,7 @@ export const editCommentNews = async (commentId, content) => {
     const token = await getToken();
     try {
         const response = await axios.put(
-            notification +"/flab/notification/public/api/v1/comments/:comment-id".replace(":comment-id", commentId),
+            routes.notification.editCommentNews.replace(":comment-id", commentId),
             {
                 content: content
             }
@@ -1059,7 +1064,7 @@ export const deleteCommentInNews = async (newsId, commentId) => {
     const token = await getToken();
     try {
         const response = await axios.delete(
-            notification +"/flab/notification/public/api/v1/news/:new-id/:comment-id".replace(":comment-id", commentId)
+            routes.notification.deleteCommentInNews.replace(":comment-id", commentId)
                 .replace(":new-id", newsId),
             {
                 headers: {
@@ -1077,7 +1082,7 @@ export const deleteCommentInComment= async ( commentId, subCommentId) => {
     const token = await getToken();
     try {
         const response = await axios.delete(
-            notification +"/flab/notification/public/api/v1/comments/:comment-id/:subcomment-id".replace(":comment-id", commentId)
+            routes.notification.deleteCommentInComment.replace(":comment-id", commentId)
                 .replace(":subcomment-id", subCommentId),
             {
                 headers: {
@@ -1095,7 +1100,7 @@ export const getListOrderByLabId= async (labId) => {
     const token = await getToken();
     try {
         const response = await axios.get(
-            laboratory + "/flab/lab/public/api/v1/laboratories/:laboratory-id/orders".replace(":laboratory-id", labId),
+            routes.laboratory.getListOrderByLabId.replace(":laboratory-id", labId),
             {
                 headers: {
                     "Authorization": `Bearer ` + token
@@ -1140,7 +1145,7 @@ export const reviewRequest = async (
     console.log("request DATA:" + labId + applicationId);
     console.log("TOKENNNN: " + token);
     const response = await axios.post(
-        laboratory + "/flab/lab/public/api/v1/laboratories/:lab-id/:application-id"
+        routes.laboratory.reviewRequest
           .replace(":lab-id", labId)
           .replace(":application-id", applicationId),
       {
@@ -1230,7 +1235,7 @@ export const uploadProfileCv = async (profileId, navigation,cvName,description,c
   const token = await getToken();
   try {
     const response = await axios.post(
-        account +"/flab/account/public/api/v1/cv/:profile-id".replace(":profile-id", profileId),
+        routes.account.uploadProfileCv.replace(":profile-id", profileId),
         {
           cvName:cvName,
           description:description,
@@ -1254,7 +1259,7 @@ export const getCVbyAccountId = async (accountId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        account +"/flab/account/public/api/v1/profiles/:account-id/cv".replace(":account-id", accountId)
+        routes.account.getCVbyAccountId.replace(":account-id", accountId)
         ,
         {
           headers: {
@@ -1272,7 +1277,7 @@ export const deleteCVbyAccountId = async (profileId,cvId) => {
   const token = await getToken();
   try {
     const response = await axios.delete(
-        account +"/flab/account/public/api/v1/cv/:profile-id/:cv-id".replace(":cv-id", cvId).replace(":profile-id",profileId)
+        routes.account.deleteCVbyAccountId.replace(":cv-id", cvId).replace(":profile-id",profileId)
         ,
         {
           headers: {
@@ -1291,7 +1296,7 @@ export const updateProfileCv = async (cvId, navigation,cvName,description,cv) =>
   const token = await getToken();
   try {
     const response = await axios.put(
-        account +"/flab/account/public/api/v1/cv/:cv-id".replace(":cv-id", cvId),
+        routes.account.updateProfileCv.replace(":cv-id", cvId),
         {
           cvName:cvName,
           description:description,
@@ -1314,7 +1319,7 @@ export const changeAvatar = async (profileId, image) => {
   const token = await getToken();
   try {
     const response = await axios.post(
-        account +"/flab/account/public/api/v1/profiles/:profile-id/avatar".replace(":profile-id", profileId),
+        routes.account.changeAvatar.replace(":profile-id", profileId),
         {
           avatar:image
         }
@@ -1335,7 +1340,7 @@ export const getProfileDetail = async (profileId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        account +"/flab/account/public/api/v1/profiles/:profile-id".replace(":profile-id", profileId),
+        routes.account.getProfileDetail.replace(":profile-id", profileId),
         {
           headers: {
             "Authorization": `Bearer ` + token
@@ -1363,7 +1368,7 @@ export const getAllMemberInProject = async () => {
   const projectId = await getProjectId();
   try {
     const response = await axios.get(
-        laboratory + "/flab/lab/public/api/v1/projects/:project-id/members".replace(":project-id", projectId),
+        routes.laboratory.getAllMemberInProject.replace(":project-id", projectId),
         {
           headers: {
             "Authorization": `Bearer ` + token
@@ -1381,7 +1386,7 @@ export const getListOrderByAccountId= async (labId,accountId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        laboratory + "/flab/lab/public/api/v1/laboratories/:laboratory-id/:account-id/materials".replace(":laboratory-id", labId)
+        routes.laboratory.getListOrderByAccountId.replace(":laboratory-id", labId)
             .replace(":account-id", accountId),
         {
           headers: {
@@ -1399,7 +1404,7 @@ export const returnOrder= async (orderId) => {
   const token = await getToken();
   try {
     const response = await axios.post(
-        laboratory + "/flab/lab/public/api/v1/materials/orders/:order-id".replace(":order-id", orderId),{},
+        routes.laboratory.returnOrder.replace(":order-id", orderId),{},
         {
           headers: {
             "Authorization": `Bearer ` + token
@@ -1417,7 +1422,7 @@ export const getAllTag= async () => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        forum+ "/flab/forum/public/api/v1/tags",
+        routes.forum.getAllTag,
         {
           headers: {
             "Authorization": `Bearer ` + token
@@ -1434,7 +1439,7 @@ export const addTag= async (tagName,ownerBy) => {
   const token = await getToken();
   try {
     const response = await axios.post(
-        forum+ "/flab/forum/public/api/v1/tags/tag",{
+        routes.forum.addTag,{
           tagName:tagName,
           ownerBy:ownerBy
         },
@@ -1454,7 +1459,7 @@ export const updateTag= async (tagId,tagName,ownerBy) => {
   const token = await getToken();
   try {
     const response = await axios.put(
-        forum+ "/flab/forum/public/api/v1/tags/:tag-id".replace(":tag-id",tagId),{
+        routes.forum.updateTag.replace(":tag-id",tagId),{
           tagName:tagName,
           ownerBy:ownerBy
         },
@@ -1474,7 +1479,7 @@ export const deleteTag= async (tagId) => {
   const token = await getToken();
   try {
     const response = await axios.delete(
-        forum+ "/flab/forum/public/api/v1/tags/:tag-id".replace(":tag-id",tagId),
+        routes.forum.deleteTag.replace(":tag-id",tagId),
         {
           headers: {
             "Authorization": `Bearer ` + token
@@ -1492,10 +1497,13 @@ export const getAccountAdmin= async () => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        host+"8080/flab/authentication/public/api/v1/accounts?role=ADMIN",
+        routes.account.getAccountTag,
         {
           headers: {
             "Authorization": `Bearer ` + token
+          },
+          params:{
+            role: "ADMIN"
           }
         }
     );

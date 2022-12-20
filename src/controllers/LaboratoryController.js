@@ -37,14 +37,14 @@ export class LaboratoryController {
   getListMaterialByLabId({ labId }) {
     return this.networkService.request({
       method: "GET",
-      url: routes.material.getMaterialByLabId.replace(":laboratory-id", labId),
+      url: routes.laboratory.getMaterialByLabId.replace(":laboratory-id", labId),
       data: null,
     });
   }
   getProjectByLabId({ labId }) {
     return this.networkService.request({
       method: "GET",
-      url: routes.project.getProjectByLabId.replace(":lab-id", labId),
+      url: routes.laboratory.getProjectByLabId.replace(":lab-id", labId),
       data: null,
     });
   }
@@ -52,7 +52,7 @@ export class LaboratoryController {
   getProjectDetail({ projectId }) {
     return this.networkService.request({
       method: "GET",
-      url: routes.project.getProjectDetailById.replace(
+      url: routes.laboratory.getProjectDetailById.replace(
         ":project-id",
         projectId
       ),
@@ -64,7 +64,7 @@ export class LaboratoryController {
     console.log("ProfileId in controller: " + accountId);
     return this.networkService.request({
       method: "GET",
-      url: routes.member.getMemberDetail.replace(":profile-id", accountId),
+      url: routes.account.getMemberDetail.replace(":profile-id", accountId),
       data: null,
     });
   }
@@ -80,7 +80,7 @@ export class LaboratoryController {
   getAllMembersInProject({ projectId }) {
     return this.networkService.request({
       method: "GET",
-      url: routes.project.getAllMemberInProject.replace(
+      url: routes.laboratory.getAllMemberInProject.replace(
         ":project-id",
         projectId
       ),
@@ -133,7 +133,7 @@ export class LaboratoryController {
   createProjectInLab({ labId, requestData }) {
     return this.networkService.request({
       method: "POST",
-      url: routes.project.createProject.replace(":lab-id", labId),
+      url: routes.laboratory.createProject.replace(":lab-id", labId),
       data: {
         projectName: requestData.projectName,
         description: requestData.description,
@@ -167,7 +167,7 @@ export class LaboratoryController {
   removeMemberInProject({ projectId, memberId }) {
     return this.networkService.request({
       method: "DELETE",
-      url: routes.project.removeMemberInProject
+      url: routes.laboratory.removeMemberInProject
         .replace(":project-id", projectId)
         .replace(":member-id", memberId),
       data: null,
@@ -199,7 +199,7 @@ export class LaboratoryController {
   removeProject({ labId, projectId }) {
     return this.networkService.request({
       method: "DELETE",
-      url: routes.project.removeProject
+      url: routes.laboratory.removeProject
         .replace(":lab-id", labId)
         .replace(":project-id", projectId),
       data: null,
@@ -222,7 +222,7 @@ export class LaboratoryController {
   updateProject({ labId, projectId, requestData }) {
     return this.networkService.request({
       method: "PUT",
-      url: routes.project.updateProject
+      url: routes.laboratory.updateProject
         .replace(":laboratory-id", labId)
         .replace(":project-id", projectId),
       data: {
@@ -293,6 +293,75 @@ export class LaboratoryController {
       data: {
         status: requestData.status,
         comment: requestData.comment,
+      },
+    });
+  }
+  getMaterialById({ materialId }) {
+    return this.networkService.request({
+      method: "GET",
+      url: routes.laboratory.getMaterialById.replace(":material-id", materialId),
+      data: null,
+    });
+  }
+
+  updateMaterial({ labId,materialId,materialName,status,amount, description,note,image }) {
+    return this.networkService.request({
+      method: "PUT",
+      url: routes.laboratory.updateMaterial
+          .replace(":laboratory-id", labId)
+          .replace(":material-id", materialId),
+      data: {
+        materialName: materialName,
+        status:status,
+        description: description,
+        status: status,
+        amount: amount,
+        note:note,
+        image:image
+      },
+    });
+  }
+  addMaterial({ labId, materialName, description,amount, note, images }) {
+    return this.networkService.request({
+      method: "POST",
+      url: routes.laboratory.addMaterial
+          .replace(":lab-id", labId),
+      data: {
+        materialName: materialName,
+        description: description,
+        amount: amount,
+        note: note,
+        images: images,
+      },
+    });
+  }
+  orderMaterial({ labId, materialId, amount,reason, orderFrom, orderTo }) {
+    return this.networkService.request({
+      method: "POST",
+      url: routes.laboratory.orderMaterial
+          .replace(":laboratory-id", labId).replace(":material-id", materialId),
+      data: {
+        amount: amount,
+        reason: reason,
+        orderFrom: orderFrom,
+        orderTo: orderTo
+      },
+    });
+  }
+  getMembersInProject({ projectId }) {
+    return this.networkService.request({
+      method: "GET",
+      url: routes.laboratory.getMembersInProject.replace(":project-id", projectId),
+      data: null,
+    });
+  }
+
+  addMembersToProject({ projectId, requestData }) {
+    return this.networkService.request({
+      method: "POST",
+      url: routes.laboratory.addMemberToProject.replace(":project-id", projectId),
+      data: {
+        memberId: requestData.memberId,
       },
     });
   }

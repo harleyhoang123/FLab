@@ -1,4 +1,5 @@
 import { routes } from "./routers";
+import {account} from "./ip";
 
 export class UserController {
   constructor(networkService) {
@@ -8,7 +9,7 @@ export class UserController {
   login({ username, password }) {
     return this.networkService.request({
       method: "POST",
-      url: routes.authentication.login,
+      url: routes.account.login,
       data: {
         emailOrUsername: username,
         password: password,
@@ -19,7 +20,7 @@ export class UserController {
   register({ email, username, fullName, password }) {
     return this.networkService.request({
       method: "POST",
-      url: routes.authentication.register,
+      url: routes.account.register,
       data: {
         email: email,
         username: username,
@@ -33,7 +34,7 @@ export class UserController {
     console.log("In User Controller: " + emailOrUsername);
     return this.networkService.request({
       method: "POST",
-      url: routes.authentication.forgot,
+      url: routes.account.forgot,
       data: {
         emailOrUsername: emailOrUsername,
       },
@@ -44,7 +45,7 @@ export class UserController {
     console.log("Oll Password User Controller: " + oldPassword);
     console.log("New Password User Controller: " + newPassword);
     console.log("accountId User Controller: " + accountId);
-    const URL = routes.authentication.changePassword.replace(
+    const URL = routes.account.changePassword.replace(
       ":account-id",
       accountId
     );

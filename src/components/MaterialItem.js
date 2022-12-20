@@ -3,7 +3,7 @@ import {View, Image, TouchableOpacity, Text, StyleSheet} from "react-native";
 import Separator from "./Separator";
 
 import { useDispatch } from "react-redux";
-import { getMaterialById } from "../actions/MaterialAction";
+import { getMaterialById } from "../actions/LaboratoryAction";
 import Buttons from "./Buttons";
 import {deleteMaterial} from "../networking/CustomNetworkService";
 
