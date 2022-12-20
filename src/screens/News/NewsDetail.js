@@ -50,6 +50,7 @@ function NewsDetail({ route, navigation }) {
   const [content, setContent] = useState(res.content);
   const [views, setViews] = useState(res.views);
   const [userComment, setUserComment] = useState(res.comments);
+  const [showConfirm,setShowConfirm]=useState(false);
   const deleteANews = (newsId, navigation) => {
     deleteNews(newsId).then(() => getListNews(navigation));
   };
@@ -69,6 +70,27 @@ function NewsDetail({ route, navigation }) {
     <View>
       <HomeTopNavigator navigation={navigation} />
       <View style={styles.container}>
+        <Modal
+            animationType="fade"
+            transparent={true}
+            visible={showConfirm}
+            onRequestClose={() => {
+              setShowConfirm(false);
+            }}>
+          <View style={styles.modalDelete}>
+            <View style={styles.modalDeleteView}>
+              <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete this news?</Text>
+              <View style={{alignItems: "flex-end", flexDirection: "row"}}>
+                <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
+                  deleteANews(newsId, navigation);
+                  setShowConfirm(false);
+                }}/>
+                <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
+                         onPressTo={() => setShowConfirm(false)}/>
+              </View>
+            </View>
+          </View>
+        </Modal>
         <View style={styles.containerTitle}>
           <View style={styles.row}>
             <View style={styles.containerT}>
@@ -123,7 +145,7 @@ function NewsDetail({ route, navigation }) {
                       </TouchableOpacity>
                       <TouchableOpacity
                         onPress={() => {
-                          deleteANews(newsId, navigation);
+                          setShowConfirm(true)
                           setModalVisible(!modalVisible);
                         }}
                         style={[styles.buttonModal]}
@@ -264,6 +286,25 @@ const styles = StyleSheet.create({
   },
   containerT: {
     flex: 0.8,
+  },
+  modalDelete: {
+    alignItems: "center",
+    justifyContent:"center",
+    flex: 1,
+  },
+  modalDeleteView: {
+    width: "30%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignItems: "flex-start",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    padding: 50,
   },
 });
 export default NewsDetail;

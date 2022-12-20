@@ -1,11 +1,10 @@
-import React from "react";
+import React,{useState} from "react";
 import {
   SafeAreaView,
   View,
   Image,
   FlatList,
   StyleSheet,
-  useState,
   Text,
   Icon,
   StatusBar,

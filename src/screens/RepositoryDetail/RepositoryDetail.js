@@ -77,8 +77,8 @@ function RepositoryDetail({route, navigation}) {
                             setTypeChecked(type);
                             setFName(name);
                             setDescription(description);
-                            setUrlDownload(publicURL)
-                            setDisable(false)
+                            setUrlDownload(publicURL);
+                            setDisable(false);
                         }}
                     />
                 </RadioButton.Group>
@@ -120,7 +120,7 @@ function RepositoryDetail({route, navigation}) {
                             setTypeChecked(type);
                             setFName(folderName);
                             setDescription(description);
-                            setDisable(true)
+                            setDisable(false);
                             console.log("File ID in RepositoryDetail " + checked)
                         }}
                     />
@@ -353,6 +353,25 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
+    },
+    modalDelete: {
+        alignItems: "center",
+        justifyContent:"center",
+        flex: 1,
+    },
+    modalDeleteView: {
+        width: "30%",
+        backgroundColor: "white",
+        borderRadius: 10,
+        alignItems: "flex-start",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        padding: 50,
     },
 });
 
