@@ -27,6 +27,30 @@ function AnswerComponent({
     return d.getDate() + "/" + month + "/" + d.getFullYear();
   };
   const [comment, setComment] = useState("");
+  let isValid = true;
+  const [isCommentEdit, setIsCommentEdit] = useState(false);
+  const [isComment, setIsComment] = useState(false);
+
+  function validateEdit(commentId, text) {
+    if (!text) {
+      setIsCommentEdit(true);
+      isValid = false;
+    }
+    if (isValid) {
+      handleEdit(commentId, text);
+    }
+  }
+
+  function validateComment() {
+    if (!comment) {
+      setIsComment(true);
+      isValid = false;
+    }
+    if (isValid) {
+      handleComment();
+    }
+  }
+
   const handleDelete = () => {
     deleteAnswer(questionId, answerId).then(() => callbackAnswer());
   };
@@ -37,7 +61,10 @@ function AnswerComponent({
     });
   };
   const handleEdit = (commentId, text) => {
-    editAnswer(commentId, text).then(() => callbackAnswer());
+    editAnswer(commentId, text).then(() => {
+      callbackAnswer();
+      setIsEdit(!isEdit);
+    });
   };
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState(content);
@@ -54,18 +81,16 @@ function AnswerComponent({
               secureTextEntry={false}
               multiline={true}
               onSubmitEditing={() => {
-                handleEdit(answerId, text);
+                validateEdit(answerId, text);
                 setText("");
-                setIsEdit(!isEdit);
               }}
               style={[styles.comment2]}
             />
             <Buttons
               text={"Save"}
               onPressTo={() => {
-                handleEdit(answerId, text);
+                validateEdit(answerId, text);
                 setText("");
-                setIsEdit(!isEdit);
               }}
               style={styles.button2}
             />
@@ -77,6 +102,9 @@ function AnswerComponent({
               style={styles.button2}
             />
           </View>
+          {isCommentEdit && (
+            <Text style={styles.inputInvalid}>Invalid comment</Text>
+          )}
         </View>
       );
     } else {
@@ -168,15 +196,17 @@ function AnswerComponent({
             placeholder={" Comment Here"}
             secureTextEntry={false}
             multiline={false}
-            onSubmitEditing={() => handleComment()}
+            onSubmitEditing={validateComment}
             style={[styles.comment]}
           />
+
           <Buttons
             text={"Comment"}
-            onPressTo={() => handleComment()}
+            onPressTo={validateComment}
             style={styles.button}
           />
         </View>
+        {isComment && <Text style={styles.inputInvalid}>Invalid comment</Text>}
       </View>
 
       <Separator />
@@ -188,6 +218,10 @@ const styles = StyleSheet.create({
   comment: {
     width: "95%",
     height: 50,
+  },
+  inputInvalid: {
+    marginLeft: 15,
+    color: "red",
   },
   button: {
     width: 200,

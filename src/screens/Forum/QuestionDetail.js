@@ -32,6 +32,7 @@ import {
 function QuestionDetail({ route, navigation }) {
   const res = route.params;
   let isValid = true;
+  let isAwsValid = true;
   console.log("Data in question detail: " + JSON.stringify(res));
   const [content, setContent] = useState("");
   const [answer, setAnswer] = useState("");
@@ -50,6 +51,7 @@ function QuestionDetail({ route, navigation }) {
   const [close, setClose] = useState(false);
 
   const [isComment, setIsComment] = useState(false);
+  const [isAnswer, setIsAnswer] = useState(false);
 
   function validateComment() {
     if (!content) {
@@ -63,6 +65,23 @@ function QuestionDetail({ route, navigation }) {
         );
         setContent("");
       });
+      setIsAnswer(false);
+    }
+  }
+
+  function validateAnswer() {
+    if (!answer) {
+      setIsAnswer(true);
+      isAwsValid = false;
+    }
+    if (isAwsValid) {
+      addAnswer(questionId, answer).then((v) => {
+        getQuestionDetail(questionId).then((r) =>
+          setUserAnswer(r.data.answers)
+        );
+        setAnswer("");
+      });
+      setIsAnswer(false);
     }
   }
 
@@ -287,12 +306,13 @@ function QuestionDetail({ route, navigation }) {
             placeholder={" Answer Here"}
             secureTextEntry={false}
             multiline={true}
-            onSubmitEditing={handleAnswer}
+            onSubmitEditing={validateAnswer}
             style={[styles.comment, { height: 300, width: "95%" }]}
           />
+          {isAnswer && <Text style={styles.inputInvalid}>Invalid answer</Text>}
           <Buttons
             text={"Post Your Answer"}
-            onPressTo={handleAnswer}
+            onPressTo={validateAnswer}
             style={[styles.button, { marginLeft: 20 }]}
           />
 
@@ -311,6 +331,7 @@ const styles = StyleSheet.create({
   inputInvalid: {
     marginLeft: 15,
     color: "red",
+    marginBottom: 10,
   },
   forum: {
     flex: 0.15,
