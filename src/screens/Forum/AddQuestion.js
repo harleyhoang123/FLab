@@ -9,19 +9,45 @@ import { useDispatch } from "react-redux";
 import { addQuestion } from "../../actions/ForumAction";
 
 function AddQuestion({ navigation }) {
+  let isValid = true;
   const [value, setValue] = useState("Public");
   const [title, setTitle] = useState("");
   const [problem, setProblem] = useState("");
   const [triedCase, setTriedCase] = useState("");
   const [tag, setTag] = useState("");
+
+  const [isTitle, setIsTitle] = useState(false);
+  const [isProblem, setIsProblem] = useState(false);
+  const [isTriedCase, setIsTriedCase] = useState(false);
+  const [isTag, setIsTag] = useState(false);
+
+  function validateComment() {
+    if (!title) {
+      setIsTitle(true);
+      isValid = false;
+    }
+    if (!problem) {
+      setIsProblem(true);
+      isValid = false;
+    }
+    if (!triedCase) {
+      setIsTriedCase(true);
+      isValid = false;
+    }
+    if (!tag) {
+      setIsTag(true);
+      isValid = false;
+    }
+    if (isValid) {
+      dispatch(addQuestion(title, problem, triedCase, tag, navigation));
+    }
+  }
+
   const dispatch = useDispatch();
   const data = [
     { label: "Public", value: "Public" },
     { label: "Inside Lab Room", value: "Inside Lab Room" },
   ];
-  const handleClick = () => {
-    dispatch(addQuestion(title, problem, triedCase, tag, navigation));
-  };
 
   return (
     <View>
@@ -42,6 +68,7 @@ function AddQuestion({ navigation }) {
             multiline={false}
             style={{ width: "96%" }}
           />
+          {isTitle && <Text style={styles.inputInvalid}>Invalid title</Text>}
           <AddComponent
             text={problem}
             onChangeText={(problem) => setProblem(problem)}
@@ -52,6 +79,9 @@ function AddQuestion({ navigation }) {
             multiline={true}
             style={{ width: "96%", height: 300 }}
           />
+          {isProblem && (
+            <Text style={styles.inputInvalid}>Invalid comment</Text>
+          )}
           <AddComponent
             text={triedCase}
             onChangeText={(triedCase) => setTriedCase(triedCase)}
@@ -62,6 +92,9 @@ function AddQuestion({ navigation }) {
             multiline={true}
             style={{ width: "96%", height: 300 }}
           />
+          {isTriedCase && (
+            <Text style={styles.inputInvalid}>Invalid comment</Text>
+          )}
           <AddComponent
             text={tag}
             onChangeText={(tag) => setTag(tag)}
@@ -72,6 +105,7 @@ function AddQuestion({ navigation }) {
             multiline={false}
             style={{ width: "96%" }}
           />
+          {isTag && <Text style={styles.inputInvalid}>Invalid comment</Text>}
           <View style={styles.summit}>
             <Dropdown
               style={styles.dropdown}
@@ -87,7 +121,7 @@ function AddQuestion({ navigation }) {
             <View style={styles.row}>
               <Buttons
                 text={"Post Your Question"}
-                onPressTo={handleClick}
+                onPressTo={validateComment}
                 style={styles.button}
               />
               <Buttons
@@ -108,6 +142,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
   },
+  inputInvalid: {
+    marginLeft: 55,
+    color: "red",
+  },
   forum: {
     flex: 0.15,
     marginTop: 20,
@@ -126,6 +164,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     marginLeft: 30,
+    marginTop: 10,
   },
   text: {
     fontSize: 30,

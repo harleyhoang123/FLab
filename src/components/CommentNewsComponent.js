@@ -166,6 +166,7 @@ function CommentNewsComponent({
             style={styles.button}
           />
         </View>
+        {isReply && <Text style={styles.inputInvalid}>Invalid reply</Text>}
       </View>
       <Separator />
     </View>
