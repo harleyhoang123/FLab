@@ -8,6 +8,7 @@ import Buttons from "../../components/Buttons";
 import Title from "../../components/Title";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import validator from 'validator'
+import ErrorText from "../../components/ErrorText";
 export const useTogglePasswordVisibility = () => {
     const [passwordVisibility, setPasswordVisibility] = useState(true);
     const [rightIcon, setRightIcon] = useState('eye');
@@ -32,27 +33,24 @@ export default function Login({navigation}) {
     const dispatch = useDispatch();
     const [usernameOrEmail, setUsernameOrEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [errorUsername, setErrorUsername] = useState("");
-    const [errorPassword, setErrorPassword] = useState("");
     const { passwordVisibility, rightIcon, handlePasswordVisibility } =
         useTogglePasswordVisibility();
     const [isValidUsername, setIsValidUserName]=useState(true);
     const [isValidPassword, setIsValidPassword]=useState(true);
+    const regexPassword= "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d@$!%*?&.,]{8,}$";
+    function isStrongPass(pass){
+        return pass.match(regexPassword);
+    }
     const handleSubmit = (username,password,navigation) => {
         if(username.length<5){
             setIsValidUserName(false);
-            setErrorUsername("Username must equal or longer than 5 characters")
         }else{
             setIsValidUserName(true);
-            if (validator.isStrongPassword(password, {
-                minLength: 8, minLowercase: 1,
-                minUppercase: 1, minNumbers: 1
-            })) {
+            if (isStrongPass(password)) {
                 setIsValidPassword(true)
                 dispatch(login(username, password, navigation));
             } else {
                 setIsValidPassword(false)
-                setErrorPassword("Password must equal or longer than 8 characters, contain least 1 uppercase character,\n1 lowercase character and 1 number.")
             }
         }
 
@@ -72,7 +70,7 @@ export default function Login({navigation}) {
                     onSubmitEditing={()=>handleSubmit(usernameOrEmail,password,navigation)}
                     style={{width:"60%"}}
                 ></TextField>
-                {isValidUsername===false &&<Text style={{color:'red', marginLeft:20}}>{errorUsername}</Text>}
+                {isValidUsername===false &&<ErrorText message={"Username is invalid."}/>}
                 <View style={{flexDirection: "row", alignItems: 'center',}}>
                     <TextField
                         text={password}
@@ -86,7 +84,7 @@ export default function Login({navigation}) {
                         <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
                     </TouchableOpacity>
                 </View>
-                {isValidPassword===false &&<Text style={{color:'red', marginLeft:20}}>{errorPassword}</Text>}
+                {isValidPassword===false &&<ErrorText message={"Password is invalid."}/>}
                 <View style={styles.forgotPassword}>
                     <View>
                         <TouchableOpacity onPress={() => navigation.push("ForgotPassword")}>

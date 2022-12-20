@@ -55,9 +55,9 @@ export const login =
       dispatch(loginSuccess(data));
     } catch ({ data }) {
       console.log("Login fail " + JSON.stringify(data));
-      // if(data.status.status===401){
-      //   alert(data.status.message)
-      // }
+      if(data.status.status===401){
+        alert(data.status.message)
+      }
     }
   };
 

@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
-import HomeTopNavigator from "../../navigations/HomeNavigation";
+import {Image, Modal, StyleSheet, Text, View} from "react-native";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
 import { useDispatch } from "react-redux";
 import { getListMaterialByLabId } from "../../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
+import {deleteMaterial} from "../../networking/CustomNetworkService";
 const getLabId = async () => {
   try {
     const labId = await AsyncStorage.getItem("@labId");
@@ -15,15 +15,17 @@ const getLabId = async () => {
     console.log("Can't get labId: " + e);
   }
 };
+
 function MaterialDetail({ route, navigation }) {
   const dispatch = useDispatch();
-  const goToListMaterial = () => {
-    dispatch(getListMaterialByLabId("", navigation));
-  };
+  const deleteAMaterial=(labId, materialId)=>{
+    deleteMaterial(labId, materialId).then(v=> dispatch(getListMaterialByLabId(labId, navigation)))
+  }
   const data = route.params.data;
   const status = data.status;
   const isAdmin = false;
   const [labId, setLabId] = useState();
+  const [showConfirm,setShowConfirm]=useState(false);
   getLabId().then(v => setLabId(v))
   const handleButton = () => {
     if (status === "FREE") {
@@ -51,6 +53,27 @@ function MaterialDetail({ route, navigation }) {
     <View style={styles.container}>
       <LabNavigator navigation={navigation} />
       <View style={styles.containerContent}>
+        <Modal
+            animationType="fade"
+            transparent={true}
+            visible={showConfirm}
+            onRequestClose={() => {
+              setShowConfirm(false);
+            }}>
+          <View style={styles.modalDelete}>
+            <View style={styles.modalDeleteView}>
+              <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to remove this material?</Text>
+              <View style={{alignItems: "flex-end", flexDirection: "row"}}>
+                <Buttons text={"Remove"} style={{marginRight: 40}} onPressTo={() => {
+                  deleteAMaterial(labId, data.materialId)
+                  setShowConfirm(false)
+                }}/>
+                <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
+                         onPressTo={() => setShowConfirm(false)}/>
+              </View>
+            </View>
+          </View>
+        </Modal>
         <View style={styles.containerImage}>
           <Image
             style={styles.image}
@@ -81,28 +104,8 @@ function MaterialDetail({ route, navigation }) {
                 navigation.push("UpdateMaterial", { materialInfo: data })
               }
             />
+            <Buttons style={styles.button} text={"Delete"} onPressTo={()=> setShowConfirm(true)}/>
           </View>
-
-          {isAdmin ? (
-            <View>
-              <Buttons
-                text={"Delete"}
-                style={[styles.button]}
-                onPressTo={() => {
-                  navigation.push("Home");
-                }}
-              />
-              <Buttons
-                text={"Update"}
-                style={[styles.button]}
-                onPressTo={() => {
-                  navigation.push("Home");
-                }}
-              />
-            </View>
-          ) : (
-            <Text></Text>
-          )}
         </View>
       </View>
     </View>
@@ -147,6 +150,25 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
+  },
+  modalDelete: {
+    alignItems: "center",
+    justifyContent:"center",
+    flex: 1,
+  },
+  modalDeleteView: {
+    width: "30%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignItems: "flex-start",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    padding: 50,
   },
 });
 export default MaterialDetail;

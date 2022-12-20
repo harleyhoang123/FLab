@@ -8,7 +8,7 @@ import Buttons from "./Buttons";
 import {deleteMaterial} from "../networking/CustomNetworkService";
 
 
-function MaterialItem({ id, image, title, status, navigation,labId, callbackListMaterial }) {
+function MaterialItem({ id, image, title, status, navigation }) {
   console.log("IDL:" + id);
   const dispatch = useDispatch();
   const goToMaterialDetail = () => {
@@ -16,9 +16,7 @@ function MaterialItem({ id, image, title, status, navigation,labId, callbackList
     dispatch(getMaterialById(id, navigation));
   };
   console.log("In material item");
-  const deleteAMaterial=(labId, materialId)=>{
-    deleteMaterial(labId, materialId).then(v=> callbackListMaterial())
-  }
+
   return (
     <View style={[styles.container]}>
       <TouchableOpacity onPress={goToMaterialDetail}>
@@ -35,7 +33,7 @@ function MaterialItem({ id, image, title, status, navigation,labId, callbackList
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.textInfo}>Status: {status}</Text>
           </View>
-          <Buttons text={"Delete"} onPressTo={()=> deleteAMaterial(labId, id)}/>
+
         </View>
       </TouchableOpacity>
       <Separator />

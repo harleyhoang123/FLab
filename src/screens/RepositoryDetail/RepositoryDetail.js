@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Text, StyleSheet, View, FlatList, SafeAreaView, Linking} from "react-native";
+import {Text, StyleSheet, View, FlatList, SafeAreaView, Linking, Modal} from "react-native";
 import Buttons from "../../components/Buttons";
 import {RadioButton} from "react-native-paper";
 import TextField from "../../components/TextField";
@@ -11,7 +11,6 @@ import {deleteFolderOrFile, getListFolderDetail} from "../../networking/CustomNe
 
 function RepositoryDetail({route, navigation}) {
     const data = route.params.data;
-    const fId = "638ee951dcab483f62c0aab3";
     const parentFolderId = route.params.parentFolderId;
     const folderName = route.params.folderName;
     const [itemsFile, setItemsFile] = useState(data.listFile);
@@ -23,7 +22,8 @@ function RepositoryDetail({route, navigation}) {
     const [fName, setFName] = useState("");
     const [description, setDescription] = useState("");
     const [urlDownload, setUrlDownload]= useState("")
-    const [disable, setDisable]= useState(true)
+    const [showConfirm,setShowConfirm]=useState(false);
+    const [disable, setDisable]= useState(true);
     console.log("folderName in Detail" + folderName);
     console.log("parentFolderId in Detail" + parentFolderId);
     const downLoadFileHandler = () => {
@@ -44,6 +44,7 @@ function RepositoryDetail({route, navigation}) {
         dispatch(getFolderDetailId(id, name, navigation));
     };
     const handleUpdate = (type) => {
+        setDisable(true);
         if (type === "Folder") {
             navigation.push("UpdateSubFolder", {
                 parentFolderName: folderName,
@@ -78,7 +79,6 @@ function RepositoryDetail({route, navigation}) {
                             setDescription(description);
                             setUrlDownload(publicURL)
                             setDisable(false)
-                            console.log("File ID in RepositoryDetail " + checked)
                         }}
                     />
                 </RadioButton.Group>
@@ -151,6 +151,28 @@ function RepositoryDetail({route, navigation}) {
         <View style={styles.container}>
             <ProjectNavigator navigation={navigation}/>
             <View style={styles.containerContent}>
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={showConfirm}
+                    onRequestClose={() => {
+                        setShowConfirm(false);
+                    }}>
+                    <View style={styles.modalDelete}>
+                        <View style={styles.modalDeleteView}>
+                            <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete this folder?</Text>
+                            <View style={{alignItems: "flex-end", flexDirection: "row"}}>
+                                <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
+                                    deleteAFileOrFolder(checked, typeChecked, parentFolderId)
+                                    setDisable(true);
+                                    setShowConfirm(false)
+                                }}/>
+                                <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
+                                         onPressTo={() => setShowConfirm(false)}/>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
                 <View style={styles.header}>
                     <View>
                         <Text style={styles.myCV}> {folderName}/</Text>
@@ -188,12 +210,14 @@ function RepositoryDetail({route, navigation}) {
                         <Buttons
                             style={styles.button}
                             text={"Update"}
+                            disabled={disable}
                             onPressTo={() => handleUpdate(typeChecked)}
                         />
                         <Buttons
                             style={styles.button}
                             text={"Delete"}
-                            onPressTo={() => deleteAFileOrFolder(checked, typeChecked, parentFolderId)}
+                            disabled={disable}
+                            onPressTo={() => {setShowConfirm(true)}}
                         />
                         <Buttons
                             onPressTo={downLoadFileHandler}

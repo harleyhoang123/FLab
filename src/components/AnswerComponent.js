@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import CommentItem from "./CommentItem";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import TextField from "./TextField";
 import Buttons from "./Buttons";
 import Separator from "./Separator";
@@ -26,6 +26,7 @@ function AnswerComponent({questionId,answerId, votes, createdBy, content, create
     }
     const [isEdit,setIsEdit]=useState(false);
     const [text, setText]=useState(content)
+    const [showConfirm,setShowConfirm]=useState(false);
     const isEditComment =(isEdit)=>{
         if (isEdit){
             return(
@@ -54,6 +55,27 @@ function AnswerComponent({questionId,answerId, votes, createdBy, content, create
             <View style={styles.row}>
                 <VoteComponent votes={votes} size={"2x"} style={{marginRight: 5}}/>
                 <View style={styles.container}>
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={showConfirm}
+                        onRequestClose={() => {
+                            setShowConfirm(false);
+                        }}>
+                        <View style={styles.modal}>
+                            <View style={styles.modalProfileView}>
+                                <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete this answer?</Text>
+                                <View style={{alignItems: "flex-end", flexDirection: "row"}}>
+                                    <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
+                                        handleDelete()
+                                        setShowConfirm(false)
+                                    }}/>
+                                    <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
+                                             onPressTo={() => setShowConfirm(false)}/>
+                                </View>
+                            </View>
+                        </View>
+                    </Modal>
                     <View>
                     <View style={styles.containerComment}>
                         <Text style={styles.textUsername}>{createdBy}</Text>
@@ -67,7 +89,7 @@ function AnswerComponent({questionId,answerId, votes, createdBy, content, create
                             </TouchableOpacity>
                         </View>
                         <View style={styles.login}>
-                            <TouchableOpacity onPress={handleDelete}>
+                            <TouchableOpacity onPress={()=>{setShowConfirm(true)}}>
                                 <Text style={styles.txt}>Delete</Text>
                             </TouchableOpacity>
                         </View>
@@ -152,6 +174,25 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         borderBottomWidth: 1,
         fontSize: 15,
+    },
+    modal: {
+        alignItems: "center",
+        justifyContent:"center",
+        flex: 1,
+    },
+    modalProfileView: {
+        width: "30%",
+        backgroundColor: "white",
+        borderRadius: 10,
+        alignItems: "flex-start",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        padding: 50,
     },
 });
 export default AnswerComponent;

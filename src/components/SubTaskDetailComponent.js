@@ -6,7 +6,13 @@ import axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
 import UserInfoComponent from "./UserInfoComponent";
 import TextField from "./TextField";
-import {assignneSubTask, deleteSubTask, getSubTaskDetail, updateSubTask} from "../networking/CustomNetworkService";
+import {
+    assignneSubTask,
+    assignSubTask,
+    deleteSubTask,
+    getSubTaskDetail,
+    updateSubTask
+} from "../networking/CustomNetworkService";
 import {SelectCountry} from "react-native-element-dropdown";
 
 
@@ -30,6 +36,7 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
     const [estimateUpdate, setEstimateUpdate] = useState(estimateDetail);
     const [reporterUpdate, setReporterUpdate] = useState();
     const [modalVisible, setModalVisible] = useState(false);
+    const [showConfirm,setShowConfirm]=useState(false);
     const [data,setData]=useState();
     const [listActivity, setListActivity] = useState();
     function filterActivity(list,value) {
@@ -261,13 +268,34 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
                     </View>
                 </TouchableOpacity>
             </Modal>
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={showConfirm}
+                onRequestClose={() => {
+                    setShowConfirm(false);
+                }}>
+                <View style={styles.modalDelete}>
+                    <View style={styles.modalDeleteView}>
+                        <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete this subtask?</Text>
+                        <View style={{alignItems: "flex-end", flexDirection: "row"}}>
+                            <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
+                                deleteSubTask(subTaskDetail.subTaskId, taskId).then(r => callbackSubTaskDetail(null))
+                                setShowConfirm(false)
+                            }}/>
+                            <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
+                                     onPressTo={() => setShowConfirm(false)}/>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             <View style={styles.wrapper}>
                 <View style={{flexDirection: "row", alignSelf: "flex-end",}}>
                     <Buttons text={"Edit"} style={[styles.buttonClose, {width: 40, marginRight: 10}]}
                              onPressTo={() => setModalVisible(!modalVisible)}></Buttons>
                     <Buttons text={"Delete"} style={[styles.buttonClose, {width: 60, marginRight: 10}]}
                              onPressTo={() => {
-                                 deleteSubTask(subTaskDetail.subTaskId, taskId).then(r => callbackSubTaskDetail(null))
+                                 setShowConfirm(true);
                              }}></Buttons>
                     <Buttons text={"X"} style={styles.buttonClose}
                              onPressTo={() => callbackSubTaskDetail(null)}></Buttons>
@@ -434,6 +462,25 @@ const styles = StyleSheet.create({
     selectedTextStyle: {
         fontSize: 16,
         marginLeft: 8,
+    },
+    modalDelete: {
+        alignItems: "center",
+        justifyContent:"center",
+        flex: 1,
+    },
+    modalDeleteView: {
+        width: "30%",
+        backgroundColor: "white",
+        borderRadius: 10,
+        alignItems: "flex-start",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        padding: 50,
     },
 });
 export default SubTaskDetailComponent;

@@ -8,6 +8,7 @@ import {useDispatch} from "react-redux";
 import {updateMaterialByMaterialId} from "../../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
 import {Dropdown} from "react-native-element-dropdown";
+import TextField from "../../components/TextField";
 
 const getLabId = async () => {
   try {
@@ -68,17 +69,22 @@ const updateMaterial=(labId,materialId,materialName,status,amount, description,n
               text={materialName}
               onChangeText={(materialName) => setMaterialName(materialName)}
           />
-          <Dropdown
-              style={styles.dropdown}
-              value={status}
-              data={data}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              onChange={item => {
-                setStatus(item.value)
-              }}
-          />
+
+          <View style={styles.container1}>
+            <Text style={styles.title}>Status</Text>
+            <Dropdown
+                style={styles.dropdown}
+                value={status}
+                data={data}
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                onChange={item => {
+                  setStatus(item.value)
+                }}
+            />
+          </View>
+
           <AddComponent
               title={"Amount"}
               multiline={false}
@@ -156,5 +162,16 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     marginLeft:20
+  },
+  title:{
+    fontSize:18,
+    fontWeight:"bold",
+    marginBottom:20
+  },
+  container1: {
+    margin:20,
+    backgroundColor:'white',
+    borderRadius:10,
+    padding:20,
   },
 });

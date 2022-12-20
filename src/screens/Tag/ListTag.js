@@ -20,7 +20,7 @@ function ListTag({navigation}) {
     const [add, setAdd] = useState(false);
     const [update, setUpdate] = useState(false);
     const [deleteT, setDeleteT] = useState(false);
-    const [disable, setDisable]= useState(true)
+    const [disable, setDisable]= useState(true);
     useEffect(()=>{
         getAllTag().then(v=> setListTag(v.data.items));
         getAccountAdmin().then(v=> {
@@ -99,8 +99,7 @@ function ListTag({navigation}) {
                         setAdd(false);
                     }}
                 >
-                    <TouchableOpacity
-                        activeOpacity={1}
+                    <View
                         style={styles.modal}
                     >
                         <View style={styles.modalProfileView}>
@@ -131,7 +130,7 @@ function ListTag({navigation}) {
                                          onPressTo={() => setAdd(false)}/>
                             </View>
                         </View>
-                    </TouchableOpacity>
+                    </View>
                 </Modal>
                 <Modal
                     animationType="fade"
@@ -141,8 +140,7 @@ function ListTag({navigation}) {
                         setUpdate(false);
                     }}
                 >
-                    <TouchableOpacity
-                        activeOpacity={1}
+                    <View
                         style={styles.modal}
                     >
                         <View style={styles.modalProfileView}>
@@ -175,7 +173,7 @@ function ListTag({navigation}) {
                                          onPressTo={() => setUpdate(false)}/>
                             </View>
                         </View>
-                    </TouchableOpacity>
+                    </View>
                 </Modal>
                 <Modal
                     animationType="fade"
@@ -185,8 +183,7 @@ function ListTag({navigation}) {
                         setDeleteT(false);
                     }}
                 >
-                    <TouchableOpacity
-                        activeOpacity={1}
+                    <View
                         style={styles.modal}
                     >
                         <View style={styles.modalProfileView}>
@@ -201,7 +198,7 @@ function ListTag({navigation}) {
                                          onPressTo={() => setDeleteT(false)}/>
                             </View>
                         </View>
-                    </TouchableOpacity>
+                    </View>
                 </Modal>
                 <View style={styles.content}>
                     <View style ={styles.containerContent}>

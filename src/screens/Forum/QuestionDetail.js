@@ -37,6 +37,7 @@ function QuestionDetail({route,navigation}) {
     const [tags,setTags] = useState(res.data.tags);
     const [votes,setVotes]= useState(res.data.score);
     const [value, setValue] = useState('');
+    const [close,setClose]= useState(false)
     const formatTime=(date)=>{
         const d= new Date(date);
         const month= d.getMonth()+1;
@@ -82,6 +83,27 @@ function QuestionDetail({route,navigation}) {
                     <ForumNavigation navigation={navigation}/>
                 </View>
                 <View style={styles.content}>
+                    <Modal
+                        animationType="fade"
+                        transparent={true}
+                        visible={close}
+                        onRequestClose={() => {
+                            setClose(false);
+                        }}>
+                        <View style={styles.modal}>
+                            <View style={styles.modalProfileView}>
+                                <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to close this question?</Text>
+                                <View style={{alignItems: "flex-end", flexDirection: "row"}}>
+                                    <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
+                                        handleClose()
+                                        setClose(false)
+                                    }}/>
+                                    <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
+                                             onPressTo={() => setClose(false)}/>
+                                </View>
+                            </View>
+                        </View>
+                    </Modal>
                     <View style={styles.containerTitle}>
                         <View style={styles.containerT}>
                             <Text style={styles.textTitle}>{title}</Text>
@@ -117,7 +139,7 @@ function QuestionDetail({route,navigation}) {
                                     </TouchableOpacity>
                                 </View>
                                 <View style={styles.login}>
-                                    <TouchableOpacity onPress={handleClose}>
+                                    <TouchableOpacity onPress={()=>{setClose(true)}}>
                                         <Text style={styles.txt}>Close</Text>
                                     </TouchableOpacity>
                                 </View>
@@ -273,6 +295,25 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "bold",
         borderBottomWidth: 1,
+    },
+    modal: {
+        alignItems: "center",
+        justifyContent:"center",
+        flex: 1,
+    },
+    modalProfileView: {
+        width: "30%",
+        backgroundColor: "white",
+        borderRadius: 10,
+        alignItems: "flex-start",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        padding: 50,
     },
 });
 

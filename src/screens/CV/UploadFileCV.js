@@ -23,7 +23,7 @@ function UploadFileCV({navigation}) {
     getAccountId().then(v=> setProfileId(v));
     const [file, setFile] = useState();
     const pickFile = async () => {
-        let result = await DocumentPicker.getDocumentAsync({type: '*/*', multiple: false});
+        let result = await DocumentPicker.getDocumentAsync({type: 'application/pdf', multiple: false});
         console.log(result);
         if (!result.cancelled) {
             console.log("Picked: " + result);
