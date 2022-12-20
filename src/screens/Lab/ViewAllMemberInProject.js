@@ -18,7 +18,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
 import Buttons from "../../components/Buttons";
 import { getAllMemberInLab } from "../../networking/CustomNetworkService";
-import { getmemberDetailByProfileId } from "../../actions/LaboratoryAction";
+import { getmemberDetailProjectByProfileId } from "../../actions/LaboratoryAction";
 
 const getProjectId = async () => {
   try {
@@ -56,7 +56,7 @@ export default function ViewAllMemberInProject({ route, navigation }) {
 
   const goToMemberDetail = (accountId, memberId) => {
     dispatch(
-      getmemberDetailByProfileId(accountId, labId, memberId, navigation)
+      getmemberDetailProjectByProfileId(accountId, labId, memberId, navigation)
     );
   };
 
