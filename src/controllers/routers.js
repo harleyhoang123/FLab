@@ -163,7 +163,7 @@ export const routes = {
         deleteFile:
             repository + "/flab/repository/public/api/v1/folders/:folder-id/files/:file-id",
         getListFolderDetail:
-            repository + "/flab/repository/public/api/v1/folders/:folder-id",
+            repository + "/flab/repository/public/api/v1/folders/:folder-id/detail",
 
     },
     account: {
