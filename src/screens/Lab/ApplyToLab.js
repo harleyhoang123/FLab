@@ -31,7 +31,6 @@ const getAccountId = async () => {
 
 export default function ApplyToALab({ route, navigation }) {
   const labId = route.params.labId;
-  //   const data = route.params.listMember;
   console.log("All data:" + JSON.stringify(labId));
 
   const [accountId, setAccountId] = useState("");
