@@ -61,7 +61,7 @@ export const updateQuestion =
             const forumController = new ForumController(networkService);
             const {data} = await forumController.updateQuestion({title, problem, triedCase, tag, questionId});
             console.log("Data updateQuestion is: " + JSON.stringify(data));
-            dispatch(getListQuestion(navigation));
+            dispatch(getQuestionDetailByQuestionId(questionId,navigation, false));
 
         } catch ({data}) {
             dispatch(loginError(data?.error ?? strings.login.invalidCredentials));

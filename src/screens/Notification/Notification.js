@@ -4,24 +4,24 @@ import NotifyComponent from "../../components/NotifyComponent";
 
 function Notification({navigation, modalNotifyVisible, setModalNotifyVisible}) {
     const listNotify =[{
-        title: "Lionel Messi là ngôi sao mới nhất xuất hiện trong game sinh tồn PUBG Mobile ở bản cập nhật sắp tới.",
-        time: "1",
-        date: "s",
+        title: "you have been accepted into lab 211",
+        time: "12:13",
+        date: "23-12-2022",
     },
         {
-            title: "Vụ 3 con gái đổ xăng đốt nhà mẹ: Người dân vẫn bủn rủn khi kể lại lúc đưa các nạn nhân ra ngoài",
-            time: "1",
-            date: "s",
+            title: "you are added to project 1",
+            time: "10:19",
+            date: "22-12-2022",
         },
         {
-            title: "Chiều 31/10, khắp các nẻo đường, từ quán trà đá cho tới những người đi đổ xăng ở xã Trung Hòa (huyện Yên Mỹ, tỉnh Hưng Yên) vẫn bàn tán xôn xao về vụ việc 3 người con gái đốt nhà mẹ đẻ ở thôn Thiên Lộc.  ",
-            time: "1",
-            date: "s",
+            title: "Nguyen Cong Son answered your question ",
+            time: "20:13",
+            date: "20-12-2022",
         },
         {
-            title: "fgh",
-            time: "1",
-            date: "s",
+            title: "you have assigned task 2",
+            time: "17:12",
+            date: "18-12-2022",
         },
     ]
     return (

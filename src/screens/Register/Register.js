@@ -6,7 +6,28 @@ import Logo from "../../assets/Logo";
 import Title from "../../components/Title";
 import {register} from "../../actions/UserAction";
 import {useDispatch} from "react-redux";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+export const useTogglePasswordVisibility = () => {
+    const [passwordVisibility, setPasswordVisibility] = useState(true);
+    const [rightIcon, setRightIcon] = useState('eye');
+
+    const handlePasswordVisibility = () => {
+        if (rightIcon === 'eye') {
+            setRightIcon('eye-off');
+            setPasswordVisibility(!passwordVisibility);
+        } else if (rightIcon === 'eye-off') {
+            setRightIcon('eye');
+            setPasswordVisibility(!passwordVisibility);
+        }
+    };
+
+    return {
+        passwordVisibility,
+        rightIcon,
+        handlePasswordVisibility
+    };
+};
 function Register({navigation}) {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
@@ -17,6 +38,8 @@ function Register({navigation}) {
     const handleRegister=()=> {
         dispatch(register(email,username,fullName,password,navigation));
     }
+    const { passwordVisibility, rightIcon, handlePasswordVisibility } =
+        useTogglePasswordVisibility();
     return (
         <View style={styles.container}>
             <View style={styles.left}>
@@ -30,10 +53,22 @@ function Register({navigation}) {
                            secureTextEntry={false}></TextField>
                 <TextField text={username} onChangeText={username => setUsername(username)} placeholder={" Enter user name"} style={{width:"60%"}}
                            secureTextEntry={false}></TextField>
-                <TextField text={password} onChangeText={password => setPassword(password)} placeholder={" Password"} style={{width:"60%"}}
-                           secureTextEntry={true}></TextField>
-                <TextField text={rePassword} onChangeText={rePassword => setRePassword(rePassword)} placeholder={" Re-Password"} style={{width:"60%"}}
-                           secureTextEntry={true}></TextField>
+
+
+                <View style={{flexDirection: "row", alignItems: 'center',}}>
+                    <TextField text={password} onChangeText={password => setPassword(password)} placeholder={" Password"} style={{width:"60%"}}
+                               secureTextEntry={passwordVisibility}></TextField>
+                    <TouchableOpacity onPress={handlePasswordVisibility} style={{right:50}}>
+                        <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
+                    </TouchableOpacity>
+                </View>
+                <View style={{flexDirection: "row", alignItems: 'center',}}>
+                    <TextField text={rePassword} onChangeText={rePassword => setRePassword(rePassword)} placeholder={" Re-Password"} style={{width:"60%"}}
+                               secureTextEntry={passwordVisibility}></TextField>
+                    <TouchableOpacity onPress={handlePasswordVisibility} style={{right:50}}>
+                        <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
+                    </TouchableOpacity>
+                </View>
                 <Buttons text={"Register"} onPressTo={handleRegister} style={styles.button}/>
                 <View style={styles.login}>
                     <Text>Already have a account?</Text>

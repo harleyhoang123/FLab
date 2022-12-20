@@ -1,4 +1,4 @@
-import {StyleSheet, View, Text, TouchableOpacity} from "react-native";
+import {StyleSheet, View, Text, TouchableOpacity, TouchableOpacityComponent, Image} from "react-native";
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {login} from "../../actions/UserAction";
@@ -6,13 +6,56 @@ import TextField from "../../components/TextField";
 import Logo from "../../assets/Logo";
 import Buttons from "../../components/Buttons";
 import Title from "../../components/Title";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import validator from 'validator'
+export const useTogglePasswordVisibility = () => {
+    const [passwordVisibility, setPasswordVisibility] = useState(true);
+    const [rightIcon, setRightIcon] = useState('eye');
 
+    const handlePasswordVisibility = () => {
+        if (rightIcon === 'eye') {
+            setRightIcon('eye-off');
+            setPasswordVisibility(!passwordVisibility);
+        } else if (rightIcon === 'eye-off') {
+            setRightIcon('eye');
+            setPasswordVisibility(!passwordVisibility);
+        }
+    };
+
+    return {
+        passwordVisibility,
+        rightIcon,
+        handlePasswordVisibility
+    };
+};
 export default function Login({navigation}) {
     const dispatch = useDispatch();
     const [usernameOrEmail, setUsernameOrEmail] = useState("");
     const [password, setPassword] = useState("");
-    const handleSubmit = () => {
-        dispatch(login(usernameOrEmail, password, navigation));
+    const [errorUsername, setErrorUsername] = useState("");
+    const [errorPassword, setErrorPassword] = useState("");
+    const { passwordVisibility, rightIcon, handlePasswordVisibility } =
+        useTogglePasswordVisibility();
+    const [isValidUsername, setIsValidUserName]=useState(true);
+    const [isValidPassword, setIsValidPassword]=useState(true);
+    const handleSubmit = (username,password,navigation) => {
+        if(username.length<5){
+            setIsValidUserName(false);
+            setErrorUsername("Username must equal or longer than 5 characters")
+        }else{
+            setIsValidUserName(true);
+            if (validator.isStrongPassword(password, {
+                minLength: 8, minLowercase: 1,
+                minUppercase: 1, minNumbers: 1
+            })) {
+                setIsValidPassword(true)
+                dispatch(login(username, password, navigation));
+            } else {
+                setIsValidPassword(false)
+                setErrorPassword("Password must equal or longer than 8 characters, contain least 1 uppercase character,\n1 lowercase character and 1 number.")
+            }
+        }
+
     };
     return (
         <View style={styles.container}>
@@ -26,17 +69,24 @@ export default function Login({navigation}) {
                     onChangeText={(newText) => setUsernameOrEmail(newText)}
                     placeholder={"Email or user name"}
                     secureTextEntry={false}
-                    onSubmitEditing={handleSubmit}
+                    onSubmitEditing={()=>handleSubmit(usernameOrEmail,password,navigation)}
                     style={{width:"60%"}}
                 ></TextField>
-                <TextField
-                    text={password}
-                    onChangeText={(newText) => setPassword(newText)}
-                    placeholder={"Password"}
-                    secureTextEntry={true}
-                    onSubmitEditing={handleSubmit}
-                    style={{width:"60%"}}
-                ></TextField>
+                {isValidUsername===false &&<Text style={{color:'red', marginLeft:20}}>{errorUsername}</Text>}
+                <View style={{flexDirection: "row", alignItems: 'center',}}>
+                    <TextField
+                        text={password}
+                        onChangeText={(newText) => setPassword(newText)}
+                        placeholder={"Password"}
+                        secureTextEntry={passwordVisibility}
+                        onSubmitEditing={()=>handleSubmit(usernameOrEmail,password,navigation)}
+                        style={{width:"60%"}}
+                    ></TextField>
+                    <TouchableOpacity onPress={handlePasswordVisibility} style={{right:50}}>
+                        <MaterialCommunityIcons name={rightIcon} size={22} color="#232323" />
+                    </TouchableOpacity>
+                </View>
+                {isValidPassword===false &&<Text style={{color:'red', marginLeft:20}}>{errorPassword}</Text>}
                 <View style={styles.forgotPassword}>
                     <View>
                         <TouchableOpacity onPress={() => navigation.push("ForgotPassword")}>
@@ -46,7 +96,7 @@ export default function Login({navigation}) {
                 </View>
                 <Buttons
                     text={"Log in"}
-                    onPressTo={handleSubmit}
+                    onPressTo={()=>handleSubmit(usernameOrEmail,password,navigation)}
                     style={styles.button}
                 ></Buttons>
                 <View style={styles.register}>

@@ -29,9 +29,6 @@ export default function TaskDetailComponent({
                                                 callbackSubTaskDetail,
                                                 callBackUpdateTask
                                             }) {
-    // console.log("Task detail IS: " + JSON.stringify(taskDetail));
-    // console.log("Task Name: " + JSON.stringify(taskDetail.taskName));
-    // console.log("List member in TaskDetailComponent:"+ JSON.stringify(listMember))
     const [add, setAdd] = useState(false);
     const [show, setShow] = useState("ALL");
     const [taskNameDetail, setTaskNameDetail] = useState(taskDetail.taskName);
@@ -159,7 +156,7 @@ export default function TaskDetailComponent({
                     <View style={styles.rowDetail}>
                         <Text style={[styles.descriptionDetail, {width: 100}]}></Text>
                         <TouchableOpacity onPress={()=>{assigneeInTask(projectId, taskDetail.taskId, memberId)}}>
-                            <Text style={[styles.descriptionDetail, {color: 'blue'}]}>Assignee to me</Text>
+                            <Text style={[styles.descriptionDetail, {color: 'blue'}]}>Assign to me</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.rowDetail}>

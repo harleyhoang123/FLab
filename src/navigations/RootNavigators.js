@@ -63,6 +63,9 @@ import UpdateCv from "../screens/CV/UpdateCV";
 import ErrorPage from "../reducers/ErrorPage";
 import MyOrder from "../screens/Material/MyOrder";
 import ListTag from "../screens/Tag/ListTag";
+import IssueStatistics from "../screens/Dashboards/IssueStatistics";
+import ActivityStreams from "../screens/Dashboards/ActivityStreams";
+import AssignedToMe from "../screens/Dashboards/AssignedToMe";
 function RootNavigators() {
   const Stack = createStackNavigator();
   return (
@@ -129,6 +132,9 @@ function RootNavigators() {
         <Stack.Screen name="ErrorPage" component={ErrorPage} />
         <Stack.Screen name="MyOrder" component={MyOrder} />
         <Stack.Screen name="ListTag" component={ListTag} />
+        <Stack.Screen name="IssueStatistics" component={IssueStatistics} />
+        <Stack.Screen name="ActivityStreams" component={ActivityStreams} />
+        <Stack.Screen name="AssignedToMe" component={AssignedToMe} />
         <Stack.Screen
           name="AddMemberToProject"
           component={AddMemberToProject}

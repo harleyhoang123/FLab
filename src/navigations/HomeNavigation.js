@@ -60,6 +60,7 @@ export default function HomeTopNavigator({ navigation }) {
             <Text style={styles.textLogo}>News</Text>
           </TouchableOpacity>
           {/* )} */}
+
         </View>
         <RightNavigation navigation={navigation}/>
       </View>

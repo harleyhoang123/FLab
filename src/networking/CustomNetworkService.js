@@ -297,10 +297,10 @@ export const updateSprint = async (
         dueDate: dueDate,
         goal: goal,
       },
-      {
-        headers: {
-          Authorization: `Bearer ` + token,
-        },
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
       }
     );
     console.log("Data in updateSprint: " + JSON.stringify(response.data));
@@ -1372,6 +1372,7 @@ export const getProfileDetail = async (profileId) => {
         }
     );
     console.log("Data in updateProfileCv: " + JSON.stringify(response.data));
+    await AsyncStorage.setItem("@avatar", response.data.avatar);
     return response.data
   } catch (error) {
     console.log("error when updateProfileCv:" + JSON.stringify(error));

@@ -54,7 +54,10 @@ export const login =
       networkService.setAccessToken(data.data.token);
       dispatch(loginSuccess(data));
     } catch ({ data }) {
-      console.log("In catch: " + JSON.stringify(data));
+      console.log("Login fail " + JSON.stringify(data));
+      // if(data.status.status===401){
+      //   alert(data.status.message)
+      // }
     }
   };
 
@@ -80,7 +83,10 @@ export const register =
         navigation.push("Login");
       }
     } catch ({ data }) {
-      dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+      console.log("Register fail: " + JSON.stringify(data));
+      // if(data.status.status===400){
+      //   alert(data.status.message)
+      // }
     }
   };
 export const forgot =

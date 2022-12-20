@@ -33,6 +33,8 @@ function SprintComponent({
                              callBackGetListSprint,
                              callbackTaskDetail,
                              callbackDeleteTask,
+                             callbackSetSprintId,
+                             callbackDeleteSprint,
                              update
                          }) {
     const [notStartTask, setNotStartTask] = useState(totalNotStartedTask);
@@ -221,7 +223,7 @@ function SprintComponent({
             </Modal>
             <View style={styles.containerContent}>
                 <View style={styles.sprint}>
-                    <TouchableOpacity onPress={() => setVisible(!visible)}>
+                    <TouchableOpacity onPress={() => {setVisible(!visible);callbackSetSprintId(sprintId)}}>
                         <Text style={styles.text}><Text style={styles.textSprint}>{sprintNameDetail}
                         </Text> {formatDate(startDateDetail)} - {formatDate(endDateDetail)} ({listTask.length} issues)</Text>
                     </TouchableOpacity>
@@ -239,7 +241,7 @@ function SprintComponent({
                 onPressTo={()=>updateStatusOfSprint(sprintId,statusDetail)}/>
                 <Buttons text={"Edit"} onPressTo={() => setModalVisible(!modalVisible)}
                          style={[styles.button, {width: 35}]} styleText={{fontSize: 12}}/>
-                <Buttons text={"X"} onPressTo={() => deleteASprint(projectId, sprintId)} style={styles.button}
+                <Buttons text={"X"} onPressTo={() => {deleteASprint(projectId, sprintId); callbackDeleteSprint(sprintId)}} style={styles.button}
                          styleText={{fontSize: 13}}/>
             </View>
             <Text style={{marginLeft: 20}}>{goalDetail}</Text>

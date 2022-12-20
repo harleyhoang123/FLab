@@ -25,6 +25,7 @@ export default function Backlog({route, navigation}) {
     const [listMember, setListMember] = useState(allMember.items);
     const [sprintName, setSprintName] = useState('');
     const [taskIdChange, setTaskIdChange] = useState(null);
+    const [sprintIdChange, setSprintIdChange] = useState(null);
     const [subTaskId, setSubTaskId] = useState(null);
     const [taskDetail, setTaskDetail] = useState();
     const [subTaskDetail, setSubTaskDetail] = useState();
@@ -60,7 +61,10 @@ export default function Backlog({route, navigation}) {
                                          status={item.status}
                                          callBackGetListSprint={callBackGetListSprint}
                                          callbackTaskDetail={callbackTaskDetail}
-                                         callbackDeleteTask={callbackDeleteTask}/>
+                                         callbackDeleteTask={callbackDeleteTask}
+                                         callbackDeleteSprint={callbackDeleteSprint}
+                                         callbackSetSprintId={callbackSetSprintId}
+                        />
                     </View>
                 ))}
             </View>
@@ -97,9 +101,20 @@ export default function Backlog({route, navigation}) {
 
 
     }
+
+    const callbackSetSprintId=(sprintId)=>{
+        setSprintIdChange(sprintId)
+    }
+    const callbackDeleteSprint = (sprintIdDelete)=>{
+        if(sprintIdChange===sprintIdDelete){
+            setTaskDetail(null)
+            setSubTaskDetail(null)
+        }
+    }
     const callbackDeleteTask = (taskIdDelete) => {
         if (taskIdChange === taskIdDelete) {
             setTaskDetail(null)
+            setSubTaskDetail(null)
         }
     }
     const callbackSubTaskDetail = (subtaskId) => {

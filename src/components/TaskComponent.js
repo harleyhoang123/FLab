@@ -14,7 +14,8 @@ function TaskComponent({
                            assignee,
                            callBackGetListTask,
                            callbackTaskDetail,
-                           callbackDeleteTask,update
+                           callbackDeleteTask,
+                           update
                        }) {
     const [taskNameDetail, setTaskDetail] = useState(taskName);
     const [estimateDetail, setEstimateDetail] = useState(estimate);

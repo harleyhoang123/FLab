@@ -142,7 +142,7 @@ function SubTaskDetailComponent({projectId,memberId, subTaskDetail, taskId, list
                     <View style={styles.rowDetail}>
                         <Text style={[styles.descriptionDetail, {width: 100}]}></Text>
                         <TouchableOpacity onPress={()=>{assigneeInSubTask(projectId, subTaskDetail.subTaskId, memberId)}}>
-                            <Text style={[styles.descriptionDetail, {color: 'blue'}]}>Assignee to me</Text>
+                            <Text style={[styles.descriptionDetail, {color: 'blue'}]}>Assign to me</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.rowDetail}>

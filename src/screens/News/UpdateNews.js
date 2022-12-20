@@ -37,7 +37,7 @@ function UpdateNews({route, navigation}) {
         <View style={styles.container}>
             <HomeTopNavigator navigation={navigation}/>
             <View style={styles.containerContent}>
-                <Text style={styles.text}>Create a News</Text>
+                <Text style={styles.text}>Update News</Text>
                 <AddComponent title={"Title"}
                               multiline={false}
                               style={{width: "97%"}}
