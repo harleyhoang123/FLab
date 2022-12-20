@@ -37,17 +37,17 @@ export default function ProjectDetail({ route, navigation }) {
             <Image
               style={styles.tinyLogo}
               source={{
-                uri: "https://scontent.fhan5-2.fna.fbcdn.net/v/t39.30808-6/300232743_3408205352835523_154913047176684005_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=jWga5X8GYPwAX8ojEHl&tn=4MAFI0onnZhJkevD&_nc_ht=scontent.fhan5-2.fna&oh=00_AfBvsivw4ziopD4xonbas0bH24jsgRHNN7J2BRIDbmzk6A&oe=638FEC75",
+                uri: data.createdBy.userInfo.avatar,
               }}
             />
           </View>
           <View style={styles.infoLeft}>
             <Text style={styles.txtLeft}>FPT University</Text>
             <Text style={styles.txtLeft}>
-              Host: {data.lastModifiedBy.userInfo.fullName}
+              Host: {data.createdBy.userInfo.fullName}
             </Text>
             <Text style={styles.txtLeft}>
-              Email: {data.lastModifiedBy.userInfo.email}
+              Email: {data.createdBy.userInfo.email}
             </Text>
           </View>
         </View>

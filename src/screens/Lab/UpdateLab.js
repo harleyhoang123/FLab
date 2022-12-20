@@ -1,30 +1,19 @@
 import React, { useState } from "react";
-import {
-  SafeAreaView,
-  View,
-  FlatList,
-  TextInput,
-  Button,
-  StyleSheet,
-  Text,
-  StatusBar,
-} from "react-native";
+import { View, TextInput, StyleSheet, Text } from "react-native";
 import { useDispatch } from "react-redux";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
 import axios from "axios";
-import {
-  updateLaboratoryByLabId,
-  getAllMemberInLaboratoryById,
-} from "../../actions/LaboratoryAction";
+import { updateLaboratoryByLabId } from "../../actions/LaboratoryAction";
 import { SelectList } from "react-native-dropdown-select-list";
-import AsyncStorage from "@react-native-community/async-storage";
-import { TouchableOpacity } from "react-native-web";
 
 export default function UpdateLab({ route, navigation }) {
   const labInfo = route.params.labInfo;
   const data = route.params.listMember;
   console.log("All data:" + JSON.stringify(data));
+
+  const regx = new RegExp("^[a-zA-Z0-9 ]{6,30}$");
+  let isValid = true;
 
   const allMember = data.map((item) => {
     return {
@@ -43,6 +32,26 @@ export default function UpdateLab({ route, navigation }) {
   const [selected, setSelected] = React.useState("");
   const [key, setKey] = React.useState("");
   const dispatch = useDispatch();
+  const [isLabNameValid, setLabNameValid] = useState(false);
+  const [isMajorValid, setMajorValid] = useState(false);
+  const [isOwner, setOwner] = useState(false);
+
+  function validateData() {
+    if (!textName.match(regx)) {
+      setLabNameValid(true);
+      isValid = false;
+    }
+    if (!textMajor) {
+      setMajorValid(true);
+      isValid = false;
+    }
+    if (!selected) {
+      setOwner(true);
+    }
+    if (isValid) {
+      updateLaboratoryHandle();
+    }
+  }
 
   const updateLaboratoryHandle = () => {
     const requestData = {
@@ -72,6 +81,9 @@ export default function UpdateLab({ route, navigation }) {
               value={textName}
               placeholder={"Enter lab's name"}
             />
+            {isLabNameValid && (
+              <Text style={styles.inputInvalid}>Invalid lab's name</Text>
+            )}
             <TextInput
               style={styles.input}
               onChangeText={(text) => onChangeDescriptionText(text)}
@@ -84,7 +96,9 @@ export default function UpdateLab({ route, navigation }) {
               value={textMajor}
               placeholder={"Enter lab's major"}
             />
-
+            {isMajorValid && (
+              <Text style={styles.inputInvalid}>Invalid major</Text>
+            )}
             <SelectList
               setSelected={(val) => setSelected(val)}
               onSelect={() => setKey(selected)}
@@ -105,13 +119,14 @@ export default function UpdateLab({ route, navigation }) {
               }}
               search={false}
             />
+            {isOwner && <Text style={styles.inputInvalid}>Invalid major</Text>}
           </View>
 
           <View style={styles.btn}>
             <Buttons
               text={"Update"}
               style={styles.button}
-              onPressTo={updateLaboratoryHandle}
+              onPressTo={validateData}
             />
             <Buttons
               text={"Back"}
@@ -143,6 +158,11 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "45%",
     marginLeft: "13%",
+  },
+  inputInvalid: {
+    marginLeft: "13%",
+    color: "red",
+    fontSize: 12,
   },
   title: {
     fontSize: 30,

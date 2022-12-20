@@ -17,6 +17,7 @@ import { createLaboratory } from "../../actions/LaboratoryAction";
 import { updateMemberRoleById } from "../../actions/LaboratoryAction";
 
 export default function UpdateMemberRole({ route, navigation }) {
+  let isValid = true;
   const memberId = route.params.memberid;
   const [selected, setSelected] = useState("");
   const dispatch = useDispatch();
@@ -25,6 +26,18 @@ export default function UpdateMemberRole({ route, navigation }) {
     { key: "2", value: "MANAGER" },
     { key: "3", value: "MEMBER" },
   ];
+
+  const [isMember, setIsMember] = useState(false);
+
+  function validateData() {
+    if (!selected) {
+      setIsMember(true);
+      isValid = false;
+    }
+    if (isValid) {
+      updateRoleHandler();
+    }
+  }
 
   const updateRoleHandler = () => {
     const requestData = {
@@ -61,13 +74,18 @@ export default function UpdateMemberRole({ route, navigation }) {
               }}
               search={false}
             />
+            {isMember && (
+              <Text style={styles.inputInvalid}>
+                Please choose a member's role
+              </Text>
+            )}
           </View>
 
           <View style={styles.btn}>
             <Buttons
               text={"Update"}
               style={styles.button}
-              onPressTo={updateRoleHandler}
+              onPressTo={validateData}
             />
             <Buttons
               text={"Back"}
@@ -99,6 +117,11 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "45%",
     marginLeft: "13%",
+  },
+  inputInvalid: {
+    marginLeft: "13%",
+    color: "red",
+    fontSize: 12,
   },
   title: {
     fontSize: 30,

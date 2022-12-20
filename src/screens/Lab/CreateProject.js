@@ -27,11 +27,15 @@ const getLabId = async () => {
 };
 
 export default function CreateProject({ route, navigation }) {
+  const regx = new RegExp("^[a-zA-Z0-9 ]{6,30}$");
+  let isValid = true;
   const [textName, onChangeNameText] = useState("");
   const [textDescription, onChangeDescriptionText] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [labId, setLabId] = useState("");
+  const [isProjectNameValid, setProjectNameValid] = useState(false);
+  const [isValidDate, setValidDate] = useState(false);
   const formatDate = (date) => {
     const d = new Date(date);
     let day = d.getDate();
@@ -53,6 +57,21 @@ export default function CreateProject({ route, navigation }) {
     setStartDate(new Date());
     setEndDate(new Date());
   };
+
+  function validateData() {
+    if (!textName.match(regx)) {
+      setProjectNameValid(true);
+      isValid = false;
+    }
+    if (startDate > endDate) {
+      setValidDate(true);
+      isValid = false;
+    }
+    if (isValid) {
+      createProject();
+      reset();
+    }
+  }
 
   const createProject = () => {
     const requestData = {
@@ -80,6 +99,9 @@ export default function CreateProject({ route, navigation }) {
               value={textName}
               placeholder={"Enter project's name"}
             />
+            {isProjectNameValid && (
+              <Text style={styles.inputInvalid}>Invalid lab's name</Text>
+            )}
             <TextInput
               style={styles.input}
               onChangeText={(text) => onChangeDescriptionText(text)}
@@ -98,6 +120,9 @@ export default function CreateProject({ route, navigation }) {
               value={startDate}
               onChangeDate={(startDate) => setStartDate(startDate)}
             />
+            {isValidDate && (
+              <Text style={styles.inputInvalid}>Invalid start date</Text>
+            )}
             <Text style={styles.titleDate}>End Date</Text>
             <DateTimePicker
               style={{
@@ -110,16 +135,16 @@ export default function CreateProject({ route, navigation }) {
               value={endDate}
               onChangeDate={(endDate) => setEndDate(endDate)}
             />
+            {isValidDate && (
+              <Text style={styles.inputInvalid}>Invalid end date</Text>
+            )}
           </View>
 
           <View style={styles.btn}>
             <Buttons
               text={"Create"}
               style={styles.button}
-              onPressTo={() => {
-                createProject();
-                reset();
-              }}
+              onPressTo={validateData}
             />
             <Buttons
               text={"Back"}
@@ -156,6 +181,11 @@ const styles = StyleSheet.create({
     padding: 10,
     width: "45%",
     marginLeft: "13%",
+  },
+  inputInvalid: {
+    marginLeft: "13%",
+    color: "red",
+    fontSize: 12,
   },
   title: {
     fontSize: 30,
