@@ -80,13 +80,7 @@ const ViewAllMember = ({ route, navigation }) => {
       </View>
       <View style={styles.role}>
         <Text style={styles.title}>{role}</Text>
-        <Buttons
-          text={"Update Role"}
-          style={styles.buttonUpdate}
-          onPressTo={() => {
-            navigation.navigate("UpdateMemberRole", { memberid: code });
-          }}
-        />
+
       </View>
     </View>
   );

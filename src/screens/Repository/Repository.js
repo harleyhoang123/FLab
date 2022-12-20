@@ -6,7 +6,7 @@ import {
   FlatList,
   CheckBox,
   SafeAreaView,
-  Button,
+  Button, Modal,
 } from "react-native";
 import Buttons from "../../components/Buttons";
 import { RadioButton } from "react-native-paper";
@@ -31,7 +31,7 @@ const getRepoId = async () => {
 function Repository({ route, navigation }) {
   const data = route.params.data;
   const [items, setItems] = useState(data.items);
-  console.log("Data in repository: "+ JSON.stringify(items))
+  console.log("Data in repository: "+ JSON.stringify(data))
   const [text, setText] = useState("");
   const dispatch = useDispatch();
   const [repoId, setRepoId] = useState("");
@@ -45,12 +45,14 @@ function Repository({ route, navigation }) {
     const d= new Date(date);
     return d.toLocaleDateString("en-US", options) +", "+ d.toTimeString().split("G")[0];
   }
-  const deleteAFolder = (folderId) => {
+  const deleteAFolder = (repoId,folderId) => {
     deleteFolderInRepository(repoId,folderId).then(r => {getListFolder(repoId).then(v => setItems(v.data.items))})
   };
   const [checked, setChecked] = useState("");
   const [folderName, setFolderName] = useState("");
   const [description, setDescription] = useState("");
+  const [showConfirm,setShowConfirm]=useState(false);
+  const [disable, setDisable]= useState(true);
   const Item = ({ id, name, description, lastEdit }) => (
     <View style={styles.table}>
       <View style={styles.columnCheckBox}>
@@ -58,7 +60,12 @@ function Repository({ route, navigation }) {
           <RadioButton
             value={id}
             status={checked === id ? "checked" : "unchecked"}
-            onPress={() => {setChecked(id);setFolderName(name); setDescription(description)}}
+            onPress={() => {
+              setChecked(id);
+              setFolderName(name);
+              setDescription(description);
+              setDisable(false);
+            }}
           />
 
         </RadioButton.Group>
@@ -84,6 +91,28 @@ function Repository({ route, navigation }) {
     <View style={styles.container}>
       <ProjectNavigator navigation={navigation} />
       <View style={styles.containerContent}>
+        <Modal
+            animationType="fade"
+            transparent={true}
+            visible={showConfirm}
+            onRequestClose={() => {
+              setShowConfirm(false);
+            }}>
+          <View style={styles.modalDelete}>
+            <View style={styles.modalDeleteView}>
+              <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete this folder?</Text>
+              <View style={{alignItems: "flex-end", flexDirection: "row"}}>
+                <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
+                  deleteAFolder(repoId,checked);
+                  setDisable(true);
+                  setShowConfirm(false)
+                }}/>
+                <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
+                         onPressTo={() => setShowConfirm(false)}/>
+              </View>
+            </View>
+          </View>
+        </Modal>
         <Text style={styles.myCV}> Repository</Text>
         <View style={styles.row}>
           <View style={styles.containerSearch}>
@@ -113,13 +142,14 @@ function Repository({ route, navigation }) {
             <Buttons
                 style={styles.button}
                 text={"Update"}
-                onPressTo={()=> navigation.push("UpdateFolderInRepo", {repoId: repoId, folderId: checked, folderName: folderName, description: description} )}
+                disabled={disable}
+                onPressTo={()=> {navigation.push("UpdateFolderInRepo", {repoId: repoId, folderId: checked, folderName: folderName, description: description});setDisable(true);}}
             />
             <Buttons
               style={styles.button}
               text={"Delete"}
-
-              onPressTo={() => deleteAFolder(checked)}
+              disabled={disable}
+              onPressTo={() => setShowConfirm(true)}
             />
           </View>
           <View style={styles.table}>
@@ -221,6 +251,25 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  modalDelete: {
+    alignItems: "center",
+    justifyContent:"center",
+    flex: 1,
+  },
+  modalDeleteView: {
+    width: "30%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignItems: "flex-start",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    padding: 50,
   },
 });
 

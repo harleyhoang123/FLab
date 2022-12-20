@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Linking, StyleSheet, Text, View} from "react-native";
+import {Linking, Modal, StyleSheet, Text, View} from "react-native";
 import {RadioButton} from "react-native-paper";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import TextField from "../../components/TextField";
@@ -33,6 +33,8 @@ function CurriculumVitae({navigation}) {
     const [text, setText] = useState("");
     const [accountId, setAccountId] = useState("");
     const [listCV, setListCV] = useState();
+    const [showConfirm,setShowConfirm]=useState(false);
+    const [disable, setDisable]= useState(true);
     useEffect(() => {
         getAccountId().then(v => {
             {
@@ -51,9 +53,7 @@ function CurriculumVitae({navigation}) {
         deleteCVbyAccountId(accountId, checked).then(v => {
             getCVbyAccountId(accountId).then(r => {
                 setListCV(r.data.items);
-                setChecked("");
-                setCvName("");
-                setDescription("");
+                setDisable(true);
             })
         })
     }
@@ -67,6 +67,7 @@ function CurriculumVitae({navigation}) {
                         setChecked(cvId);
                         setCvName(cvName);
                         setDescription(description)
+                        setDisable(false)
                     }}
                 />
             </View>
@@ -89,6 +90,27 @@ function CurriculumVitae({navigation}) {
         <View style={styles.container}>
             <HomeTopNavigator navigation={navigation}/>
             <View style={styles.containerContent}>
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={showConfirm}
+                    onRequestClose={() => {
+                        setShowConfirm(false);
+                    }}>
+                    <View style={styles.modalDelete}>
+                        <View style={styles.modalDeleteView}>
+                            <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete this CV?</Text>
+                            <View style={{alignItems: "flex-end", flexDirection: "row"}}>
+                                <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
+                                    deleteCV()
+                                    setShowConfirm(false)
+                                }}/>
+                                <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
+                                         onPressTo={() => setShowConfirm(false)}/>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
                 <Text style={styles.myCV}> List CV</Text>
                 <View style={styles.row}>
                     <View style={styles.containerSearch}>
@@ -110,16 +132,18 @@ function CurriculumVitae({navigation}) {
 
                     <Buttons
                         style={styles.button}
+                        disabled={disable}
                         text={"Update"}
                         onPressTo={() => {
+                            setDisable(true)
                             navigation.push("UpdateCv", {cvId: checked, cvName: cvName, description: description})
                         }}
                     />
                     <Buttons
                         style={styles.button}
                         text={"Delete"}
-
-                        onPressTo={() => deleteCV()}
+                        disabled={disable}
+                        onPressTo={() => setShowConfirm(true)}
                     />
                     <Buttons
                         style={styles.button}
@@ -225,6 +249,25 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
+    },
+    modalDelete: {
+        alignItems: "center",
+        justifyContent:"center",
+        flex: 1,
+    },
+    modalDeleteView: {
+        width: "30%",
+        backgroundColor: "white",
+        borderRadius: 10,
+        alignItems: "flex-start",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        padding: 50,
     },
 });
 

@@ -54,7 +54,7 @@ function SprintComponent({
     const [startDateUpdate, setStartDateUpdate] = useState(new Date());
     const [endDateUpdate, setEndDateUpdate] = useState(new Date());
     const [goalUpdate, setGoalUpdate] = useState(goalDetail);
-
+    const [showConfirm,setShowConfirm]=useState(false);
     const formatDate = (date) => {
         const formattedDate = new Date(date);
         return formattedDate.toLocaleDateString('en-GB', {
@@ -103,7 +103,7 @@ function SprintComponent({
         })
     }
     const deleteASprint = (projectId, sprintId) => {
-        deleteSprint(projectId, sprintId).then(() => callBackGetListSprint());
+        deleteSprint(projectId, sprintId).then(() => {callBackGetListSprint();callbackDeleteSprint(sprintId);});
     }
 
     const changeType = () => {
@@ -221,6 +221,27 @@ function SprintComponent({
                     </View>
                 </TouchableOpacity>
             </Modal>
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={showConfirm}
+                onRequestClose={() => {
+                    setShowConfirm(false);
+                }}>
+                <View style={styles.modalDelete}>
+                    <View style={styles.modalDeleteView}>
+                        <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete this sprint?</Text>
+                        <View style={{alignItems: "flex-end", flexDirection: "row"}}>
+                            <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
+                                deleteASprint(projectId, sprintId);
+                                setShowConfirm(false)
+                            }}/>
+                            <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
+                                     onPressTo={() => setShowConfirm(false)}/>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             <View style={styles.containerContent}>
                 <View style={styles.sprint}>
                     <TouchableOpacity onPress={() => {setVisible(!visible);callbackSetSprintId(sprintId)}}>
@@ -241,7 +262,7 @@ function SprintComponent({
                 onPressTo={()=>updateStatusOfSprint(sprintId,statusDetail)}/>
                 <Buttons text={"Edit"} onPressTo={() => setModalVisible(!modalVisible)}
                          style={[styles.button, {width: 35}]} styleText={{fontSize: 12}}/>
-                <Buttons text={"X"} onPressTo={() => {deleteASprint(projectId, sprintId); callbackDeleteSprint(sprintId)}} style={styles.button}
+                <Buttons text={"X"} onPressTo={() => {setShowConfirm(true)}} style={styles.button}
                          styleText={{fontSize: 13}}/>
             </View>
             <Text style={{marginLeft: 20}}>{goalDetail}</Text>
@@ -334,6 +355,25 @@ const styles = StyleSheet.create({
     modalProfileView: {
         width: "40%",
         marginTop: 50,
+        backgroundColor: "white",
+        borderRadius: 10,
+        alignItems: "flex-start",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        padding: 50,
+    },
+    modalDelete: {
+        alignItems: "center",
+        justifyContent:"center",
+        flex: 1,
+    },
+    modalDeleteView: {
+        width: "30%",
         backgroundColor: "white",
         borderRadius: 10,
         alignItems: "flex-start",

@@ -62,8 +62,6 @@ function ListMaterial({ route, navigation }) {
               title={item.materialName}
               image={item.image}
               status={item.status}
-              labId={labId}
-              callbackListMaterial={callbackListMaterial}
           />
       ))}
       <PaginationBar />

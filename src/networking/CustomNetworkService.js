@@ -1348,7 +1348,7 @@ export const getProfileDetail = async (profileId) => {
         }
     );
     console.log("Data in updateProfileCv: " + JSON.stringify(response.data));
-    await AsyncStorage.setItem("@avatar", response.data.avatar);
+    await AsyncStorage.setItem("@avatar", response.data.data.avatar);
     return response.data
   } catch (error) {
     console.log("error when updateProfileCv:" + JSON.stringify(error));

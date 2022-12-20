@@ -62,6 +62,27 @@ export default function ViewAllMemberInProject({ route, navigation }) {
 
   const Item = ({ accountId, memberId, memberName, email, roles }) => (
     <View style={styles.item}>
+      <Modal
+          animationType="fade"
+          transparent={true}
+          visible={showConfirm}
+          onRequestClose={() => {
+            setShowConfirm(false);
+          }}>
+        <View style={styles.modalDelete}>
+          <View style={styles.modalDeleteView}>
+            <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to remove this member?</Text>
+            <View style={{alignItems: "flex-end", flexDirection: "row"}}>
+              <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
+                removeMember(memberId);
+                setShowConfirm(false)
+              }}/>
+              <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
+                       onPressTo={() => setShowConfirm(false)}/>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <Text style={styles.title}>Member name: {memberName}</Text>
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.title}>Email: {email}</Text>
@@ -72,7 +93,7 @@ export default function ViewAllMemberInProject({ route, navigation }) {
           >
             Detail
           </Text>
-          <Text onPress={() => removeMember(memberId)} style={styles.action}>
+          <Text onPress={() => setShowConfirm(true)} style={styles.action}>
             Remove
           </Text>
           <Text
@@ -97,6 +118,7 @@ export default function ViewAllMemberInProject({ route, navigation }) {
       accountId={item.userInfo.accountId}
     />
   );
+  const [showConfirm,setShowConfirm]=useState(false);
   return (
     <View>
       <ProjectNavigator navigation={navigation} />
@@ -178,5 +200,24 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 26,
     fontWeight: 700,
+  },
+  modalDelete: {
+    alignItems: "center",
+    justifyContent:"center",
+    flex: 1,
+  },
+  modalDeleteView: {
+    width: "30%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignItems: "flex-start",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    padding: 50,
   },
 });

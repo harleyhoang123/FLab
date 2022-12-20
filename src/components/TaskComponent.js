@@ -1,5 +1,5 @@
 import React, {forwardRef, useEffect, useImperativeHandle, useState} from "react";
-import {StyleSheet, Text, TouchableOpacity, View, Image} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View, Image, Modal} from "react-native";
 import Buttons from "./Buttons";
 import {deleteTask, getTaskDetail} from "../networking/CustomNetworkService";
 
@@ -21,6 +21,7 @@ function TaskComponent({
     const [estimateDetail, setEstimateDetail] = useState(estimate);
     const [statusDetail, setStatusDetail] = useState(status);
     const [assigneeDetail, setAssigneeDetail] = useState(assignee);
+    const [showConfirm,setShowConfirm]=useState(false);
     const deleteATask = (sprintId, taskId) => {
         deleteTask(sprintId, taskId).then(() => {
             callBackGetListTask();
@@ -64,6 +65,27 @@ function TaskComponent({
             <View style={styles.sprint}>
                 <TouchableOpacity onPress={() => callbackTaskDetail(taskId)}>
                     <View style={styles.container}>
+                        <Modal
+                            animationType="fade"
+                            transparent={true}
+                            visible={showConfirm}
+                            onRequestClose={() => {
+                                setShowConfirm(false);
+                            }}>
+                            <View style={styles.modalDelete}>
+                                <View style={styles.modalDeleteView}>
+                                    <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete this task?</Text>
+                                    <View style={{alignItems: "flex-end", flexDirection: "row"}}>
+                                        <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
+                                            deleteATask(sprintId, taskId)
+                                            setShowConfirm(false)
+                                        }}/>
+                                        <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
+                                                 onPressTo={() => setShowConfirm(false)}/>
+                                    </View>
+                                </View>
+                            </View>
+                        </Modal>
                         <View style={styles.row}>
                             <Text style={styles.text}>{taskNameDetail}</Text>
                         </View>
@@ -77,7 +99,7 @@ function TaskComponent({
                                 </Text>
                             </View >
                             {getImage(assigneeDetail)}
-                            <Buttons text={"X"} onPressTo={() => (deleteATask(sprintId, taskId))}
+                            <Buttons text={"X"} onPressTo={() => setShowConfirm(true)}
                                      style={styles.btn}></Buttons>
                         </View>
                     </View>
@@ -140,6 +162,25 @@ const styles = StyleSheet.create({
         width: 100,
         height: 30,
         borderRadius: 8,
+    },
+    modalDelete: {
+        alignItems: "center",
+        justifyContent:"center",
+        flex: 1,
+    },
+    modalDeleteView: {
+        width: "30%",
+        backgroundColor: "white",
+        borderRadius: 10,
+        alignItems: "flex-start",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        padding: 50,
     },
 });
 export default TaskComponent;

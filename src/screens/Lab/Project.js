@@ -42,6 +42,7 @@ export default function Project({ route, navigation }) {
   const listProject = route.params.data;
   const data = listProject.items;
   const [labId, setLabId] = useState("");
+  const [showConfirm,setShowConfirm]=useState(false);
   getCuurentLabId().then((v) => setLabId(v));
 
   console.log(JSON.stringify(data));
@@ -61,7 +62,27 @@ export default function Project({ route, navigation }) {
   const Item = ({ projectId, projectName, description, members }) => (
     <View style={styles.item}>
       <Text style={styles.title}>Project name: {projectName}</Text>
-
+      <Modal
+          animationType="fade"
+          transparent={true}
+          visible={showConfirm}
+          onRequestClose={() => {
+            setShowConfirm(false);
+          }}>
+        <View style={styles.modalDelete}>
+          <View style={styles.modalDeleteView}>
+            <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to remove this project?</Text>
+            <View style={{alignItems: "flex-end", flexDirection: "row"}}>
+              <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
+                removeProjectById(projectId)
+                setShowConfirm(false)
+              }}/>
+              <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
+                       onPressTo={() => setShowConfirm(false)}/>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <View style={{ flexDirection: "row" }}>
         <View style={{ flexDirection: "row", width: "100%" }}>
           <Text style={styles.title}>Description: {description}</Text>
@@ -73,7 +94,7 @@ export default function Project({ route, navigation }) {
               Detail
             </Text>
             <Text
-              onPress={() => removeProjectById(projectId)}
+              onPress={() => setShowConfirm(true)}
               style={styles.action}
             >
               Remove
@@ -158,5 +179,24 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 26,
     fontWeight: 700,
+  },
+  modalDelete: {
+    alignItems: "center",
+    justifyContent:"center",
+    flex: 1,
+  },
+  modalDeleteView: {
+    width: "30%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignItems: "flex-start",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    padding: 50,
   },
 });

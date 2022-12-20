@@ -139,7 +139,7 @@ export const routes = {
     },
     repository: {
         getFolderDetail:
-            repository + "/flab/repository/public/api/v1/folders/:folder-id",
+            repository + "/flab/repository/public/api/v1/folders/:folder-id/detail",
         getFolderByRepositoryId:
             repository + "/flab/repository/public/api/v1/folders/:repository-id/folders",
         createFolderInRepository:

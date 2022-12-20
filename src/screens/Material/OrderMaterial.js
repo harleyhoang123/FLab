@@ -8,6 +8,7 @@ import {Dropdown} from "react-native-element-dropdown";
 import OrderItem from "../../components/OrderItem";
 import AsyncStorage from "@react-native-community/async-storage";
 import {getListOrderByLabId} from "../../networking/CustomNetworkService";
+import TextField from "../../components/TextField";
 const getLabId = async () => {
     try {
         const labId = await AsyncStorage.getItem("@labId");
@@ -21,6 +22,7 @@ function OrderMaterial({navigation}) {
     const [value, setValue] = useState('ALL');
     const [listOrder, setListOrder] = useState();
     const [listItem, setListItem] = useState();
+    const [text, setText] = useState("");
     const [labId, setLabId] = useState();
     const callBackOrder=()=>{
         getListOrderByLabId(labId).then(r=>{setListItem(r.data.items); filterStatus(r.data.items,value)})
@@ -44,8 +46,6 @@ function OrderMaterial({navigation}) {
                 setListOrder(filData);
             }
         }
-
-
     }
     const data = [
         {label: 'ALL', value: 'ALL'},
@@ -71,6 +71,14 @@ function OrderMaterial({navigation}) {
                     }}
                 />
                 <View style={styles.containerSearch}>
+                    <TextField
+                        text={text}
+                        onChangeText={(newText) => setText(newText)}
+                        placeholder={" Search"}
+                        secureTextEntry={false}
+                        multiline={false}
+                    />
+                    <Buttons text={"Search"} />
                     <Buttons
                         text={"Back"}
                         style={[styles.button, {marginLeft: 20}]}

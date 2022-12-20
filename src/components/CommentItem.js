@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
 import {
   deleteCommentInAnswer,
   deleteCommentInComment,
@@ -22,6 +22,7 @@ function CommentItem({
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState(content);
   const [isComment, setIsComment] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   let isValid = true;
 
   function validateComment() {
@@ -107,7 +108,40 @@ function CommentItem({
         </View>
         <View style={styles.containerComment}>
           <Text style={styles.text}>{time}</Text>
-
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={showConfirm}
+            onRequestClose={() => {
+              setShowConfirm(false);
+            }}
+          >
+            <View style={styles.modal}>
+              <View style={styles.modalProfileView}>
+                <Text
+                  style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
+                >
+                  Do you want to delete this comment?
+                </Text>
+                <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
+                  <Buttons
+                    text={"Delete"}
+                    style={{ marginRight: 40 }}
+                    onPressTo={() => {
+                      handleDelete();
+                      setShowConfirm(false);
+                    }}
+                  />
+                  <Buttons
+                    text={"Cancel"}
+                    style={{ backgroundColor: "#F4F5F7" }}
+                    styleText={{ color: "black" }}
+                    onPressTo={() => setShowConfirm(false)}
+                  />
+                </View>
+              </View>
+            </View>
+          </Modal>
           <View style={styles.login}>
             <TouchableOpacity onPress={() => setIsEdit(!isEdit)}>
               <Text style={styles.txt}>Edit</Text>
@@ -166,6 +200,25 @@ const styles = StyleSheet.create({
     width: 100,
     height: 40,
     marginLeft: 20,
+  },
+  modal: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+  },
+  modalProfileView: {
+    width: "30%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignItems: "flex-start",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    padding: 50,
   },
 });
 export default CommentItem;
