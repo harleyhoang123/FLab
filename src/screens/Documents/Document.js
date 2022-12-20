@@ -1,6 +1,6 @@
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { styles } from "../Documents/Document.style";
+import { styles } from "./Document.style";
 import {
   StyleSheet,
   View,
@@ -11,11 +11,7 @@ import {
   SafeAreaView,
   FlatList,
 } from "react-native";
-import {
-  useFonts,
-  BeVietnamPro_200ExtraLight_Italic,
-} from "@expo-google-fonts/dev";
-import LabNavigator from "../../navigations/LabNavigator";
+
 import ProjectNavigator from "../../navigations/ProjectNavigator";
 
 const DATA = [
