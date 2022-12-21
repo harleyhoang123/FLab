@@ -29,6 +29,8 @@ const getLabId = async () => {
 export default function CreateProject({ route, navigation }) {
   const regx = new RegExp("^[a-zA-Z0-9 ]{6,30}$");
   let isValid = true;
+  let isValidName = true;
+  let isDate = true;
   const [textName, onChangeNameText] = useState("");
   const [textDescription, onChangeDescriptionText] = useState("");
   const [startDate, setStartDate] = useState(new Date());
@@ -56,16 +58,22 @@ export default function CreateProject({ route, navigation }) {
     onChangeDescriptionText("");
     setStartDate(new Date());
     setEndDate(new Date());
+    setProjectNameValid(false);
+    setValidDate(false);
   };
 
   function validateData() {
     if (!textName.match(regx)) {
       setProjectNameValid(true);
       isValid = false;
+    } else {
+      setProjectNameValid(false);
     }
     if (startDate > endDate) {
       setValidDate(true);
       isValid = false;
+    } else {
+      setValidDate(false);
     }
     if (isValid) {
       createProject();
@@ -100,7 +108,10 @@ export default function CreateProject({ route, navigation }) {
               placeholder={"Enter project's name"}
             />
             {isProjectNameValid && (
-              <Text style={styles.inputInvalid}>Invalid lab's name</Text>
+              <Text style={styles.inputInvalid}>
+                Invalid lab's name, project name must be contain atleast 6
+                character
+              </Text>
             )}
             <TextInput
               style={styles.input}

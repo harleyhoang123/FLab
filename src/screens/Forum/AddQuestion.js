@@ -7,6 +7,7 @@ import ForumNavigation from "../../navigations/ForumNavigation";
 import Buttons from "../../components/Buttons";
 import { useDispatch } from "react-redux";
 import { addQuestion } from "../../actions/ForumAction";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 function AddQuestion({ navigation }) {
   let isValid = true;
@@ -25,18 +26,26 @@ function AddQuestion({ navigation }) {
     if (!title) {
       setIsTitle(true);
       isValid = false;
+    } else {
+      setIsTitle(false);
     }
     if (!problem) {
       setIsProblem(true);
       isValid = false;
+    } else {
+      setIsProblem(false);
     }
     if (!triedCase) {
       setIsTriedCase(true);
       isValid = false;
+    } else {
+      setIsTriedCase(false);
     }
     if (!tag) {
       setIsTag(true);
       isValid = false;
+    } else {
+      setIsTag(false);
     }
     if (isValid) {
       dispatch(addQuestion(title, problem, triedCase, tag, navigation));

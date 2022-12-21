@@ -51,10 +51,14 @@ export default function ApplyToALab({ route, navigation }) {
     if (!reason) {
       setReason(true);
       isValid = false;
+    } else {
+      setReason(false);
     }
     if (!selected) {
       setCVValid(true);
       isValid = false;
+    } else {
+      setCVValid(false);
     }
     if (isValid) {
       createApplication();
@@ -65,6 +69,8 @@ export default function ApplyToALab({ route, navigation }) {
   const reset = () => {
     onChangeReasonText("");
     setSelected("");
+    setCVValid(false);
+    setReason(false);
   };
 
   React.useEffect(

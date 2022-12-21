@@ -58,10 +58,14 @@ export default function UpdateProject({ route, navigation }) {
     if (!textName.match(regx)) {
       setProjectNameValid(true);
       isValid = false;
+    } else {
+      setProjectNameValid(false);
     }
     if (startDate > endDate) {
       setValidDate(true);
       isValid = false;
+    } else {
+      setValidDate(false);
     }
     if (isValid) {
       updateProject();

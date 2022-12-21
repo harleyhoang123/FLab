@@ -148,7 +148,7 @@ function CommentItem({
             </TouchableOpacity>
           </View>
           <View style={styles.login}>
-            <TouchableOpacity onPress={()=> setShowConfirm(true)}>
+            <TouchableOpacity onPress={() => setShowConfirm(true)}>
               <Text style={styles.txt}>Delete</Text>
             </TouchableOpacity>
           </View>

@@ -24,14 +24,20 @@ function UpdateNews({ route, navigation }) {
     if (!title) {
       setIsTitle(true);
       isValid = false;
+    } else {
+      setIsTitle(false);
     }
     if (!content) {
       setIsContent(true);
       isValid = false;
+    } else {
+      setIsContent(false);
     }
     if (!thumbnail) {
       setIsImage(true);
       isValid = false;
+    } else {
+      setIsImage(false);
     }
     if (isValid) {
       updateThisNews(data.newsId, title, content, thumbnail, navigation);
@@ -80,7 +86,7 @@ function UpdateNews({ route, navigation }) {
           text={content}
           onChangeText={(content) => setContent(content)}
         ></AddComponent>
-        {isContent && <Text style={styles.inputInvalid}>Invalid title</Text>}
+        {isContent && <Text style={styles.inputInvalid}>Invalid content</Text>}
         <View style={styles.row}>
           <View>
             <Buttons
@@ -88,7 +94,7 @@ function UpdateNews({ route, navigation }) {
               onPressTo={pickImage}
               style={styles.button}
             />
-            {isImage && <Text style={styles.inputInvalid}>Invalid title</Text>}
+            {isImage && <Text style={styles.inputInvalid}>Invalid image</Text>}
           </View>
           <View>
             {thumbnail && (

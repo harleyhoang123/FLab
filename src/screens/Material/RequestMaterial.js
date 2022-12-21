@@ -6,6 +6,7 @@ import { DateTimePicker } from "@hashiprobr/react-native-paper-datetimepicker";
 import LabNavigator from "../../navigations/LabNavigator";
 import { orderMaterial } from "../../actions/LaboratoryAction";
 import { useDispatch } from "react-redux";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 function RequestMaterial({ route, navigation }) {
   const data = route.params.data;
@@ -27,6 +28,8 @@ function RequestMaterial({ route, navigation }) {
     if (!amount.match(isNumber)) {
       setIsAmount(true);
       isValid = false;
+    } else {
+      setIsAmount(false);
     }
     if (
       new Date(dateTimeFormatter(startDate, startTime)) >
@@ -34,10 +37,14 @@ function RequestMaterial({ route, navigation }) {
     ) {
       setisDate(true);
       isValid = false;
+    } else {
+      setisDate(false);
     }
     if (!reason) {
       setIsReason(true);
       isValid = false;
+    } else {
+      setIsReason(false);
     }
     if (isValid) {
       orderAMaterial(

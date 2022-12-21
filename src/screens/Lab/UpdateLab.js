@@ -40,13 +40,19 @@ export default function UpdateLab({ route, navigation }) {
     if (!textName.match(regx)) {
       setLabNameValid(true);
       isValid = false;
+    } else {
+      setLabNameValid(false);
     }
     if (!textMajor) {
       setMajorValid(true);
       isValid = false;
+    } else {
+      setMajorValid(false);
     }
     if (!selected) {
       setOwner(true);
+    } else {
+      setOwner(false);
     }
     if (isValid) {
       updateLaboratoryHandle();

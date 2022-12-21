@@ -32,18 +32,26 @@ function UpdateQuestion({ route, navigation }) {
     if (!title) {
       setIsTitle(true);
       isValid = false;
+    } else {
+      setIsTitle(false);
     }
     if (!problem) {
       setIsProblem(true);
       isValid = false;
+    } else {
+      setIsProblem(false);
     }
     if (!triedCase) {
       setIsTriedCase(true);
       isValid = false;
+    } else {
+      setIsTriedCase(false);
     }
     if (!tag) {
       setIsTag(true);
       isValid = false;
+    } else {
+      setIsTag(false);
     }
     if (isValid) {
       dispatch(

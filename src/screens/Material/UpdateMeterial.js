@@ -68,18 +68,26 @@ export default function UpdateMaterial({ route, navigation }) {
     if (!materialName.match(regx)) {
       setIsMaterialName(true);
       isValid = false;
+    } else {
+      setIsMaterialName(false);
     }
     if (!amount.match(isNumber)) {
       setIsAmount(true);
       isValid = false;
+    } else {
+      setIsAmount(false);
     }
     if (!description) {
       setIsDescription(true);
       isValid = false;
+    } else {
+      setIsDescription(false);
     }
     if (!image) {
       setIsImage(true);
       isValid = false;
+    } else {
+      setIsImage(false);
     }
     if (isValid) {
       updateMaterial(

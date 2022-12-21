@@ -57,6 +57,8 @@ function QuestionDetail({ route, navigation }) {
     if (!content) {
       setIsComment(true);
       isValid = false;
+    } else {
+      setIsComment(false);
     }
     if (isValid) {
       addCommentToQuestion(questionId, content).then((v) => {
@@ -73,6 +75,8 @@ function QuestionDetail({ route, navigation }) {
     if (!answer) {
       setIsAnswer(true);
       isAwsValid = false;
+    } else {
+      setIsAnswer(false);
     }
     if (isAwsValid) {
       addAnswer(questionId, answer).then((v) => {
@@ -227,7 +231,11 @@ function QuestionDetail({ route, navigation }) {
                   </TouchableOpacity>
                 </View>
                 <View style={styles.login}>
-                  <TouchableOpacity onPress={()=>{setClose(true)}}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setClose(true);
+                    }}
+                  >
                     <Text style={styles.txt}>Close</Text>
                   </TouchableOpacity>
                 </View>

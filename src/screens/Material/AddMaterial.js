@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 
 import AsyncStorage from "@react-native-community/async-storage";
 import { addMaterial } from "../../actions/LaboratoryAction";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const getLabId = async () => {
   try {
@@ -63,18 +64,26 @@ function AddMaterial({ navigation }) {
     if (!materialName.match(regx)) {
       setIsMaterialName(true);
       isValid = false;
+    } else {
+      setIsMaterialName(false);
     }
     if (!amount.match(isNumber)) {
       setIsAmount(true);
       isValid = false;
+    } else {
+      setIsAmount(false);
     }
     if (!description) {
       setIsDescription(true);
       isValid = false;
+    } else {
+      setIsDescription(false);
     }
     if (!thumbnail) {
       setIsImage(true);
       isValid = false;
+    } else {
+      setIsImage(false);
     }
     if (isValid) {
       createMaterial();

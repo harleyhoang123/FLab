@@ -28,10 +28,14 @@ export default function CreateLab({ navigation }) {
     if (!textName.match(regx)) {
       setLabNameValid(true);
       isValid = false;
+    } else {
+      setLabNameValid(false);
     }
     if (!textMajor) {
       setMajorValid(true);
       isValid = false;
+    } else {
+      setMajorValid(false);
     }
     if (isValid) {
       createLaboratoryHandle();
