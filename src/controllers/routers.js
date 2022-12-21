@@ -133,7 +133,7 @@ export const routes = {
         addTag:
             forum + "/flab/forum/public/api/v1/tags/tag",
         updateTag:
-            forum + "/flab/forum/public/api/v1/tags/tag",
+            forum + "/flab/forum/public/api/v1/tags/:tag-id",
         deleteTag:
             forum + "/flab/forum/public/api/v1/tags/:tag-id",
     },

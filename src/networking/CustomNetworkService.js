@@ -1513,3 +1513,25 @@ export const getAccountAdmin= async () => {
     console.log("error when addTag:" + JSON.stringify(error));
   }
 };
+export const getListMyQuestion = async (accountId) => {
+  const token = await getToken();
+  try {
+    const response = await axios.get(
+        routes.forum.getListQuestion,
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+          params: {
+
+          }
+        }
+    );
+    console.log(
+        "Data in getListFolderDetail: " + JSON.stringify(response.data)
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error when getListFolderDetail:" + JSON.stringify(error));
+  }
+};
