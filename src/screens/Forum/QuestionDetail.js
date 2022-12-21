@@ -167,7 +167,7 @@ function QuestionDetail({ route, navigation }) {
                 </Text>
                 <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
                   <Buttons
-                    text={"Delete"}
+                    text={"Close"}
                     style={{ marginRight: 40 }}
                     onPressTo={() => {
                       handleClose();
@@ -227,7 +227,7 @@ function QuestionDetail({ route, navigation }) {
                   </TouchableOpacity>
                 </View>
                 <View style={styles.login}>
-                  <TouchableOpacity onPress={handleClose}>
+                  <TouchableOpacity onPress={()=>{setClose(true)}}>
                     <Text style={styles.txt}>Close</Text>
                   </TouchableOpacity>
                 </View>

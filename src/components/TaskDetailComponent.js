@@ -11,7 +11,7 @@ import TextField from "./TextField";
 import SubTaskComponent from "./SubTaskComponent";
 import UserInfoComponent from "./UserInfoComponent";
 import {
-    assignneTask,
+    assignTask,
     createSubTask,
     getListSubTask,
     getTaskDetail,

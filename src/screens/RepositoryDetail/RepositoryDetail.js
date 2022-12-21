@@ -21,13 +21,14 @@ function RepositoryDetail({route, navigation}) {
     const [checked, setChecked] = useState("");
     const [fName, setFName] = useState("");
     const [description, setDescription] = useState("");
-    const [urlDownload, setUrlDownload]= useState("")
-    const [showConfirm,setShowConfirm]=useState(false);
-    const [disable, setDisable]= useState(true);
+    const [urlDownload, setUrlDownload] = useState("")
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [disable, setDisable] = useState(true);
     console.log("folderName in Detail" + folderName);
     console.log("parentFolderId in Detail" + parentFolderId);
     const downLoadFileHandler = () => {
-        Linking.openURL(urlDownload).then(r => {});
+        Linking.openURL(urlDownload).then(r => {
+        });
     };
     const deleteAFileOrFolder = (id, type, parentFolderId) => {
         deleteFolderOrFile(parentFolderId, id, type).then(v => getListFolderDetail(parentFolderId).then(r => {
@@ -35,10 +36,10 @@ function RepositoryDetail({route, navigation}) {
             setItemsFolder(r.data.listFolder)
         }))
     }
-    const formatterDate=(date)=>{
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        const d= new Date(date);
-        return d.toLocaleDateString("en-US", options) +", "+ d.toTimeString().split("G")[0];
+    const formatterDate = (date) => {
+        const options = {year: 'numeric', month: 'long', day: 'numeric'};
+        const d = new Date(date);
+        return d.toLocaleDateString("en-US", options) + ", " + d.toTimeString().split("G")[0];
     }
     const getFolderDetailIdHandler = (id, name) => {
         dispatch(getFolderDetailId(id, name, navigation));
@@ -160,14 +161,20 @@ function RepositoryDetail({route, navigation}) {
                     }}>
                     <View style={styles.modalDelete}>
                         <View style={styles.modalDeleteView}>
-                            <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete this folder?</Text>
+
+                            {typeChecked === "Folder" ?
+                                <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete
+                                    this folder?</Text> :
+                                <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete
+                                    this file?</Text>}
                             <View style={{alignItems: "flex-end", flexDirection: "row"}}>
                                 <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
                                     deleteAFileOrFolder(checked, typeChecked, parentFolderId)
                                     setDisable(true);
                                     setShowConfirm(false)
                                 }}/>
-                                <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
+                                <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}}
+                                         styleText={{color: 'black'}}
                                          onPressTo={() => setShowConfirm(false)}/>
                             </View>
                         </View>
@@ -217,7 +224,9 @@ function RepositoryDetail({route, navigation}) {
                             style={styles.button}
                             text={"Delete"}
                             disabled={disable}
-                            onPressTo={() => {setShowConfirm(true)}}
+                            onPressTo={() => {
+                                setShowConfirm(true)
+                            }}
                         />
                         <Buttons
                             onPressTo={downLoadFileHandler}
@@ -356,7 +365,7 @@ const styles = StyleSheet.create({
     },
     modalDelete: {
         alignItems: "center",
-        justifyContent:"center",
+        justifyContent: "center",
         flex: 1,
     },
     modalDeleteView: {
