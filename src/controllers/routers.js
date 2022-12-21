@@ -139,9 +139,9 @@ export const routes = {
     },
     repository: {
         getFolderDetail:
-            repository + "/flab/repository/public/api/v1/folders/:folder-id/detail",
+            repository + "/flab/repository/public/api/v1/folders/:folder-id",
         getFolderByRepositoryId:
-            repository + "/flab/repository/public/api/v1/folders/:repository-id/folders",
+            repository + "/flab/repository/public/api/v1/repositories/:repository-id/folders",
         createFolderInRepository:
             repository + "/flab/repository/public/api/v1/repositories/:repository-id/folder",
         createSubFolder:
@@ -157,13 +157,13 @@ export const routes = {
         deleteFolderInRepository:
             repository + "/flab/repository/public/api/v1/repositories/:repository-id/:folder-id",
         getListFolder:
-            repository + "/flab/repository/public/api/v1/folders/:repository-id/folders",
+            repository + "/flab/repository/public/api/v1/repositories/:repository-id/folders",
         deleteFolder:
-            repository + "/flab/repository/public/api/v1/folders/:folder-id/:sub-folder-id",
+            repository + "/flab/repository/public/api/v1/folders/:folder-id/folders/:sub-folder-id",
         deleteFile:
             repository + "/flab/repository/public/api/v1/folders/:folder-id/files/:file-id",
         getListFolderDetail:
-            repository + "/flab/repository/public/api/v1/folders/:folder-id/detail",
+            repository + "/flab/repository/public/api/v1/folders/:folder-id",
 
     },
     account: {
