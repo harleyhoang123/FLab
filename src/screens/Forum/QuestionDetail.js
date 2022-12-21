@@ -80,9 +80,7 @@ function QuestionDetail({ route, navigation }) {
     }
     if (isAwsValid) {
       addAnswer(questionId, answer).then((v) => {
-        getQuestionDetail(questionId).then((r) =>
-          setUserAnswer(r.data.answers)
-        );
+        handleAnswer();
         setAnswer("");
       });
       setIsAnswer(false);

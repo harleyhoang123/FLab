@@ -8,7 +8,6 @@ import {register} from "../../actions/UserAction";
 import {useDispatch} from "react-redux";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ErrorText from "../../components/ErrorText";
-import validator from 'validator';
 
 export const useTogglePasswordVisibility = () => {
     const [passwordVisibility, setPasswordVisibility] = useState(true);
@@ -43,7 +42,7 @@ function Register({navigation}) {
     const [isValidPassword, setIsValidPassword] = useState(true);
     const [isValidRePassword, setIsValidRePassword] = useState(true);
     const regexPassword= "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d@$!%*?&.,]{8,}$";
-    const regexEmail= "^[a-z][a-z0-9_\\.]{5,32}@[a-z0-9]{2,}(\\.[a-z0-9]{2,4}){1,2}$";
+    const regexEmail= "^[a-zA-Z][a-zA-Z0-9_\\.]{5,32}@[a-z0-9]{2,}(\\.[a-z0-9]{2,4}){1,2}$";
     const dispatch= useDispatch();
     const handleRegister=()=> {
         if(!email.trim().match(regexEmail)){
