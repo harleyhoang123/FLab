@@ -42,7 +42,7 @@ export default function Project({ route, navigation }) {
   const listProject = route.params.data;
   const data = listProject.items;
   const [labId, setLabId] = useState("");
-  const [showConfirm,setShowConfirm]=useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   getCuurentLabId().then((v) => setLabId(v));
 
   console.log(JSON.stringify(data));
@@ -63,22 +63,35 @@ export default function Project({ route, navigation }) {
     <View style={styles.item}>
       <Text style={styles.title}>Project name: {projectName}</Text>
       <Modal
-          animationType="fade"
-          transparent={true}
-          visible={showConfirm}
-          onRequestClose={() => {
-            setShowConfirm(false);
-          }}>
+        animationType="fade"
+        transparent={true}
+        visible={showConfirm}
+        onRequestClose={() => {
+          setShowConfirm(false);
+        }}
+      >
         <View style={styles.modalDelete}>
           <View style={styles.modalDeleteView}>
-            <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to remove this project?</Text>
-            <View style={{alignItems: "flex-end", flexDirection: "row"}}>
-              <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
-                removeProjectById(projectId)
-                setShowConfirm(false)
-              }}/>
-              <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
-                       onPressTo={() => setShowConfirm(false)}/>
+            <Text
+              style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
+            >
+              Do you want to remove this project?
+            </Text>
+            <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
+              <Buttons
+                text={"Delete"}
+                style={{ marginRight: 40 }}
+                onPressTo={() => {
+                  removeProjectById(projectId);
+                  setShowConfirm(false);
+                }}
+              />
+              <Buttons
+                text={"Cancel"}
+                style={{ backgroundColor: "#F4F5F7" }}
+                styleText={{ color: "black" }}
+                onPressTo={() => setShowConfirm(false)}
+              />
             </View>
           </View>
         </View>
@@ -93,10 +106,7 @@ export default function Project({ route, navigation }) {
             >
               Detail
             </Text>
-            <Text
-              onPress={() => setShowConfirm(true)}
-              style={styles.action}
-            >
+            <Text onPress={() => setShowConfirm(true)} style={styles.action}>
               Remove
             </Text>
           </View>
@@ -158,7 +168,7 @@ const styles = StyleSheet.create({
     marginLeft: 50,
   },
   item: {
-    width: "45%",
+    width: "70%",
     borderRadius: 5,
     margin: 30,
     padding: 20,
@@ -182,7 +192,7 @@ const styles = StyleSheet.create({
   },
   modalDelete: {
     alignItems: "center",
-    justifyContent:"center",
+    justifyContent: "center",
     flex: 1,
   },
   modalDeleteView: {

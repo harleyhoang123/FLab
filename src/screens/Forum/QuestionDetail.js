@@ -79,10 +79,8 @@ function QuestionDetail({ route, navigation }) {
       setIsAnswer(false);
     }
     if (isAwsValid) {
-      addAnswer(questionId, answer).then((v) => {
-        handleAnswer();
-        setAnswer("");
-      });
+      handleAnswer();
+      setAnswer("");
       setIsAnswer(false);
     }
   }

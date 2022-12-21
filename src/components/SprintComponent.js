@@ -59,6 +59,8 @@ function SprintComponent({
   const [endDateUpdate, setEndDateUpdate] = useState(new Date());
   const [goalUpdate, setGoalUpdate] = useState(goalDetail);
   const [showConfirm, setShowConfirm] = useState(false);
+
+  const [isSprintNameUpdate, setIsSprintNameUpdate] = useState(false);
   const formatDate = (date) => {
     const formattedDate = new Date(date);
     return formattedDate.toLocaleDateString("en-GB", {
@@ -120,6 +122,26 @@ function SprintComponent({
 
   let isValidTask = true;
   const [isTask, setIsTask] = useState(false);
+
+  function validateEditSprint() {
+    if (!textName.match(regx)) {
+      setProjectNameValid(true);
+      isValid = false;
+    } else {
+      setProjectNameValid(false);
+    }
+    if (startDate > endDate) {
+      setValidDate(true);
+      isValid = false;
+    } else {
+      setValidDate(false);
+    }
+    if (isValid) {
+      createProject();
+      reset();
+    }
+  }
+
   function validateComment() {
     if (!taskName) {
       setIsTask(true);

@@ -63,22 +63,35 @@ export default function ViewAllMemberInProject({ route, navigation }) {
   const Item = ({ accountId, memberId, memberName, email, roles }) => (
     <View style={styles.item}>
       <Modal
-          animationType="fade"
-          transparent={true}
-          visible={showConfirm}
-          onRequestClose={() => {
-            setShowConfirm(false);
-          }}>
+        animationType="fade"
+        transparent={true}
+        visible={showConfirm}
+        onRequestClose={() => {
+          setShowConfirm(false);
+        }}
+      >
         <View style={styles.modalDelete}>
           <View style={styles.modalDeleteView}>
-            <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to remove this member?</Text>
-            <View style={{alignItems: "flex-end", flexDirection: "row"}}>
-              <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
-                removeMember(memberId);
-                setShowConfirm(false)
-              }}/>
-              <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
-                       onPressTo={() => setShowConfirm(false)}/>
+            <Text
+              style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
+            >
+              Do you want to remove this member?
+            </Text>
+            <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
+              <Buttons
+                text={"Delete"}
+                style={{ marginRight: 40 }}
+                onPressTo={() => {
+                  removeMember(memberId);
+                  setShowConfirm(false);
+                }}
+              />
+              <Buttons
+                text={"Cancel"}
+                style={{ backgroundColor: "#F4F5F7" }}
+                styleText={{ color: "black" }}
+                onPressTo={() => setShowConfirm(false)}
+              />
             </View>
           </View>
         </View>
@@ -118,7 +131,7 @@ export default function ViewAllMemberInProject({ route, navigation }) {
       accountId={item.userInfo.accountId}
     />
   );
-  const [showConfirm,setShowConfirm]=useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   return (
     <View>
       <ProjectNavigator navigation={navigation} />
@@ -179,7 +192,7 @@ const styles = StyleSheet.create({
     marginLeft: 50,
   },
   item: {
-    width: "45%",
+    width: "70%",
     borderRadius: 5,
     margin: 30,
     padding: 20,
@@ -190,7 +203,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.36,
     shadowRadius: 6.68,
-
     elevation: 11,
   },
   title: {
@@ -203,7 +215,7 @@ const styles = StyleSheet.create({
   },
   modalDelete: {
     alignItems: "center",
-    justifyContent:"center",
+    justifyContent: "center",
     flex: 1,
   },
   modalDeleteView: {
