@@ -5,13 +5,24 @@ import ForumNavigation from "../../navigations/ForumNavigation";
 import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
 import QuestionItem from "../../components/QuestionItem";
-import {getAccountAdmin, getAllTag} from "../../networking/CustomNetworkService";
+import AsyncStorage from "@react-native-community/async-storage";
+import {getListMyQuestion} from "../../networking/CustomNetworkService";
 
+const getAccountId = async () => {
+    try {
+        const accountId = await AsyncStorage.getItem("@accountId");
+        console.log("AccountId: " + accountId);
+        return accountId;
+    } catch (e) {
+        console.log("Can't get account id: " + e);
+    }
+};
 function MyQuestion({navigation}) {
     const [text, setText] = useState("");
-    const [listMyQuestion, setListMyQuestion] = useState();
+    const [list, setList] = useState("");
+    const [accountId, setAccountId] = useState();
     useEffect(()=>{
-
+getAccountId().then(v=> {setAccountId(v); getListMyQuestion(v).then(r=> setList(r.data.items))})
     },[]);
 
     return (
@@ -24,7 +35,7 @@ function MyQuestion({navigation}) {
                 <View style={styles.content}>
                     <View style={styles.containerContent}>
                         <View>
-                            <Text style={styles.text}>Top Questions</Text>
+                            <Text style={styles.text}>My Question</Text>
                         </View>
                         <View style={styles.containerSearch}>
                             <TextField
@@ -71,7 +82,7 @@ function MyQuestion({navigation}) {
                         ></Buttons>
                     </View>
                     <FlatList
-                        data={listQuestion}
+                        data={list}
                         renderItem={({ item }) => (
                             <QuestionItem
                                 questionId={item.questionId}

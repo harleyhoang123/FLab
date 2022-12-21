@@ -6,29 +6,29 @@ import ProjectNavigator from "../../navigations/ProjectNavigator";
 
 const listData = [
     {
-        user: "Choi",
+        user: "Hoang Van Lam ",
         time: "1-1-2022",
-        action:"dm lam "
+        action:" changed the status to Done on Task 1 with a resolution of 'Done' "
     },
     {
-        user: "Choi",
+        user: "Hoang Hai Son ",
         time: "1-1-2022",
-        action:"dm lam "
+        action:" changed the status to In Progress on Task 2 "
     },
     {
-        user: "Choi",
+        user: "Vo Anh Duc ",
         time: "1-1-2022",
-        action:"dm lam "
+        action:" changed the status to Done on Task 3 in sprint 4 with a resolution of 'Done' "
     },
     {
-        user: "Choi",
+        user: "Nguyen Cong Son ",
         time: "1-1-2022",
-        action:"dm lam "
+        action:"changed the status to In Progress on FLABS-54 - Task 2 "
     },
     {
-        user: "Choi",
+        user: "Bui Thanh Phong",
         time: "1-1-2022",
-        action:"dm lam "
+        action:" created FLABS-54 - Task 2 "
     },
 ]
 function ActivityStreams({navigation}) {

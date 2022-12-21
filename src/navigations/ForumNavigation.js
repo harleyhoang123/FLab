@@ -24,7 +24,7 @@ function ForumNavigation({ navigation }) {
       {/*</TouchableOpacity>*/}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => goToForum()}
+        onPress={() => navigation.push("MyQuestion")}
       >
         <Text style={styles.textLogo}>My question</Text>
       </TouchableOpacity>

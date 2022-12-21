@@ -1517,14 +1517,11 @@ export const getListMyQuestion = async (accountId) => {
   const token = await getToken();
   try {
     const response = await axios.get(
-        routes.forum.getListQuestion,
+        routes.forum.getListQuestion+"?created-by="+ accountId,
         {
           headers: {
             Authorization: `Bearer ` + token,
           },
-          params: {
-
-          }
         }
     );
     console.log(

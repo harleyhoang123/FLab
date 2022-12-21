@@ -8,34 +8,34 @@ import ProjectNavigator from "../../navigations/ProjectNavigator";
 
 const listData = [
     {
-        summary: "Choi",
+        summary: "Summary of features in existing laboratory management system",
         estimate: "8",
         assignedTime: "1-1-2022",
-        reporter:"CS"
+        reporter:"Hoang Van Lam"
     },
     {
-        summary: "Choi",
+        summary: "Identify and refine essential features",
         estimate: "8",
         assignedTime: "1-1-2022",
-        reporter:"CS"
+        reporter:"Vo Anh Duc"
     },
     {
-        summary: "Choi",
+        summary: "Talk directly with the teachers who manage the Lab",
         estimate: "8",
         assignedTime: "1-1-2022",
-        reporter:"CS"
+        reporter:"Bui Thanh Phong "
     },
     {
-        summary: "Choi",
+        summary: "Summary of features that will develop",
         estimate: "8",
         assignedTime: "1-1-2022",
-        reporter:"CS"
+        reporter:"Hoang Hai Son"
     },
     {
-        summary: "Choi",
+        summary: "Business Requirement Document",
         estimate: "8",
         assignedTime: "1-1-2022",
-        reporter:"CS"
+        reporter:"Nguyen Cong Son "
     },
 ]
 function AssignedToMe({navigation}) {
