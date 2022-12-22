@@ -476,15 +476,6 @@ export default function TaskDetailComponent({
                 text={"Update"}
                 style={{ marginRight: 40 }}
                 onPressTo={() => {
-                  console.log("ProjectId: " + projectId);
-                  console.log("taskId: " + taskDetail.taskId);
-                  console.log("taskNameUpdate: " + taskNameUpdate);
-                  console.log("statusUpdate: " + statusUpdate);
-                  console.log("descriptionUpdate: " + descriptionUpdate);
-                  console.log("assigneeUpdate: " + assigneeUpdate);
-                  console.log("labelUpdate: " + labelUpdate);
-                  console.log("estimateUpdate: " + estimateUpdate);
-                  console.log("reporterUpdate: " + reporterUpdate);
                   validateEditChildIssue(
                     projectId,
                     taskDetail.taskId,
