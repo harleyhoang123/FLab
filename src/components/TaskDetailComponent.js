@@ -60,6 +60,85 @@ export default function TaskDetailComponent({
   const [listActivity, setListActivity] = useState();
   const [isChild, setIsChild] = useState(false);
 
+  const isNumber = new RegExp("^\\d+$");
+  let isValidEdit = true;
+  const [isTaskNameUpdate, isSetTaskUpdate] = useState(false);
+  const [isStatusUpdate, isSetStatusUpdate] = useState(false);
+  const [isDescriptionUpdate, isSetDescriptionUpdate] = useState(false);
+  const [isAssigneeUpdate, isSetAssigneeUpdate] = useState(false);
+  const [isLabelUpdate, isSetLabelUpdate] = useState(false);
+  const [isEstimateUpdate, isSetEstimateUpdate] = useState(false);
+  const [isReporterUpdate, isSetReporterUpdate] = useState(false);
+
+  function validateEditChildIssue(
+    projectId,
+    taskId,
+    taskName,
+    status,
+    description,
+    assignee,
+    label,
+    estimate,
+    reporter
+  ) {
+    if (!taskNameUpdate) {
+      isSetTaskUpdate(true);
+      isValidEdit = false;
+    } else {
+      isSetTaskUpdate(false);
+    }
+    if (!statusUpdate) {
+      isSetStatusUpdate(true);
+      isValidEdit = false;
+    } else {
+      isSetStatusUpdate(false);
+    }
+    if (!descriptionUpdate) {
+      isSetDescriptionUpdate(true);
+      isValidEdit = false;
+    } else {
+      isSetDescriptionUpdate(false);
+    }
+    if (!assigneeUpdate) {
+      isSetAssigneeUpdate(true);
+      isValidEdit = false;
+    } else {
+      isSetAssigneeUpdate(false);
+    }
+    if (!labelUpdate.toString().match(isNumber)) {
+      isSetLabelUpdate(true);
+      isValidEdit = false;
+    } else {
+      isSetLabelUpdate(false);
+    }
+    if (!estimateUpdate.toString().match(isNumber)) {
+      isSetEstimateUpdate(true);
+      isValidEdit = false;
+    } else {
+      isSetEstimateUpdate(false);
+    }
+    if (!reporterUpdate) {
+      isSetReporterUpdate(true);
+      isValidEdit = false;
+    } else {
+      isSetReporterUpdate(false);
+    }
+    if (isValidEdit) {
+      updateATask(
+        projectId,
+        taskId,
+        taskName,
+        status,
+        description,
+        assignee,
+        label,
+        estimate,
+        reporter
+      );
+      setModalVisible(!modalVisible);
+    }
+  }
+
   function validateChildIssue(taskId, memberId, subTaskName) {
     if (!subTaskName) {
       setIsChild(true);
@@ -303,6 +382,9 @@ export default function TaskDetailComponent({
               style={{ height: 40 }}
               onChangeText={(taskNameUpdate) => setTaskUpdate(taskNameUpdate)}
             />
+            {isTaskNameUpdate && (
+              <Text style={styles.inputInvalid}>Invalid task name</Text>
+            )}
             <Text style={{ fontSize: 12 }}>Status</Text>
             <Picker
               style={styles.pickerUpdate}
@@ -316,6 +398,9 @@ export default function TaskDetailComponent({
               <Picker.Item label="In progress" value="IN_PROGRESS" />
               <Picker.Item label="Done" value="DONE" />
             </Picker>
+            {isStatusUpdate && (
+              <Text style={styles.inputInvalid}>Invalid status</Text>
+            )}
             <Text style={{ fontSize: 12 }}>Description</Text>
             <TextField
               multiline={true}
@@ -325,6 +410,9 @@ export default function TaskDetailComponent({
                 setDescriptionUpdate(descriptionUpdate)
               }
             />
+            {isDescriptionUpdate && (
+              <Text style={styles.inputInvalid}>Invalid description</Text>
+            )}
             <Text style={{ fontSize: 12 }}>Assignee</Text>
             <SelectCountry
               style={styles.dropdown}
@@ -341,12 +429,18 @@ export default function TaskDetailComponent({
                 setAssigneeUpdate(item.value);
               }}
             />
+            {isAssigneeUpdate && (
+              <Text style={styles.inputInvalid}>Invalid assignee</Text>
+            )}
             <Text style={{ fontSize: 12 }}>Label</Text>
             <TextField
               text={labelUpdate}
               style={{ height: 40 }}
               onChangeText={(labelUpdate) => setLabelUpdate(labelUpdate)}
             />
+            {isLabelUpdate && (
+              <Text style={styles.inputInvalid}>Label must be a number</Text>
+            )}
             <Text style={{ fontSize: 12 }}>Estimate</Text>
             <TextField
               text={estimateUpdate}
@@ -355,6 +449,9 @@ export default function TaskDetailComponent({
                 setEstimateUpdate(estimateUpdate)
               }
             />
+            {isEstimateUpdate && (
+              <Text style={styles.inputInvalid}>Estimate must be a number</Text>
+            )}
             <Text style={{ fontSize: 12 }}>Reporter</Text>
             <SelectCountry
               style={styles.dropdown}
@@ -371,6 +468,9 @@ export default function TaskDetailComponent({
                 setReporterUpdate(item.value);
               }}
             />
+            {isReporterUpdate && (
+              <Text style={styles.inputInvalid}>Invalid reporter</Text>
+            )}
             <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
               <Buttons
                 text={"Update"}
@@ -385,7 +485,7 @@ export default function TaskDetailComponent({
                   console.log("labelUpdate: " + labelUpdate);
                   console.log("estimateUpdate: " + estimateUpdate);
                   console.log("reporterUpdate: " + reporterUpdate);
-                  updateATask(
+                  validateEditChildIssue(
                     projectId,
                     taskDetail.taskId,
                     taskNameUpdate,
@@ -396,7 +496,6 @@ export default function TaskDetailComponent({
                     estimateUpdate,
                     reporterUpdate
                   );
-                  setModalVisible(!modalVisible);
                 }}
               />
               <Buttons
