@@ -8,10 +8,9 @@ import {account, forum, laboratory, notification, repository, workspace} from ".
 const getToken = async () => {
   try {
     const token = await AsyncStorage.getItem("@token");
-    console.log("token: " + token);
     return token;
   } catch (e) {
-    console.log("Can't get avatar: " + e);
+    console.log("Can't getToken: " + e);
   }
 };
 
@@ -1530,5 +1529,23 @@ export const getListMyQuestion = async (accountId) => {
     return response.data;
   } catch (error) {
     console.log("error when getListFolderDetail:" + JSON.stringify(error));
+  }
+};
+
+export const getNumberNotifyOfAccountId = async (accountId) => {
+  const token = await getToken();
+  try {
+    const response = await axios.get(
+        routes.notification.getNumberOfNotificationByAccountId.replace(":account-id",accountId),
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+        }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.log("error when getNumberNotifyOfAccountId:" + JSON.stringify(error));
   }
 };

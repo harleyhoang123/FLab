@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBell} from "@fortawesome/free-solid-svg-icons/faBell";
@@ -7,6 +7,9 @@ import Notification from "../screens/Notification/Notification";
 import {getAccountInfoByAccountId, logout} from "../actions/UserAction";
 import {useDispatch} from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
+import {getNumberNotifyOfAccountId} from "../networking/CustomNetworkService";
+import NotificationIconContainer from "../screens/Notification/NotificationIconContainer";
+
 const getAvatar = async () => {
     try {
         const avatar = await AsyncStorage.getItem("@avatar");
@@ -41,29 +44,28 @@ const getAccountId = async () => {
         console.log("Can't get account id: " + e);
     }
 };
+
 function RightNavigation({navigation}) {
     const [accountId, setAccountId] = useState("");
     const [username, setUsername] = useState("");
     const [avatar, setAvatar] = useState("");
     const [roles, setRoles] = useState([]);
-    //:TODO Get role of user
     getRoles().then((v) => setRoles(v));
     getAvatar().then((v) => setAvatar(v));
     getAccountId().then((v) => setAccountId(v));
-    getUsername().then(v=>setUsername(v))
+    getUsername().then(v => setUsername(v))
     const dispatch = useDispatch();
     const handleLogout = () => {
         dispatch(logout);
         navigation.push("Login");
     };
-    const goToCV=()=>{
+    const goToCV = () => {
         navigation.push("CurriculumVitae");
     }
     const goToProfile = () => {
         dispatch(getAccountInfoByAccountId(accountId, navigation));
     };
     const [modalProfileVisible, setModalProfileVisible] = useState(false);
-    const [modalNotifyVisible, setModalNotifyVisible] = useState(false);
     return (
         <View style={styles.topNavigationContentRight}>
             <Modal
@@ -91,7 +93,8 @@ function RightNavigation({navigation}) {
                             <Text style={styles.textStyle}>My Profile</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.buttonModal]}
-                                          onPress={()=> {goToCV();
+                                          onPress={() => {
+                                              goToCV();
                                               setModalProfileVisible(!modalProfileVisible);
                                           }}
                         >
@@ -110,29 +113,18 @@ function RightNavigation({navigation}) {
                     </View>
                 </TouchableOpacity>
             </Modal>
-            <Notification
-                navigation={navigation}
-                modalNotifyVisible={modalNotifyVisible}
-                setModalNotifyVisible={(modalNotifyVisible) =>
-                    setModalNotifyVisible(modalNotifyVisible)
-                }
-            />
+            <NotificationIconContainer navigation={navigation} accountId={accountId}></NotificationIconContainer>
             <TouchableOpacity
-                style={[styles.button, { marginHorizontal: 50 }]}
-                onPress={() => setModalNotifyVisible(true)}
-            >
-                <FontAwesomeIcon icon={faBell} size={"xl"} />
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={[styles.button, { flexDirection: "row" }]}
+                style={[styles.button, {flexDirection: "row"}]}
                 onPress={() => setModalProfileVisible(true)}
             >
-                <AvatarComponent avatarURL={avatar} />
+                <AvatarComponent avatarURL={avatar}/>
                 <Text>{username}</Text>
             </TouchableOpacity>
         </View>
     );
 }
+
 const styles = StyleSheet.create({
     topNavigationContentRight: {
         flexDirection: "row",
@@ -173,6 +165,18 @@ const styles = StyleSheet.create({
     textStyle: {
         fontWeight: "bold",
     },
+    notifyNumber: {
+        position: "absolute",
+        backgroundColor: "red",
+        right: "-25%",
+        top: "-10%",
+        color: "white",
+        fontSize: 11,
+        fontWeight: 900,
+        borderRadius: 30,
+        padding: 1,
+        opacity: "80%"
+    }
 });
 
 export default RightNavigation;
