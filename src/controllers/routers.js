@@ -42,8 +42,6 @@ export const routes = {
             laboratory + "/flab/lab/public/api/v1/laboratories/:lab-id/applications",
         getRequestDetail:
             laboratory + "/flab/lab/public/api/v1/laboratories/applications/:application-id",
-        reviewRequest:
-            laboratory + "/flab/lab/public/api/v1/laboratories/:lab-id/:application-id",
         getMaterialById:
             laboratory + "/flab/lab/public/api/v1/materials/:material-id",
         getMaterialByLabId:
@@ -223,14 +221,12 @@ export const routes = {
             notification + "/flab/notification/public/api/v1/news/:new-id/:comment-id",
         deleteCommentInComment:
             notification + "/flab/notification/public/api/v1/comments/:comment-id/:subcomment-id",
+        getNumberOfNotificationByAccountId:
+            "http://127.0.0.1:8085" + "/flab/notification/private/api/v1/notifies/:account-id/count"
     },
     workSpace: {
         getAllSprint:
             workspace + "/flab/workspace/public/api/v1/sprints/:workspace-id/sprints",
-        getTaskDetail:
-            workspace + "/flab/workspace/public/api/v1/tasks/:task-id",
-        getSubTaskDetail:
-            workspace + "/flab/workspace/public/api/v1/subtasks/:subtask-id",
         getAllMemberInWorkspace:
             workspace + "/flab/workspace/public/api/v1/workspaces/:workspace-id",
         createSprint:
