@@ -5,18 +5,17 @@ import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
 import { getNumberNotifyOfAccountId } from "../../networking/CustomNetworkService";
 import Notification from "./Notification";
 
-function NotificationIconContainer({ navigation, accountId }) {
+function LabIconContainer({ navigation, labId }) {
   const [numberOfNotify, setNumberOfNotify] = useState(0);
   const [modalNotifyVisible, setModalNotifyVisible] = useState(false);
-  // useEffect(() => {
+  //   useEffect(() => {
   //     const interval = setInterval(() => {
-  //         getNumberNotifyOfAccountId("6388f5e3c3f22c64f52af24f")
-  //             .then( v =>
-  //                 setNumberOfNotify(v.data.notifies)
-  //             );
+  //       getNumberNotifyOfAccountId(labId).then((v) =>
+  //         setNumberOfNotify(v.data.notifies)
+  //       );
   //     }, 5000);
   //     return () => clearInterval(interval);
-  // }, []);
+  //   }, []);
   return (
     <View>
       <Notification
@@ -93,4 +92,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NotificationIconContainer;
+export default LabIconContainer;

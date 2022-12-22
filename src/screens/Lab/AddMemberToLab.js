@@ -52,7 +52,6 @@ export default function AddMemberTolab({ route, navigation }) {
 
   React.useEffect(() => {
     getAllMember().then((response) => {
-      console.log("All member: " + JSON.stringify(response.data.items));
       let newArray1 = response.data.items.map((item) => {
         return {
           key: item.accountId,
