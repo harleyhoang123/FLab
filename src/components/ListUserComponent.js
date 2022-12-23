@@ -27,16 +27,22 @@ const Item = ({ item, accountId, setAccountId }) => (
   <View style={styles.checkboxContainer}>
     <View style={styles.columnCheckBox}>
       <CheckBox
-        value={accountId.includes(item.key)}
+        value={accountId.includes(item.accountId)}
         onValueChange={() => {
-          accountId.includes(item.key)
-            ? setAccountId(accountId.filter((v) => v !== item.key))
-            : setAccountId((oldAccountId) => [...oldAccountId, item.key]);
+          accountId.includes(item.accountId)
+            ? setAccountId(accountId.filter((v) => v !== item.accountId))
+            : setAccountId((oldAccountId) => [...oldAccountId, item.accountId]);
         }}
       />
     </View>
     <View style={styles.column}>
-      <Text>{item.value}</Text>
+      <Text>{item.username}</Text>
+    </View>
+    <View style={styles.column}>
+      <Text>{item.email}</Text>
+    </View>
+    <View style={styles.column}>
+      <Text>{item.fullName}</Text>
     </View>
   </View>
 );
@@ -47,7 +53,6 @@ const ListUserComponent = ({ listMember, navigation }) => {
   console.log(accountId);
   const dispatch = useDispatch();
   const addMemberHandle = () => {
-    console.log("ARRAY TEST:" + JSON.stringify(accountId));
     const requestData = {
       accountId: accountId,
     };
@@ -57,10 +62,7 @@ const ListUserComponent = ({ listMember, navigation }) => {
 
   const renderItem = ({ item }) => (
     <View>
-      <View></View>
-      <View>
         <Item item={item} accountId={accountId} setAccountId={setAccountId} />
-      </View>
     </View>
   );
   return (
@@ -70,17 +72,11 @@ const ListUserComponent = ({ listMember, navigation }) => {
           <Text style={styles.txt}>Add</Text>
         </View>
       </Pressable>
-      <View style={{ flexDirection: "row" }}>
-        <View style={styles.columnCheckBox}></View>
-        <View style={styles.column}>
-          <Text>Member</Text>
-        </View>
-      </View>
       <SafeAreaView style={styles.container}>
         <FlatList
           data={listMember}
           renderItem={renderItem}
-          keyExtractor={(item) => item.key}
+          keyExtractor={(item) => item.accountId}
         />
       </SafeAreaView>
     </View>
@@ -109,7 +105,6 @@ const styles = StyleSheet.create({
   },
   columnCheckBox: {
     borderColor: "black",
-    borderWidth: 1,
     justifyContent: "center",
     borderWidth: 1,
     alignItems: "center",
@@ -118,7 +113,6 @@ const styles = StyleSheet.create({
   },
   column: {
     borderColor: "black",
-    borderWidth: 1,
     justifyContent: "center",
     borderWidth: 1,
     alignItems: "center",

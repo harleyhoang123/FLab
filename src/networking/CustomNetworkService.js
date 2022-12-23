@@ -1646,3 +1646,32 @@ export const getNumberNotifyOfAccountId = async (accountId) => {
     );
   }
 };
+
+export const getMemberNotInLab = async (labId, username, page, size) => {
+  console.log("Call get member not in lab: "+labId)
+  const token = await getToken();
+  try {
+    const response = await axios.get(
+        routes.laboratory.getMemberNotInLab.replace(
+            ":lab-id",
+            labId
+        ),
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+          params: {
+            username: username,
+            page: page,
+            size: size
+          }
+        }
+    );
+    console.log("Data when get member not in lab: "+ JSON.stringify(response.data))
+    return response.data;
+  } catch (error) {
+    console.log(
+        "error when getMemberNotInLab:" + JSON.stringify(error)
+    );
+  }
+};
