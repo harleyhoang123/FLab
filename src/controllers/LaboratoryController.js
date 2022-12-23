@@ -393,7 +393,7 @@ export class LaboratoryController {
         projectId
       ),
       data: {
-        memberId: requestData.memberId,
+        memberIds: requestData.memberId,
       },
     });
   }

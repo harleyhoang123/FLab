@@ -18,13 +18,16 @@ import {
   getAllMemberInLab,
   getAllMemberInProject,
 } from "../../networking/CustomNetworkService";
+import ListUserComponent from "../../components/ListUserComponent";
+import ListMemberComponent from "../../components/ListMemberComponent";
 
 export default function AddMemberToProject({ route, navigation }) {
   const projectId = route.params.projectId;
   const raw = route.params.allMember.items;
-  console.log("All data:" + JSON.stringify(data));
+  const [inputSearchData, setInputSearchData] = useState("");
+  console.log("All data:" + JSON.stringify(listMember));
 
-  const [data, setData] = React.useState([]);
+  const [listMember, setData] = React.useState([]);
   let isValid = true;
   const [isMember, setIsMember] = useState(false);
 
@@ -84,53 +87,21 @@ export default function AddMemberToProject({ route, navigation }) {
   return (
     <View>
       <LabNavigator navigation={navigation} />
-      <View style={styles.container}>
-        <Text style={styles.title}>Add member your's project</Text>
-
+      <View>
         <View>
-          <View>
-            <Text style={styles.usage}>Select member</Text>
+          <Text style={styles.title}>Add new member:</Text>
+        </View>
+        <View style={styles.search}>
+          <TextInput style={styles.input} onChangeText={setInputSearchData} />
+          <View style={styles.btnSearch}>
+            <Button title={"Search"} />
           </View>
-          <View>
-            <SelectList
-              setSelected={(val) => setSelected(val)}
-              onSelect={() => setKey(selected)}
-              placeholder={"List Member"}
-              data={data}
-              save="key"
-              boxStyles={{
-                height: 40,
-                margin: 12,
-                borderWidth: 1,
-                padding: 10,
-                width: "45%",
-                marginLeft: "13%",
-              }}
-              dropdownStyles={{
-                width: 130,
-                marginLeft: "13%",
-              }}
-              search={false}
-            />
-            {isMember && (
-              <Text style={styles.inputInvalid}>Please choose a member</Text>
-            )}
-          </View>
-
-          <View style={styles.btn}>
-            <Buttons
-              text={"Add"}
-              style={styles.button}
-              onPressTo={validateData}
-            />
-            <Buttons
-              text={"Back"}
-              style={styles.button}
-              onPressTo={() => {
-                navigation.goBack(null);
-              }}
-            />
-          </View>
+        </View>
+        <View style={styles.listMember}>
+          <ListMemberComponent
+            listMember={listMember}
+            navigation={navigation}
+          />
         </View>
       </View>
     </View>
@@ -141,11 +112,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    marginLeft: 10,
-    width: 215,
+  listMember: {
+    alignSelf: "start",
+    marginLeft: "13%",
+    with: "70%",
+  },
+  search: {
+    flexDirection: "row",
   },
   button: {
     marginTop: 20,
@@ -153,7 +126,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   input: {
-    height: 40,
+    height: 35,
     margin: 12,
     borderWidth: 1,
     padding: 10,
@@ -167,8 +140,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    marginLeft: "10%",
-    marginTop: "3%",
+    marginLeft: "5%",
+    marginTop: "1%",
+  },
+  btnSearch: {
+    height: 35,
+    margin: 12,
   },
   usage: {
     fontSize: 20,

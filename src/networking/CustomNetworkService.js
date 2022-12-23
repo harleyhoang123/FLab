@@ -1638,7 +1638,6 @@ export const getNumberNotifyOfAccountId = async (accountId) => {
         },
       }
     );
-
     return response.data;
   } catch (error) {
     console.log(
