@@ -38,15 +38,14 @@ export default function Login({navigation}) {
     const [isValidUsername, setIsValidUserName]=useState(true);
     const [isValidPassword, setIsValidPassword]=useState(true);
     const regexPassword= "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d@$!%*?&.,]{8,}$";
-    function isStrongPass(pass){
-        return pass.match(regexPassword);
-    }
+    const regexUsername= "^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){3,}[a-zA-Z0-9]$";
+
     const handleSubmit = (username,password,navigation) => {
-        if(username.length<5){
+        if(username.match(regexUsername)){
             setIsValidUserName(false);
         }else{
             setIsValidUserName(true);
-            if (isStrongPass(password)) {
+            if (password.match(regexPassword)) {
                 setIsValidPassword(true)
                 dispatch(login(username, password, navigation));
             } else {
