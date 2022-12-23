@@ -39,6 +39,7 @@ function CommentNewsComponent({
     }
     if (isValid) {
       handleEdit();
+      setIsEdit(!isEdit);
     }
   }
 
@@ -63,49 +64,6 @@ function CommentNewsComponent({
   };
   const handleDelete = () => {
     deleteCommentInNews(newsId, commentId).then(() => callBackCommentNews());
-  };
-  const isEditComment = (isEdit) => {
-    if (isEdit) {
-      return (
-        <View>
-          <View style={styles.containerComment}>
-            <TextField
-              text={text}
-              onChangeText={(text) => setText(text)}
-              placeholder={" Edit Answer"}
-              secureTextEntry={false}
-              multiline={true}
-              onSubmitEditing={() => {
-                validateComment();
-                setText("");
-                setIsEdit(!isEdit);
-              }}
-              style={[styles.comment2]}
-            />
-            <Buttons
-              text={"Save"}
-              onPressTo={() => {
-                validateComment();
-                setText("");
-              }}
-              style={styles.button2}
-            />
-            <Buttons
-              text={"Cancel"}
-              onPressTo={() => {
-                setIsEdit(!isEdit);
-              }}
-              style={styles.button2}
-            />
-          </View>
-          {isComment && (
-            <Text style={styles.inputInvalid}>Invalid comment</Text>
-          )}
-        </View>
-      );
-    } else {
-      return <Text style={styles.text}>{content}</Text>;
-    }
   };
   const [showConfirm,setShowConfirm]=useState(false);
   return (
@@ -132,15 +90,59 @@ function CommentNewsComponent({
             </View>
           </View>
         </Modal>
+        <Modal
+            animationType="fade"
+            transparent={true}
+            visible={isEdit}
+            onRequestClose={() => {
+              setIsEdit(false);
+            }}
+        >
+          <View style={styles.modalEdit}>
+            <View style={styles.modalEditView}>
+              <TextField
+                  text={text}
+                  onChangeText={(text) => setText(text)}
+                  placeholder={" Edit Answer"}
+                  secureTextEntry={false}
+                  multiline={true}
+                  onSubmitEditing={() => {
+                    validateComment();
+                    setText("");
+
+                  }}
+                  style={{height:150,width:"95%" }}
+              />
+              {isComment && (
+                  <Text style={styles.inputInvalid}>Invalid comment</Text>
+              )}
+              <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
+                <Buttons
+                    text={"Save"}
+                    onPressTo={() => {
+                      validateComment();
+                      setText("");
+                    }}
+                    style={{marginLeft: 20}}
+                />
+                <Buttons
+                    text={"Cancel"}
+                    style={{ backgroundColor: "#F4F5F7",marginLeft: 20 }}
+                    styleText={{ color: "black" }}
+                    onPressTo={() => setIsEdit(false)}
+                />
+              </View>
+            </View>
+          </View>
+        </Modal>
         <View>
           <View style={styles.containerComment}>
-            <Text style={styles.textUsername}>{username}</Text>
-            {isEditComment(isEdit)}
+            <Text style={styles.text}><Text style={styles.textUsername}>{username}</Text> {content}</Text>
           </View>
           <View style={styles.containerComment}>
             <Text style={styles.text}>{createdDate}</Text>
             <View style={styles.login}>
-              <TouchableOpacity onPress={() => setIsEdit(!isEdit)}>
+              <TouchableOpacity onPress={() => {setIsEdit(true); setText(content)}}>
                 <Text style={styles.txt}>Edit</Text>
               </TouchableOpacity>
             </View>
@@ -202,6 +204,7 @@ const styles = StyleSheet.create({
   },
   inputInvalid: {
     marginLeft: 15,
+    marginBottom: 15,
     color: "red",
   },
   button: {
@@ -262,7 +265,8 @@ const styles = StyleSheet.create({
     width: "30%",
     backgroundColor: "white",
     borderRadius: 10,
-    alignItems: "flex-start",
+    alignItems: "center",
+    justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -271,6 +275,25 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     padding: 50,
+  },
+  modalEdit: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+  },
+  modalEditView: {
+    width: "50%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignItems: "flex-start",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    padding: 30,
   },
 });
 export default CommentNewsComponent;

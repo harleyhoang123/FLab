@@ -32,6 +32,7 @@ function CommentItem({
     }
     if (isValid) {
       handleEdit();
+      setIsEdit(false)
     }
   }
   const handleDelete = () => {
@@ -59,91 +60,93 @@ function CommentItem({
     }
   };
 
-  const isEditComment = (isEdit) => {
-    if (isEdit) {
-      return (
-        <View style={styles.containerComment}>
-          <TextField
-            text={text}
-            onChangeText={(text) => setText(text)}
-            placeholder={" Edit Comment"}
-            secureTextEntry={false}
-            multiline={false}
-            onSubmitEditing={() => {
-              validateComment();
-              setText("");
-            }}
-            style={[styles.comment]}
-          />
-          {isComment && (
-            <Text style={styles.inputInvalid}>Invalid comment</Text>
-          )}
-          <Buttons
-            text={"Save"}
-            onPressTo={() => {
-              validateComment();
-              setText("");
-            }}
-            style={styles.button}
-          />
-          <Buttons
-            text={"Cancel"}
-            onPressTo={() => {
-              setIsEdit(!isEdit);
-            }}
-            style={styles.button}
-          />
-        </View>
-      );
-    } else {
-      return <Text style={styles.text}>{content}</Text>;
-    }
-  };
   return (
     <View style={styles.container}>
-      <View>
-        <View style={styles.containerComment}>
-          <Text style={styles.textUsername}>{username}</Text>
-          {isEditComment(isEdit)}
+      <Modal
+          animationType="fade"
+          transparent={true}
+          visible={showConfirm}
+          onRequestClose={() => {
+            setShowConfirm(false);
+          }}
+      >
+        <View style={styles.modal}>
+          <View style={styles.modalProfileView}>
+            <Text
+                style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
+            >
+              Do you want to delete this comment?
+            </Text>
+            <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
+              <Buttons
+                  text={"Delete"}
+                  style={{ marginRight: 40 }}
+                  onPressTo={() => {
+                    handleDelete();
+                    setShowConfirm(false);
+                  }}
+              />
+              <Buttons
+                  text={"Cancel"}
+                  style={{ backgroundColor: "#F4F5F7", }}
+                  styleText={{ color: "black" }}
+                  onPressTo={() => setShowConfirm(false)}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+          animationType="fade"
+          transparent={true}
+          visible={isEdit}
+          onRequestClose={() => {
+            setIsEdit(false);
+          }}
+      >
+        <View style={styles.modalEdit}>
+          <View style={styles.modalEditView}>
+            <TextField
+                text={text}
+                onChangeText={(text) => setText(text)}
+                placeholder={" Edit Comment"}
+                secureTextEntry={false}
+                multiline={true}
+                onSubmitEditing={() => {
+                  validateComment();
+                  setText("");
+                }}
+                style={{height:150, width:"95%"}}
+            />
+            {isComment && (
+                <Text style={styles.inputInvalid}>Invalid comment</Text>
+            )}
+            <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
+              <Buttons
+                  text={"Save"}
+                  onPressTo={() => {
+                    validateComment();
+                    setText("");
+                  }}
+                  style={{marginLeft: 20}}
+              />
+              <Buttons
+                  text={"Cancel"}
+                  style={{ backgroundColor: "#F4F5F7",marginLeft: 20 }}
+                  styleText={{ color: "black" }}
+                  onPressTo={() => setIsEdit(false)}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
+        <View style={{width:"95%"}}>
+          <Text style={styles.text}><Text style={styles.textUsername}>{username}</Text> {content}</Text>
         </View>
         <View style={styles.containerComment}>
           <Text style={styles.text}>{time}</Text>
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={showConfirm}
-            onRequestClose={() => {
-              setShowConfirm(false);
-            }}
-          >
-            <View style={styles.modal}>
-              <View style={styles.modalProfileView}>
-                <Text
-                  style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
-                >
-                  Do you want to delete this comment?
-                </Text>
-                <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
-                  <Buttons
-                    text={"Delete"}
-                    style={{ marginRight: 40 }}
-                    onPressTo={() => {
-                      handleDelete();
-                      setShowConfirm(false);
-                    }}
-                  />
-                  <Buttons
-                    text={"Cancel"}
-                    style={{ backgroundColor: "#F4F5F7" }}
-                    styleText={{ color: "black" }}
-                    onPressTo={() => setShowConfirm(false)}
-                  />
-                </View>
-              </View>
-            </View>
-          </Modal>
           <View style={styles.login}>
-            <TouchableOpacity onPress={() => setIsEdit(!isEdit)}>
+            <TouchableOpacity onPress={() => {setIsEdit(true); setText(content)}}>
               <Text style={styles.txt}>Edit</Text>
             </TouchableOpacity>
           </View>
@@ -153,7 +156,6 @@ function CommentItem({
             </TouchableOpacity>
           </View>
         </View>
-      </View>
     </View>
   );
 }
@@ -162,9 +164,6 @@ const styles = StyleSheet.create({
   container: {
     margin: 10,
     backgroundColor: "white",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    flex: 1,
   },
   containerComment: {
     flexDirection: "row",
@@ -172,6 +171,7 @@ const styles = StyleSheet.create({
   },
   inputInvalid: {
     marginLeft: 15,
+    marginBottom: 15,
     color: "red",
   },
   textUsername: {
@@ -210,7 +210,8 @@ const styles = StyleSheet.create({
     width: "30%",
     backgroundColor: "white",
     borderRadius: 10,
-    alignItems: "flex-start",
+    alignItems: "center",
+    justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -219,6 +220,25 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     padding: 50,
+  },
+  modalEdit: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+  },
+  modalEditView: {
+    width: "50%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignItems: "flex-start",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    padding: 30,
   },
 });
 export default CommentItem;

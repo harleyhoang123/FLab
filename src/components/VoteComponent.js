@@ -5,14 +5,15 @@ import {faCaretDown} from "@fortawesome/free-solid-svg-icons/faCaretDown";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {TouchableOpacity} from "react-native-web";
 function VoteComponent({onPressUp,onPressDown,votes, size,style}) {
+
     return (
         <View style={[styles.container,style]}>
             <TouchableOpacity onPress={onPressUp}>
-                <FontAwesomeIcon icon={faCaretUp} size={size} style={styles.button}/>
+                <FontAwesomeIcon icon={faCaretUp} size={size} style={{color:'red'}}/>
             </TouchableOpacity>
             <Text style={styles.text}>{votes}</Text>
             <TouchableOpacity onPress={onPressDown}>
-                <FontAwesomeIcon icon={faCaretDown} size={size} style={styles.button}/>
+                <FontAwesomeIcon icon={faCaretDown} size={size} style={{color:'red'}}/>
             </TouchableOpacity>
         </View>
     );

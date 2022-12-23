@@ -37,7 +37,7 @@ function QuestionDetail({ route, navigation }) {
   const [content, setContent] = useState("");
   const [answer, setAnswer] = useState("");
   const [userComment, setUserComment] = useState(res.data.comments);
-  const [userAnswer, setUserAnswer] = useState(res.data.answers);
+  const [userAnswer, setUserAnswer] = useState(res.data.answers.items);
   const [title, setTitle] = useState(res.data.title);
   const [questionId, setQuestionId] = useState(res.data.questionId);
   const [author, setAuthor] = useState(res.data.createdBy.fullName);
@@ -47,9 +47,8 @@ function QuestionDetail({ route, navigation }) {
   const [triedCase, setTriedCase] = useState(res.data.triedCase);
   const [tags, setTags] = useState(res.data.tags);
   const [votes, setVotes] = useState(res.data.score);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState("Highest score (default)");
   const [close, setClose] = useState(false);
-
   const [isComment, setIsComment] = useState(false);
   const [isAnswer, setIsAnswer] = useState(false);
 
@@ -70,7 +69,6 @@ function QuestionDetail({ route, navigation }) {
       setIsAnswer(false);
     }
   }
-
   function validateAnswer() {
     if (!answer) {
       setIsAnswer(true);
@@ -84,7 +82,6 @@ function QuestionDetail({ route, navigation }) {
       setIsAnswer(false);
     }
   }
-
   const formatTime = (date) => {
     const d = new Date(date);
     const month = d.getMonth() + 1;
@@ -111,19 +108,19 @@ function QuestionDetail({ route, navigation }) {
     });
   };
   const callbackAnswer = () => {
-    getQuestionDetail(questionId).then((r) => setUserAnswer(r.data.answers));
+    getQuestionDetail(questionId).then((r) => setUserAnswer(r.data.answers.items));
   };
   const handleAnswer = () => {
     addAnswer(questionId, answer).then((v) => {
-      getQuestionDetail(questionId).then((r) => setUserAnswer(r.data.answers));
+      getQuestionDetail(questionId).then((r) => setUserAnswer(r.data.answers.items));
       setAnswer("");
     });
   };
   const handleBack = () => {
     dispatch(getListQuestion(navigation));
   };
-  const handleVote = () => {
-    voteQuestion(questionId).then((r) => {
+  const handleVote = (status) => {
+    voteQuestion(questionId,status).then((r) => {
       getQuestionDetail(questionId).then((r) => setVotes(r.data.score));
     });
   };
@@ -206,7 +203,7 @@ function QuestionDetail({ route, navigation }) {
           </View>
           <Separator />
           <View style={styles.containerContent}>
-            <VoteComponent votes={votes} size={"4x"} onPressUp={handleVote} />
+            <VoteComponent votes={votes} size={"4x"} onPressUp={()=>handleVote("LIKED")} onPressDown={()=>handleVote("DISLIKED")} />
             <View style={styles.containerCon}>
               <Text style={styles.textContent}>{problem}</Text>
               <Text style={styles.textContent}>{triedCase}</Text>
@@ -215,9 +212,7 @@ function QuestionDetail({ route, navigation }) {
                 horizontal={true}
                 data={tags}
                 renderItem={({ item }) => (
-                  <TouchableOpacity>
                     <Text style={styles.textView}>{item}</Text>
-                  </TouchableOpacity>
                 )}
               />
               <View style={styles.containerComment}>
@@ -295,10 +290,11 @@ function QuestionDetail({ route, navigation }) {
                 questionId={questionId}
                 answerId={item.answerId}
                 votes={item.score}
-                createdBy={item.createdBy.fullName}
+                createdBy={item.createdBy}
                 content={item.content}
                 createdDate={item.createdDate}
                 userAnswerComment={item.comments}
+                status={item.status}
                 callbackAnswer={callbackAnswer}
               />
             </View>
@@ -314,11 +310,14 @@ function QuestionDetail({ route, navigation }) {
             style={[styles.comment, { height: 300, width: "95%" }]}
           />
           {isAnswer && <Text style={styles.inputInvalid}>Invalid answer</Text>}
-          <Buttons
-            text={"Post Your Answer"}
-            onPressTo={validateAnswer}
-            style={[styles.button, { marginLeft: 20 }]}
-          />
+          <View>
+            <Buttons
+                text={"Post Your Answer"}
+                onPressTo={validateAnswer}
+                style={ { marginLeft: 20, width:"25%" }}
+            />
+          </View>
+
 
           <Separator />
         </View>
@@ -358,7 +357,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
   button: {
-    width: 200,
+    minWidth: 50,
   },
   containerComment: {
     flexDirection: "row",
@@ -431,7 +430,8 @@ const styles = StyleSheet.create({
     width: "30%",
     backgroundColor: "white",
     borderRadius: 10,
-    alignItems: "flex-start",
+    alignItems: "center",
+    justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

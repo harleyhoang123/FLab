@@ -51,7 +51,7 @@ export default function HomeTopNavigator({ navigation }) {
           >
             <Text style={styles.textLogo}>Lab</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={goToForum}>
+          <TouchableOpacity style={styles.button}  onPress={() => navigation.push("Forum")}>
             <Text style={styles.textLogo}>Forum</Text>
           </TouchableOpacity>
           {/*TODO: Check role of button*/}

@@ -74,13 +74,13 @@ export const createSprint = async (projectId, memberId, sprintName) => {
 };
 
 const getLabId = async () => {
-  try {
-    const labId = await AsyncStorage.getItem("@currentLabId");
-    console.log("LabId in reate Project: " + labId);
-    return labId;
-  } catch (e) {
-    console.log("Can't get LabId id: " + e);
-  }
+    try {
+        const labId = await AsyncStorage.getItem("@currentLabId");
+        console.log("LabId in reate Project: " + labId);
+        return labId;
+    } catch (e) {
+        console.log("Can't get LabId id: " + e);
+    }
 };
 
 export const getAllMemberInLab = async () => {
@@ -249,12 +249,12 @@ export const getListTask = async (sprintId) => {
   }
 };
 export const updateSprint = async (
-  projectId,
-  sprintId,
-  sprintName,
-  startDate,
-  dueDate,
-  goal
+    projectId,
+    sprintId,
+    sprintName,
+    startDate,
+    dueDate,
+    goal
 ) => {
   const token = await getToken();
   try {
@@ -340,15 +340,15 @@ export const deleteSubTask = async (subTaskId, taskId) => {
   }
 };
 export const updateSubTask = async (
-  projectId,
-  subTaskId,
-  subTaskName,
-  status,
-  description,
-  assignee,
-  label,
-  estimate,
-  reporter
+    projectId,
+    subTaskId,
+    subTaskName,
+    status,
+    description,
+    assignee,
+    label,
+    estimate,
+    reporter
 ) => {
   const token = await getToken();
   try {
@@ -446,15 +446,15 @@ export const getListSubTask = async (taskId) => {
   }
 };
 export const updateTask = async (
-  projectId,
-  taskId,
-  taskName,
-  status,
-  description,
-  assignee,
-  label,
-  estimate,
-  reporter
+    projectId,
+    taskId,
+    taskName,
+    status,
+    description,
+    assignee,
+    label,
+    estimate,
+    reporter
 ) => {
   const token = await getToken();
   try {
@@ -841,17 +841,21 @@ export const editAnswer = async (answerId, answer) => {
     console.log("error when deleteComment:" + JSON.stringify(error));
   }
 };
-export const voteQuestion = async (questionId) => {
+
+export const voteQuestion = async (questionId, status) => {
   const token = await getToken();
   try {
     const response = await axios.post(
-      routes.forum.voteQuestion.replace(":question-id", questionId),
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ` + token,
-        },
-      }
+        routes.forum.voteQuestion.replace(":question-id", questionId),
+        {
+          status: status
+        }
+        ,
+        {
+          headers: {
+            "Authorization": `Bearer ` + token
+          }
+        }
     );
     console.log("Data in voteQuestion: " + JSON.stringify(response.data));
     return response.data;
@@ -1095,10 +1099,10 @@ export const responseOrder = async (orderId, status) => {
 };
 
 export const reviewRequest = async (
-  labId,
-  applicationId,
-  requestData,
-  navigation
+    labId,
+    applicationId,
+    requestData,
+    navigation
 ) => {
   const token = await getToken();
   try {
@@ -1125,71 +1129,71 @@ export const reviewRequest = async (
 };
 
 export const getLaboratoryByAccountId = async (accountId, page, size) => {
-  const token = await getToken();
-  return await axios.get(routes.laboratory.getLaboratory, {
-    params: {
-      "account-id": accountId,
-      page: page,
-      size: size,
-    },
+    const token = await getToken();
+    return await axios.get(routes.laboratory.getLaboratory, {
+        params: {
+            "account-id": accountId,
+            page: page,
+            size: size,
+        },
 
-    headers: {
-      Authorization: `Bearer ` + token,
-    },
-  });
+        headers: {
+            Authorization: `Bearer ` + token,
+        },
+    });
 };
 
 export const getLaboratorySuggestionByAccountId = async (
-  accountId,
-  page,
-  size
+    accountId,
+    page,
+    size
 ) => {
-  const token = await getToken();
-  return await axios.get(routes.laboratory.getLaboratorySuggestion, {
-    params: {
-      "account-id": accountId,
-      page: page,
-      size: size,
-    },
+    const token = await getToken();
+    return await axios.get(routes.laboratory.getLaboratorySuggestion, {
+        params: {
+            "account-id": accountId,
+            page: page,
+            size: size,
+        },
 
-    headers: {
-      Authorization: `Bearer ` + token,
-    },
-  });
+        headers: {
+            Authorization: `Bearer ` + token,
+        },
+    });
 };
 
 export const getAllMemberByLabId = async (page, size) => {
-  const token = await getToken();
-  const labId = await getLabId();
-  return await axios.get(
-    routes.laboratory.getAllMemberInLaboratory.replace(":lab-id", labId),
-    {
-      params: {
-        page: page,
-        size: size,
-      },
-      headers: {
-        Authorization: `Bearer ` + token,
-      },
-    }
-  );
+    const token = await getToken();
+    const labId = await getLabId();
+    return await axios.get(
+        routes.laboratory.getAllMemberInLaboratory.replace(":lab-id", labId),
+        {
+            params: {
+                page: page,
+                size: size,
+            },
+            headers: {
+                Authorization: `Bearer ` + token,
+            },
+        }
+    );
 };
 
 export const getAllRequestInLab = async (page, size) => {
-  const token = await getToken();
-  const labId = await getLabId();
-  return await axios.get(
-    routes.laboratory.getAllRequest.replace(":lab-id", labId),
-    {
-      params: {
-        page: page,
-        size: size,
-      },
-      headers: {
-        Authorization: `Bearer ` + token,
-      },
-    }
-  );
+    const token = await getToken();
+    const labId = await getLabId();
+    return await axios.get(
+        routes.laboratory.getAllRequest.replace(":lab-id", labId),
+        {
+            params: {
+                page: page,
+                size: size,
+            },
+            headers: {
+                Authorization: `Bearer ` + token,
+            },
+        }
+    );
 };
 export const uploadProfileCv = async (
   profileId,
@@ -1395,19 +1399,28 @@ export const returnOrder = async (orderId) => {
   }
 };
 
-export const getAllTag = async () => {
-  const token = await getToken();
-  try {
-    const response = await axios.get(routes.forum.getAllTag, {
-      headers: {
-        Authorization: `Bearer ` + token,
-      },
-    });
-    console.log("Data in getAllTag: " + JSON.stringify(response.data));
-    return response.data;
-  } catch (error) {
-    console.log("error when getAllTag:" + JSON.stringify(error));
-  }
+export const getAllTag = async (tagName, page, size) => {
+    const token = await getToken();
+    try {
+        const response = await axios.get(
+            routes.forum.getAllTag,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                },
+                params: {
+                    "tag-name": tagName,
+                    "created-date-sort-by": "DESC",
+                    page: page,
+                    size: size
+                }
+            }
+        );
+        console.log("Data in getAllTag: " + JSON.stringify(response.data));
+        return response.data
+    } catch (error) {
+        console.log("error when getAllTag:" + JSON.stringify(error));
+    }
 };
 export const addTag = async (tagName, ownerBy) => {
   const token = await getToken();
@@ -1503,25 +1516,112 @@ export const getAllUser = async (inputSearchData) => {
     console.log("error when addTag:" + JSON.stringify(error));
   }
 };
-
-export const getListMyQuestion = async (accountId) => {
-  const token = await getToken();
-  try {
-    const response = await axios.get(
-      routes.forum.getListQuestion + "?created-by=" + accountId,
-      {
-        headers: {
-          Authorization: `Bearer ` + token,
-        },
-      }
-    );
-    console.log(
-      "Data in getListFolderDetail: " + JSON.stringify(response.data)
-    );
-    return response.data;
-  } catch (error) {
-    console.log("error when getListFolderDetail:" + JSON.stringify(error));
-  }
+export const getListMyQuestion = async (accountId,title,page,size) => {
+    const token = await getToken();
+    try {
+        const response = await axios.get(
+            routes.forum.getListQuestion,
+            {
+                headers: {
+                    Authorization: `Bearer ` + token,
+                },
+                params: {
+                    "created-by": accountId,
+                    title: title,
+                    "created-date-sort-by": "DESC",
+                    page: page,
+                    size: size
+                }
+            }
+        );
+        console.log(
+            "Data in getListMyQuestion: " + JSON.stringify(response.data)
+        );
+        return response.data;
+    } catch (error) {
+        console.log("error when getListMyQuestion:" + JSON.stringify(error));
+    }
+};
+export const getListQuestion = async (title, page, size) => {
+    const token = await getToken();
+    try {
+        const response = await axios.get(
+            routes.forum.getListQuestion,
+            {
+                headers: {
+                    Authorization: `Bearer ` + token,
+                },
+                params: {
+                    title: title,
+                    "created-date-sort-by": "DESC",
+                    page: page,
+                    size: size
+                }
+            }
+        );
+        console.log(
+            "Data in getListQuestion: " + JSON.stringify(response.data)
+        );
+        return response;
+    } catch (error) {
+        console.log("error when getListQuestion:" + JSON.stringify(error));
+    }
+};
+export const voteAnswer = async (answerId, status) => {
+    const token = await getToken();
+    try {
+        const response = await axios.put(
+            routes.forum.voteAnswer.replace(":answer-id", answerId),
+            {
+                status: status
+            }
+            ,
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in voteQuestion: " + JSON.stringify(response.data));
+        return response;
+    } catch (error) {
+        console.log("error when voteQuestion:" + JSON.stringify(error));
+    }
+};
+export const getAnswerDetail = async (answerId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.get(
+            routes.forum.getAnswerDetail.replace(":answer-id", answerId),
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in getAnswerDetail: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when getAnswerDetail:" + JSON.stringify(error));
+    }
+};
+export const acceptAnswer = async (questionId,answerId) => {
+    const token = await getToken();
+    try {
+        const response = await axios.put(
+            routes.forum.acceptAnswer.replace(":answer-id", answerId).replace(":question-id",questionId),
+            {},
+            {
+                headers: {
+                    "Authorization": `Bearer ` + token
+                }
+            }
+        );
+        console.log("Data in acceptAnswer: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.log("error when acceptAnswer:" + JSON.stringify(error));
+    }
 };
 
 export const getNumberNotifyOfAccountId = async (accountId) => {
