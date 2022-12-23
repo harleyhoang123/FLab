@@ -41,7 +41,7 @@ export default function Login({navigation}) {
     const regexUsername= "^[a-zA-Z0-9]([._](?![._])|[a-zA-Z0-9]){3,}[a-zA-Z0-9]$";
 
     const handleSubmit = (username,password,navigation) => {
-        if(username.match(regexUsername)){
+        if(!username.match(regexUsername)){
             setIsValidUserName(false);
         }else{
             setIsValidUserName(true);
