@@ -6,7 +6,8 @@ import {
   FlatList,
   CheckBox,
   SafeAreaView,
-  Button, Modal,
+  Button,
+  Modal,
 } from "react-native";
 import Buttons from "../../components/Buttons";
 import { RadioButton } from "react-native-paper";
@@ -15,7 +16,10 @@ import LabNavigator from "../../navigations/LabNavigator";
 import { useDispatch } from "react-redux";
 import { getFolderDetailId } from "../../actions/RepositoryAction";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
-import {deleteFolderInRepository, getListFolder} from "../../networking/CustomNetworkService";
+import {
+  deleteFolderInRepository,
+  getListFolder,
+} from "../../networking/CustomNetworkService";
 import AsyncStorage from "@react-native-community/async-storage";
 
 const getRepoId = async () => {
@@ -31,7 +35,7 @@ const getRepoId = async () => {
 function Repository({ route, navigation }) {
   const data = route.params.data;
   const [items, setItems] = useState(data.items);
-  console.log("Data in repository: "+ JSON.stringify(data))
+  console.log("Data in repository: " + JSON.stringify(data));
   const [text, setText] = useState("");
   const dispatch = useDispatch();
   const [repoId, setRepoId] = useState("");
@@ -40,19 +44,25 @@ function Repository({ route, navigation }) {
     dispatch(getFolderDetailId(id, name, navigation));
   };
 
-  const formatterDate=(date)=>{
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const d= new Date(date);
-    return d.toLocaleDateString("en-US", options) +", "+ d.toTimeString().split("G")[0];
-  }
-  const deleteAFolder = (repoId,folderId) => {
-    deleteFolderInRepository(repoId,folderId).then(r => {getListFolder(repoId).then(v => setItems(v.data.items))})
+  const formatterDate = (date) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const d = new Date(date);
+    return (
+      d.toLocaleDateString("en-US", options) +
+      ", " +
+      d.toTimeString().split("G")[0]
+    );
+  };
+  const deleteAFolder = (repoId, folderId) => {
+    deleteFolderInRepository(repoId, folderId).then((r) => {
+      getListFolder(repoId).then((v) => setItems(v.data.items));
+    });
   };
   const [checked, setChecked] = useState("");
   const [folderName, setFolderName] = useState("");
   const [description, setDescription] = useState("");
-  const [showConfirm,setShowConfirm]=useState(false);
-  const [disable, setDisable]= useState(true);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [disable, setDisable] = useState(true);
   const Item = ({ id, name, description, lastEdit }) => (
     <View style={styles.table}>
       <View style={styles.columnCheckBox}>
@@ -67,7 +77,6 @@ function Repository({ route, navigation }) {
               setDisable(false);
             }}
           />
-
         </RadioButton.Group>
       </View>
       <View style={styles.column}>
@@ -92,23 +101,36 @@ function Repository({ route, navigation }) {
       <ProjectNavigator navigation={navigation} />
       <View style={styles.containerContent}>
         <Modal
-            animationType="fade"
-            transparent={true}
-            visible={showConfirm}
-            onRequestClose={() => {
-              setShowConfirm(false);
-            }}>
+          animationType="fade"
+          transparent={true}
+          visible={showConfirm}
+          onRequestClose={() => {
+            setShowConfirm(false);
+          }}
+        >
           <View style={styles.modalDelete}>
             <View style={styles.modalDeleteView}>
-              <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete this folder?</Text>
-              <View style={{alignItems: "flex-end", flexDirection: "row"}}>
-                <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
-                  deleteAFolder(repoId,checked);
-                  setDisable(true);
-                  setShowConfirm(false)
-                }}/>
-                <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
-                         onPressTo={() => setShowConfirm(false)}/>
+              <Text
+                style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
+              >
+                Do you want to delete this folder?
+              </Text>
+              <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
+                <Buttons
+                  text={"Delete"}
+                  style={{ marginRight: 40 }}
+                  onPressTo={() => {
+                    deleteAFolder(repoId, checked);
+                    setDisable(true);
+                    setShowConfirm(false);
+                  }}
+                />
+                <Buttons
+                  text={"Cancel"}
+                  style={{ backgroundColor: "#F4F5F7" }}
+                  styleText={{ color: "black" }}
+                  onPressTo={() => setShowConfirm(false)}
+                />
               </View>
             </View>
           </View>
@@ -140,10 +162,18 @@ function Repository({ route, navigation }) {
               text={"Create Folder"}
             />
             <Buttons
-                style={styles.button}
-                text={"Update"}
-                disabled={disable}
-                onPressTo={()=> {navigation.push("UpdateFolderInRepo", {repoId: repoId, folderId: checked, folderName: folderName, description: description});setDisable(true);}}
+              style={styles.button}
+              text={"Update"}
+              disabled={disable}
+              onPressTo={() => {
+                navigation.push("UpdateFolderInRepo", {
+                  repoId: repoId,
+                  folderId: checked,
+                  folderName: folderName,
+                  description: description,
+                });
+                setDisable(true);
+              }}
             />
             <Buttons
               style={styles.button}
@@ -166,13 +196,13 @@ function Repository({ route, navigation }) {
           </View>
           <SafeAreaView style={styles.flatlist}>
             {items?.map((item) => (
-                <Item
-                    key ={item.folderId}
-                    id={item.folderId}
-                    name={item.folderName}
-                    description={item.description}
-                    lastEdit={item.lastModifiedDate}
-                />
+              <Item
+                key={item.folderId}
+                id={item.folderId}
+                name={item.folderName}
+                description={item.description}
+                lastEdit={item.lastModifiedDate}
+              />
             ))}
           </SafeAreaView>
         </View>
@@ -254,7 +284,7 @@ const styles = StyleSheet.create({
   },
   modalDelete: {
     alignItems: "center",
-    justifyContent:"center",
+    justifyContent: "center",
     flex: 1,
   },
   modalDeleteView: {

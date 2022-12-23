@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -17,8 +17,10 @@ import {
   getAllMember,
   getAllMemberInLab,
 } from "../../networking/CustomNetworkService";
-import { addMembersToLab } from "../../actions/LaboratoryAction";
+import { getMembersToLab } from "../../actions/LaboratoryAction";
+import { getAllUser } from "../../networking/CustomNetworkService";
 import AsyncStorage from "@react-native-community/async-storage";
+import ListUserComponent from "../../components/ListUserComponent";
 
 const getLabId = async () => {
   try {
@@ -36,19 +38,11 @@ export default function AddMemberTolab({ route, navigation }) {
   getLabId().then((v) => setLabId(v));
   const [selected, setSelected] = React.useState("");
   const [key, setKey] = React.useState("");
-  const dispatch = useDispatch();
+  const [inputSearchData, setInputSearchData] = useState("");
+  const [listMember, setListMember] = useState(data);
+
   const [data, setData] = React.useState([]);
   const [isMember, setIsMember] = useState(false);
-
-  function validateData() {
-    if (!selected) {
-      setIsMember(true);
-      isValid = false;
-    }
-    if (isValid) {
-      addMemberHandle();
-    }
-  }
 
   React.useEffect(() => {
     getAllMember().then((response) => {
@@ -68,68 +62,42 @@ export default function AddMemberTolab({ route, navigation }) {
             value: item.userInfo.userInfo.fullName,
           };
         });
-        setData(
+        setListMember(
           newArray1.filter((i) => !newArray2.find(({ key }) => i.key === key))
         );
       });
     });
   }, []);
-  const addMemberHandle = () => {
-    const requestData = {
-      accountId: key,
-    };
-    console.log(requestData);
-    dispatch(addMembersToLab(labId, requestData, navigation));
-  };
+
+  console.log("List member:" + JSON.stringify(data));
+
+  const searchMember = useEffect(() => {
+    getAllUser(inputSearchData).then((v) => {
+      let newList = v.data.items.map((item) => {
+        return {
+          key: item.accountId,
+          value: item.fullName,
+        };
+      });
+      setListMember(newList);
+    });
+  });
+
   return (
     <View>
       <LabNavigator navigation={navigation} />
-      <View style={styles.container}>
-        <Text style={styles.title}>Add member your's Lab</Text>
+      <View>
         <View>
-          <View>
-            <Text style={styles.usage}>Select member</Text>
+          <Text style={styles.title}>Add new member:</Text>
+        </View>
+        <View style={styles.search}>
+          <TextInput style={styles.input} onChangeText={setInputSearchData} />
+          <View style={styles.btnSearch}>
+            <Button title={"Search"} onPress={searchMember} />
           </View>
-          <View>
-            <SelectList
-              setSelected={(val) => setSelected(val)}
-              onSelect={() => setKey(selected)}
-              placeholder={"List Member"}
-              data={data}
-              save="key"
-              boxStyles={{
-                height: 40,
-                margin: 12,
-                borderWidth: 1,
-                padding: 10,
-                width: "45%",
-                marginLeft: "13%",
-              }}
-              dropdownStyles={{
-                width: 330,
-                marginLeft: "13%",
-              }}
-              search={false}
-            />
-            {isMember && (
-              <Text style={styles.inputInvalid}>Please choose a member</Text>
-            )}
-          </View>
-
-          <View style={styles.btn}>
-            <Buttons
-              text={"Add"}
-              style={styles.button}
-              onPressTo={validateData}
-            />
-            <Buttons
-              text={"Back"}
-              style={styles.button}
-              onPressTo={() => {
-                navigation.goBack(null);
-              }}
-            />
-          </View>
+        </View>
+        <View style={styles.listMember}>
+          <ListUserComponent listMember={listMember} navigation={navigation} />
         </View>
       </View>
     </View>
@@ -140,13 +108,21 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
   },
+  listMember: {
+    alignSelf: "start",
+    marginLeft: "13%",
+    with: "70%",
+  },
+  search: {
+    flexDirection: "row",
+  },
   button: {
     marginTop: 20,
     width: 130,
     marginLeft: 5,
   },
   input: {
-    height: 40,
+    height: 35,
     margin: 12,
     borderWidth: 1,
     padding: 10,
@@ -160,8 +136,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    marginLeft: "10%",
-    marginTop: "3%",
+    marginLeft: "5%",
+    marginTop: "1%",
+  },
+  btnSearch: {
+    height: 35,
+    margin: 12,
   },
   usage: {
     fontSize: 20,

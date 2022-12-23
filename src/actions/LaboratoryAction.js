@@ -64,9 +64,7 @@ export const getAllMemberInLaboratoryById =
         data: response.data.data,
       });
     } catch ({ data }) {
-      console.log(
-        "Error when get all member in Project " + JSON.stringify(data)
-      );
+      console.log("Error when get all member in lab " + JSON.stringify(data));
     }
   };
 
@@ -357,9 +355,10 @@ export const addMembersToProject =
   };
 
 export const addMembersToLab =
-  (labId, requestData, navigation) =>
+  (requestData, navigation) =>
   async (dispatch, _, { networkService }) => {
     try {
+      const labId = await getLabId();
       console.log(" Lab Id in addMembersToLab:" + labId);
       const labController = new LaboratoryController(networkService);
       const response = await labController.addMembersToLab({
@@ -368,6 +367,18 @@ export const addMembersToLab =
       });
       console.log("addMembersToLab: " + JSON.stringify(response));
       dispatch(getAllMemberInLaboratoryById(labId, navigation));
+    } catch ({ data }) {
+      console.log("ERROR when addMembersToLab: " + JSON.stringify(data));
+    }
+  };
+
+export const getMembersToLab =
+  () =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const labController = new LaboratoryController(networkService);
+      const response = await labController.getAllUser(inputSearchData);
+      return response;
     } catch ({ data }) {
       console.log("ERROR when addMembersToLab: " + JSON.stringify(data));
     }
