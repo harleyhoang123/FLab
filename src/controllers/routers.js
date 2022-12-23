@@ -1,14 +1,4 @@
 import {account, forum, laboratory, notification, repository, workspace} from "./ip";
-import {
-    addTag,
-    changeAvatar,
-    deleteCVbyAccountId, deleteTag, getAccountAdmin, getAllMemberInProject, getAllTag,
-    getCVbyAccountId,
-    getLaboratoryByAccountId, getListOrderByAccountId,
-    getListOrderByLabId, getProfileDetail,
-    responseOrder, returnOrder,
-    reviewRequest, updateProfileCv, updateTag, uploadProfileCv
-} from "../networking/CustomNetworkService";
 
 export const routes = {
     laboratory: {
@@ -128,6 +118,8 @@ export const routes = {
             forum + "/flab/forum/public/api/v1/answers/:answer-id",
         voteQuestion:
             forum + "/flab/forum/public/api/v1/questions/:question-id/vote",
+        voteAnswer:
+            forum + "/flab/forum/public/api/v1/answers/:answer-id/vote",
         getAllTag:
             forum + "/flab/forum/public/api/v1/tags",
         addTag:
@@ -136,6 +128,10 @@ export const routes = {
             forum + "/flab/forum/public/api/v1/tags/:tag-id",
         deleteTag:
             forum + "/flab/forum/public/api/v1/tags/:tag-id",
+        getAnswerDetail:
+            forum + "/flab/forum/public/api/v1/answers/:answer-id",
+        acceptAnswer:
+            forum + "/flab/forum/public/api/v1/answers/:question-id/:answer-id/accept",
     },
     repository: {
         getFolderDetail:

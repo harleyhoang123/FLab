@@ -6,7 +6,8 @@ import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
 import QuestionItem from "../../components/QuestionItem";
 import AsyncStorage from "@react-native-community/async-storage";
-import {getListMyQuestion} from "../../networking/CustomNetworkService";
+import {getListMyQuestion, getListQuestion} from "../../networking/CustomNetworkService";
+import PaginationBar from "../../components/PaginationBar";
 
 const getAccountId = async () => {
     try {
@@ -17,20 +18,39 @@ const getAccountId = async () => {
         console.log("Can't get account id: " + e);
     }
 };
+
 function MyQuestion({navigation}) {
     const [text, setText] = useState("");
     const [list, setList] = useState("");
     const [accountId, setAccountId] = useState();
-    useEffect(()=>{
-getAccountId().then(v=> {setAccountId(v); getListMyQuestion(v).then(r=> setList(r.data.items))})
-    },[]);
-
+    const [numberOfElement, setNumberOfElement] = useState(0);
+    useEffect(() => {
+        getAccountId().then(v => {
+            setAccountId(v);
+            getListMyQuestion(v, text, 0, 5).then(r => {
+                setList(r.data.items);
+                setNumberOfElement(r.data.totalPage * 5)
+            })
+        })
+    }, []);
+    const callbackChangePage = (page) => {
+        getListMyQuestion(accountId, text, 0, 5).then(v => {
+            setList(v.data.items);
+            setNumberOfElement(v.data.totalPage * 5)
+        })
+    }
+    const searchQues=()=>{
+        getListMyQuestion(accountId, text, 0, 5).then(v => {
+            setList(v.data.items);
+            setNumberOfElement(v.data.totalPage * 5)
+        })
+    }
     return (
         <View>
-            <HomeTopNavigator navigation={navigation} />
+            <HomeTopNavigator navigation={navigation}/>
             <View style={styles.container}>
                 <View style={styles.forum}>
-                    <ForumNavigation navigation={navigation} />
+                    <ForumNavigation navigation={navigation}/>
                 </View>
                 <View style={styles.content}>
                     <View style={styles.containerContent}>
@@ -44,12 +64,13 @@ getAccountId().then(v=> {setAccountId(v); getListMyQuestion(v).then(r=> setList(
                                 placeholder={" Search"}
                                 secureTextEntry={false}
                                 multiline={false}
-                                style={{ width: 400 }}
+                                style={{width: 400}}
+                                onSubmitEditing={()=>searchQues()}
                             />
-                            <Buttons text={"Search"} />
+                            <Buttons text={"Search"} onPressTo={()=>searchQues()}/>
                             <Buttons
                                 text={"Add Question"}
-                                style={[styles.button, { marginLeft: 20 }]}
+                                style={[styles.button, {marginLeft: 20}]}
                                 onPressTo={() => navigation.push("AddQuestion")}
                             />
                         </View>
@@ -57,33 +78,33 @@ getAccountId().then(v=> {setAccountId(v); getListMyQuestion(v).then(r=> setList(
                     <View style={styles.typeView}>
                         <Buttons
                             text={"Interesting"}
-                            style={{ backgroundColor: "white", borderWidth: 1 }}
-                            styleText={{ color: "black" }}
+                            style={{backgroundColor: "white", borderWidth: 1}}
+                            styleText={{color: "black"}}
                         ></Buttons>
                         <Buttons
                             text={"Bountied"}
-                            style={{ backgroundColor: "white", borderWidth: 1 }}
-                            styleText={{ color: "black" }}
+                            style={{backgroundColor: "white", borderWidth: 1}}
+                            styleText={{color: "black"}}
                         ></Buttons>
                         <Buttons
                             text={"Hot"}
-                            style={{ backgroundColor: "white", borderWidth: 1 }}
-                            styleText={{ color: "black" }}
+                            style={{backgroundColor: "white", borderWidth: 1}}
+                            styleText={{color: "black"}}
                         ></Buttons>
                         <Buttons
                             text={"Week"}
-                            style={{ backgroundColor: "white", borderWidth: 1 }}
-                            styleText={{ color: "black" }}
+                            style={{backgroundColor: "white", borderWidth: 1}}
+                            styleText={{color: "black"}}
                         ></Buttons>
                         <Buttons
                             text={"Month"}
-                            style={{ backgroundColor: "white", borderWidth: 1 }}
-                            styleText={{ color: "black" }}
+                            style={{backgroundColor: "white", borderWidth: 1}}
+                            styleText={{color: "black"}}
                         ></Buttons>
                     </View>
                     <FlatList
                         data={list}
-                        renderItem={({ item }) => (
+                        renderItem={({item}) => (
                             <QuestionItem
                                 questionId={item.questionId}
                                 title={item.title}
@@ -98,16 +119,16 @@ getAccountId().then(v=> {setAccountId(v); getListMyQuestion(v).then(r=> setList(
                         )}
                     />
                     <View style={styles.containerButton}>
-                        <Buttons
-                            text={"Load more"}
-                            style={[styles.button, { marginBottom: 20, marginTop: 20 }]}
-                        />
+                        <PaginationBar currentSizes={5}
+                        numberOfElement={numberOfElement}
+                        callbackSelectedPage={callbackChangePage}/>
                     </View>
                 </View>
             </View>
         </View>
     );
 }
+
 const styles = StyleSheet.create({
     container: {
         flexDirection: "row",

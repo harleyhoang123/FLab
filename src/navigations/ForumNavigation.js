@@ -12,7 +12,7 @@ function ForumNavigation({ navigation }) {
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => goToForum()}
+        onPress={() => navigation.push("Forum")}
       >
         <Text style={styles.textLogo}>Home</Text>
       </TouchableOpacity>

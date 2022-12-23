@@ -73,7 +73,7 @@ export const closeQuestion =
             const forumController = new ForumController(networkService);
             const {data} = await forumController.closeQuestion({questionId});
             console.log("Data closeQuestion is: " + JSON.stringify(data));
-            dispatch(getListQuestion(navigation));
+            dispatch(getQuestionDetailByQuestionId(questionId,navigation, false));
 
         } catch ({data}) {
             dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
