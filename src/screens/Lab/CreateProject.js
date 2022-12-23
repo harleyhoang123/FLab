@@ -29,8 +29,6 @@ const getLabId = async () => {
 export default function CreateProject({ route, navigation }) {
   const regx = new RegExp("^[a-zA-Z0-9 ]{6,30}$");
   let isValid = true;
-  let isValidName = true;
-  let isDate = true;
   const [textName, onChangeNameText] = useState("");
   const [textDescription, onChangeDescriptionText] = useState("");
   const [startDate, setStartDate] = useState(new Date());

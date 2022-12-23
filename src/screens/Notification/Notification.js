@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import NotifyComponent from "../../components/NotifyComponent";
 

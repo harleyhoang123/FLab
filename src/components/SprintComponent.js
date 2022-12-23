@@ -20,6 +20,7 @@ import {
   updateSprint,
   updateStatusSprint,
 } from "../networking/CustomNetworkService";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 function SprintComponent({
   projectId,
@@ -59,6 +60,13 @@ function SprintComponent({
   const [endDateUpdate, setEndDateUpdate] = useState(new Date());
   const [goalUpdate, setGoalUpdate] = useState(goalDetail);
   const [showConfirm, setShowConfirm] = useState(false);
+
+  const [isSprintNameUpdate, setIsSprintNameUpdate] = useState(false);
+  const [isDateUpdate, setIsDateUpdate] = useState(false);
+  const [isGoalUpdate, setIsGoalUpdate] = useState(false);
+  let isValid = true;
+  const regx = new RegExp("^[a-zA-Z0-9 ]{6,30}$");
+
   const formatDate = (date) => {
     const formattedDate = new Date(date);
     return formattedDate.toLocaleDateString("en-GB", {
@@ -66,6 +74,7 @@ function SprintComponent({
       month: "short",
     });
   };
+
   const checkStatusSprint = (statusSprint) => {
     if (statusSprint === "NOT_START") {
       return "Start Sprint";
@@ -120,6 +129,38 @@ function SprintComponent({
 
   let isValidTask = true;
   const [isTask, setIsTask] = useState(false);
+
+  function validateEditSprint() {
+    if (!sprintNameUpdate.match(regx)) {
+      setIsSprintNameUpdate(true);
+      isValid = false;
+    } else {
+      setIsSprintNameUpdate(false);
+    }
+    if (startDateUpdate > endDateUpdate) {
+      setIsDateUpdate(true);
+      isValid = false;
+    } else {
+      setIsDateUpdate(false);
+    }
+    if (!goalUpdate) {
+      setIsGoalUpdate(true);
+      isValid = false;
+    } else {
+      setIsGoalUpdate(false);
+    }
+    if (isValid) {
+      updateASprint(
+        sprintId,
+        sprintNameUpdate,
+        startDateUpdate,
+        endDateUpdate,
+        goalUpdate
+      );
+      setModalVisible(!modalVisible);
+    }
+  }
+
   function validateComment() {
     if (!taskName) {
       setIsTask(true);
@@ -258,6 +299,9 @@ function SprintComponent({
                 setSprintNameUpdate(sprintNameUpdate)
               }
             />
+            {isSprintNameUpdate && (
+              <Text style={styles.inputInvalid}>Invalid title</Text>
+            )}
             <Text style={{ fontSize: 12, marginLeft: 10 }}>Start date</Text>
             <DateTimePicker
               style={{ width: 200, marginLeft: 20 }}
@@ -267,6 +311,9 @@ function SprintComponent({
                 setStartDateUpdate(startDateUpdate)
               }
             />
+            {isDateUpdate && (
+              <Text style={styles.inputInvalid}>Invalid start date</Text>
+            )}
             <Text style={{ fontSize: 12, marginLeft: 10 }}>End date</Text>
             <DateTimePicker
               style={{ width: 200, marginLeft: 20 }}
@@ -274,6 +321,9 @@ function SprintComponent({
               value={endDateUpdate}
               onChangeDate={(endDateUpdate) => setEndDateUpdate(endDateUpdate)}
             />
+            {isDateUpdate && (
+              <Text style={styles.inputInvalid}>Invalid end date</Text>
+            )}
             <Text style={{ fontSize: 12, marginLeft: 10 }}>Sprint goal</Text>
             <TextField
               multiline={true}
@@ -281,19 +331,15 @@ function SprintComponent({
               text={goalUpdate}
               onChangeText={(goalUpdate) => setGoalUpdate(goalUpdate)}
             />
+            {isGoalUpdate && (
+              <Text style={styles.inputInvalid}>Invalid start date</Text>
+            )}
             <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
               <Buttons
                 text={"Update"}
                 style={{ marginRight: 40 }}
                 onPressTo={() => {
-                  updateASprint(
-                    sprintId,
-                    sprintNameUpdate,
-                    startDateUpdate,
-                    endDateUpdate,
-                    goalUpdate
-                  );
-                  setModalVisible(!modalVisible);
+                  validateEditSprint();
                 }}
               />
               <Buttons
@@ -396,6 +442,10 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 8,
     borderRadius: 8,
+  },
+  inputInvalid: {
+    marginLeft: 15,
+    color: "red",
   },
   containerContent: {
     flexDirection: "row",
