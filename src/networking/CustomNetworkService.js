@@ -842,17 +842,20 @@ export const editAnswer = async (answerId, answer) => {
   }
 };
 
-export const voteQuestion = async (questionId) => {
+export const voteQuestion = async (questionId, status) => {
   const token = await getToken();
   try {
     const response = await axios.post(
-      routes.forum.voteQuestion.replace(":question-id", questionId),
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ` + token,
-        },
-      }
+        routes.forum.voteQuestion.replace(":question-id", questionId),
+        {
+          status: status
+        }
+        ,
+        {
+          headers: {
+            "Authorization": `Bearer ` + token
+          }
+        }
     );
     console.log("Data in voteQuestion: " + JSON.stringify(response.data));
     return response.data;
