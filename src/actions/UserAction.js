@@ -55,8 +55,8 @@ export const login =
       dispatch(loginSuccess(data));
     } catch ({ data }) {
       console.log("Login fail " + JSON.stringify(data));
-      if(data.status.status===401){
-        alert(data.status.message)
+      if (data.status.status === 401) {
+        alert(data.status.message);
       }
     }
   };
@@ -108,62 +108,121 @@ export const forgot =
 export const changePassword =
   (oldPassword, newPassword, accountId) =>
   async (dispatch, _, { networkService }) => {
-    console.log("Oll Password User Action: " + oldPassword);
-    console.log("New Password User Action: " + newPassword);
-    console.log("Account ID User Action: " + accountId);
+    let errorCode = 200;
     try {
-      // const [accountId, setAccountId] = useState('');
-      // getAccountId().then(accountId => setAccountId(accountId));
-      // console.log("Account ID User Action: "+ accountId);
       const userController = new UserController(networkService);
       const { data } = await userController.changePassword({
         oldPassword,
         newPassword,
         accountId,
       });
-      console.log("Data Change is: " + JSON.stringify(data));
     } catch ({ data }) {
-      dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const getAccountInfoByAccountId =
   (accountId, navigation) =>
   async (dispatch, _, { networkService }) => {
-    console.log("Account ID User Action: " + accountId);
+    let errorCode = 200;
     try {
       const userController = new UserController(networkService);
       const { data } = await userController.getAccountInfo({ accountId });
-      console.log("Data Change is: " + JSON.stringify(data));
-      console.log("Data.data is: " + JSON.stringify(data.data));
       if (data.data != null) {
         navigation.navigate("Profile", { data: data.data });
       }
     } catch ({ data }) {
-      console.log("In catch: " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 export const getAccountInfoByAccountIdToEdit =
   (accountId, navigation) =>
   async (dispatch, _, { networkService }) => {
-    console.log("Account ID User Action: " + accountId);
+    let errorCode = 200;
     try {
       const userController = new UserController(networkService);
       const { data } = await userController.getAccountInfo({ accountId });
-      console.log("Data Change is: " + JSON.stringify(data));
-      console.log("Data.data is: " + JSON.stringify(data.data));
       if (data.data != null) {
         navigation.navigate("EditProfile", { data: data.data });
       }
     } catch ({ data }) {
-      console.log("In catch: " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 export const updateProfile =
   (
-      profileId,
-      gender,
-      dateOfBirth,
+    profileId,
+    gender,
+    dateOfBirth,
     address,
     studentId,
     memberCode,
@@ -176,6 +235,7 @@ export const updateProfile =
     navigation
   ) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const userController = new UserController(networkService);
       console.log("Role Number:" + studentId);
@@ -191,14 +251,35 @@ export const updateProfile =
         specialized,
         description,
         award,
-        interest
+        interest,
       });
-      console.log("Data Change is: " + JSON.stringify(data));
-      console.log("Data updateProfile is: " + JSON.stringify(data.data));
       if (data !== null) {
         dispatch(getAccountInfoByAccountId(profileId, navigation));
       }
     } catch ({ data }) {
-      console.log("In catch: " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };

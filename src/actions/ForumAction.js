@@ -1,139 +1,388 @@
-import {strings} from "../localization";
-import {ForumController} from "../controllers/ForumController";
-import {TYPES} from "./UserAction";
-import {useDispatch} from "react-redux";
+import { strings } from "../localization";
+import { ForumController } from "../controllers/ForumController";
+import { TYPES } from "./UserAction";
+import { useDispatch } from "react-redux";
 
 const loginError = (error) => ({
-    type: TYPES.LOGIN_ERROR,
-    payload: {error},
+  type: TYPES.LOGIN_ERROR,
+  payload: { error },
 });
 export const getQuestionDetailByQuestionId =
-    (questionId, navigation, isEdit) =>
-        async (dispatch, _, {networkService}) => {
-            try {
-                const forumController = new ForumController(networkService);
-                console.log("Questions ID in actions: " + questionId)
-                const response = await forumController.getQuestionDetailByQuestionId({questionId});
-                if (isEdit) {
-                    navigation.push("UpdateQuestion", {data: response.data.data});
-                } else {
-                    navigation.push("QuestionDetail", {data: response.data.data});
-                }
-
-            } catch ({data}) {
-                dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+  (questionId, navigation, isEdit) =>
+  async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
+    try {
+      const forumController = new ForumController(networkService);
+      console.log("Questions ID in actions: " + questionId);
+      const response = await forumController.getQuestionDetailByQuestionId({
+        questionId,
+      });
+      if (isEdit) {
+        navigation.push("UpdateQuestion", { data: response.data.data });
+      } else {
+        navigation.push("QuestionDetail", { data: response.data.data });
+      }
+    } catch ({ data }) {
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
             }
-        };
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
+    }
+  };
 export const getListQuestion =
-    (navigation) =>
-        async (dispatch, _, {networkService}) => {
-            try {
-                const forumController = new ForumController(networkService);
-                const response = await forumController.getListQuestion();
-                console.log("Data getListQuestion is: " + JSON.stringify(response));
-                navigation.push("Forum", {data: response.data.data})
-            } catch ({data}) {
-                dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+  (navigation) =>
+  async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
+    try {
+      const forumController = new ForumController(networkService);
+      const response = await forumController.getListQuestion();
+      if (response) {
+        navigation.push("Forum", { data: response.data.data });
+      }
+    } catch ({ data }) {
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
             }
-        };
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
+    }
+  };
 export const addQuestion =
-    (title, problem, triedCase, tag, navigation) => async (dispatch, _, {networkService}) => {
-        console.log("title in actions: " + title)
-        console.log("content in actions: " + problem)
-        console.log("triedCase in actions: " + triedCase)
-        console.log("tag in actions: " + tag)
-        try {
-            const forumController = new ForumController(networkService);
-            const {data} = await forumController.addQuestion({title, problem,triedCase, tag});
-            console.log("Data AddQuestion is: " + JSON.stringify(data));
-            dispatch(getListQuestion(navigation));
-        } catch ({data}) {
-            dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+  (title, problem, triedCase, tag, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
+    try {
+      const forumController = new ForumController(networkService);
+      const { data } = await forumController.addQuestion({
+        title,
+        problem,
+        triedCase,
+        tag,
+      });
+      dispatch(getListQuestion(navigation));
+    } catch ({ data }) {
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
         }
-    };
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
+    }
+  };
 export const updateQuestion =
-    (title, problem, triedCase, tag, questionId, navigation) => async (dispatch, _, {networkService}) => {
-        console.log("title in actions: " + title)
-        console.log("problem in actions: " + problem)
-        console.log("triedCase in actions: " + triedCase)
-        console.log("tag in actions: " + tag)
-        try {
-            const forumController = new ForumController(networkService);
-            const {data} = await forumController.updateQuestion({title, problem, triedCase, tag, questionId});
-            console.log("Data updateQuestion is: " + JSON.stringify(data));
-            dispatch(getQuestionDetailByQuestionId(questionId,navigation, false));
-
-        } catch ({data}) {
-            dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+  (title, problem, triedCase, tag, questionId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
+    try {
+      const forumController = new ForumController(networkService);
+      const { data } = await forumController.updateQuestion({
+        title,
+        problem,
+        triedCase,
+        tag,
+        questionId,
+      });
+      dispatch(getQuestionDetailByQuestionId(questionId, navigation, false));
+    } catch ({ data }) {
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
         }
-    };
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
+    }
+  };
 export const closeQuestion =
-    (questionId, navigation) => async (dispatch, _, {networkService}) => {
-        try {
-            const forumController = new ForumController(networkService);
-            const {data} = await forumController.closeQuestion({questionId});
-            console.log("Data closeQuestion is: " + JSON.stringify(data));
-            dispatch(getQuestionDetailByQuestionId(questionId,navigation, false));
-
-        } catch ({data}) {
-            dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+  (questionId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
+    try {
+      const forumController = new ForumController(networkService);
+      const { data } = await forumController.closeQuestion({ questionId });
+      dispatch(getQuestionDetailByQuestionId(questionId, navigation, false));
+    } catch ({ data }) {
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
         }
-    };
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
+    }
+  };
 export const postComment =
-    (content, questionId, navigation) => async (dispatch, _, {networkService}) => {
-        console.log("content of comment: " + content)
-        try {
-            const forumController = new ForumController(networkService);
-            const {data} = await forumController.postComment({content, questionId});
-            console.log("Data postComment is: " + JSON.stringify(data));
-            dispatch(getQuestionDetailByQuestionId(questionId, navigation, false));
-        } catch ({data}) {
-
+  (content, questionId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
+    try {
+      const forumController = new ForumController(networkService);
+      const { data } = await forumController.postComment({
+        content,
+        questionId,
+      });
+      dispatch(getQuestionDetailByQuestionId(questionId, navigation, false));
+    } catch ({ data }) {
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
         }
-    };
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
+    }
+  };
 export const postAnswer =
-    (content, questionId,navigation) => async (dispatch, _, {networkService}) => {
-        console.log("content of answer: " + content)
-        try {
-            const forumController = new ForumController(networkService);
-            const {data} = await forumController.postAnswer({content, questionId});
-            console.log("Data postAnswer is: " + JSON.stringify(data));
-            dispatch(getQuestionDetailByQuestionId(questionId, navigation, false));
-        } catch ({data}) {
-            dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+  (content, questionId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
+    try {
+      const forumController = new ForumController(networkService);
+      const { data } = await forumController.postAnswer({
+        content,
+        questionId,
+      });
+      dispatch(getQuestionDetailByQuestionId(questionId, navigation, false));
+    } catch ({ data }) {
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
         }
-    };
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
+    }
+  };
 export const postCommentToAnswer =
-    (content, answerId,questionId, navigation) => async (dispatch, _, {networkService}) => {
-        console.log("content of comment: " + content)
-        try {
-            const forumController = new ForumController(networkService);
-            const {data} = await forumController.postCommentToAnswer({content, answerId});
-            console.log("Data postCommentToAnswer is: " + JSON.stringify(data));
-            dispatch(getQuestionDetailByQuestionId(questionId, navigation, false));
-        } catch ({data}) {
-            dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+  (content, answerId, questionId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
+    try {
+      const forumController = new ForumController(networkService);
+      const { data } = await forumController.postCommentToAnswer({
+        content,
+        answerId,
+      });
+      dispatch(getQuestionDetailByQuestionId(questionId, navigation, false));
+    } catch ({ data }) {
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
         }
-    };
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
+    }
+  };
 export const deleteComment =
-    (commentId,questionId, navigation) => async (dispatch, _, {networkService}) => {
-        try {
-            const forumController = new ForumController(networkService);
-            const {data} = await forumController.deleteComment({commentId});
-            console.log("Data deleteComment is: " + JSON.stringify(data));
-            dispatch(getQuestionDetailByQuestionId(questionId, navigation, false));
-        } catch ({data}) {
-            console.log("Error when delete comment: "+JSON.stringify(data))
+  (commentId, questionId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
+    try {
+      const forumController = new ForumController(networkService);
+      const { data } = await forumController.deleteComment({ commentId });
+      dispatch(getQuestionDetailByQuestionId(questionId, navigation, false));
+    } catch ({ data }) {
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
         }
-    };
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
+    }
+  };
 export const deleteAnswer =
-    (answerId,questionId, navigation) => async (dispatch, _, {networkService}) => {
-        try {
-            const forumController = new ForumController(networkService);
-            const {data} = await forumController.deleteAnswer({answerId});
-            console.log("Data deleteComment is: " + JSON.stringify(data));
-            dispatch(getQuestionDetailByQuestionId(questionId, navigation, false));
-        } catch ({data}) {
-            dispatch(loginError(data?.error ?? strings.login.invalidCredentials));
+  (answerId, questionId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
+    try {
+      const forumController = new ForumController(networkService);
+      const { data } = await forumController.deleteAnswer({ answerId });
+      dispatch(getQuestionDetailByQuestionId(questionId, navigation, false));
+    } catch ({ data }) {
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
         }
-    };
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
+    }
+  };

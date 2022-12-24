@@ -18,7 +18,7 @@ export default function UpdateLab({ route, navigation }) {
   const allMember = data.map((item) => {
     return {
       key: item.memberId,
-      value: item.userInfo.userInfo.username,
+      value: item?.userInfo?.userInfo?.username,
     };
   });
 
@@ -125,7 +125,7 @@ export default function UpdateLab({ route, navigation }) {
               }}
               search={false}
             />
-            {isOwner && <Text style={styles.inputInvalid}>Invalid major</Text>}
+            {isOwner && <Text style={styles.inputInvalid}>Invalid Owner</Text>}
           </View>
 
           <View style={styles.btn}>

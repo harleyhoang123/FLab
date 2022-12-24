@@ -1,16 +1,15 @@
-import React, {useState} from "react";
-import {StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Logo from "../assets/Logo";
-import {useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
-import {getListQuestion} from "../actions/ForumAction";
-import {getListNews} from "../actions/NewsAction";
+import { getListQuestion } from "../actions/ForumAction";
+import { getListNews } from "../actions/NewsAction";
 import RightNavigation from "./RightNavigation";
 
 const getAccountId = async () => {
   try {
     const accountId = await AsyncStorage.getItem("@accountId");
-    console.log("AccountId: " + accountId);
     return accountId;
   } catch (e) {
     console.log("Can't get account id: " + e);
@@ -43,18 +42,23 @@ export default function HomeTopNavigator({ navigation }) {
           >
             <Text style={styles.textLogo}>Lab</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button}  onPress={() => navigation.push("Forum")}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.push("Forum")}
+          >
             <Text style={styles.textLogo}>Forum</Text>
           </TouchableOpacity>
           {/*TODO: Check role of button*/}
           {/* {roles.includes("ADMIN") && ( */}
-          <TouchableOpacity style={styles.button} onPress={()=>navigation.push("ListNews")}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.push("ListNews")}
+          >
             <Text style={styles.textLogo}>News</Text>
           </TouchableOpacity>
           {/* )} */}
-
         </View>
-        <RightNavigation navigation={navigation}/>
+        <RightNavigation navigation={navigation} />
       </View>
     </View>
   );

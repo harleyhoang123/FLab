@@ -35,7 +35,7 @@ export const getLaboratoryById =
       });
       if (response.data.data.memberInfo) {
         await AsyncStorage.setItem(
-          "@currentMemeberId",
+          "@currentMemberId",
           response.data.data.memberInfo.memberId
         );
       }
@@ -48,11 +48,29 @@ export const getLaboratoryById =
         allMember: listMember.data.data,
       });
     } catch ({ data }) {
-      errorCode = data.status.status;
-      console.log("Error " + errorCode);
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
       navigation.push("ErrorPage", {
-        status: errorCode,
-        displayMessage: "SOMETHING WENT WRONG",
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
       });
     }
   };
@@ -60,6 +78,7 @@ export const getLaboratoryById =
 export const getAllMemberInLaboratoryById =
   (labId, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       console.log("Lab ID in actions: " + labId);
@@ -70,34 +89,79 @@ export const getAllMemberInLaboratoryById =
         data: response.data.data,
       });
     } catch ({ data }) {
-      console.log("Error when get all member in lab " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const getAllProjectByLabId =
   (labId, memberId, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
+      console.log("MemberID" + memberId);
       const laboratoryController = new LaboratoryController(networkService);
-      console.log("Lab ID in actions: " + labId);
       const response = await laboratoryController.getProjectByLabId({
         labId,
         memberId,
       });
-      console.log(
-        "Dat when get Project by lab id:" + JSON.stringify(response.data.data)
-      );
       navigation.push("Project", {
         data: response.data.data,
       });
     } catch ({ data }) {
-      console.log("Error when getAllProjectByLabId " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const getAllMemberInProject =
   (projectId, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       console.log("Project ID in actions: " + projectId);
@@ -109,15 +173,37 @@ export const getAllMemberInProject =
         data: response.data.data,
       });
     } catch ({ data }) {
-      console.log(
-        "Error when get all member in Project " + JSON.stringify(data)
-      );
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const getProjectById =
   (projectId, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       console.log("projectId ID in actions: " + projectId);
@@ -129,61 +215,116 @@ export const getProjectById =
         data: response.data.data,
       });
     } catch ({ data }) {
-      console.log("ERROR when getProjectById: " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const getListMaterialByLabId =
   (labId, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
-      console.log("Lab ID in actions: " + labId);
       const response = await laboratoryController.getListMaterialByLabId({
         labId,
       });
-      console.log(
-        "Response from get list material by id: " + JSON.stringify(response)
-      );
-      console.log(
-        "Data when get list material by id: " +
-          JSON.stringify(response.data.data)
-      );
       navigation.push("ListMaterial", {
         data: response.data.data,
         labId: labId,
       });
     } catch ({ data }) {
-      console.log("ERROR when getListMaterialByLabId: " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const createLaboratory =
   (requestData, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
-      console.log(
-        "Request data of createLaboratory actions: " +
-          JSON.stringify(requestData)
-      );
       const response = await laboratoryController.createLaboratory({
         requestData,
       });
-      console.log(
-        "Response from get list material by id: " + JSON.stringify(response)
-      );
-      console.log("Data: " + JSON.stringify(response.data.data));
-      console.log("Lab Id: " + JSON.stringify(response.data.data.labId));
       dispatch(getLaboratoryById(response.data.data.labId, true, navigation));
     } catch ({ data }) {
-      console.log("ERROR when createLaboratory: " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const createProjectInLab =
   (labId, memberId, requestData, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       console.log(
@@ -194,21 +335,39 @@ export const createProjectInLab =
         labId,
         requestData,
       });
-      console.log(
-        "Response from get list material by id: " + JSON.stringify(response)
-      );
-      console.log("Data: " + JSON.stringify(response.data.data));
-      console.log("Lab Id: " + JSON.stringify(response.data.data.labId));
       dispatch(getAllProjectByLabId(labId, memberId, navigation));
     } catch ({ data }) {
-      console.log("ERROR when createLaboratory: " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const removeMemberFromLaboratory =
   (labId, memberId, navigation) =>
   async (dispatch, _, { networkService }) => {
-    console.log("LabId in controller:" + labId);
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       const response = await laboratoryController.removeMemberFromLaboratory({
@@ -220,86 +379,198 @@ export const removeMemberFromLaboratory =
       );
       dispatch(getAllMemberInLaboratoryById(labId, navigation));
     } catch ({ data }) {
-      console.log(
-        "ERROR when removeMemberFromLaboratory: " + JSON.stringify(data)
-      );
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const deleteLaboratory =
   (accountId, labId, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       const response = await laboratoryController.deleteLaboratory({ labId });
-      console.log(
-        "Response remove member from laboratory: " + JSON.stringify(response)
-      );
-      navigation.push("Lab", { data: accountId });
+      if (response) {
+        navigation.push("Lab", { data: accountId });
+      }
     } catch ({ data }) {
-      console.log("ERROR when deleteLaboratory: " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const removeMemberInProjectById =
   (projectId, memberId, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       const response = await laboratoryController.removeMemberInProject({
         projectId,
         memberId,
       });
-      console.log(
-        "Response remove member from laboratory: " + JSON.stringify(response)
-      );
-      dispatch(getAllMemberInProject(projectId, navigation));
+      if (response) {
+        dispatch(getAllMemberInProject(projectId, navigation));
+      }
     } catch ({ data }) {
-      console.log(
-        "ERROR when removeMemberInProjectById: " + JSON.stringify(data)
-      );
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const removeProject =
   (labId, projectId, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       const response = await laboratoryController.removeProject({
         labId,
         projectId,
       });
-      console.log(
-        "Response remove member from laboratory: " + JSON.stringify(response)
-      );
-      dispatch(getAllProjectByLabId(labId, navigation));
+      if (response) {
+        dispatch(getAllProjectByLabId(labId, navigation));
+      }
     } catch ({ data }) {
-      console.log("ERROR when removeProject: " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const updateLaboratoryByLabId =
   (labId, requestData, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       const response = await laboratoryController.updateLaboratory({
         labId,
         requestData,
       });
-      console.log("updateLaboratoryByLabId: " + JSON.stringify(response));
-      dispatch(getLaboratoryById(labId, true, navigation));
+      if (response) {
+        dispatch(getLaboratoryById(labId, true, navigation));
+      }
     } catch ({ data }) {
-      console.log(
-        "ERROR when updateLaboratoryByLabId: " + JSON.stringify(data)
-      );
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const updateProjectByProjectId =
   (labId, projectId, requestData, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       const response = await laboratoryController.updateProject({
@@ -307,12 +578,34 @@ export const updateProjectByProjectId =
         projectId,
         requestData,
       });
-      console.log("updateLaboratoryByLabId: " + JSON.stringify(response));
-      dispatch(getProjectById(projectId, navigation));
+      if (response) {
+        dispatch(getProjectById(projectId, navigation));
+      }
     } catch ({ data }) {
-      console.log(
-        "ERROR when updateLaboratoryByLabId: " + JSON.stringify(data)
-      );
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
@@ -329,6 +622,7 @@ const getLabId = async () => {
 export const updateMemberRoleById =
   (memberId, requestData, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const labId = await getLabId();
       const laboratoryController = new LaboratoryController(networkService);
@@ -336,34 +630,82 @@ export const updateMemberRoleById =
         memberId,
         requestData,
       });
-      console.log("updateMemberRoleById: " + JSON.stringify(response));
-      dispatch(getAllMemberInLaboratoryById(labId, navigation));
+      if (response) {
+        dispatch(getAllMemberInLaboratoryById(labId, navigation));
+      }
     } catch ({ data }) {
-      console.log("ERROR when updateMemberRoleById: " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const addMembersToProject =
   (projectId, requestData, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       const response = await laboratoryController.addMembersToProject({
         projectId,
         requestData,
       });
-      console.log("updateLaboratoryByLabId: " + JSON.stringify(response));
-      dispatch(getAllMemberInProject(projectId, navigation));
+      if (response) {
+        dispatch(getAllMemberInProject(projectId, navigation));
+      }
     } catch ({ data }) {
-      console.log(
-        "ERROR when updateLaboratoryByLabId: " + JSON.stringify(data)
-      );
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const addMembersToLab =
   (requestData, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const labId = await getLabId();
       console.log(" Lab Id in addMembersToLab:" + labId);
@@ -372,28 +714,77 @@ export const addMembersToLab =
         labId,
         requestData,
       });
-      console.log("addMembersToLab: " + JSON.stringify(response));
-      dispatch(getAllMemberInLaboratoryById(labId, navigation));
+      if (response) {
+        dispatch(getAllMemberInLaboratoryById(labId, navigation));
+      }
     } catch ({ data }) {
-      console.log("ERROR when addMembersToLab: " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const getMembersToLab =
   () =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const labController = new LaboratoryController(networkService);
       const response = await labController.getAllUser(inputSearchData);
       return response;
     } catch ({ data }) {
-      console.log("ERROR when addMembersToLab: " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const getmemberDetailByProfileId =
   (accountId, code, labId, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       console.log("ProfileId: " + accountId);
       const laboratoryController = new LaboratoryController(networkService);
@@ -401,45 +792,89 @@ export const getmemberDetailByProfileId =
       const response = await laboratoryController.getMemberDetail({
         accountId,
       });
-      console.log("response: " + JSON.stringify(response));
-      navigation.push("MemberDetail", {
-        data: response.data.data,
-        labId: labId,
-        memberId: code,
-      });
+      if (response) {
+        navigation.push("MemberDetail", {
+          data: response.data.data,
+          labId: labId,
+          memberId: code,
+        });
+      }
     } catch ({ data }) {
-      console.log(
-        "ERROR when getmemberDetailByProfileId: " + JSON.stringify(data)
-      );
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const getmemberDetailProjectByProfileId =
   (accountId, code, labId, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
-      console.log("ProfileId: " + accountId);
       const laboratoryController = new LaboratoryController(networkService);
-      console.log("projectId ID in actions: " + accountId);
       const response = await laboratoryController.getMemberDetail({
         accountId,
       });
-      console.log("response: " + JSON.stringify(response));
-      navigation.push("MemberDetailProject", {
-        data: response.data.data,
-        labId: labId,
-        memberId: code,
-      });
+      if (response) {
+        navigation.push("MemberDetailProject", {
+          data: response.data.data,
+          labId: labId,
+          memberId: code,
+        });
+      }
     } catch ({ data }) {
-      console.log(
-        "ERROR when getmemberDetailByProfileId: " + JSON.stringify(data)
-      );
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const applyTolAbByLabId =
   (labId, requestData, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       console.log("labId in actions: " + labId);
@@ -447,60 +882,157 @@ export const applyTolAbByLabId =
         labId,
         requestData,
       });
-      dispatch(getLaboratoryById(labId, true, navigation));
+      if (response) {
+        dispatch(getLaboratoryById(labId, false, navigation));
+      }
     } catch ({ data }) {
-      console.log("ERROR when applyTolAbByLabId: " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const getAllRequestInLab =
   (labId, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       console.log("Lab ID in actions: " + labId);
       const response = await laboratoryController.getAllRequest({
         labId,
       });
-      navigation.navigate("ViewAllRequest", {
-        data: response.data.data,
-      });
+      if (response) {
+        navigation.navigate("ViewAllRequest", {
+          data: response.data.data,
+        });
+      }
     } catch ({ data }) {
-      console.log("Error when getAllRequestInLab " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const getRequestDetailByApplicationId =
   (applicationId, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       console.log("application ID in actions: " + applicationId);
       const response = await laboratoryController.getRequestDetail({
         applicationId,
       });
-      navigation.navigate("RequestDetail", {
-        data: response.data.data,
-      });
+      if (response) {
+        navigation.navigate("RequestDetail", {
+          data: response.data.data,
+        });
+      }
     } catch ({ data }) {
-      console.log(
-        "Error when getRequestDetailByApplicationId " + JSON.stringify(data)
-      );
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 export const getMaterialById =
   (materialId, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
-      console.log("Material Id ID in actions: " + materialId);
       const { data } = await laboratoryController.getMaterialById({
         materialId,
       });
-      console.log("Mate data in act:" + JSON.stringify(data.data));
       navigation.navigate("MaterialDetail", { data: data.data });
     } catch ({ data }) {
-      console.log("Error get material by id:" + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
@@ -517,6 +1049,7 @@ export const updateMaterialByMaterialId =
     navigation
   ) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       const response = await laboratoryController.updateMaterial({
@@ -529,18 +1062,41 @@ export const updateMaterialByMaterialId =
         note,
         image,
       });
-      console.log("updateMaterialByMaterialId: " + JSON.stringify(response));
-      dispatch(getMaterialById(materialId, navigation));
+      if (response) {
+        dispatch(getMaterialById(materialId, navigation));
+      }
     } catch ({ data }) {
-      console.log(
-        "ERROR when updateMaterialByMaterialId: " + JSON.stringify(data)
-      );
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
 export const addMaterial =
   (labId, materialName, description, amount, note, images, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       const response = await laboratoryController.addMaterial({
@@ -551,10 +1107,34 @@ export const addMaterial =
         note,
         images,
       });
-      console.log("addMaterial: " + JSON.stringify(response));
-      dispatch(getListMaterialByLabId(labId, navigation));
+      if (response) {
+        dispatch(getListMaterialByLabId(labId, navigation));
+      }
     } catch ({ data }) {
-      console.log("ERROR when addMaterial: " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 export const orderMaterial =
@@ -570,10 +1150,73 @@ export const orderMaterial =
         orderFrom,
         orderTo,
       });
-      console.log("addMaterial: " + JSON.stringify(response));
-      dispatch(getListMaterialByLabId(labId, navigation));
+      if (response) {
+        dispatch(getListMaterialByLabId(labId, navigation));
+      }
     } catch ({ data }) {
-      console.log("ERROR when addMaterial: " + JSON.stringify(data));
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
+    }
+  };
+
+export const leaveLaboratory =
+  (labId, memberId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
+    try {
+      const laboratoryController = new LaboratoryController(networkService);
+      const response = await laboratoryController.removeMemberFromLaboratory({
+        labId,
+        memberId,
+      });
+      navigation.push("Lab");
+    } catch ({ data }) {
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
     }
   };
 
