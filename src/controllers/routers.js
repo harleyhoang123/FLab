@@ -153,6 +153,12 @@ export const routes = {
     addTag: forum + "/flab/forum/public/api/v1/tags/tag",
     updateTag: forum + "/flab/forum/public/api/v1/tags/:tag-id",
     deleteTag: forum + "/flab/forum/public/api/v1/tags/:tag-id",
+    getAnswerDetail:
+        forum + "/flab/forum/public/api/v1/answers/:answer-id",
+    acceptAnswer:
+        forum + "/flab/forum/public/api/v1/answers/:question-id/:answer-id/accept",
+    voteAnswer:
+        forum + "/flab/forum/public/api/v1/answers/:answer-id/vote",
   },
   repository: {
     getFolderDetail:

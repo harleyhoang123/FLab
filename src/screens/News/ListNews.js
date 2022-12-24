@@ -1,14 +1,34 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import NewsItem from "../../components/NewsItem";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
+import {getListAllNews, getListQuestion} from "../../networking/CustomNetworkService";
+import PaginationBar from "../../components/PaginationBar";
 
-function ListNews({ route, navigation }) {
-  const res = route.params;
-  const listNews = res.data.items;
+function ListNews({navigation }) {
   const [text, setText] = useState("");
+  const [numberOfElement, setNumberOfElement] = useState(0);
+  const [listNews, setListNews] = useState();
+  useEffect(() => {
+    getListAllNews(text,0,5).then(v=>{
+      setListNews(v.data.data.items);
+      setNumberOfElement(v.data.data.totalPage*5)
+    })
+  }, []);
+  const callbackChangePage = (page) => {
+    getListAllNews(text,page-1,5).then(v=>{
+      setListNews(v.data.data.items);
+      setNumberOfElement(v.data.data.totalPage*5)
+    })
+  }
+  const searchNews=()=>{
+    getListAllNews(text,0,5).then(v=>{
+      setListNews(v.data.data.items);
+      setNumberOfElement(v.data.data.totalPage*5)
+    })
+  }
   return (
     <View>
       <HomeTopNavigator navigation={navigation} />
@@ -24,8 +44,9 @@ function ListNews({ route, navigation }) {
             secureTextEntry={false}
             multiline={false}
             style={{ width: 400 }}
+            onSubmitEditing={()=>searchNews()}
           />
-          <Buttons text={"Search"} />
+          <Buttons text={"Search"} onPressTo={()=>searchNews()}/>
           <Buttons
             text={"Add News"}
             style={[styles.button, { marginLeft: 20 }]}
@@ -48,9 +69,7 @@ function ListNews({ route, navigation }) {
           />
         )}
       />
-      <View style={styles.containerButton}>
-        <Buttons text={"Load more"} style={styles.button} />
-      </View>
+      <PaginationBar currentSizes={5} numberOfElement={numberOfElement} callbackSelectedPage={callbackChangePage}/>
     </View>
   );
 }

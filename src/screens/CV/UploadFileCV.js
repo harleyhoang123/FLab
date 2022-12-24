@@ -47,7 +47,7 @@ function UploadFileCV({ navigation }) {
       setIsFile(false);
     }
     if (isValidCV) {
-      uploadFileCV;
+      uploadFileCV();
     }
   }
 

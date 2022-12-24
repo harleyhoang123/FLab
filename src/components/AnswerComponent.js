@@ -25,6 +25,8 @@ function AnswerComponent({
                              userAnswerComment,
                              status,
                              callbackAnswer,
+                             votedStatus,
+                             statusClose
                          }) {
     const formatTime = (date) => {
         const d = new Date(date);
@@ -36,6 +38,7 @@ function AnswerComponent({
     const [isCommentEdit, setIsCommentEdit] = useState(false);
     const [isComment, setIsComment] = useState(false);
     const [vote, setVote] = useState(votes);
+    const [voted, setVoted] = useState(votedStatus);
 
     function validateEdit(commentId, text) {
         if (!text) {
@@ -60,7 +63,8 @@ function AnswerComponent({
 
     const handleVote = (status) => {
         voteAnswer(answerId, status).then(r => getAnswerDetail(answerId).then(v => {
-            setVote(v.data.score)
+            setVote(v.data.score);
+            setVoted(v.data.votedStatus);
         }))
     }
     const handleDelete = () => {
@@ -176,17 +180,18 @@ function AnswerComponent({
                     <VoteComponent votes={vote} size={"2x"} style={{marginRight: 5}}
                                    onPressUp={() => handleVote("LIKED")}
                                    onPressDown={() => handleVote("DISLIKED")}
+                                   status={voted}
                     />
                     <TouchableOpacity onPress={() => acceptAnAnswer()}>
                         <MaterialCommunityIcons name={"check-bold"} size={40} color={checkColor(status)}/>
                     </TouchableOpacity>
                 </View>
-                <View style={{width:"95%"}}>
+                <View style={{width: "95%"}}>
                     <UserAnswer info={createdBy}/>
                     <View style={{margin: 10}}>
                         <Text style={styles.text}>{content}</Text>
                     </View>
-                    <View style={[styles.row,{marginLeft:10}]}>
+                    <View style={[styles.row, {marginLeft: 10}]}>
                         <Text style={styles.text}>{formatTime(createdDate)}</Text>
                         <View style={styles.login}>
                             <TouchableOpacity onPress={() => {
@@ -222,23 +227,27 @@ function AnswerComponent({
                         />
                     </View>
                 ))}
-                <View style={styles.containerComment}>
-                    <TextField
-                        style={[styles.comment]}
-                        text={comment}
-                        onChangeText={(comment) => setComment(comment)}
-                        placeholder={" Comment Here"}
-                        secureTextEntry={false}
-                        multiline={false}
-                        onSubmitEditing={validateComment}
+                {statusClose !== "CLOSE" && <View>
+                    <View style={styles.containerComment}>
+                        <TextField
+                            style={[styles.comment]}
+                            text={comment}
+                            onChangeText={(comment) => setComment(comment)}
+                            placeholder={" Comment Here"}
+                            secureTextEntry={false}
+                            multiline={false}
+                            onSubmitEditing={validateComment}
 
-                    />
-                    <Buttons
-                        text={"Comment"}
-                        onPressTo={validateComment}
-                    />
-                </View>
-                {isComment && <Text style={styles.inputInvalid}>Invalid comment</Text>}
+                        />
+                        <Buttons
+                            text={"Comment"}
+                            onPressTo={validateComment}
+                        />
+                    </View>
+                    {isComment && <Text style={styles.inputInvalid}>Invalid comment</Text>}
+                </View>}
+
+
             </View>
             <Separator/>
         </View>

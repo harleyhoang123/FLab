@@ -9,26 +9,25 @@ import PaginationBar from "../../components/PaginationBar";
 import {getListQuestion} from "../../networking/CustomNetworkService";
 
 function Forum({navigation}) {
-
     const [text, setText] = useState("");
     const [numberOfElement, setNumberOfElement] = useState(0);
     const [listQues, setListQues] = useState();
     useEffect(() => {
-        getListQuestion(text,0,5).then(v=>{
+        getListQuestion(text, 0, 5).then(v => {
             setListQues(v.data.data.items);
-            setNumberOfElement(v.data.data.totalPage*5)
+            setNumberOfElement(v.data.data.totalPage * 5)
         })
     }, []);
     const callbackChangePage = (page) => {
-        getListQuestion(text,page-1,5).then(v=>{
+        getListQuestion(text, page - 1, 5).then(v => {
             setListQues(v.data.data.items);
-            setNumberOfElement(v.data.data.totalPage*5)
+            setNumberOfElement(v.data.data.totalPage * 5)
         })
     }
-    const searchQues=()=>{
-        getListQuestion(text,0,5).then(v=>{
+    const searchQues = () => {
+        getListQuestion(text, 0, 5).then(v => {
             setListQues(v.data.data.items);
-            setNumberOfElement(v.data.data.totalPage*5)
+            setNumberOfElement(v.data.data.totalPage * 5)
         })
     }
     return (
@@ -51,9 +50,9 @@ function Forum({navigation}) {
                                 secureTextEntry={false}
                                 multiline={false}
                                 style={{width: 400}}
-                                onSubmitEditing={()=> searchQues()}
+                                onSubmitEditing={() => searchQues()}
                             />
-                            <Buttons text={"Search"} onPressTo={()=> searchQues()}/>
+                            <Buttons text={"Search"} onPressTo={() => searchQues()}/>
                             <Buttons
                                 text={"Add Question"}
                                 style={[styles.button, {marginLeft: 20}]}
@@ -104,12 +103,10 @@ function Forum({navigation}) {
                             />
                         )}
                     />
-                    <View style={styles.containerButton}>
-                        <PaginationBar currentSizes={5}
-                                       numberOfElement={numberOfElement}
-                                       callbackSelectedPage={callbackChangePage}
-                        />
-                    </View>
+                    <PaginationBar currentSizes={5}
+                                   numberOfElement={numberOfElement}
+                                   callbackSelectedPage={callbackChangePage}
+                    />
                 </View>
             </View>
         </View>
@@ -147,7 +144,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     containerButton: {
-        margin:30,
+        margin: 30,
         alignItems: "center",
         justifyContent: "center",
     },
