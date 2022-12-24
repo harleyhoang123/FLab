@@ -41,7 +41,7 @@ function Register({navigation}) {
     const [isValidFullName, setIsValidFullName] = useState(true);
     const [isValidPassword, setIsValidPassword] = useState(true);
     const [isValidRePassword, setIsValidRePassword] = useState(true);
-    const regexPassword= "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d@$!%*?&.,]{8,}$";
+    const regexPassword= "^(?=.*[a-z])(?=.*\\d)[A-Za-z\\d@$!%*?&.,]{6,}$";
     const regexEmail= "^[a-zA-Z][a-zA-Z0-9_\\.]{3,100}@[a-z0-9]{2,}(\\.[a-z0-9]{2,4}){1,}$";
     const dispatch= useDispatch();
     const handleRegister=()=> {

@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     backgroundColor: "black",
     borderRadius: 5,
-    marginLeft: 30,
     color: "white",
     alignItems: "center",
     marginBottom: 30,
