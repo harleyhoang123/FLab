@@ -7,8 +7,9 @@ import Buttons from "../../components/Buttons";
 import AsyncStorage from "@react-native-community/async-storage";
 import {
     deleteCVbyAccountId,
-    getCVbyAccountId,
+    getCVbyAccountId, getListAllNews,
 } from "../../networking/CustomNetworkService";
+import PaginationBar from "../../components/PaginationBar";
 
 const getAccountId = async () => {
     try {
@@ -21,33 +22,41 @@ const getAccountId = async () => {
 };
 
 function CurriculumVitae({navigation}) {
-    const formatterDate = (date) => {
-        const options = {year: 'numeric', month: 'long', day: 'numeric'};
-        const d = new Date(date);
-        return d.toLocaleDateString("en-US", options) + ", " + d.toTimeString().split("G")[0];
-    }
-
     const [checked, setChecked] = useState("");
     const [cvName, setCvName] = useState("");
     const [description, setDescription] = useState("");
     const [text, setText] = useState("");
     const [accountId, setAccountId] = useState("");
     const [listCV, setListCV] = useState();
-    const [showConfirm,setShowConfirm]=useState(false);
-    const [disable, setDisable]= useState(true);
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [disable, setDisable] = useState(true);
+    const [numberOfElement, setNumberOfElement] = useState(0);
     useEffect(() => {
         getAccountId().then(v => {
             {
                 setAccountId(v);
-                getCVbyAccountId(v).then(r => {
+                getCVbyAccountId(v, text, 0, 10).then(r => {
                     setListCV(r.data.items)
+                    setNumberOfElement(r.data.totalPage * 10)
                 })
             }
         });
     }, []);
-
+    const callbackChangePage = (page) => {
+        getCVbyAccountId(accountId, text, page - 1, 10).then(v => {
+            setListCV(v.data.items);
+            setNumberOfElement(v.data.totalPage * 10)
+        })
+    }
+    const searchCV = () => {
+        getCVbyAccountId(accountId, text, 0, 10).then(v => {
+            setListCV(v.data.items);
+            setNumberOfElement(v.data.totalPage * 10)
+        })
+    }
     const openURL = (url) => {
-        Linking.openURL(url).then(r => {});
+        Linking.openURL(url).then(r => {
+        });
     }
     const deleteCV = () => {
         deleteCVbyAccountId(accountId, checked).then(v => {
@@ -99,13 +108,15 @@ function CurriculumVitae({navigation}) {
                     }}>
                     <View style={styles.modalDelete}>
                         <View style={styles.modalDeleteView}>
-                            <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete this CV?</Text>
+                            <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete
+                                this CV?</Text>
                             <View style={{alignItems: "flex-end", flexDirection: "row"}}>
                                 <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
                                     deleteCV()
                                     setShowConfirm(false)
                                 }}/>
-                                <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
+                                <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}}
+                                         styleText={{color: 'black'}}
                                          onPressTo={() => setShowConfirm(false)}/>
                             </View>
                         </View>
@@ -116,13 +127,14 @@ function CurriculumVitae({navigation}) {
                     <View style={styles.containerSearch}>
                         <TextField
                             text={text}
-                            onChangeText={(newText) => setText(newText)}
+                            onChangeText={text => setText(text)}
                             placeholder={" Search"}
                             secureTextEntry={false}
                             multiline={false}
                             style={{width: 400}}
+                            onSubmitEditing={() => searchCV()}
                         />
-                        <Buttons text={"Search"}/>
+                        <Buttons text={"Search"} onPressTo={() => searchCV()}/>
                     </View>
                     <View style={{marginRight: 30}}>
                         <Buttons text={"Back"} onPressTo={() => navigation.goBack()}/>
@@ -174,6 +186,8 @@ function CurriculumVitae({navigation}) {
                         />
                     ))}
                 </View>
+                <PaginationBar numberOfElement={numberOfElement} currentSizes={10}
+                               callbackSelectedPage={callbackChangePage}/>
             </View>
         </View>
     );
@@ -252,14 +266,15 @@ const styles = StyleSheet.create({
     },
     modalDelete: {
         alignItems: "center",
-        justifyContent:"center",
+        justifyContent: "center",
         flex: 1,
     },
     modalDeleteView: {
         width: "30%",
         backgroundColor: "white",
         borderRadius: 10,
-        alignItems: "flex-start",
+        alignItems: "center",
+        justifyContent: "center",
         shadowColor: "#000",
         shadowOffset: {
             width: 0,

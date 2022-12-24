@@ -34,7 +34,7 @@ export const createNews =
             const newsController = new NewsController(networkService);
             const {data} = await newsController.createNews({title, content,thumbnail});
             console.log("Data createNews is: " + JSON.stringify(data));
-            dispatch(getListNews(navigation));
+            navigation.push("ListNews");
         } catch ({data}) {
             console.log("ERROR in createNews " + JSON.stringify(data))
         }

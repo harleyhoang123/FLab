@@ -34,7 +34,7 @@ function MyQuestion({navigation}) {
         })
     }, []);
     const callbackChangePage = (page) => {
-        getListMyQuestion(accountId, text, 0, 5).then(v => {
+        getListMyQuestion(accountId, text, page-1, 5).then(v => {
             setList(v.data.items);
             setNumberOfElement(v.data.totalPage * 5)
         })

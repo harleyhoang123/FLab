@@ -34,11 +34,11 @@ function QuestionItem({questionId, title, tags, score, views, answers, style, as
                             horizontal={true}
                             data={tags}
                             renderItem={({item}) => (
-                                <TouchableOpacity>
+                                <View>
                                     <Text style={styles.textView}>
                                         {item}
                                     </Text>
-                                </TouchableOpacity>
+                                </View>
                             )}
                         />
                         <View style={styles.info}>

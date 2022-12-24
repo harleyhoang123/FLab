@@ -19,14 +19,6 @@ const getAccountId = async () => {
 export default function HomeTopNavigator({ navigation }) {
   const [accountId, setAccountId] = useState("");
   getAccountId().then((v) => setAccountId(v));
-  const dispatch = useDispatch();
-  const goToForum = () => {
-    dispatch(getListQuestion(navigation));
-  };
-  const gotoNews = () => {
-    console.log("Click go to news");
-    dispatch(getListNews(navigation));
-  };
 
   return (
     <View style={styles.container}>
@@ -56,7 +48,7 @@ export default function HomeTopNavigator({ navigation }) {
           </TouchableOpacity>
           {/*TODO: Check role of button*/}
           {/* {roles.includes("ADMIN") && ( */}
-          <TouchableOpacity style={styles.button} onPress={gotoNews}>
+          <TouchableOpacity style={styles.button} onPress={()=>navigation.push("ListNews")}>
             <Text style={styles.textLogo}>News</Text>
           </TouchableOpacity>
           {/* )} */}
