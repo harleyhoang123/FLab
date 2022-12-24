@@ -28,16 +28,22 @@ const Item = ({ item, memberId, setMemberId }) => (
   <View style={styles.checkboxContainer}>
     <View style={styles.columnCheckBox}>
       <CheckBox
-        value={memberId.includes(item.key)}
+        value={memberId.includes(item.memberId)}
         onValueChange={() => {
           memberId.includes(item.key)
-            ? setMemberId(memberId.filter((v) => v !== item.key))
-            : setMemberId((oldMemberId) => [...oldMemberId, item.key]);
+            ? setMemberId(memberId.filter((v) => v !== item.memberId))
+            : setMemberId((oldMemberId) => [...oldMemberId, item.memberId]);
         }}
       />
     </View>
     <View style={styles.column}>
-      <Text>{item.value}</Text>
+      <Text>{item.fullName}</Text>
+    </View>
+    <View style={styles.column}>
+      <Text>{item.email}</Text>
+    </View>
+    <View style={styles.column}>
+      <Text>{item.fullName}</Text>
     </View>
   </View>
 );
@@ -75,12 +81,18 @@ const ListMemberComponent = ({ listMember, navigation }) => {
         <View style={styles.column}>
           <Text>Member</Text>
         </View>
+        <View style={styles.column}>
+          <Text>Email</Text>
+        </View>
+        <View style={styles.column}>
+          <Text>Fullname</Text>
+        </View>
       </View>
       <SafeAreaView style={styles.container}>
         <FlatList
           data={listMember}
           renderItem={renderItem}
-          keyExtractor={(item) => item.key}
+          keyExtractor={(item) => item.memberId}
         />
       </SafeAreaView>
     </View>
@@ -92,6 +104,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 10,
   },
   txt: {
     color: "white",

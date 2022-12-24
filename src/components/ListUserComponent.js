@@ -62,7 +62,7 @@ const ListUserComponent = ({ listMember, navigation }) => {
 
   const renderItem = ({ item }) => (
     <View>
-        <Item item={item} accountId={accountId} setAccountId={setAccountId} />
+      <Item item={item} accountId={accountId} setAccountId={setAccountId} />
     </View>
   );
   return (
@@ -72,6 +72,18 @@ const ListUserComponent = ({ listMember, navigation }) => {
           <Text style={styles.txt}>Add</Text>
         </View>
       </Pressable>
+      <View style={{ flexDirection: "row" }}>
+        <View style={styles.columnCheckBox}></View>
+        <View style={styles.column}>
+          <Text>Member</Text>
+        </View>
+        <View style={styles.column}>
+          <Text>Email</Text>
+        </View>
+        <View style={styles.column}>
+          <Text>Fullname</Text>
+        </View>
+      </View>
       <SafeAreaView style={styles.container}>
         <FlatList
           data={listMember}
@@ -88,6 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 10,
   },
   txt: {
     color: "white",

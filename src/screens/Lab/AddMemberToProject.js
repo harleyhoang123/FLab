@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -12,78 +12,43 @@ import {
 import { useDispatch } from "react-redux";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
-import { addMembersToProject } from "../../actions/LaboratoryAction";
-import { SelectList } from "react-native-dropdown-select-list";
-import {
-  getAllMemberInLab,
-  getAllMemberInProject,
-} from "../../networking/CustomNetworkService";
+import PaginationBar from "../../components/PaginationBar";
+import { getMemberNotInLab } from "../../networking/CustomNetworkService";
 import ListUserComponent from "../../components/ListUserComponent";
 import ListMemberComponent from "../../components/ListMemberComponent";
+import { getMemberInLabNotInProject } from "../../networking/CustomNetworkService";
+
+const getLabId = async () => {
+  try {
+    const labId = await AsyncStorage.getItem("@currentLabId");
+    return labId;
+  } catch (e) {
+    console.log("Can't get LabId id: " + e);
+  }
+};
 
 export default function AddMemberToProject({ route, navigation }) {
   const projectId = route.params.projectId;
-  const raw = route.params.allMember.items;
+  const [labIdUseState, setLabIdUseState] = useState();
+  const [numberOfElement, setNumberOfElement] = useState(0);
+  const [size, setSize] = useState(10);
   const [inputSearchData, setInputSearchData] = useState("");
-  console.log("All data:" + JSON.stringify(listMember));
-
-  const [listMember, setData] = React.useState([]);
-  let isValid = true;
-  const [isMember, setIsMember] = useState(false);
-
-  function validateData() {
-    if (!selected) {
-      setIsMember(true);
-      isValid = false;
-    }
-    if (isValid) {
-      addMemberHandle();
-    }
-  }
-
-  React.useEffect(() => {
-    getAllMemberInLab().then((response) => {
-      let newArray1 = response.data.items.map((item) => {
-        return {
-          key: item.memberId,
-          value: item.userInfo.userInfo.fullName,
-        };
-      });
-      console.log("DATA1: " + JSON.stringify(newArray1));
-      getAllMemberInProject().then((response) => {
-        let newArray2 = response.data.items.map((item) => {
-          return {
-            key: item.memberId,
-            value: item.userInfo.userInfo.fullName,
-          };
-        });
-        console.log("DATA2: " + JSON.stringify(newArray2));
-        setData(
-          newArray1.filter((i) => !newArray2.find(({ key }) => i.key === key))
-        );
-        console.log(
-          "DATA3: " +
-            JSON.stringify(
-              newArray1.filter(
-                (i) => !newArray2.find(({ key }) => i.key === key)
-              )
-            )
-        );
-      });
-    });
+  useEffect(() => {
+    getLabId().then((v) => searchMember(v, 0));
   }, []);
-
-  const [selected, setSelected] = React.useState("");
-  const [key, setKey] = React.useState("");
-  const dispatch = useDispatch();
-
-  const addMemberHandle = () => {
-    const requestData = {
-      memberId: key,
-    };
-    console.log(requestData);
-    dispatch(addMembersToProject(projectId, requestData, navigation));
+  const callBackChangePage = (page) => {
+    searchMember(labIdUseState, page - 1);
   };
+
+  const [listMember, setListMember] = useState(searchMember);
+
+  const searchMember = (page) => {
+    getMemberInLabNotInProject(projectId, page, size).then((response) => {
+      setNumberOfElement(response.data.totalPage * size);
+      setListMember(response.data.items);
+    });
+  };
+
   return (
     <View>
       <LabNavigator navigation={navigation} />
@@ -91,16 +56,15 @@ export default function AddMemberToProject({ route, navigation }) {
         <View>
           <Text style={styles.title}>Add new member:</Text>
         </View>
-        <View style={styles.search}>
-          <TextInput style={styles.input} onChangeText={setInputSearchData} />
-          <View style={styles.btnSearch}>
-            <Button title={"Search"} />
-          </View>
-        </View>
         <View style={styles.listMember}>
           <ListMemberComponent
             listMember={listMember}
             navigation={navigation}
+          />
+          <PaginationBar
+            currentSizes={size}
+            numberOfElement={numberOfElement}
+            callbackSelectedPage={callBackChangePage}
           />
         </View>
       </View>

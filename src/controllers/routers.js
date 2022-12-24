@@ -112,7 +112,11 @@ export const routes = {
       laboratory + "/flab/lab/public/api/v1/materials/orders/:order-id",
     searchUser: account + "/flab/account/public/api/v1/accounts",
     getMemberNotInLab:
-    "http://127.0.0.1:8081/flab/lab/public/api/v1/laboratories/:lab-id/members/not-in"
+      laboratory +
+      "/flab/lab/public/api/v1/laboratories/:lab-id/members/not-in",
+    getMemberInLabNotInProject:
+      laboratory +
+      "/flab/lab/public/api/v1/laboratories/:lab-id/members/:project-id/not-in",
   },
   forum: {
     getQuestionDetail: forum + "/flab/forum/public/api/v1/questions/",
