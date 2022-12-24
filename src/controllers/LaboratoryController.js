@@ -55,10 +55,12 @@ export class LaboratoryController {
       data: null,
     });
   }
-  getProjectByLabId({ labId }) {
+  getProjectByLabId({ labId, memberId }) {
     return this.networkService.request({
       method: "GET",
-      url: routes.laboratory.getProjectByLabId.replace(":lab-id", labId),
+      url: routes.laboratory.getProjectByLabId
+        .replace(":lab-id", labId)
+        .replace(":member-id", memberId),
       data: null,
     });
   }

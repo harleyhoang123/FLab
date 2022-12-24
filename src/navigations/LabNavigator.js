@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Logo from "../assets/Logo";
 import { useDispatch } from "react-redux";
 import {
@@ -23,9 +18,20 @@ const getLabId = async () => {
     console.log("Can't get labId: " + e);
   }
 };
+const getMemberId = async () => {
+  try {
+    const memberId = await AsyncStorage.getItem("@currentMemeberId");
+    console.log("memberId in reate Project: " + memberId);
+    return memberId;
+  } catch (e) {
+    console.log("Can't get memberId id: " + e);
+  }
+};
 export default function LabNavigator({ route, navigation }) {
   const [labId, setLabId] = useState("");
   getLabId().then((v) => setLabId(v));
+  getMemberId().then((v) => setMemberId(v));
+  const [memberId, setMemberId] = useState("");
   const dispatch = useDispatch();
 
   const goToViewAllMemberPage = (labId) => {
@@ -35,7 +41,7 @@ export default function LabNavigator({ route, navigation }) {
     dispatch(getListMaterialByLabId(labId, navigation));
   };
   const goToViewAllProjectPage = (labId) => {
-    dispatch(getAllProjectByLabId(labId, navigation));
+    dispatch(getAllProjectByLabId(labId, memberId, navigation));
   };
   return (
     <View style={styles.container}>
@@ -67,7 +73,7 @@ export default function LabNavigator({ route, navigation }) {
             <Text style={styles.textLogo}>Material</Text>
           </TouchableOpacity>
         </View>
-        <RightNavigation navigation={navigation}/>
+        <RightNavigation navigation={navigation} />
       </View>
     </View>
   );

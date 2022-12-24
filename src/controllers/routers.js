@@ -73,7 +73,8 @@ export const routes = {
       laboratory +
       "/flab/lab/public/api/v1/laboratories/:laboratory-id/:material-id/order",
     getProjectByLabId:
-      laboratory + "/flab/lab/public/api/v1/projects/:lab-id/projects",
+      laboratory +
+      "/flab/lab/public/api/v1/projects/:lab-id/:member-id/projects",
     getProjectDetailById:
       laboratory + "/flab/lab/public/api/v1/projects/:project-id",
     getAllMemberInProject:

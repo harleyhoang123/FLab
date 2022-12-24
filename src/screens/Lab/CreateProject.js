@@ -26,6 +26,16 @@ const getLabId = async () => {
   }
 };
 
+const getMemberId = async () => {
+  try {
+    const memberId = await AsyncStorage.getItem("@currentMemeberId");
+    console.log("memberId in reate Project: " + memberId);
+    return memberId;
+  } catch (e) {
+    console.log("Can't get memberId id: " + e);
+  }
+};
+
 export default function CreateProject({ route, navigation }) {
   const regx = new RegExp("^[a-zA-Z0-9 ]{6,30}$");
   let isValid = true;
@@ -34,6 +44,7 @@ export default function CreateProject({ route, navigation }) {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [labId, setLabId] = useState("");
+  const [memberId, setMemberId] = useState("");
   const [isProjectNameValid, setProjectNameValid] = useState(false);
   const [isValidDate, setValidDate] = useState(false);
   const formatDate = (date) => {
@@ -49,6 +60,7 @@ export default function CreateProject({ route, navigation }) {
     return d.getFullYear() + "-" + month + "-" + day;
   };
   getLabId().then((v) => setLabId(v));
+  getMemberId().then((v) => setMemberId(v));
   const dispatch = useDispatch();
 
   const reset = () => {
@@ -87,7 +99,7 @@ export default function CreateProject({ route, navigation }) {
       toDate: formatDate(endDate),
     };
     console.log(requestData);
-    dispatch(createProjectInLab(labId, requestData, navigation));
+    dispatch(createProjectInLab(labId, memberId, requestData, navigation));
   };
   return (
     <View>
