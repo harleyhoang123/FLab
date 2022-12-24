@@ -35,7 +35,7 @@ export const createFolderInRepo =
         "Response from createFolderInRepo: " + JSON.stringify(response)
       );
       console.log("Data: " + JSON.stringify(response.data.data));
-      dispatch(getFolderByRepositoryId(repositoryId ,navigation));
+      dispatch(getFolderByRepositoryId(repositoryId, navigation));
     } catch ({ data }) {
       console.log("ERROR when createFolderInRepo: " + JSON.stringify(data));
     }
@@ -44,11 +44,6 @@ export const downLoadFileByFileId =
   (fileId) =>
   async (dispatch, _, { networkService }) => {
     try {
-      // const repositoryController = new RepositoryController(networkService);
-      // console.log("downLoadFileByFileId in actions: " + fileId);
-      // await repositoryController.downLoadFile({
-      //   fileId,
-      // });
       await Linking.openURL(
         "http://192.168.31.197:8082/flab/repository/public/api/v1/files/" +
           fileId
@@ -102,89 +97,102 @@ export const getFolderDetailId =
     }
   };
 export const addFileToFolder =
-    (parentFolderId,name,fileName, description, file, navigation) =>
-        async (dispatch, _, { networkService }) => {
-            try {
-                const repositoryController = new RepositoryController(networkService);
-                console.log("addFileToFolder in actions: " + parentFolderId);
-                console.log("name in actions: " + name);
-                console.log("description in actions: " + description);
-                console.log("file in actions: " + file);
-                const { data } = await repositoryController.addFileToFolder({fileName,
-                    parentFolderId,description,file
-                });
-                console.log("Data in addFileToFolder"+ JSON.stringify(data))
-                dispatch(getFolderDetailId(parentFolderId, name,navigation))
-            } catch ({ data }) {
-                console.log("Error addFileToFolder:" + JSON.stringify(data));
-            }
-        };
+  (parentFolderId, name, fileName, description, file, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const repositoryController = new RepositoryController(networkService);
+      console.log("addFileToFolder in actions: " + parentFolderId);
+      console.log("name in actions: " + name);
+      console.log("description in actions: " + description);
+      console.log("file in actions: " + file);
+      const { data } = await repositoryController.addFileToFolder({
+        fileName,
+        parentFolderId,
+        description,
+        file,
+      });
+      console.log("Data in addFileToFolder" + JSON.stringify(data));
+      dispatch(getFolderDetailId(parentFolderId, name, navigation));
+    } catch ({ data }) {
+      console.log("Error addFileToFolder:" + JSON.stringify(data));
+    }
+  };
 export const updateFolderInRepo =
-    (repositoryId, folderId,folderName,description, navigation) =>
-        async (dispatch, _, { networkService }) => {
-            try {
-                const repositoryController = new RepositoryController(networkService);
-                console.log(
-                    "Request data of UpdateFolderInRepo actions: " +
-                    JSON.stringify(folderId)
-                );
-                const response = await repositoryController.updateFolder({
-                    folderId,
-                    folderName,
-                    description
-                });
-                console.log(
-                    "Response from UpdateFolderInRepo: " + JSON.stringify(response)
-                );
-                console.log("Data: " + JSON.stringify(response.data.data));
-                dispatch(getFolderByRepositoryId(repositoryId ,navigation));
-            } catch ({ data }) {
-                console.log("ERROR when UpdateFolderInRepo: " + JSON.stringify(data));
-            }
-        };
+  (repositoryId, folderId, folderName, description, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const repositoryController = new RepositoryController(networkService);
+      console.log(
+        "Request data of UpdateFolderInRepo actions: " +
+          JSON.stringify(folderId)
+      );
+      const response = await repositoryController.updateFolder({
+        folderId,
+        folderName,
+        description,
+      });
+      console.log(
+        "Response from UpdateFolderInRepo: " + JSON.stringify(response)
+      );
+      console.log("Data: " + JSON.stringify(response.data.data));
+      dispatch(getFolderByRepositoryId(repositoryId, navigation));
+    } catch ({ data }) {
+      console.log("ERROR when UpdateFolderInRepo: " + JSON.stringify(data));
+    }
+  };
 export const updateSubFolder =
-    (parentFolderName, parentFolderId, folderId,folderName,description, navigation) =>
-        async (dispatch, _, { networkService }) => {
-            try {
-                const repositoryController = new RepositoryController(networkService);
-                console.log(
-                    "Request data of updateSubFolder actions: " +
-                    JSON.stringify(folderId)
-                );
-                const response = await repositoryController.updateFolder({
-                    folderId,
-                    folderName,
-                    description
-                });
-                console.log(
-                    "Response from updateSubFolder: " + JSON.stringify(response)
-                );
-                console.log("Data: " + JSON.stringify(response.data.data));
-                dispatch(getFolderDetailId(parentFolderId, parentFolderName, navigation));
-            } catch ({ data }) {
-                console.log("ERROR when updateSubFolder: " + JSON.stringify(data));
-            }
-        };
+  (
+    parentFolderName,
+    parentFolderId,
+    folderId,
+    folderName,
+    description,
+    navigation
+  ) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const repositoryController = new RepositoryController(networkService);
+      console.log(
+        "Request data of updateSubFolder actions: " + JSON.stringify(folderId)
+      );
+      const response = await repositoryController.updateFolder({
+        folderId,
+        folderName,
+        description,
+      });
+      console.log("Response from updateSubFolder: " + JSON.stringify(response));
+      console.log("Data: " + JSON.stringify(response.data.data));
+      dispatch(getFolderDetailId(parentFolderId, parentFolderName, navigation));
+    } catch ({ data }) {
+      console.log("ERROR when updateSubFolder: " + JSON.stringify(data));
+    }
+  };
 export const updateFileInFolder =
-    (parentFolderName, parentFolderId, fileId,fileName,description, navigation) =>
-        async (dispatch, _, { networkService }) => {
-            try {
-                const repositoryController = new RepositoryController(networkService);
-                console.log(
-                    "Request data of updateFileInFolder actions: " +
-                    JSON.stringify(fileId)
-                );
-                const response = await repositoryController.updateFile({
-                    fileId,
-                    fileName,
-                    description
-                });
-                console.log(
-                    "Response from updateFileInFolder: " + JSON.stringify(response)
-                );
-                console.log("Data: " + JSON.stringify(response.data.data));
-                dispatch(getFolderDetailId(parentFolderId, parentFolderName, navigation));
-            } catch ({ data }) {
-                console.log("ERROR when updateFileInFolder: " + JSON.stringify(data));
-            }
-        };
+  (
+    parentFolderName,
+    parentFolderId,
+    fileId,
+    fileName,
+    description,
+    navigation
+  ) =>
+  async (dispatch, _, { networkService }) => {
+    try {
+      const repositoryController = new RepositoryController(networkService);
+      console.log(
+        "Request data of updateFileInFolder actions: " + JSON.stringify(fileId)
+      );
+      const response = await repositoryController.updateFile({
+        fileId,
+        fileName,
+        description,
+      });
+      console.log(
+        "Response from updateFileInFolder: " + JSON.stringify(response)
+      );
+      console.log("Data: " + JSON.stringify(response.data.data));
+      dispatch(getFolderDetailId(parentFolderId, parentFolderName, navigation));
+    } catch ({ data }) {
+      console.log("ERROR when updateFileInFolder: " + JSON.stringify(data));
+    }
+  };
