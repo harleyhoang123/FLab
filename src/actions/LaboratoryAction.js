@@ -913,7 +913,7 @@ export const applyTolAbByLabId =
     }
   };
 
-export const getAllRequestInLab =
+export const getAllRequestInLabById =
   (labId, navigation) =>
   async (dispatch, _, { networkService }) => {
     let errorCode = 200;

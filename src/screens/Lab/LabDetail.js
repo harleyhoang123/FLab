@@ -26,7 +26,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import LabNavigator from "../../navigations/LabNavigator";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
-import { getAllRequestInLab } from "../../actions/LaboratoryAction";
+import { getAllRequestInLabById } from "../../actions/LaboratoryAction";
 import { leaveLaboratory } from "../../actions/LaboratoryAction";
 
 const getAccountId = async () => {
@@ -91,7 +91,7 @@ export default function LabDetail({ route, navigation }) {
   };
 
   const goToViewAllRequestPage = () => {
-    dispatch(getAllRequestInLab(labIdRequest, navigation));
+    dispatch(getAllRequestInLabById(labIdRequest, navigation));
   };
 
   const leaveLaboratoryHandle = () => {

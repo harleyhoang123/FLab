@@ -11,6 +11,7 @@ import {
   repository,
   workspace,
 } from "../controllers/ip";
+import { getAllRequestInLabById } from "../actions/LaboratoryAction";
 
 const getToken = async () => {
   try {

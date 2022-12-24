@@ -71,7 +71,7 @@ export default function UpdateMaterial({ route, navigation }) {
     } else {
       setIsMaterialName(false);
     }
-    if (!amount.match(isNumber)) {
+    if (!amount.toString().match(isNumber)) {
       setIsAmount(true);
       isValid = false;
     } else {
