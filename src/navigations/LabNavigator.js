@@ -27,7 +27,7 @@ const getMemberId = async () => {
     console.log("Can't get memberId id: " + e);
   }
 };
-export default function LabNavigator({ route, navigation }) {
+export default function LabNavigator({ route, navigation, isJoined }) {
   const [labId, setLabId] = useState("");
   getLabId().then((v) => setLabId(v));
   getMemberId().then((v) => setMemberId(v));
@@ -35,12 +35,21 @@ export default function LabNavigator({ route, navigation }) {
   const dispatch = useDispatch();
 
   const goToViewAllMemberPage = (labId) => {
+    if (isJoined == false) {
+      return;
+    }
     dispatch(getAllMemberInLaboratoryById(labId, navigation));
   };
   const goToListMaterial = () => {
+    if (isJoined == false) {
+      return;
+    }
     dispatch(getListMaterialByLabId(labId, navigation));
   };
   const goToViewAllProjectPage = (labId) => {
+    if (isJoined == false) {
+      return;
+    }
     dispatch(getAllProjectByLabId(labId, memberId, navigation));
   };
   return (

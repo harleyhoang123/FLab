@@ -33,11 +33,12 @@ export const getLaboratoryById =
       const response = await laboratoryController.getLaboratoryById({
         labId,
       });
-      await AsyncStorage.setItem(
-        "@currentMemeberId",
-        response.data.data.memberInfo.memberId
-      );
-      console.log("MmeberId is" + response.data.data.memberInfo.memberId);
+      if (response.data.data.memberInfo) {
+        await AsyncStorage.setItem(
+          "@currentMemeberId",
+          response.data.data.memberInfo.memberId
+        );
+      }
       const listMember = await laboratoryController.getAllMemberInLaboratory({
         labId,
       });

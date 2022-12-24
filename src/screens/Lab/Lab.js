@@ -182,7 +182,7 @@ const Lab = ({ route, navigation }) => {
       description={item.description}
       major={item.major}
       numberOfProject={item.projects}
-      isJoined={true}
+      isJoined={false}
     />
   );
 
@@ -195,7 +195,7 @@ const Lab = ({ route, navigation }) => {
       description={item.description}
       major={item.major}
       numberOfProject={item.projects}
-      isJoined={false}
+      isJoined={true}
     />
   );
   return (

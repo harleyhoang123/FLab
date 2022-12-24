@@ -67,7 +67,7 @@ export default function LabDetail({ route, navigation }) {
     dispatch(getAllMemberInLaboratoryById(labId, navigation));
   };
 
-  const memberId = data.memberInfo.memberId;
+  const memberId = data?.memberInfo?.memberId;
   console.log("DUC NGAO:" + memberId);
   const goToViewAllProjectPage = (labId, memberId) => {
     dispatch(getAllProjectByLabId(labId, memberId, navigation));
@@ -85,7 +85,7 @@ export default function LabDetail({ route, navigation }) {
   const [showConfirm, setShowConfirm] = useState(false);
   return (
     <View style={styles.container}>
-      <LabNavigator navigation={navigation} />
+      <LabNavigator navigation={navigation} isJoined={isJoined} />
       <View style={styles.containerProfile}>
         <TouchableOpacity
           onPress={goToViewAllRequestPage}
@@ -165,27 +165,31 @@ export default function LabDetail({ route, navigation }) {
           </View>
         </View>
         <View style={styles.containerInfo}>
-          <View style={{ flexDirection: "row" }}>
-            <Buttons
-              style={styles.button}
-              text={"View All Member"}
-              onPressTo={() => goToViewAllMemberPage(data.laboratoryId)}
-            />
-            <Buttons
-              style={styles.button}
-              text={"View All Project"}
-              onPressTo={() =>
-                goToViewAllProjectPage(data.laboratoryId, memberId)
-              }
-            />
-          </View>
+          {isJoined && (
+            <View>
+              <View style={{ flexDirection: "row" }}>
+                <Buttons
+                  style={styles.button}
+                  text={"View All Member"}
+                  onPressTo={() => goToViewAllMemberPage(data.laboratoryId)}
+                />
+                <Buttons
+                  style={styles.button}
+                  text={"View All Project"}
+                  onPressTo={() =>
+                    goToViewAllProjectPage(data.laboratoryId, memberId)
+                  }
+                />
+              </View>
+            </View>
+          )}
 
           <View style={styles.leavebtn}>
             <Pressable
               style={[styles.button, styles.buttonOpen]}
               onPress={() => setModalVisible(true)}
             >
-              {!isJoined ? (
+              {isJoined ? (
                 <Text style={styles.textStyle}>Leave</Text>
               ) : (
                 <Text
@@ -200,45 +204,48 @@ export default function LabDetail({ route, navigation }) {
                 </Text>
               )}
             </Pressable>
-            <Pressable
-              style={[styles.button, styles.buttonOpen]}
-              onPress={() =>
-                navigation.navigate("AddMemberToLab", { labData: data })
-              }
-            >
-              <Text style={styles.textStyle}>Add Member</Text>
-            </Pressable>
+            {isJoined && (
+              <Pressable
+                style={[styles.button, styles.buttonOpen]}
+                onPress={() =>
+                  navigation.navigate("AddMemberToLab", { labData: data })
+                }
+              >
+                <Text style={styles.textStyle}>Add Member</Text>
+              </Pressable>
+            )}
           </View>
-          {/*{roles.includes("OWNER") ? (*/}
-          <View style={{ marginTop: 20, flexDirection: "row" }}>
-            <Pressable
-              style={[styles.button, styles.buttonOpen]}
-              onPress={() => {
-                setShowConfirm(true);
-              }}
-            >
-              <View>
-                <Text style={styles.textStyle}>Delete</Text>
-              </View>
-              <Text></Text>
-            </Pressable>
-            <Pressable style={[styles.button, styles.buttonOpen]}>
-              <View>
-                <Text
-                  style={styles.textStyle}
-                  onPress={() => {
-                    navigation.push("UpdateLab", {
-                      labInfo: data,
-                      listMember: allMember,
-                    });
-                  }}
-                >
-                  Update
-                </Text>
-              </View>
-              <Text></Text>
-            </Pressable>
-          </View>
+          {isJoined && (
+            <View style={{ marginTop: 20, flexDirection: "row" }}>
+              <Pressable
+                style={[styles.button, styles.buttonOpen]}
+                onPress={() => {
+                  setShowConfirm(true);
+                }}
+              >
+                <View>
+                  <Text style={styles.textStyle}>Delete</Text>
+                </View>
+                <Text></Text>
+              </Pressable>
+              <Pressable style={[styles.button, styles.buttonOpen]}>
+                <View>
+                  <Text
+                    style={styles.textStyle}
+                    onPress={() => {
+                      navigation.push("UpdateLab", {
+                        labInfo: data,
+                        listMember: allMember,
+                      });
+                    }}
+                  >
+                    Update
+                  </Text>
+                </View>
+                <Text></Text>
+              </Pressable>
+            </View>
+          )}
           {/*) : (*/}
           {/*  <Text></Text>*/}
           {/*)}*/}
