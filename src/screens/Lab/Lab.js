@@ -189,7 +189,7 @@ const Lab = ({ route, navigation }) => {
     <Item
       id={item.laboratoryId}
       title={item.laboratoryName}
-      host={item.ownerBy.userInfo.username}
+      host={item.ownerBy?.userInfo?.username}
       numberMem={item.members}
       description={item.description}
       major={item.major}
@@ -202,7 +202,7 @@ const Lab = ({ route, navigation }) => {
     <Item2
       id={item.laboratoryId}
       title={item.laboratoryName}
-      host={item.ownerBy.userInfo.username}
+      host={item.ownerBy?.userInfo?.username}
       numberMem={item.members}
       description={item.description}
       major={item.major}
