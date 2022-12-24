@@ -33,6 +33,12 @@ export const getLaboratoryById =
       const response = await laboratoryController.getLaboratoryById({
         labId,
       });
+      if (response.data.data.memberInfo) {
+        await AsyncStorage.setItem(
+          "@currentMemeberId",
+          response.data.data.memberInfo.memberId
+        );
+      }
       const listMember = await laboratoryController.getAllMemberInLaboratory({
         labId,
       });
@@ -69,13 +75,14 @@ export const getAllMemberInLaboratoryById =
   };
 
 export const getAllProjectByLabId =
-  (labId, navigation) =>
+  (labId, memberId, navigation) =>
   async (dispatch, _, { networkService }) => {
     try {
       const laboratoryController = new LaboratoryController(networkService);
       console.log("Lab ID in actions: " + labId);
       const response = await laboratoryController.getProjectByLabId({
         labId,
+        memberId,
       });
       console.log(
         "Dat when get Project by lab id:" + JSON.stringify(response.data.data)
@@ -175,7 +182,7 @@ export const createLaboratory =
   };
 
 export const createProjectInLab =
-  (labId, requestData, navigation) =>
+  (labId, memberId, requestData, navigation) =>
   async (dispatch, _, { networkService }) => {
     try {
       const laboratoryController = new LaboratoryController(networkService);
@@ -192,7 +199,7 @@ export const createProjectInLab =
       );
       console.log("Data: " + JSON.stringify(response.data.data));
       console.log("Lab Id: " + JSON.stringify(response.data.data.labId));
-      dispatch(getAllProjectByLabId(labId, navigation));
+      dispatch(getAllProjectByLabId(labId, memberId, navigation));
     } catch ({ data }) {
       console.log("ERROR when createLaboratory: " + JSON.stringify(data));
     }

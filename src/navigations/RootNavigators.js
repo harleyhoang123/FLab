@@ -47,7 +47,7 @@ import CreateFolderInRepo from "../screens/Repository/CreateFolderInRepo";
 import CreateSubFolder from "../screens/Repository/CreateSubFolder";
 import UpdateProject from "../screens/Lab/UpdateProject";
 import UpdateMaterial from "../screens/Material/UpdateMeterial";
-import AddMemberTolab from "../screens/Lab/AddMemberToLab";
+import AddMemberToLab from "../screens/Lab/AddMemberToLab";
 import AddMemberToProject from "../screens/Lab/AddMemberToProject";
 import ApplyToALab from "../screens/Lab/ApplyToLab";
 import UpdateFolderInRepo from "../screens/Repository/UpdateFolderInRepo";
@@ -150,7 +150,7 @@ function RootNavigators() {
           name="AddMemberToProject"
           component={AddMemberToProject}
         />
-        <Stack.Screen name="AddMemberToLab" component={AddMemberTolab} />
+        <Stack.Screen name="AddMemberToLab" component={AddMemberToLab} />
         <Stack.Screen
           name="CreateFolderInRepo"
           component={CreateFolderInRepo}

@@ -1,88 +1,48 @@
 import React, { useEffect, useState } from "react";
-import {
-  SafeAreaView,
-  View,
-  FlatList,
-  TextInput,
-  Button,
-  StyleSheet,
-  Text,
-  StatusBar,
-} from "react-native";
-import { useDispatch } from "react-redux";
-import Buttons from "../../components/Buttons";
+import { View, TextInput, Button, StyleSheet, Text } from "react-native";
 import LabNavigator from "../../navigations/LabNavigator";
-import { SelectList } from "react-native-dropdown-select-list";
-import {
-  getAllMember,
-  getAllMemberInLab,
-} from "../../networking/CustomNetworkService";
-import { getMembersToLab } from "../../actions/LaboratoryAction";
-import { getAllUser } from "../../networking/CustomNetworkService";
+import { getMemberNotInLab } from "../../networking/CustomNetworkService";
 import AsyncStorage from "@react-native-community/async-storage";
 import ListUserComponent from "../../components/ListUserComponent";
+import PaginationBar from "../../components/PaginationBar";
 
 const getLabId = async () => {
   try {
     const labId = await AsyncStorage.getItem("@currentLabId");
-    console.log("LabId in reate Project: " + labId);
     return labId;
   } catch (e) {
     console.log("Can't get LabId id: " + e);
   }
 };
 
-export default function AddMemberTolab({ route, navigation }) {
-  let isValid = true;
-  const [labId, setLabId] = useState("");
-  getLabId().then((v) => setLabId(v));
-  const [selected, setSelected] = React.useState("");
-  const [key, setKey] = React.useState("");
+export default function AddMemberToLab({ route, navigation }) {
+  const [labIdUseState, setLabIdUseState] = useState();
+  const [numberOfElement, setNumberOfElement] = useState(0);
+  getLabId().then((v) => setLabIdUseState(v));
   const [inputSearchData, setInputSearchData] = useState("");
-  const [listMember, setListMember] = useState(data);
-
-  const [data, setData] = React.useState([]);
-  const [isMember, setIsMember] = useState(false);
-
-  React.useEffect(() => {
-    getAllMember().then((response) => {
-      let newArray1 = response.data.items.map((item) => {
-        return {
-          key: item.accountId,
-          value: item.fullName,
-        };
-      });
-      getAllMemberInLab().then((response) => {
-        console.log(
-          "All member in Lab: " + JSON.stringify(response.data.items)
-        );
-        let newArray2 = response.data.items.map((item) => {
-          return {
-            key: item.userInfo.accountId,
-            value: item.userInfo.userInfo.fullName,
-          };
-        });
-        setListMember(
-          newArray1.filter((i) => !newArray2.find(({ key }) => i.key === key))
-        );
-      });
-    });
+  const [listMember, setListMember] = useState(searchMember);
+  const [size, setSize] = useState(10);
+  useEffect(() => {
+    getLabId().then((v) => searchMember(v, 0));
   }, []);
-
-  console.log("List member:" + JSON.stringify(data));
-
-  const searchMember = useEffect(() => {
-    getAllUser(inputSearchData).then((v) => {
-      let newList = v.data.items.map((item) => {
-        return {
-          key: item.accountId,
-          value: item.fullName,
-        };
+  const callBackChangePage = (page) => {
+    searchMember(labIdUseState, page - 1);
+  };
+  const searchMember = (labId, page) => {
+    if (labId) {
+      getMemberNotInLab(labId, inputSearchData, page, size).then((response) => {
+        setNumberOfElement(response.data.totalPage * size);
+        setListMember(response.data.items);
       });
-      setListMember(newList);
-    });
-  });
-
+    } else {
+      getMemberNotInLab(labIdUseState, inputSearchData, page, size).then(
+        (response) => {
+          setNumberOfElement(response.data.totalPage * size);
+          setListMember(response.data.items);
+        }
+      );
+    }
+  };
   return (
     <View>
       <LabNavigator navigation={navigation} />
@@ -93,12 +53,17 @@ export default function AddMemberTolab({ route, navigation }) {
         <View style={styles.search}>
           <TextInput style={styles.input} onChangeText={setInputSearchData} />
           <View style={styles.btnSearch}>
-            <Button title={"Search"} onPress={searchMember} />
+            <Button title={"Search"} onPress={() => searchMember(null, 0)} />
           </View>
         </View>
         <View style={styles.listMember}>
           <ListUserComponent listMember={listMember} navigation={navigation} />
         </View>
+        <PaginationBar
+          currentSizes={size}
+          numberOfElement={numberOfElement}
+          callbackSelectedPage={callBackChangePage}
+        />
       </View>
     </View>
   );

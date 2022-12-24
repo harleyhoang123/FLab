@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -12,125 +12,60 @@ import {
 import { useDispatch } from "react-redux";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
-import { addMembersToProject } from "../../actions/LaboratoryAction";
-import { SelectList } from "react-native-dropdown-select-list";
-import {
-  getAllMemberInLab,
-  getAllMemberInProject,
-} from "../../networking/CustomNetworkService";
+import PaginationBar from "../../components/PaginationBar";
+import { getMemberNotInLab } from "../../networking/CustomNetworkService";
+import ListUserComponent from "../../components/ListUserComponent";
+import ListMemberComponent from "../../components/ListMemberComponent";
+import { getMemberInLabNotInProject } from "../../networking/CustomNetworkService";
+
+const getLabId = async () => {
+  try {
+    const labId = await AsyncStorage.getItem("@currentLabId");
+    return labId;
+  } catch (e) {
+    console.log("Can't get LabId id: " + e);
+  }
+};
 
 export default function AddMemberToProject({ route, navigation }) {
   const projectId = route.params.projectId;
-  const raw = route.params.allMember.items;
-  console.log("All data:" + JSON.stringify(data));
-
-  const [data, setData] = React.useState([]);
-  let isValid = true;
-  const [isMember, setIsMember] = useState(false);
-
-  function validateData() {
-    if (!selected) {
-      setIsMember(true);
-      isValid = false;
-    }
-    if (isValid) {
-      addMemberHandle();
-    }
-  }
-
-  React.useEffect(() => {
-    getAllMemberInLab().then((response) => {
-      let newArray1 = response.data.items.map((item) => {
-        return {
-          key: item.memberId,
-          value: item.userInfo.userInfo.fullName,
-        };
-      });
-      console.log("DATA1: " + JSON.stringify(newArray1));
-      getAllMemberInProject().then((response) => {
-        let newArray2 = response.data.items.map((item) => {
-          return {
-            key: item.memberId,
-            value: item.userInfo.userInfo.fullName,
-          };
-        });
-        console.log("DATA2: " + JSON.stringify(newArray2));
-        setData(
-          newArray1.filter((i) => !newArray2.find(({ key }) => i.key === key))
-        );
-        console.log(
-          "DATA3: " +
-            JSON.stringify(
-              newArray1.filter(
-                (i) => !newArray2.find(({ key }) => i.key === key)
-              )
-            )
-        );
-      });
-    });
+  const [labIdUseState, setLabIdUseState] = useState();
+  const [numberOfElement, setNumberOfElement] = useState(0);
+  const [size, setSize] = useState(10);
+  const [inputSearchData, setInputSearchData] = useState("");
+  useEffect(() => {
+    getLabId().then((v) => searchMember(v, 0));
   }, []);
-
-  const [selected, setSelected] = React.useState("");
-  const [key, setKey] = React.useState("");
-  const dispatch = useDispatch();
-
-  const addMemberHandle = () => {
-    const requestData = {
-      memberId: key,
-    };
-    console.log(requestData);
-    dispatch(addMembersToProject(projectId, requestData, navigation));
+  const callBackChangePage = (page) => {
+    searchMember(labIdUseState, page - 1);
   };
+
+  const [listMember, setListMember] = useState(searchMember);
+
+  const searchMember = (page) => {
+    getMemberInLabNotInProject(projectId, page, size).then((response) => {
+      setNumberOfElement(response.data.totalPage * size);
+      setListMember(response.data.items);
+    });
+  };
+
   return (
     <View>
       <LabNavigator navigation={navigation} />
-      <View style={styles.container}>
-        <Text style={styles.title}>Add member your's project</Text>
-
+      <View>
         <View>
-          <View>
-            <Text style={styles.usage}>Select member</Text>
-          </View>
-          <View>
-            <SelectList
-              setSelected={(val) => setSelected(val)}
-              onSelect={() => setKey(selected)}
-              placeholder={"List Member"}
-              data={data}
-              save="key"
-              boxStyles={{
-                height: 40,
-                margin: 12,
-                borderWidth: 1,
-                padding: 10,
-                width: "45%",
-                marginLeft: "13%",
-              }}
-              dropdownStyles={{
-                width: 130,
-                marginLeft: "13%",
-              }}
-              search={false}
-            />
-            {isMember && (
-              <Text style={styles.inputInvalid}>Please choose a member</Text>
-            )}
-          </View>
-
-          <View style={styles.btn}>
-            <Buttons
-              text={"Add"}
-              style={styles.button}
-              onPressTo={validateData}
-            />
-            <Buttons
-              text={"Back"}
-              style={styles.button}
-              onPressTo={() => {
-                navigation.goBack(null);
-              }}
-            />
-          </View>
+          <Text style={styles.title}>Add new member:</Text>
+        </View>
+        <View style={styles.listMember}>
+          <ListMemberComponent
+            listMember={listMember}
+            navigation={navigation}
+          />
+          <PaginationBar
+            currentSizes={size}
+            numberOfElement={numberOfElement}
+            callbackSelectedPage={callBackChangePage}
+          />
         </View>
       </View>
     </View>
@@ -141,11 +76,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    marginLeft: 10,
-    width: 215,
+  listMember: {
+    alignSelf: "start",
+    marginLeft: "13%",
+    with: "70%",
+  },
+  search: {
+    flexDirection: "row",
   },
   button: {
     marginTop: 20,
@@ -153,7 +90,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   input: {
-    height: 40,
+    height: 35,
     margin: 12,
     borderWidth: 1,
     padding: 10,
@@ -167,8 +104,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    marginLeft: "10%",
-    marginTop: "3%",
+    marginLeft: "5%",
+    marginTop: "1%",
+  },
+  btnSearch: {
+    height: 35,
+    margin: 12,
   },
   usage: {
     fontSize: 20,

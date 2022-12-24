@@ -12,31 +12,32 @@ import {
 import { addMembersToLab } from "../actions/LaboratoryAction";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
+import { addMembersToProject } from "../actions/LaboratoryAction";
 
-const getLabId = async () => {
+const getProjectId = async () => {
   try {
-    const labId = await AsyncStorage.getItem("@currentLabId");
-    console.log("LabId in reate Project: " + labId);
-    return labId;
+    const projectId = await AsyncStorage.getItem("@projectId");
+    console.log("projectId: " + projectId);
+    return projectId;
   } catch (e) {
-    console.log("Can't get LabId id: " + e);
+    console.log("Can't get projectId: " + e);
   }
 };
 
-const Item = ({ item, accountId, setAccountId }) => (
+const Item = ({ item, memberId, setMemberId }) => (
   <View style={styles.checkboxContainer}>
     <View style={styles.columnCheckBox}>
       <CheckBox
-        value={accountId.includes(item.accountId)}
+        value={memberId.includes(item.memberId)}
         onValueChange={() => {
-          accountId.includes(item.accountId)
-            ? setAccountId(accountId.filter((v) => v !== item.accountId))
-            : setAccountId((oldAccountId) => [...oldAccountId, item.accountId]);
+          memberId.includes(item.key)
+            ? setMemberId(memberId.filter((v) => v !== item.memberId))
+            : setMemberId((oldMemberId) => [...oldMemberId, item.memberId]);
         }}
       />
     </View>
     <View style={styles.column}>
-      <Text>{item.username}</Text>
+      <Text>{item.fullName}</Text>
     </View>
     <View style={styles.column}>
       <Text>{item.email}</Text>
@@ -46,23 +47,26 @@ const Item = ({ item, accountId, setAccountId }) => (
     </View>
   </View>
 );
-const ListUserComponent = ({ listMember, navigation }) => {
-  const [accountId, setAccountId] = useState([]);
-  const [labId, setLabId] = useState("");
-  getLabId().then((v) => setLabId(v));
-  console.log(accountId);
+const ListMemberComponent = ({ listMember, navigation }) => {
+  const [memberId, setMemberId] = useState([]);
+  const [projectId, setProjectId] = useState("");
+  getProjectId().then((v) => setProjectId(v));
+  console.log(memberId);
   const dispatch = useDispatch();
   const addMemberHandle = () => {
     const requestData = {
-      accountId: accountId,
+      memberId: memberId,
     };
     console.log(requestData);
-    dispatch(addMembersToLab(requestData, navigation));
+    dispatch(addMembersToProject(projectId, requestData, navigation));
   };
 
   const renderItem = ({ item }) => (
     <View>
-      <Item item={item} accountId={accountId} setAccountId={setAccountId} />
+      <View></View>
+      <View>
+        <Item item={item} memberId={memberId} setMemberId={setMemberId} />
+      </View>
     </View>
   );
   return (
@@ -88,7 +92,7 @@ const ListUserComponent = ({ listMember, navigation }) => {
         <FlatList
           data={listMember}
           renderItem={renderItem}
-          keyExtractor={(item) => item.accountId}
+          keyExtractor={(item) => item.memberId}
         />
       </SafeAreaView>
     </View>
@@ -118,6 +122,7 @@ const styles = StyleSheet.create({
   },
   columnCheckBox: {
     borderColor: "black",
+    borderWidth: 1,
     justifyContent: "center",
     borderWidth: 1,
     alignItems: "center",
@@ -126,6 +131,7 @@ const styles = StyleSheet.create({
   },
   column: {
     borderColor: "black",
+    borderWidth: 1,
     justifyContent: "center",
     borderWidth: 1,
     alignItems: "center",
@@ -153,4 +159,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListUserComponent;
+export default ListMemberComponent;

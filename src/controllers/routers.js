@@ -73,7 +73,8 @@ export const routes = {
       laboratory +
       "/flab/lab/public/api/v1/laboratories/:laboratory-id/:material-id/order",
     getProjectByLabId:
-      laboratory + "/flab/lab/public/api/v1/projects/:lab-id/projects",
+      laboratory +
+      "/flab/lab/public/api/v1/projects/:lab-id/:member-id/projects",
     getProjectDetailById:
       laboratory + "/flab/lab/public/api/v1/projects/:project-id",
     getAllMemberInProject:
@@ -111,6 +112,12 @@ export const routes = {
     returnOrder:
       laboratory + "/flab/lab/public/api/v1/materials/orders/:order-id",
     searchUser: account + "/flab/account/public/api/v1/accounts",
+    getMemberNotInLab:
+      laboratory +
+      "/flab/lab/public/api/v1/laboratories/:lab-id/members/not-in",
+    getMemberInLabNotInProject:
+      laboratory +
+      "/flab/lab/public/api/v1/laboratories/:lab-id/members/:project-id/not-in",
   },
   forum: {
     getQuestionDetail: forum + "/flab/forum/public/api/v1/questions/",
