@@ -15,6 +15,17 @@ import {
   getLaboratorySuggestionByAccountId,
 } from "../../networking/CustomNetworkService";
 import PaginationBar from "../../components/PaginationBar";
+import AsyncStorage from "@react-native-community/async-storage";
+
+const getAccountId = async () => {
+  try {
+    const accountId = await AsyncStorage.getItem("@accountId");
+    console.log("AccountId: " + accountId);
+    return accountId;
+  } catch (e) {
+    console.log("Can't get account id: " + e);
+  }
+};
 
 const Lab = ({ route, navigation }) => {
   const [numberOfElement, setNumberOfElement] = useState(0);
@@ -29,24 +40,25 @@ const Lab = ({ route, navigation }) => {
     dispatch(getLaboratoryById(labId, isJoined, navigation));
   };
 
+  const [accountId, setAccountId] = useState("");
+
   const getLaboratory = (selectedPage) => {
-    console.log("Account id: " + route.params.data);
-    getLaboratoryByAccountId(route.params.data, selectedPage - 1, 5).then(
-      (v) => {
+    getAccountId().then((v) => {
+      setAccountId(v);
+      getLaboratoryByAccountId(v, selectedPage - 1, 5).then((v) => {
         setItem(v.data.data.items);
         setNumberOfElement(v.data.data.totalPage * 5);
-      }
-    );
+      });
+    });
   };
 
   const getLaboratorySuggestion = (selectedPage) => {
-    getLaboratorySuggestionByAccountId(
-      route.params.data,
-      selectedPage - 1,
-      5
-    ).then((v) => {
-      setItemsSugges(v.data.data.items),
-        setNumberOfElementSuggestion(v.data.data.totalPage * 5);
+    getAccountId().then((v) => {
+      setAccountId(v);
+      getLaboratorySuggestionByAccountId(v, selectedPage - 1, 5).then((v) => {
+        setItemsSugges(v.data.data.items),
+          setNumberOfElementSuggestion(v.data.data.totalPage * 5);
+      });
     });
   };
   useEffect(() => {

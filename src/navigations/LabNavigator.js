@@ -12,7 +12,6 @@ import RightNavigation from "./RightNavigation";
 const getLabId = async () => {
   try {
     const labId = await AsyncStorage.getItem("@labId");
-    console.log("labId: " + labId);
     return labId;
   } catch (e) {
     console.log("Can't get labId: " + e);
@@ -20,8 +19,7 @@ const getLabId = async () => {
 };
 const getMemberId = async () => {
   try {
-    const memberId = await AsyncStorage.getItem("@currentMemeberId");
-    console.log("memberId in reate Project: " + memberId);
+    const memberId = await AsyncStorage.getItem("@currentMemberId");
     return memberId;
   } catch (e) {
     console.log("Can't get memberId id: " + e);

@@ -80,7 +80,6 @@ const ViewAllMember = ({ route, navigation }) => {
       </View>
       <View style={styles.role}>
         <Text style={styles.title}>{role}</Text>
-
       </View>
     </View>
   );
@@ -89,11 +88,11 @@ const ViewAllMember = ({ route, navigation }) => {
     <Item
       id={item.memberId}
       accountId={item.userInfo.accountId}
-      name={item.userInfo.userInfo.fullName}
+      name={item?.userInfo?.userInfo?.fullName}
       role={item.role}
       code={item.memberId}
-      email={item.userInfo.userInfo.email}
-      username={item.userInfo.userInfo.username}
+      email={item?.userInfo?.userInfo?.email}
+      username={item?.userInfo?.userInfo?.username}
     />
   );
   return (
@@ -105,7 +104,7 @@ const ViewAllMember = ({ route, navigation }) => {
           text={"Add new member"}
           style={styles.button}
           onPressTo={() => {
-            navigation.navigate("AddMemberToLab");
+            navigation.push("AddMemberToLab");
           }}
         />
       </View>
