@@ -59,6 +59,7 @@ const ListMemberComponent = ({ listMember, navigation }) => {
     };
     console.log(requestData);
     dispatch(addMembersToProject(projectId, requestData, navigation));
+    setMemberId([]);
   };
 
   const renderItem = ({ item }) => (
