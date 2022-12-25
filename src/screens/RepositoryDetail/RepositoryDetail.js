@@ -38,6 +38,7 @@ function RepositoryDetail({ route, navigation }) {
   const [urlDownload, setUrlDownload] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   const [disable, setDisable] = useState(true);
+  const [disableDownload, setDisableDownload] = useState(true);
   console.log("folderName in Detail" + folderName);
   console.log("parentFolderId in Detail" + parentFolderId);
   const downLoadFileHandler = () => {
@@ -107,6 +108,7 @@ function RepositoryDetail({ route, navigation }) {
               setDescription(description);
               setUrlDownload(publicURL);
               setDisable(false);
+              setDisableDownload(false)
             }}
           />
         </RadioButton.Group>
@@ -148,6 +150,8 @@ function RepositoryDetail({ route, navigation }) {
               setTypeChecked(type);
               setFName(folderName);
               setDescription(description);
+              setDisable(false);
+              setDisableDownload(true);
               console.log("File ID in RepositoryDetail " + checked);
             }}
           />
@@ -280,7 +284,7 @@ function RepositoryDetail({ route, navigation }) {
               onPressTo={downLoadFileHandler}
               style={styles.button}
               text={"Download"}
-              disabled={disable}
+              disabled={disableDownload}
             />
             <Buttons
               style={styles.button}
