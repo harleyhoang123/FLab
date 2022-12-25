@@ -2372,8 +2372,7 @@ export const reviewRequest = async (
   applicationId,
   requestData,
   navigation,
-  dispatch,
-  navigation
+  dispatch
 ) => {
   const token = await getToken();
   let errorCode = 200;

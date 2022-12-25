@@ -14,6 +14,7 @@ import {
   getSubTaskDetail,
   getTaskDetail,
 } from "../../networking/CustomNetworkService";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 export default function Backlog({ route, navigation }) {
   const res = route.params.data;
@@ -38,12 +39,15 @@ export default function Backlog({ route, navigation }) {
   let isValidSprint = true;
   const [isSprint, setIsSprint] = useState(false);
   function validateComment() {
-    if (!isSprint) {
+    if (!sprintName) {
       setIsSprint(true);
       isValidSprint = false;
+    } else {
+      setIsSprint(false);
     }
     if (isValidSprint) {
       addSprint(projectId, res.memberId, sprintName);
+      setSprintName("");
       setIsSprint(false);
     }
   }
