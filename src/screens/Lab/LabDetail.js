@@ -107,6 +107,12 @@ export default function LabDetail({ route, navigation }) {
     dispatch(getAllRequestInLabById(labIdRequest, navigation));
   };
 
+  const delteCurrentLab = () => {
+    console.log("data.laboratoryId");
+    console.log(data.laboratoryId);
+    dispatch(deleteLaboratory(accountId, labIdRequest, navigation));
+  };
+
   const [showConfirm, setShowConfirm] = useState(false);
   return (
     <View style={styles.container}>
@@ -129,6 +135,40 @@ export default function LabDetail({ route, navigation }) {
         </View>
 
         <View style={styles.containerInfo}>
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={showConfirm}
+            onRequestClose={() => {
+              setShowConfirm(false);
+            }}
+          >
+            <View style={styles.modalDelete}>
+              <View style={styles.modalDeleteView}>
+                <Text
+                  style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
+                >
+                  Do you want to delete this lab?
+                </Text>
+                <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
+                  <Buttons
+                    text={"Delete"}
+                    style={{ marginRight: 40 }}
+                    onPressTo={() => {
+                      delteCurrentLab();
+                      setShowConfirm(false);
+                    }}
+                  />
+                  <Buttons
+                    text={"Cancel"}
+                    style={{ backgroundColor: "#F4F5F7" }}
+                    styleText={{ color: "black" }}
+                    onPressTo={() => setShowConfirm(false)}
+                  />
+                </View>
+              </View>
+            </View>
+          </Modal>
           <View style={styles.info}>
             <ProfileComponent
               title={"Start from"}
