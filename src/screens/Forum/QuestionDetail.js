@@ -65,7 +65,12 @@ function QuestionDetail({ route, navigation }) {
       addCommentToQuestion(questionId, content, navigation).then((v) => {
         getQuestionDetail(questionId, null, null, navigation).then((r) =>
           setUserComment(r.data.comments)
-        );
+        ).catch((error) => {
+          navigation.push("ErrorPage", {
+            status: 500,
+            displayMessage: "Oops! Something went wrong.",
+          });
+        })
         setContent("");
       });
       setIsAnswer(false);
@@ -132,8 +137,13 @@ function QuestionDetail({ route, navigation }) {
       getQuestionDetail(questionId, null, null, navigation).then((r) => {
         setVotes(r.data.score);
         setVotedStatus(r.data.votedStatus);
-      });
+      }).catch((error) => {
+        navigation.push("ErrorPage", {
+          status: 500,
+          displayMessage: "Oops! Something went wrong.",
+        });
     });
+  })
   };
   const sort = (sortByType) => {
     if (sortByType === "Score (DESC)") {
