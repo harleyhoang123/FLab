@@ -4,7 +4,7 @@ import {faCaretUp} from "@fortawesome/free-solid-svg-icons/faCaretUp";
 import {faCaretDown} from "@fortawesome/free-solid-svg-icons/faCaretDown";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {TouchableOpacity} from "react-native-web";
-function VoteComponent({onPressUp,onPressDown,votes, size,style,status}) {
+function VoteComponent({onPressUp,onPressDown,votes, size,style,status,statusClose}) {
 const checkStatusUp=(status)=>{
     if(status==="LIKED"){
         return "#F48225"
@@ -21,13 +21,14 @@ const checkStatusUp=(status)=>{
     }
     return (
         <View style={[styles.container,style]}>
-            <TouchableOpacity onPress={onPressUp}>
+            {statusClose!=="CLOSE"&&<TouchableOpacity onPress={onPressUp}>
                 <FontAwesomeIcon icon={faCaretUp} size={size} color={checkStatusUp(status)}/>
-            </TouchableOpacity>
+            </TouchableOpacity>}
             <Text style={styles.text}>{votes}</Text>
-            <TouchableOpacity onPress={onPressDown}>
+            {statusClose!=="CLOSE"&&<TouchableOpacity onPress={onPressDown}>
                 <FontAwesomeIcon icon={faCaretDown} size={size} color={checkStatusDown(status)}/>
-            </TouchableOpacity>
+            </TouchableOpacity>}
+
         </View>
     );
 }

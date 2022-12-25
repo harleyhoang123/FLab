@@ -111,7 +111,7 @@ function AnswerComponent({
   const [text, setText] = useState(content);
   const [showConfirm, setShowConfirm] = useState(false);
   return (
-    <View s>
+    <View>
       <Modal
         animationType="fade"
         transparent={true}
@@ -199,6 +199,7 @@ function AnswerComponent({
             onPressUp={() => handleVote("LIKED")}
             onPressDown={() => handleVote("DISLIKED")}
             status={voted}
+            statusClose={statusClose}
           />
           <TouchableOpacity onPress={() => acceptAnAnswer()}>
             <MaterialCommunityIcons
@@ -249,6 +250,7 @@ function AnswerComponent({
               time={formatTime(item.createdDate)}
               callBackComment={callbackAnswer}
               navigation={navigation}
+              statusClose={statusClose}
             />
           </View>
         ))}
