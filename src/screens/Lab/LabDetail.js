@@ -69,6 +69,7 @@ export default function LabDetail({ route, navigation }) {
   const data = route.params.data;
   console.log("lab data:" + JSON.stringify(data));
   const isJoined = route.params.isJoined;
+  console.log("Is Joined In lab detail" + isJoined);
   const allMember = route.params.allMember.items;
   const [numberOfApplication, setNumberOfApplication] = useState(0);
 
@@ -105,11 +106,6 @@ export default function LabDetail({ route, navigation }) {
     dispatch(getAllRequestInLabById(labIdRequest, navigation));
   };
 
-  const delteCurrentLab = () => {
-    console.log("data.laboratoryId");
-    console.log(data.laboratoryId);
-    dispatch(deleteLaboratory(accountId, labIdRequest, navigation));
-  };
   const [showConfirm, setShowConfirm] = useState(false);
   return (
     <View style={styles.container}>
