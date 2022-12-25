@@ -7,6 +7,7 @@ import Buttons from "../../components/Buttons";
 import { getRequestDetailByApplicationId } from "../../actions/LaboratoryAction";
 import { getAllRequestInLab } from "../../networking/CustomNetworkService";
 import PaginationBar from "../../components/PaginationBar";
+import LabNavigator from "../../navigations/LabNavigator";
 
 export default function ViewAllRequest({ route, navigation }) {
   const listRequest = route.params.data;
@@ -84,7 +85,7 @@ export default function ViewAllRequest({ route, navigation }) {
   );
   return (
     <View>
-      <ProjectNavigator navigation={navigation} />
+      <LabNavigator navigation={navigation} />
 
       <View style={styles.container}>
         <Text style={{ fontSize: 25 }}>List all request</Text>
@@ -102,7 +103,7 @@ export default function ViewAllRequest({ route, navigation }) {
         />
         <Buttons
           text={"Back"}
-          style={styles.buttonBack}
+          style={{width:150}}
           onPressTo={() => {
             navigation.goBack(null);
           }}
@@ -113,6 +114,7 @@ export default function ViewAllRequest({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+
   buttonFilter: {
     marginTop: 20,
     width: 130,

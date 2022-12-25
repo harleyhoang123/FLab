@@ -27,17 +27,15 @@ function AssignedToMe({navigation}) {
     const [listAssign, setListAssign] = useState();
     useEffect(() => {
         getProjectId().then(v => {
-            console.log("PID"+ v);
             getMemberId().then(r => {
-                console.log("MID"+ r);
                 getAssignedToMe(v, r).then(l => {
-                    setListAssign(l)
+                    setListAssign(l.data)
                 })
             })
         })
     }, []);
     const Item = ({summary, estimate, reporter}) => (
-        <View style={{flexDirection: "row"}}>
+        <View style={{flexDirection: "row", alignItems: "center"}}>
             <View style={{width: "50%", margin: 10}}>
                 <Text>{summary}</Text>
             </View>
@@ -70,7 +68,7 @@ function AssignedToMe({navigation}) {
                     <View style={{margin: 20}}>
                         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                             <Text style={{fontSize: 18, fontWeight: "bold", margin: 10}}>Assigned to Me</Text>
-                            <Buttons text={"Refresh"} style={{width: "5%", height: 40, margin: 10}}/>
+                            <Buttons text={"Refresh"} style={{height: 40, margin: 10}}/>
                         </View>
                         <View style={{flexDirection: "row", borderBottomWidth: 2}}>
                             <View style={{width: "50%", margin: 10}}>

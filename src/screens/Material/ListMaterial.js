@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import React, {useState} from "react";
+import {View, Text, FlatList, StyleSheet} from "react-native";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
@@ -9,90 +9,87 @@ import LabNavigator from "../../navigations/LabNavigator";
 import {getListMaterial} from "../../networking/CustomNetworkService";
 
 
-function ListMaterial({ route, navigation }) {
-  const listsMaterial = route.params.data.items;
-  const labId= route.params.labId;
-  console.log(
-    "List material in List Material Component is: " +
-      JSON.stringify(listsMaterial)
-  );
-  const [text, setText] = useState("");
-  const [list, setList] = useState(listsMaterial);
-  const callbackListMaterial=()=>{
-    getListMaterial(labId).then(r=> setList(r.data.items))
-  }
-  return (
-    <View>
-      <LabNavigator navigation={navigation} />
-      <View style={styles.container}>
+function ListMaterial({route, navigation}) {
+    const listsMaterial = route.params.data.items;
+    const labId = route.params.labId;
+    console.log(
+        "List material in List Material Component is: " +
+        JSON.stringify(listsMaterial)
+    );
+    const [text, setText] = useState("");
+    const [list, setList] = useState(listsMaterial);
+    const callbackListMaterial = () => {
+        getListMaterial(labId).then(r => setList(r.data.items))
+    }
+    return (
         <View>
-          <Text style={styles.text}>List Materials</Text>
+            <LabNavigator navigation={navigation}/>
+            <View style={styles.container}>
+                <View>
+                    <Text style={styles.text}>List Materials</Text>
+                </View>
+                <View style={styles.containerSearch}>
+                    <TextField
+                        text={text}
+                        onChangeText={(newText) => setText(newText)}
+                        placeholder={" Search"}
+                        secureTextEntry={false}
+                        multiline={false}
+                    />
+                    <Buttons text={"Search"}/>
+                    <Buttons
+                        text={"My Order"}
+                        style={[{marginLeft: 20}]}
+                        onPressTo={() => navigation.push("MyOrder")}
+                    />
+                    <Buttons
+                        text={"List Order"}
+                        style={[{marginLeft: 20}]}
+                        onPressTo={() => navigation.push("OrderMaterial")}
+                    />
+                    <Buttons
+                        text={"Add Material"}
+                        style={[{marginLeft: 20}]}
+                        onPressTo={() => navigation.push("AddMaterial")}
+                    />
+                </View>
+            </View>
+            {list?.map((item) => (
+                <MaterialItem
+                    key={item.materialId}
+                    id={item.materialId}
+                    navigation={navigation}
+                    title={item.materialName}
+                    image={item.image}
+                    status={item.status}
+                />
+            ))}
+            <PaginationBar/>
         </View>
-        <View style={styles.containerSearch}>
-          <TextField
-            text={text}
-            onChangeText={(newText) => setText(newText)}
-            placeholder={" Search"}
-            secureTextEntry={false}
-            multiline={false}
-          />
-          <Buttons text={"Search"} />
-          <Buttons
-              text={"My Order"}
-              style={[styles.button, { marginLeft: 20 }]}
-              onPressTo={() => navigation.push("MyOrder")}
-          />
-          <Buttons
-            text={"List Order"}
-            style={[styles.button, { marginLeft: 20 }]}
-            onPressTo={() => navigation.push("OrderMaterial")}
-          />
-          <Buttons
-            text={"Add Material"}
-            style={[styles.button, { marginLeft: 20 }]}
-            onPressTo={() => navigation.push("AddMaterial")}
-          />
-        </View>
-      </View>
-      {list?.map((item)=>(
-          <MaterialItem
-              key={item.materialId}
-              id={item.materialId}
-              navigation={navigation}
-              title={item.materialName}
-              image={item.image}
-              status={item.status}
-          />
-      ))}
-      <PaginationBar />
-    </View>
-  );
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  containerSearch: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginRight: 100,
-  },
-  text: {
-    fontSize: 25,
-    fontWeight: "bold",
-    marginLeft: 150,
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  containerButton: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  button: {
-    width: 180,
-  },
+    container: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    containerSearch: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginRight: 100,
+    },
+    text: {
+        fontSize: 25,
+        fontWeight: "bold",
+        marginLeft: 150,
+        marginTop: 10,
+        marginBottom: 20,
+    },
+    containerButton: {
+        alignItems: "center",
+        justifyContent: "center",
+    },
 });
 export default ListMaterial;

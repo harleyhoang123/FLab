@@ -1,6 +1,7 @@
 import { WorkSpaceController } from "../controllers/WorkSpaceController";
 import { NetworkService } from "../networking";
 import { LaboratoryController } from "../controllers/LaboratoryController";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export const getAllSprint =
   (projectId, navigation) =>
@@ -16,6 +17,8 @@ export const getAllSprint =
       const allMember = await laboratoryController.getAllMembersInWorkspace({
         projectId,
       });
+      console.log("DATA BACKLOG: "+ JSON.stringify(response.data));
+      await AsyncStorage.setItem("@memberIdProject", response.data.data.memberId);
       navigation.push("Backlog", {
         projectId: projectId,
         data: response.data.data,
@@ -31,7 +34,7 @@ export const getAllSprint =
             if (displayMessage == null) {
               displayMessage = "Oops! Something went wrong.";
             }
-            if (errorCode == 400) {
+            if (errorCode === 400) {
               alert(displayMessage);
               return;
             }

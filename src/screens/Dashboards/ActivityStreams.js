@@ -25,7 +25,7 @@ function ActivityStreams({navigation}) {
         })
     }, []);
     const formatterDate = (date) => {
-        const options = { year: "numeric", month: "long", day: "numeric" };
+        const options = {year: "numeric", month: "long", day: "numeric"};
         const d = new Date(date);
         return (
             d.toLocaleDateString("en-US", options) +
@@ -54,7 +54,7 @@ function ActivityStreams({navigation}) {
                     <View style={{margin: 20}}>
                         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                             <Text style={{fontSize: 18, fontWeight: "bold", margin: 10}}>Activity Stream</Text>
-                            <Buttons text={"Refresh"} style={{width: "5%", height: 40, margin: 10}}/>
+                            <Buttons text={"Refresh"} style={{height: 40, margin: 10}}/>
                         </View>
                         <FlatList
                             data={activities}

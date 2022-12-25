@@ -31,8 +31,8 @@ function IssueStatistics({navigation}) {
             })
         })
     }, []);
-    const calculatePercent=( count, totalIssue)=>{
-        const percent= count/totalIssue
+    const calculatePercent = (count, totalIssue) => {
+        const percent = count / totalIssue
         return percent.toFixed(2)
     }
     const Item = ({info, count, totalIssue}) => (
@@ -46,9 +46,9 @@ function IssueStatistics({navigation}) {
             <View style={{width: "75%", margin: 10, alignSelf: "center"}}>
                 <View style={{flexDirection: "row"}}>
                     <View style={{width: "85%", alignSelf: "center"}}>
-                        <ProgressBar progress={calculatePercent(count,totalIssue)} color={'blue'}/>
+                        <ProgressBar progress={calculatePercent(count, totalIssue)} color={'blue'}/>
                     </View>
-                    <Text style={{ alignSelf: "center"}} > {calculatePercent(count,totalIssue)*100}%</Text>
+                    <Text style={{alignSelf: "center"}}> {calculatePercent(count, totalIssue) * 100}%</Text>
                 </View>
             </View>
         </View>
@@ -75,7 +75,7 @@ function IssueStatistics({navigation}) {
                         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                             <Text style={{fontSize: 18, fontWeight: "bold", margin: 10}}>Issue Statistics: Project
                                 (Assignee)</Text>
-                            <Buttons text={"Refresh"} style={{width: "5%", height: 40, margin: 10}}/>
+                            <Buttons text={"Refresh"} style={{height: 40, margin: 10}}/>
                         </View>
                         <View style={{flexDirection: "row", borderBottomWidth: 2}}>
                             <View style={{width: "20%", margin: 10}}>
@@ -98,9 +98,10 @@ function IssueStatistics({navigation}) {
                             <View style={{width: "75%", margin: 10}}>
                                 <View style={{flexDirection: "row"}}>
                                     <View style={{width: "85%", alignSelf: "center"}}>
-                                        <ProgressBar progress={totalUnassigned/totalIssue} color={'blue'}/>
+                                        <ProgressBar progress={totalUnassigned / totalIssue} color={'blue'}/>
                                     </View>
-                                    <Text style={{ alignSelf: "center"}} > {calculatePercent(totalUnassigned,totalIssue)*100}%</Text>
+                                    <Text
+                                        style={{alignSelf: "center"}}> {calculatePercent(totalUnassigned, totalIssue) * 100}%</Text>
                                 </View>
                             </View>
                         </View>
@@ -109,7 +110,7 @@ function IssueStatistics({navigation}) {
                             renderItem={({item}) => (
                                 <Item info={item.userInfo} count={item.numOfTask} totalIssue={totalIssue}/>)}
                         />
-                        <View style={{flexDirection: "row", borderTopWidth:2}}>
+                        <View style={{flexDirection: "row", borderTopWidth: 2}}>
                             <View style={{width: "20%", margin: 10}}>
                                 <Text>Total</Text>
                             </View>

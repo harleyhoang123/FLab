@@ -217,9 +217,9 @@ function ListTag({navigation}) {
                     }}
                 >
                     <View
-                        style={styles.modal}
+                        style={styles.modalDelete}
                     >
-                        <View style={styles.modalProfileView}>
+                        <View style={styles.modalDeleteView}>
                             <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete
                                 this tag?</Text>
                             <View style={{alignItems: "flex-end", flexDirection: "row"}}>
@@ -401,6 +401,25 @@ const styles = StyleSheet.create({
         borderColor: "black",
         borderBottomWidth: 1,
         borderTopWidth: 1,
+    },modalDelete: {
+        alignItems: "center",
+        justifyContent: "center",
+        flex: 1,
+    },
+    modalDeleteView: {
+        width: "30%",
+        backgroundColor: "white",
+        borderRadius: 10,
+        alignItems: "center",
+        justifyContent: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        padding: 50,
     },
 });
 export default ListTag;

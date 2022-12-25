@@ -201,15 +201,15 @@ function SprintComponent({
             })
         );
     };
-    const updateStatusOfSprint = (sprintId, status) => {
+    const updateStatusOfSprint = (sprintId, memberId, status) => {
         if (status === "NOT_START") {
-            updateStatusSprint(projectId, sprintId, "STARTING").then((r) =>
+            updateStatusSprint(projectId, sprintId, memberId, "STARTING").then((r) =>
                 getSprintDetail(sprintId).then((r) => {
                     setStatusDetail(r.data.status);
                 })
             );
         } else if (status === "STARTING") {
-            updateStatusSprint(projectId, sprintId, "COMPLETED").then((r) =>
+            updateStatusSprint(projectId, sprintId, memberId, "COMPLETED").then((r) =>
                 getSprintDetail(sprintId).then((r) => {
                     setStatusDetail(r.data.status);
                 })
@@ -411,7 +411,7 @@ function SprintComponent({
                     text={checkStatusSprint(statusDetail)}
                     style={styles.btn}
                     styleText={{fontSize: 12}}
-                    onPressTo={() => updateStatusOfSprint(sprintId, statusDetail)}
+                    onPressTo={() => updateStatusOfSprint(sprintId, memberId, statusDetail)}
                 />
                 <Buttons
                     text={"Edit"}
@@ -547,7 +547,8 @@ const styles = StyleSheet.create({
         width: "30%",
         backgroundColor: "white",
         borderRadius: 10,
-        alignItems: "flex-start",
+        alignItems: "center",
+        justifyContent: "center",
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
