@@ -68,6 +68,8 @@ import ActivityStreams from "../screens/Dashboards/ActivityStreams";
 import AssignedToMe from "../screens/Dashboards/AssignedToMe";
 import MemberDetailProject from "../screens/Lab/MemberDetailProject";
 import MyQuestion from "../screens/Forum/MyQuestion";
+import UpdateMemberRoleInLab from "../screens/Lab/UpdateMemberRoleInLab";
+import UpdateMemberRoleInProject from "../screens/Lab/UpdateMemberRoleInLab";
 function RootNavigators() {
   const Stack = createStackNavigator();
   return (
@@ -142,6 +144,10 @@ function RootNavigators() {
         <Stack.Screen name="ActivityStreams" component={ActivityStreams} />
         <Stack.Screen name="AssignedToMe" component={AssignedToMe} />
         <Stack.Screen name="MyQuestion" component={MyQuestion} />
+        <Stack.Screen
+          name="UpdateMemberRoleInProject"
+          component={UpdateMemberRoleInProject}
+        />
         <Stack.Screen
           name="MemberDetailProject"
           component={MemberDetailProject}

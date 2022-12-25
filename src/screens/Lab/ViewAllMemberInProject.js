@@ -111,7 +111,9 @@ export default function ViewAllMemberInProject({ route, navigation }) {
           </Text>
           <Text
             onPress={() =>
-              navigation.navigate("UpdateMemberRole", { memberid: memberId })
+              navigation.navigate("UpdateMemberRoleInProject", {
+                memberid: memberId,
+              })
             }
             style={styles.action}
           >

@@ -661,6 +661,59 @@ export const updateMemberRoleById =
     }
   };
 
+const getProjectId = async () => {
+  try {
+    const projectId = await AsyncStorage.getItem("@projectId");
+    console.log("projectId: " + projectId);
+    return projectId;
+  } catch (e) {
+    console.log("Can't get account id: " + e);
+  }
+};
+
+export const updateMemberRoleinProjectById =
+  (memberId, requestData, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
+    const projectId = await getProjectId();
+    try {
+      const labId = await getLabId();
+      const laboratoryController = new LaboratoryController(networkService);
+      const response = await laboratoryController.updateMemberRole({
+        memberId,
+        requestData,
+      });
+      if (response) {
+        dispatch(getAllMemberInProject(projectId, navigation));
+      }
+    } catch ({ data }) {
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
+    }
+  };
+
 export const addMembersToProject =
   (projectId, requestData, navigation) =>
   async (dispatch, _, { networkService }) => {
