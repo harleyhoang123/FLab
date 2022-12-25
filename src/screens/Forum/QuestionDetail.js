@@ -133,7 +133,7 @@ function QuestionDetail({ route, navigation }) {
     dispatch(getListQuestion(navigation));
   };
   const handleVote = (status) => {
-    voteQuestion(questionId, status, navigation).then((r) => {
+    voteQuestion(questionId, status, navigation).then((v) => {
       getQuestionDetail(questionId, null, null, navigation).then((r) => {
         setVotes(r.data.score);
         setVotedStatus(r.data.votedStatus);

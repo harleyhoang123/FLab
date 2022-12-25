@@ -189,7 +189,7 @@ function CommentNewsComponent({
               parentId={commentId}
               parentType={"NEWS"}
               commentId={item.commentId}
-              username={item.createdBy.fullName}
+              username={item.createdBy.userInfo.fullName}
               content={item.content}
               time={formatTime(item.createdDate)}
               callBackComment={callBackCommentNews}
