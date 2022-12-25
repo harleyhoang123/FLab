@@ -2096,6 +2096,7 @@ export const commentToNews = async (newsId, content, navigation) => {
 };
 export const commentToComment = async (commentId, content, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.post(
       routes.notification.commentToComment.replace(":comment-id", commentId),
@@ -2888,6 +2889,7 @@ export const returnOrder = async (orderId, navigation) => {
 
 export const getAllTag = async (tagName, page, size, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(routes.forum.getAllTag, {
       headers: {

@@ -124,11 +124,11 @@ export default function ViewAllMemberInProject({ route, navigation }) {
   );
   const renderItem = ({ item }) => (
     <Item
+      accountId={item.userInfo.accountId}
       memberId={item.memberId}
       memberName={item.userInfo.userInfo.fullName}
       email={item.userInfo.userInfo.email}
       roles={item.role}
-      accountId={item.userInfo.accountId}
     />
   );
   const [showConfirm, setShowConfirm] = useState(false);
