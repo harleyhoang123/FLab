@@ -2456,7 +2456,24 @@ export const getLaboratorySuggestionByAccountId = async (
     },
   });
 };
+export const getLaboratoryWaitingByAccountId = async (
+    accountId,
+    page,
+    size
+) => {
+  const token = await getToken();
+  return await axios.get(routes.laboratory.getLaboratoryWaiting, {
+    params: {
+      "account-id": accountId,
+      page: page,
+      size: size,
+    },
 
+    headers: {
+      Authorization: `Bearer ` + token,
+    },
+  });
+};
 export const getAllMemberByLabId = async (page, size) => {
   const token = await getToken();
   const labId = await getLabId();
