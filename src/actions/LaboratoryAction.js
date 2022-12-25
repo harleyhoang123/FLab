@@ -38,6 +38,13 @@ export const getLaboratoryById =
           "@currentMemberId",
           response.data.data.memberInfo.memberId
         );
+        await AsyncStorage.setItem(
+          "@roleInLab",
+          response.data.data.memberInfo.role
+        );
+        console.log(
+          "ROLE IN LAB" + JSON.stringify(response.data.data.memberInfo.role)
+        );
       }
       const listMember = await laboratoryController.getAllMemberInLaboratory({
         labId,
@@ -211,6 +218,13 @@ export const getProjectById =
         projectId,
       });
       await AsyncStorage.setItem("@projectId", response.data.data.projectId);
+      await AsyncStorage.setItem(
+        "@roleInProject",
+        response.data.data.memberInfo.role
+      );
+      console.log(
+        "ROLE IN PROJECT" + JSON.stringify(response.data.data.memberInfo.role)
+      );
       navigation.navigate("ProjectDetail", {
         data: response.data.data,
       });

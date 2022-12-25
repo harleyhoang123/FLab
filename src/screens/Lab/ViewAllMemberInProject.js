@@ -40,12 +40,23 @@ const getLabId = async () => {
   }
 };
 
+const getRoleInProject = async () => {
+  try {
+    const role = await AsyncStorage.getItem("@roleInProject");
+    console.log("role: " + role);
+    return role;
+  } catch (e) {
+    console.log("Can't get role: " + e);
+  }
+};
+
 export default function ViewAllMemberInProject({ route, navigation }) {
   const listMember = route.params.data;
   const data = listMember.items;
   const [labId, setLabId] = useState("");
   getLabId().then((v) => setLabId(v));
-
+  const [role, setRole] = useState("");
+  getRoleInProject().then((v) => setRole(v));
   const dispatch = useDispatch();
   const [projectId, setProjectId] = useState("");
   getProjectId().then((v) => setProjectId(v));
@@ -106,19 +117,23 @@ export default function ViewAllMemberInProject({ route, navigation }) {
           >
             Detail
           </Text>
-          <Text onPress={() => setShowConfirm(true)} style={styles.action}>
-            Remove
-          </Text>
-          <Text
-            onPress={() =>
-              navigation.navigate("UpdateMemberRoleInProject", {
-                memberid: memberId,
-              })
-            }
-            style={styles.action}
-          >
-            Update Role
-          </Text>
+          {role == "MANAGER" || role == "OWNER" ? (
+            <View style={{ flexDirection: "row" }}>
+              <Text onPress={() => setShowConfirm(true)} style={styles.action}>
+                Remove
+              </Text>
+              <Text
+                onPress={() =>
+                  navigation.navigate("UpdateMemberRoleInProject", {
+                    memberid: memberId,
+                  })
+                }
+                style={styles.action}
+              >
+                Update Role
+              </Text>
+            </View>
+          ) : null}
         </View>
       </View>
       <Text style={styles.title}>Roles: {roles}</Text>
@@ -139,16 +154,18 @@ export default function ViewAllMemberInProject({ route, navigation }) {
       <ProjectNavigator navigation={navigation} />
       <View style={styles.container}>
         <View>
-          <Buttons
-            style={styles.button}
-            onPressTo={() =>
-              navigation.push("AddMemberToProject", {
-                allMember: listMember,
-                projectId: projectId,
-              })
-            }
-            text={"Add new member"}
-          />
+          {role == "MANAGER" || role == "OWNER" ? (
+            <Buttons
+              style={styles.button}
+              onPressTo={() =>
+                navigation.push("AddMemberToProject", {
+                  allMember: listMember,
+                  projectId: projectId,
+                })
+              }
+              text={"Add new member"}
+            />
+          ) : null}
         </View>
         <SafeAreaView>
           <FlatList
