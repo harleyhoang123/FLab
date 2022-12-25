@@ -148,7 +148,6 @@ function RepositoryDetail({ route, navigation }) {
               setTypeChecked(type);
               setFName(folderName);
               setDescription(description);
-              setDisable(false);
               console.log("File ID in RepositoryDetail " + checked);
             }}
           />
