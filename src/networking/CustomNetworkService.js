@@ -2634,8 +2634,7 @@ export const updateProfileCv = async (
   navigation,
   cvName,
   description,
-  cv,
-  navigation
+  cv
 ) => {
   const token = await getToken();
   let errorCode = 200;
