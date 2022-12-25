@@ -209,11 +209,12 @@ function NewsDetail({ route, navigation }) {
             <CommentNewsComponent
               newsId={newsId}
               commentId={item.commentId}
-              username={item.createdBy.fullName}
+              username={item.createdBy.userInfo.fullName}
               content={item.content}
               createdDate={formatTime(item.createdDate)}
               listSubComment={item.comments}
               callBackCommentNews={callBackCommentNews}
+              navigation={navigation}
             />
           </View>
         ))}

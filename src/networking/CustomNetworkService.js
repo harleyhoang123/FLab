@@ -879,7 +879,7 @@ export const getListSubTask = async (taskId, navigation) => {
     );
     console.log("Data in getListSubTask: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
+  } catch (data) {
     if (data) {
       if (data.status) {
         if (data.status.status) {
@@ -1392,7 +1392,7 @@ export const getQuestionDetail = async (
       routes.forum.getQuestionDetailCustom.replace(":question-id", questionId),
       {
         headers: {
-          Authorization: Bearer + token,
+          Authorization: `Bearer ` + token,
         },
         params: {
           "score-sort-by": typeScore,
