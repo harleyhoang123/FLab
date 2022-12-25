@@ -48,12 +48,6 @@ function CurriculumVitae({navigation}) {
             setNumberOfElement(v.data.totalPage * 10)
         })
     }
-    const searchCV = () => {
-        getCVbyAccountId(accountId, text, 0, 10).then(v => {
-            setListCV(v.data.items);
-            setNumberOfElement(v.data.totalPage * 10)
-        })
-    }
     const openURL = (url) => {
         Linking.openURL(url).then(r => {
         });
@@ -122,20 +116,9 @@ function CurriculumVitae({navigation}) {
                         </View>
                     </View>
                 </Modal>
-                <Text style={styles.myCV}> List CV</Text>
+
                 <View style={styles.row}>
-                    <View style={styles.containerSearch}>
-                        <TextField
-                            text={text}
-                            onChangeText={text => setText(text)}
-                            placeholder={" Search"}
-                            secureTextEntry={false}
-                            multiline={false}
-                            style={{width: 400}}
-                            onSubmitEditing={() => searchCV()}
-                        />
-                        <Buttons text={"Search"} onPressTo={() => searchCV()}/>
-                    </View>
+                    <Text style={styles.myCV}> List CV</Text>
                     <View style={{marginRight: 30}}>
                         <Buttons text={"Back"} onPressTo={() => navigation.goBack()}/>
                     </View>

@@ -81,7 +81,7 @@ export default function ApplyToALab({ route, navigation }) {
           // Store Values in Temporary Array
           let newArray = response.data.items.map((item) => {
             return {
-              key: item.cvId,
+              key: item.cvUrl,
               value: item.cvName,
             };
           });
