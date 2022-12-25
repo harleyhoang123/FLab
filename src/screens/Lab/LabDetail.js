@@ -228,7 +228,7 @@ export default function LabDetail({ route, navigation }) {
               >
                 <Text
                   onPress={() =>
-                    navigation.navigate("ApplyToLab", {
+                    navigation.push("ApplyToLab", {
                       labId: data.laboratoryId,
                     })
                   }
