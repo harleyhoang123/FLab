@@ -67,7 +67,7 @@ export default function LabDetail({ route, navigation }) {
   const [accountId, setAccountId] = useState("");
   getAccountId().then((v) => setAccountId(v));
   const data = route.params.data;
-  console.log("labdeatl data:" + JSON.stringify(data));
+  console.log("lab data:" + JSON.stringify(data));
   const isJoined = route.params.isJoined;
   const allMember = route.params.allMember.items;
   const [numberOfApplication, setNumberOfApplication] = useState(0);
@@ -76,11 +76,12 @@ export default function LabDetail({ route, navigation }) {
 
   useEffect(() => {
     getCurrentMemberId().then((v) => setCurrentMemberId(v));
-    getLabId().then((r) =>
-      getNumberOfApplication(r, navigation).then((v) =>
-        setNumberOfApplication(v.data)
-      )
-    );
+    getLabId().then((r) => {
+      getNumberOfApplication(r, navigation).then((v) => {
+        setNumberOfApplication(v.data);
+        console.log("AAAA:" + v.data);
+      });
+    });
   }, []);
 
   const isAdmin = true;

@@ -42,7 +42,7 @@ export const getLaboratoryById =
       const listMember = await laboratoryController.getAllMemberInLaboratory({
         labId,
       });
-      navigation.navigate("LabDetail", {
+      navigation.push("LabDetail", {
         data: response.data.data,
         isJoined: isJoined,
         allMember: listMember.data.data,
