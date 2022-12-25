@@ -3650,3 +3650,45 @@ export const getActivityStreams = async (workspaceId, navigation) => {
     });
   }
 };
+
+export const getNumberOfApplication = async (labId, navigation) => {
+  const token = await getToken();
+  let errorCode = 200;
+  try {
+    const response = await axios.get(
+      routes.laboratory.getNumberOfApplication.replace(":lab-id", labId),
+      {
+        headers: {
+          Authorization: `Bearer ` + token,
+        },
+      }
+    );
+    console.log("getNumberOfApplication: " + JSON.stringify(response.data));
+    return response.data;
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
+  }
+};

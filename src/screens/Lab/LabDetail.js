@@ -28,6 +28,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
 import { getAllRequestInLabById } from "../../actions/LaboratoryAction";
 import { leaveLaboratory } from "../../actions/LaboratoryAction";
+import { getNumberOfApplication } from "../../networking/CustomNetworkService";
 
 const getAccountId = async () => {
   try {
@@ -69,14 +70,21 @@ export default function LabDetail({ route, navigation }) {
   console.log("labdeatl data:" + JSON.stringify(data));
   const isJoined = route.params.isJoined;
   const allMember = route.params.allMember.items;
+  const [numberOfApplication, setNumberOfApplication] = useState(0);
 
   const [currentMemberId, setCurrentMemberId] = useState("");
 
   useEffect(() => {
     getCurrentMemberId().then((v) => setCurrentMemberId(v));
+    getLabId().then((r) =>
+      getNumberOfApplication(r, navigation).then((v) =>
+        setNumberOfApplication(v.data)
+      )
+    );
   }, []);
 
   const isAdmin = true;
+
   const roles = data?.memberInfo?.role;
   console.log("ROLE: " + roles);
 
@@ -85,6 +93,8 @@ export default function LabDetail({ route, navigation }) {
     dispatch(getAllMemberInLaboratoryById(labId, navigation));
   };
 
+  console.log("numberOfApplication" + numberOfApplication);
+
   const memberId = data?.memberInfo?.memberId;
   const goToViewAllProjectPage = (labId, memberId) => {
     dispatch(getAllProjectByLabId(labId, memberId, navigation));
@@ -92,11 +102,6 @@ export default function LabDetail({ route, navigation }) {
 
   const goToViewAllRequestPage = () => {
     dispatch(getAllRequestInLabById(labIdRequest, navigation));
-  };
-
-  const leaveLaboratoryHandle = () => {
-    dispatch(leaveLaboratory(labIdRequest, currentMemberId, navigation));
-    setModalVisible(false);
   };
 
   const delteCurrentLab = () => {
@@ -115,7 +120,9 @@ export default function LabDetail({ route, navigation }) {
             style={styles.request}
           >
             <FontAwesomeIcon icon={faBell} size={"xl"} />
-            <Text style={styles.badge}>5</Text>
+            {numberOfApplication !== 0 ? (
+              <Text style={styles.badge}>{numberOfApplication}</Text>
+            ) : null}
           </TouchableOpacity>
         )}
 
@@ -124,40 +131,6 @@ export default function LabDetail({ route, navigation }) {
         </View>
 
         <View style={styles.containerInfo}>
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={showConfirm}
-            onRequestClose={() => {
-              setShowConfirm(false);
-            }}
-          >
-            <View style={styles.modalDelete}>
-              <View style={styles.modalDeleteView}>
-                <Text
-                  style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
-                >
-                  Do you want to delete this lab?
-                </Text>
-                <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
-                  <Buttons
-                    text={"Delete"}
-                    style={{ marginRight: 40 }}
-                    onPressTo={() => {
-                      delteCurrentLab();
-                      setShowConfirm(false);
-                    }}
-                  />
-                  <Buttons
-                    text={"Cancel"}
-                    style={{ backgroundColor: "#F4F5F7" }}
-                    styleText={{ color: "black" }}
-                    onPressTo={() => setShowConfirm(false)}
-                  />
-                </View>
-              </View>
-            </View>
-          </Modal>
           <View style={styles.info}>
             <ProfileComponent
               title={"Start from"}
@@ -210,13 +183,11 @@ export default function LabDetail({ route, navigation }) {
           )}
 
           <View style={styles.leavebtn}>
-            <Pressable
-              style={[styles.button, styles.buttonOpen]}
-              onPress={() => setModalVisible(true)}
-            >
-              {isJoined ? (
-                <Text style={styles.textStyle}>Leave</Text>
-              ) : (
+            {!isJoined && (
+              <Pressable
+                style={[styles.button, styles.buttonOpen]}
+                onPress={() => setModalVisible(true)}
+              >
                 <Text
                   onPress={() =>
                     navigation.navigate("ApplyToLab", {
@@ -227,8 +198,8 @@ export default function LabDetail({ route, navigation }) {
                 >
                   Apply
                 </Text>
-              )}
-            </Pressable>
+              </Pressable>
+            )}
             {isJoined && (
               <Pressable
                 style={[styles.button, styles.buttonOpen]}
@@ -272,43 +243,6 @@ export default function LabDetail({ route, navigation }) {
             </View>
           )}
         </View>
-        {isJoined && (
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              this.visibleModal(false);
-            }}
-          >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>
-                  Do you want to leave this Lab
-                </Text>
-                <View style={styles.wrapper}>
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalVisible(!modalVisible)}
-                  >
-                    <Text
-                      onPress={leaveLaboratoryHandle}
-                      style={styles.textStyle}
-                    >
-                      Leave
-                    </Text>
-                  </Pressable>
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalVisible(!modalVisible)}
-                  >
-                    <Text style={styles.textStyle}>Cancel</Text>
-                  </Pressable>
-                </View>
-              </View>
-            </View>
-          </Modal>
-        )}
       </View>
     </View>
   );
