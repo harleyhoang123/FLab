@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -26,7 +26,8 @@ import AsyncStorage from "@react-native-community/async-storage";
 import LabNavigator from "../../navigations/LabNavigator";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
-import { getAllRequestInLab } from "../../actions/LaboratoryAction";
+import { getAllRequestInLabById } from "../../actions/LaboratoryAction";
+import { leaveLaboratory } from "../../actions/LaboratoryAction";
 
 const getAccountId = async () => {
   try {
@@ -48,6 +49,16 @@ const getLabId = async () => {
   }
 };
 
+const getCurrentMemberId = async () => {
+  try {
+    const memberId = await AsyncStorage.getItem("@currentMemberId");
+    console.log("memberId in reate Project: " + memberId);
+    return memberId;
+  } catch (e) {
+    console.log("Can't get memberId id: " + e);
+  }
+};
+
 export default function LabDetail({ route, navigation }) {
   const [labIdRequest, setLabIdRequest] = useState("");
   getLabId().then((v) => setLabIdRequest(v));
@@ -58,6 +69,13 @@ export default function LabDetail({ route, navigation }) {
   console.log("labdeatl data:" + JSON.stringify(data));
   const isJoined = route.params.isJoined;
   const allMember = route.params.allMember.items;
+
+  const [currentMemberId, setCurrentMemberId] = useState("");
+
+  useEffect(() => {
+    getCurrentMemberId().then((v) => setCurrentMemberId(v));
+  }, []);
+
   const isAdmin = true;
   const roles = data?.memberInfo?.role;
   console.log("ROLE: " + roles);
@@ -68,13 +86,17 @@ export default function LabDetail({ route, navigation }) {
   };
 
   const memberId = data?.memberInfo?.memberId;
-  console.log("DUC NGAO:" + memberId);
   const goToViewAllProjectPage = (labId, memberId) => {
     dispatch(getAllProjectByLabId(labId, memberId, navigation));
   };
 
   const goToViewAllRequestPage = () => {
-    dispatch(getAllRequestInLab(labIdRequest, navigation));
+    dispatch(getAllRequestInLabById(labIdRequest, navigation));
+  };
+
+  const leaveLaboratoryHandle = () => {
+    dispatch(leaveLaboratory(labIdRequest, currentMemberId, navigation));
+    setModalVisible(false);
   };
 
   const delteCurrentLab = () => {
@@ -87,13 +109,16 @@ export default function LabDetail({ route, navigation }) {
     <View style={styles.container}>
       <LabNavigator navigation={navigation} isJoined={isJoined} />
       <View style={styles.containerProfile}>
-        <TouchableOpacity
-          onPress={goToViewAllRequestPage}
-          style={styles.request}
-        >
-          <FontAwesomeIcon icon={faBell} size={"xl"} />
-          <Text style={styles.badge}>5</Text>
-        </TouchableOpacity>
+        {isJoined && (
+          <TouchableOpacity
+            onPress={goToViewAllRequestPage}
+            style={styles.request}
+          >
+            <FontAwesomeIcon icon={faBell} size={"xl"} />
+            <Text style={styles.badge}>5</Text>
+          </TouchableOpacity>
+        )}
+
         <View style={styles.containerName}>
           <Text style={styles.textName}>{data.laboratoryName}</Text>
         </View>
@@ -246,44 +271,44 @@ export default function LabDetail({ route, navigation }) {
               </Pressable>
             </View>
           )}
-          {/*) : (*/}
-          {/*  <Text></Text>*/}
-          {/*)}*/}
         </View>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            this.visibleModal(false);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>
-                Do you want to leave this Lab
-              </Text>
-              <View style={styles.wrapper}>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}
-                >
-                  {isJoined ? (
-                    <Text style={styles.textStyle}>Leave</Text>
-                  ) : (
-                    <Text style={styles.textStyle}>Join</Text>
-                  )}
-                </Pressable>
-                <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}
-                >
-                  <Text style={styles.textStyle}>Cancel</Text>
-                </Pressable>
+        {isJoined && (
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              this.visibleModal(false);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>
+                  Do you want to leave this Lab
+                </Text>
+                <View style={styles.wrapper}>
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text
+                      onPress={leaveLaboratoryHandle}
+                      style={styles.textStyle}
+                    >
+                      Leave
+                    </Text>
+                  </Pressable>
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text style={styles.textStyle}>Cancel</Text>
+                  </Pressable>
+                </View>
               </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+        )}
       </View>
     </View>
   );

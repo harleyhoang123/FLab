@@ -28,7 +28,7 @@ const getLabId = async () => {
 
 const getMemberId = async () => {
   try {
-    const memberId = await AsyncStorage.getItem("@currentMemeberId");
+    const memberId = await AsyncStorage.getItem("@currentMemberId");
     console.log("memberId in reate Project: " + memberId);
     return memberId;
   } catch (e) {

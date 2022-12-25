@@ -36,8 +36,6 @@ function Upload({ route, navigation }) {
       )
     );
   };
-  console.log("folderName in Upload" + folderName);
-  console.log("parentFolderId in Upload" + parentFolderId);
   const pickFile = async () => {
     let result = await DocumentPicker.getDocumentAsync({
       type: "*/*",
@@ -45,11 +43,6 @@ function Upload({ route, navigation }) {
     });
     console.log(result);
     if (!result.cancelled) {
-      console.log("Picked: " + result);
-      console.log("name: " + result.name);
-      console.log("uri: " + result.uri);
-      console.log("size: " + result.size);
-      console.log("mimeType: " + result.mimeType);
       const filePicked = {
         name: result.name,
         base64: result.uri,
@@ -95,7 +88,7 @@ function Upload({ route, navigation }) {
             text={"Upload"}
             style={[styles.button, { marginRight: 30 }]}
             onPressTo={() => {
-              validateUploadCV(
+              uploadFile(
                 parentFolderId,
                 folderName,
                 fileName,

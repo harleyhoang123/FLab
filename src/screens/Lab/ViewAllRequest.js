@@ -22,6 +22,7 @@ export default function ViewAllRequest({ route, navigation }) {
   ];
 
   let data = listRequest.items;
+  console.log("Data req:" + JSON.stringify(data));
 
   // function filterStatus(data) {
   //   const filData = data.filter((item) => {
@@ -54,20 +55,23 @@ export default function ViewAllRequest({ route, navigation }) {
     dispatch(getRequestDetailByApplicationId(applicationId, navigation));
   };
 
-  const Item = ({ applicationId, email, fullName }) => (
+  const Item = ({ applicationId, email, fullName, status }) => (
     <View style={styles.item}>
       <Text style={styles.title}>{fullName} is waitting your response</Text>
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.title}>Email: {email}</Text>
-        <View style={{ marginLeft: "auto", flexDirection: "row" }}>
-          <Text
-            onPress={() => goToRequestDetail(applicationId)}
-            style={styles.action}
-          >
-            Detail
-          </Text>
-        </View>
+        {status == "WAITING_FOR_APPROVAL" && (
+          <View style={{ marginLeft: "auto", flexDirection: "row" }}>
+            <Text
+              onPress={() => goToRequestDetail(applicationId)}
+              style={styles.action}
+            >
+              Detail
+            </Text>
+          </View>
+        )}
       </View>
+      <Text style={styles.title}>Status: {status}</Text>
     </View>
   );
   const renderItem = ({ item }) => (
@@ -75,6 +79,7 @@ export default function ViewAllRequest({ route, navigation }) {
       applicationId={item.applicationId}
       fullName={item.createdBy.userInfo.fullName}
       email={item.createdBy.userInfo.email}
+      status={item.status}
     />
   );
   return (
@@ -114,7 +119,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     backgroundColor: "black",
     borderRadius: 5,
-    marginLeft: 30,
     color: "white",
     alignItems: "center",
     marginBottom: 30,

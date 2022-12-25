@@ -11,7 +11,7 @@ import {
   repository,
   workspace,
 } from "../controllers/ip";
-import IssueStatistics from "../screens/Dashboards/IssueStatistics";
+import { getAllRequestInLabById } from "../actions/LaboratoryAction";
 
 const getToken = async () => {
   try {

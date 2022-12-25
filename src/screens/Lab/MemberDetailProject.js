@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -78,11 +78,9 @@ export default function MemberDetailProject({ route, navigation }) {
         <View style={styles.right}>
           <View style={styles.content}>
             <View style={styles.contact}>
-              <Text style={styles.memberName}>
-                {data.lastModifiedBy.userInfo.username}
-              </Text>
+              <Text style={styles.memberName}>{data.username}</Text>
               <Text style={styles.address}>
-                {data.address} - {data.lastModifiedBy.userInfo.email}
+                {data.address} - {data.email}
               </Text>
               <Text style={[styles.description]}>{data.description}</Text>
             </View>

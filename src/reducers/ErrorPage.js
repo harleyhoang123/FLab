@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import HomeTopNavigator from "../navigations/HomeNavigation";
+import Buttons from "../components/Buttons";
 
 function ErrorPage({ route, navigation }) {
   const errCode = route.params.status;
@@ -16,10 +17,31 @@ function ErrorPage({ route, navigation }) {
   return (
     <View>
       <HomeTopNavigator navigation={navigation} />
-      {errCode !== 200 ? <Text>{message}</Text> : null}
-      <View></View>
+      <View style={styles.errorContainer}>
+        {errCode !== 200 && <Text style={styles.errMsg}>{message}</Text>}
+        <Buttons
+          text={"Go Home"}
+          style={styles.button}
+          onPressTo={() => navigation.push("Home")}
+        />
+      </View>
     </View>
   );
 }
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  errorContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    marginTop: "15%",
+  },
+  button: {
+    marginTop: 20,
+    width: 130,
+    marginLeft: 5,
+  },
+  errMsg: {
+    fontSize: 30,
+  },
+});
 export default ErrorPage;

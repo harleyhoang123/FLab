@@ -1,41 +1,115 @@
-
-import {NewsController} from "../controllers/NewsController";
+import { NewsController } from "../controllers/NewsController";
 
 export const getNewsDetailByNewsId =
-    (newsId, navigation) =>
-        async (dispatch, _, {networkService}) => {
-            try {
-                const newsController = new NewsController(networkService);
-                const response = await newsController.getNewsDetailByNewsId({newsId});
-                console.log("Data getNewsDetailByNewsId is: " + JSON.stringify(response));
-                navigation.push("NewsDetail", {data: response.data.data});
-            } catch ({data}) {
-                console.log("ERROR in getNewsDetailByNewsId " + JSON.stringify(data))
+  (newsId, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
+    try {
+      const newsController = new NewsController(networkService);
+      const response = await newsController.getNewsDetailByNewsId({ newsId });
+      if (response) {
+        navigation.push("NewsDetail", { data: response.data.data });
+      }
+    } catch ({ data }) {
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
             }
-        };
-export const getListNews =
-    (navigation) =>
-        async (dispatch, _, {networkService}) => {
-            try {
-                const newsController = new NewsController(networkService);
-                const response = await newsController.getListNews();
-                console.log("Data getListNews is: " + JSON.stringify(response));
-                navigation.push("ListNews", {data: response.data.data});
-            } catch ({data}) {
-                console.log("ERROR in getListNews " + JSON.stringify(data))
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
             }
-        };
-export const createNews =
-    (title, content, thumbnail,navigation) => async (dispatch, _, {networkService}) => {
-        console.log("title in actions: " + title)
-        console.log("content in actions: " + content)
-        console.log("thumbnail in actions: " + thumbnail)
-        try {
-            const newsController = new NewsController(networkService);
-            const {data} = await newsController.createNews({title, content,thumbnail});
-            console.log("Data createNews is: " + JSON.stringify(data));
-            navigation.push("ListNews");
-        } catch ({data}) {
-            console.log("ERROR in createNews " + JSON.stringify(data))
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
         }
-    };
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
+    }
+  };
+export const getListNews =
+  (navigation) =>
+  async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
+    try {
+      const newsController = new NewsController(networkService);
+      const response = await newsController.getListNews();
+      if (response) {
+        navigation.push("ListNews", { data: response.data.data });
+      }
+    } catch ({ data }) {
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
+    }
+  };
+export const createNews =
+  (title, content, thumbnail, navigation) =>
+  async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
+    try {
+      const newsController = new NewsController(networkService);
+      const { data } = await newsController.createNews({
+        title,
+        content,
+        thumbnail,
+      });
+      navigation.push("ListNews");
+    } catch ({ data }) {
+      if (data) {
+        if (data.status) {
+          if (data.status.status) {
+            errorCode = data.status.status;
+            let displayMessage = data.status.message;
+            if (displayMessage == null) {
+              displayMessage = "Oops! Something went wrong.";
+            }
+            if (errorCode == 400) {
+              alert(displayMessage);
+              return;
+            }
+            navigation.push("ErrorPage", {
+              status: errorCode,
+              displayMessage: displayMessage,
+            });
+            return;
+          }
+        }
+      }
+      navigation.push("ErrorPage", {
+        status: 500,
+        displayMessage: "Oops! Something went wrong.",
+      });
+    }
+  };

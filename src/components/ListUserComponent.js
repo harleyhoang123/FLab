@@ -58,6 +58,7 @@ const ListUserComponent = ({ listMember, navigation }) => {
     };
     console.log(requestData);
     dispatch(addMembersToLab(requestData, navigation));
+    setAccountId([]);
   };
 
   const renderItem = ({ item }) => (
