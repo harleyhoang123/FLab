@@ -1,11 +1,27 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from "react-native";
-function NotifyComponent({title, time, date, onPress}) {
+function NotifyComponent({title, date, read}) {
+    const formatTime = (date) => {
+        const d = new Date(date);
+        const month = d.getMonth() + 1;
+        return d.getDate() + "/" + month + "/" + d.getFullYear()+" "+d.getHours()+":"+d.getMinutes()+":"+d.getSeconds();
+    };
+    const checkRead=(read)=>{
+        if (read){
+            return(
+                <Text >{title} on {formatTime(date)}</Text>
+                )
+
+        }else{
+            return(
+                <Text style={styles.title}>{title} on {formatTime(date)}</Text>
+                )
+
+        }
+    }
     return (
-            <View style={styles.container}
-                              onPress={onPress }>
-                <Text style={styles.title} >{title}</Text>
-                <Text>{time} on {date}</Text>
+            <View style={styles.container}>
+                {checkRead(read)}
             </View>
     );
 }

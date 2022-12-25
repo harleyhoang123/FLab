@@ -1,60 +1,57 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import NotifyComponent from "../../components/NotifyComponent";
+import AsyncStorage from "@react-native-community/async-storage";
+import {getNotification} from "../../networking/CustomNetworkService";
+import {ScrollView} from "react-native";
 
-function Notification({navigation, modalNotifyVisible, setModalNotifyVisible}) {
-    const listNotify =[{
-        title: "you have been accepted into lab 211",
-        time: "12:13",
-        date: "23-12-2022",
-    },
-        {
-            title: "you are added to project 1",
-            time: "10:19",
-            date: "22-12-2022",
-        },
-        {
-            title: "Nguyen Cong Son answered your question ",
-            time: "20:13",
-            date: "20-12-2022",
-        },
-        {
-            title: "you have assigned task 2",
-            time: "17:12",
-            date: "18-12-2022",
-        },
-    ]
+const getAccountId = async () => {
+    try {
+        const accountId = await AsyncStorage.getItem("@accountId");
+        console.log("AccountId: " + accountId);
+        return accountId;
+    } catch (e) {
+        console.log("Can't get account id: " + e);
+    }
+};
+
+function Notification({navigation, modalNotifyVisible, setModalNotifyVisible, listNotify}) {
     return (
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={modalNotifyVisible}
-                onRequestClose={() => {
-                    setModalNotifyVisible(!modalNotifyVisible);
-                }}
-            >
-                <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={()=>  setModalNotifyVisible(!modalNotifyVisible) }
-                    style={styles.modal}>
-                    <View style={styles.modalNotifyView}>
-                        <FlatList data={listNotify}
-                                  renderItem={({ item }) => (
-                                      <NotifyComponent date={item.date} time={item.time} title={item.title} />
+        <Modal
+            animationType="fade"
+            transparent={true}
+            visible={modalNotifyVisible}
+            onRequestClose={() => {
+                setModalNotifyVisible(!modalNotifyVisible);
+            }}
+        >
+            <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => setModalNotifyVisible(!modalNotifyVisible)}
+                style={styles.modal}>
+                <View style={styles.modalNotifyView}>
+                    <ScrollView>
+                        <FlatList style={{maxHeight:600}}
+                            data={listNotify}
+                                  renderItem={({item}) => (
+                                      <NotifyComponent title={item.content} date={item.createdDate} read={item.read}/>
                                   )}/>
-                    </View>
-                </TouchableOpacity>
-            </Modal>
+                    </ScrollView>
+
+                </View>
+            </TouchableOpacity>
+        </Modal>
     );
 }
+
 const styles = StyleSheet.create({
-    modal:{
+    modal: {
         alignItems: "flex-end",
-        flex:1,
+        flex: 1,
     },
     modalNotifyView: {
         marginTop: 50,
-        marginRight:15,
+        marginRight: 15,
         backgroundColor: "white",
         borderRadius: 20,
         shadowColor: "#000",

@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons/faBell";
 import AvatarComponent from "../components/AvatarComponent";
-import Notification from "../screens/Notification/Notification";
 import { getAccountInfoByAccountId, logout } from "../actions/UserAction";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
-import { getNumberNotifyOfAccountId } from "../networking/CustomNetworkService";
 import NotificationIconContainer from "../screens/Notification/NotificationIconContainer";
 
 const getAvatar = async () => {

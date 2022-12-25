@@ -93,7 +93,8 @@ function MyOrder({ navigation }) {
   const returnOrderItem = (orderId) => {
     returnOrder(orderId, navigation).then((v) =>
       getListOrderByAccountId(labId, accountId, navigation).then((a) =>
-        setList(a.data.items)
+      {setList(a.data.items);
+    filterStatus(a.data.items, value);}
       )
     );
   };

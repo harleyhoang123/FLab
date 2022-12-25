@@ -2096,6 +2096,7 @@ export const commentToNews = async (newsId, content, navigation) => {
 };
 export const commentToComment = async (commentId, content, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.post(
       routes.notification.commentToComment.replace(":comment-id", commentId),
@@ -2444,6 +2445,24 @@ export const getLaboratorySuggestionByAccountId = async (
 ) => {
   const token = await getToken();
   return await axios.get(routes.laboratory.getLaboratorySuggestion, {
+    params: {
+      "account-id": accountId,
+      page: page,
+      size: size,
+    },
+
+    headers: {
+      Authorization: `Bearer ` + token,
+    },
+  });
+};
+export const getLaboratoryWaitingByAccountId = async (
+    accountId,
+    page,
+    size
+) => {
+  const token = await getToken();
+  return await axios.get(routes.laboratory.getLaboratoryWaiting, {
     params: {
       "account-id": accountId,
       page: page,
@@ -2888,6 +2907,7 @@ export const returnOrder = async (orderId, navigation) => {
 
 export const getAllTag = async (tagName, page, size, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(routes.forum.getAllTag, {
       headers: {
@@ -3344,8 +3364,9 @@ export const acceptAnswer = async (questionId, answerId, navigation) => {
   }
 };
 
-export const getNumberNotifyOfAccountId = async (accountId) => {
+export const getNumberNotifyOfAccountId = async (accountId,navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(
       routes.notification.getNumberOfNotificationByAccountId.replace(
@@ -3360,10 +3381,31 @@ export const getNumberNotifyOfAccountId = async (accountId) => {
     );
 
     return response.data;
-  } catch (error) {
-    console.log(
-      "error when getNumberNotifyOfAccountId:" + JSON.stringify(error)
-    );
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 
@@ -3648,3 +3690,45 @@ export const getActivityStreams = async (workspaceId, navigation) => {
     });
   }
 };
+export const getNotification = async (accountId, navigation) => {
+  const token = await getToken();
+  let errorCode = 200;
+  try {
+    const response = await axios.get(
+        routes.notification.getNotification.replace(":account-id", accountId),
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+        }
+    );
+    console.log("Data in getNotification: " + JSON.stringify(response.data));
+    return response.data;
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
+  }
+};
+

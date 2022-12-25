@@ -58,7 +58,6 @@ export default function TaskDetailComponent({
   const [subTaskName, setSubTaskName] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState();
-  const [listActivity, setListActivity] = useState();
   const [isChild, setIsChild] = useState(false);
 
   const isNumber = new RegExp("^\\d+$");
@@ -151,22 +150,6 @@ export default function TaskDetailComponent({
       setIsChild(false);
     }
   }
-
-  function filterActivity(list, value) {
-    if (value === "ALL") {
-      setListActivity(list);
-    } else if (value === "HISTORY") {
-      const filData = list.filter(function (item) {
-        return item.activityType === value;
-      });
-      setListActivity(filData);
-    } else if (value === "COMMENTS") {
-      const filData = list.filter(function (item) {
-        return item.activityType === value;
-      });
-      setListActivity(filData);
-    }
-  }
   const getCurrentMemberAssignee = () => {
     if (assigneeDetail !== null) {
       setAssigneeUpdate(assigneeDetail.memberId);
@@ -202,7 +185,6 @@ export default function TaskDetailComponent({
     getCurrentMemberReporter();
     checkNullTextField();
     setData(newArray);
-    filterActivity(activityResponse, show);
   }, []);
   const getStatus = (status) => {
     if (status === "TO_DO") {
@@ -251,7 +233,6 @@ export default function TaskDetailComponent({
         setEstimateDetail(r.data.estimate);
         setReporterDetail(r.data.reporter);
         setActivityResponse(r.data.activityResponses);
-        filterActivity(r.data.activityResponses, show);
       });
     });
   };
@@ -261,7 +242,6 @@ export default function TaskDetailComponent({
       getTaskDetail(taskId, navigation).then((r) => {
         setAssigneeDetail(r.data.assignee);
         setActivityResponse(r.data.activityResponses);
-        filterActivity(r.data.activityResponses, show);
       });
     });
   };
@@ -562,27 +542,8 @@ export default function TaskDetailComponent({
           {renderDetail()}
         </View>
         <Text style={styles.childIssues}>Activity</Text>
-        <View style={styles.rowDetail}>
-          <Text style={[styles.descriptionDetail, { alignSelf: "center" }]}>
-            Show:
-          </Text>
-          <Picker
-            style={styles.picker}
-            mode={"dropdown"}
-            selectedValue={show}
-            onValueChange={(itemValue, itemIndex) => {
-              filterActivity(activityResponse, itemValue);
-              console.log("Pick value" + itemValue);
-              setShow(itemValue);
-            }}
-          >
-            <Picker.Item label="All" value="ALL" />
-            <Picker.Item label="Comments" value="COMMENTS" />
-            <Picker.Item label="History" value="HISTORY" />
-          </Picker>
-        </View>
         <FlatList
-          data={listActivity}
+          data={activityResponse}
           renderItem={({ item }) => (
             <View>
               <Text style={styles.descriptionDetail}>

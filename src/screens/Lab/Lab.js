@@ -12,7 +12,7 @@ import Buttons from "../../components/Buttons";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import {
   getLaboratoryByAccountId,
-  getLaboratorySuggestionByAccountId,
+  getLaboratorySuggestionByAccountId, getLaboratoryWaitingByAccountId,
 } from "../../networking/CustomNetworkService";
 import PaginationBar from "../../components/PaginationBar";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -30,8 +30,10 @@ const getAccountId = async () => {
 const Lab = ({ route, navigation }) => {
   const [numberOfElement, setNumberOfElement] = useState(0);
   const [numberOfElementSuggestion, setNumberOfElementSuggestion] = useState(0);
+  const [numberOfElementWaiting, setNumberOfElementWaiting] = useState(0);
   const [items, setItem] = useState([]);
   const [itemsSugges, setItemsSugges] = useState([]);
+  const [itemWaiting, setItemWaiting] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
   const [suggestionPage, setSuggestionPage] = useState(1);
 
@@ -61,9 +63,20 @@ const Lab = ({ route, navigation }) => {
       });
     });
   };
+  const getLaboratoryWaiting = (selectedPage) => {
+    getAccountId().then((v) => {
+      setAccountId(v);
+      getLaboratoryWaitingByAccountId(v, selectedPage - 1, 5).then((v) => {
+        setItemWaiting(v.data.data.items),
+            setNumberOfElementWaiting(
+                v.data.data.totalPage * 5);
+      });
+    });
+  };
   useEffect(() => {
     getLaboratory(1);
     getLaboratorySuggestion(1);
+    getLaboratoryWaiting(1)
   }, []);
 
   // const callbackSelectedPage = (pageNumber, suggestionPageNumber) => {
@@ -76,6 +89,9 @@ const Lab = ({ route, navigation }) => {
 
   const changeSelectednPage = (selectedPageNumber) => {
     getLaboratory(selectedPageNumber);
+  };
+  const changeWaitingPage = (waitingPageNumber) => {
+    getLaboratoryWaiting(waitingPageNumber);
   };
 
   const Item = ({
@@ -232,7 +248,7 @@ const Lab = ({ route, navigation }) => {
             callbackSelectedPage={changeSuggestionPage}
           />
         </View>
-        <View style={styles.bot}>
+        <View style={styles.top}>
           <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 120 }}>
             Recent
           </Text>
@@ -248,6 +264,24 @@ const Lab = ({ route, navigation }) => {
             currentSizes={5}
             numberOfElement={numberOfElement}
             callbackSelectedPage={changeSelectednPage}
+          />
+        </View>
+        <View style={styles.top}>
+          <Text style={{ fontSize: 25, marginBottom: 20, marginLeft: 120 }}>
+            Lab Waiting for Approval
+          </Text>
+
+          <SafeAreaView style={styles.flatlist}>
+            <FlatList
+                numColumns={5}
+                data={itemWaiting}
+                renderItem={renderItem}
+            />
+          </SafeAreaView>
+          <PaginationBar
+              currentSizes={5}
+              numberOfElement={numberOfElementSuggestion}
+              callbackSelectedPage={changeWaitingPage}
           />
         </View>
         <View style={styles.btn}>

@@ -12,6 +12,8 @@ export const routes = {
     getLaboratory: laboratory + "/flab/lab/public/api/v1/laboratories",
     getLaboratorySuggestion:
       laboratory + "/flab/lab/public/api/v1/laboratories/suggestion",
+    getLaboratoryWaiting:
+        laboratory + "/flab/lab/public/api/v1/laboratories/waiting",
     getLaboratoryById:
       laboratory + "/flab/lab/public/api/v1/laboratories/:lab-id",
     getAllMemberInLaboratory:
@@ -220,8 +222,9 @@ export const routes = {
       notification +
       "/flab/notification/public/api/v1/comments/:comment-id/:subcomment-id",
     getNumberOfNotificationByAccountId:
-      "http://127.0.0.1:8085" +
+      notification+
       "/flab/notification/private/api/v1/notifies/:account-id/count",
+    getNotification: notification + "/flab/notification/private/api/v1/notifies/:account-id",
   },
   workSpace: {
     getAllSprint:
