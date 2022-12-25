@@ -244,7 +244,8 @@ function SubTaskDetailComponent({
       assignee,
       label,
       estimate,
-      reporter
+      reporter,
+      navigation
     ).then((value) => {
       console.log("updateASubTask:" + JSON.stringify(value));
       getSubTaskDetail(subTaskId, navigation).then((r) => {
@@ -262,13 +263,15 @@ function SubTaskDetailComponent({
     });
   };
   const assignInSubTask = (projectId, subTaskId, memberId, assignee) => {
-    assignSubTask(projectId, subTaskId, memberId, assignee).then((value) => {
-      getSubTaskDetail(subTaskId, navigation).then((r) => {
-        setAssigneeDetail(r.data.assignee);
-        setActivityResponse(r.data.activityResponses);
-        filterActivity(r.data.activityResponses, show);
-      });
-    });
+    assignSubTask(projectId, subTaskId, memberId, assignee, navigation).then(
+      (value) => {
+        getSubTaskDetail(subTaskId, navigation).then((r) => {
+          setAssigneeDetail(r.data.assignee);
+          setActivityResponse(r.data.activityResponses);
+          filterActivity(r.data.activityResponses, show);
+        });
+      }
+    );
   };
   const renderDetail = () => {
     if (visible) {
@@ -484,9 +487,11 @@ function SubTaskDetailComponent({
                 text={"Delete"}
                 style={{ marginRight: 40 }}
                 onPressTo={() => {
-                  deleteSubTask(subTaskDetail.subTaskId, taskId).then((r) =>
-                    callbackSubTaskDetail(null)
-                  );
+                  deleteSubTask(
+                    subTaskDetail.subTaskId,
+                    taskId,
+                    navigation
+                  ).then((r) => callbackSubTaskDetail(null));
                   setShowConfirm(false);
                 }}
               />

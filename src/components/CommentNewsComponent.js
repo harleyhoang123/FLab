@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CommentItem from "./CommentItem";
 import TextField from "./TextField";
 import Buttons from "./Buttons";
@@ -18,6 +18,7 @@ function CommentNewsComponent({
   createdDate,
   listSubComment,
   callBackCommentNews,
+  navigation,
 }) {
   const formatTime = (date) => {
     const d = new Date(date);
@@ -54,82 +55,98 @@ function CommentNewsComponent({
   }
 
   const handleComment = () => {
-    commentToComment(commentId, comment).then(() => callBackCommentNews());
+    commentToComment(commentId, comment, navigation).then(() =>
+      callBackCommentNews()
+    );
   };
   const handleEdit = () => {
-    editCommentNews(commentId, text).then(() => {
+    editCommentNews(commentId, text, navigation).then(() => {
       callBackCommentNews();
       setIsEdit(!isEdit);
     });
   };
   const handleDelete = () => {
-    deleteCommentInNews(newsId, commentId).then(() => callBackCommentNews());
+    deleteCommentInNews(newsId, commentId, navigation).then(() =>
+      callBackCommentNews()
+    );
   };
-  const [showConfirm,setShowConfirm]=useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   return (
     <View>
       <View style={styles.container}>
         <Modal
-            animationType="fade"
-            transparent={true}
-            visible={showConfirm}
-            onRequestClose={() => {
-              setShowConfirm(false);
-            }}>
+          animationType="fade"
+          transparent={true}
+          visible={showConfirm}
+          onRequestClose={() => {
+            setShowConfirm(false);
+          }}
+        >
           <View style={styles.modalDelete}>
             <View style={styles.modalDeleteView}>
-              <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to delete this comment?</Text>
-              <View style={{alignItems: "flex-end", flexDirection: "row"}}>
-                <Buttons text={"Delete"} style={{marginRight: 40}} onPressTo={() => {
-                  handleDelete();
-                  setShowConfirm(false);
-                }}/>
-                <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
-                         onPressTo={() => setShowConfirm(false)}/>
+              <Text
+                style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
+              >
+                Do you want to delete this comment?
+              </Text>
+              <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
+                <Buttons
+                  text={"Delete"}
+                  style={{ marginRight: 40 }}
+                  onPressTo={() => {
+                    handleDelete();
+                    setShowConfirm(false);
+                  }}
+                />
+                <Buttons
+                  text={"Cancel"}
+                  style={{ backgroundColor: "#F4F5F7" }}
+                  styleText={{ color: "black" }}
+                  onPressTo={() => setShowConfirm(false)}
+                />
               </View>
             </View>
           </View>
         </Modal>
         <Modal
-            animationType="fade"
-            transparent={true}
-            visible={isEdit}
-            onRequestClose={() => {
-              setIsEdit(false);
-            }}
+          animationType="fade"
+          transparent={true}
+          visible={isEdit}
+          onRequestClose={() => {
+            setIsEdit(false);
+          }}
         >
           <View style={styles.modalEdit}>
             <View style={styles.modalEditView}>
               <TextField
-                  text={text}
-                  onChangeText={(text) => setText(text)}
-                  placeholder={" Edit Answer"}
-                  secureTextEntry={false}
-                  multiline={true}
-                  onSubmitEditing={() => {
-                    validateComment();
-                    setText("");
-
-                  }}
-                  style={{height:150,width:"95%" }}
+                text={text}
+                onChangeText={(text) => setText(text)}
+                placeholder={" Edit Answer"}
+                secureTextEntry={false}
+                multiline={true}
+                onSubmitEditing={() => {
+                  validateComment();
+                  setText("");
+                }}
+                style={{ height: 150, width: "95%" }}
               />
               {isComment && (
-                  <Text style={styles.inputInvalid}>Invalid comment</Text>
+                <Text style={styles.inputInvalid}>Invalid comment</Text>
               )}
               <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
                 <Buttons
-                    text={"Save"}
-                    onPressTo={() => {
-                      validateComment();
-                      setText("");
-                    }}
-                    style={{marginLeft: 20}}
+                  text={"Save"}
+                  onPressTo={() => {
+                    validateComment();
+                    setText("");
+                  }}
+                  style={{ marginLeft: 20 }}
                 />
                 <Buttons
-                    text={"Cancel"}
-                    style={{ backgroundColor: "#F4F5F7",marginLeft: 20 }}
-                    styleText={{ color: "black" }}
-                    onPressTo={() => setIsEdit(false)}
+                  text={"Cancel"}
+                  style={{ backgroundColor: "#F4F5F7", marginLeft: 20 }}
+                  styleText={{ color: "black" }}
+                  onPressTo={() => setIsEdit(false)}
                 />
               </View>
             </View>
@@ -137,17 +154,28 @@ function CommentNewsComponent({
         </Modal>
         <View>
           <View style={styles.containerComment}>
-            <Text style={styles.text}><Text style={styles.textUsername}>{username}</Text> {content}</Text>
+            <Text style={styles.text}>
+              <Text style={styles.textUsername}>{username}</Text> {content}
+            </Text>
           </View>
           <View style={styles.containerComment}>
             <Text style={styles.text}>{createdDate}</Text>
             <View style={styles.login}>
-              <TouchableOpacity onPress={() => {setIsEdit(true); setText(content)}}>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsEdit(true);
+                  setText(content);
+                }}
+              >
                 <Text style={styles.txt}>Edit</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.login}>
-              <TouchableOpacity onPress={()=>{setShowConfirm(true)}}>
+              <TouchableOpacity
+                onPress={() => {
+                  setShowConfirm(true);
+                }}
+              >
                 <Text style={styles.txt}>Delete</Text>
               </TouchableOpacity>
             </View>
@@ -165,6 +193,7 @@ function CommentNewsComponent({
               content={item.content}
               time={formatTime(item.createdDate)}
               callBackComment={callBackCommentNews}
+              navigation={navigation}
             />
           </View>
         ))}
@@ -258,7 +287,7 @@ const styles = StyleSheet.create({
   },
   modalDelete: {
     alignItems: "center",
-    justifyContent:"center",
+    justifyContent: "center",
     flex: 1,
   },
   modalDeleteView: {

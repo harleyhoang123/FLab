@@ -30,17 +30,23 @@ export default function AddMemberToLab({ route, navigation }) {
   };
   const searchMember = (labId, page) => {
     if (labId) {
-      getMemberNotInLab(labId, inputSearchData, page, size).then((response) => {
-        setNumberOfElement(response.data.totalPage * size);
-        setListMember(response.data.items);
-      });
-    } else {
-      getMemberNotInLab(labIdUseState, inputSearchData, page, size).then(
+      getMemberNotInLab(labId, inputSearchData, page, size, navigation).then(
         (response) => {
           setNumberOfElement(response.data.totalPage * size);
           setListMember(response.data.items);
         }
       );
+    } else {
+      getMemberNotInLab(
+        labIdUseState,
+        inputSearchData,
+        page,
+        size,
+        navigation
+      ).then((response) => {
+        setNumberOfElement(response.data.totalPage * size);
+        setListMember(response.data.items);
+      });
     }
   };
   return (

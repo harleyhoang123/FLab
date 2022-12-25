@@ -34,7 +34,7 @@ function TaskComponent({
   const [assigneeDetail, setAssigneeDetail] = useState(assignee);
   const [showConfirm, setShowConfirm] = useState(false);
   const deleteATask = (sprintId, taskId) => {
-    deleteTask(sprintId, taskId).then(() => {
+    deleteTask(sprintId, taskId, navigation).then(() => {
       callBackGetListTask();
       callbackDeleteTask(taskId);
     });

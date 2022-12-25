@@ -7,7 +7,8 @@ import {
   Button,
   StyleSheet,
   Text,
-  StatusBar, Linking,
+  StatusBar,
+  Linking,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import Buttons from "../../components/Buttons";
@@ -42,7 +43,14 @@ export default function RequestDetail({ route, navigation }) {
       comment: textComment,
     };
     console.log(requestData);
-    reviewRequest(labId, data.applicationId, requestData, navigation, dispatch);
+    reviewRequest(
+      labId,
+      data.applicationId,
+      requestData,
+      navigation,
+      dispatch,
+      navigation
+    );
   };
 
   return (
@@ -71,10 +79,11 @@ export default function RequestDetail({ route, navigation }) {
 
           <View style={styles.btn}>
             <Buttons
-                text={"View CV"}
-                style={styles.button}
-                onPressTo={() => {Linking.openURL(data.cvKey).then(r => {
-                });}}
+              text={"View CV"}
+              style={styles.button}
+              onPressTo={() => {
+                Linking.openURL(data.cvKey).then((r) => {});
+              }}
             />
             <Buttons
               text={"Accept"}

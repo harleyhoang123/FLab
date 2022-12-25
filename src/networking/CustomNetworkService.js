@@ -503,7 +503,8 @@ export const updateSprint = async (
   sprintName,
   startDate,
   dueDate,
-  goal
+  goal,
+  navigation
 ) => {
   const token = await getToken();
   let errorCode = 200;
@@ -558,7 +559,8 @@ export const updateStatusSprint = async (
   projectId,
   sprintId,
   memberId,
-  status
+  status,
+  navigation
 ) => {
   const token = await getToken();
   let errorCode = 200;
@@ -607,7 +609,7 @@ export const updateStatusSprint = async (
   }
 };
 
-export const getSprintDetail = async (sprintId) => {
+export const getSprintDetail = async (sprintId, navigation) => {
   const token = await getToken();
   let errorCode = 200;
   try {
@@ -648,7 +650,7 @@ export const getSprintDetail = async (sprintId) => {
     });
   }
 };
-export const deleteSubTask = async (subTaskId, taskId) => {
+export const deleteSubTask = async (subTaskId, taskId, navigation) => {
   const token = await getToken();
   let errorCode = 200;
   try {
@@ -701,7 +703,8 @@ export const updateSubTask = async (
   assignee,
   label,
   estimate,
-  reporter
+  reporter,
+  navigation
 ) => {
   const token = await getToken();
   let errorCode = 200;
@@ -759,7 +762,8 @@ export const assignSubTask = async (
   projectId,
   subTaskId,
   memberId,
-  assignee
+  assignee,
+  navigation
 ) => {
   const token = await getToken();
   let errorCode = 200;
@@ -811,7 +815,8 @@ export const createSubTask = async (
   projectId,
   taskId,
   memberId,
-  subTaskName
+  subTaskName,
+  navigation
 ) => {
   const token = await getToken();
   let errorCode = 200;
@@ -860,7 +865,7 @@ export const createSubTask = async (
   }
 };
 
-export const getListSubTask = async (taskId) => {
+export const getListSubTask = async (taskId, navigation) => {
   const token = await getToken();
   let errorCode = 200;
   try {
@@ -911,7 +916,8 @@ export const updateTask = async (
   assignee,
   label,
   estimate,
-  reporter
+  reporter,
+  navigation
 ) => {
   const token = await getToken();
   let errorCode = 200;
@@ -965,7 +971,13 @@ export const updateTask = async (
     });
   }
 };
-export const assignTask = async (projectId, taskId, memberId, assignee) => {
+export const assignTask = async (
+  projectId,
+  taskId,
+  memberId,
+  assignee,
+  navigation
+) => {
   const token = await getToken();
   let errorCode = 200;
   try {
@@ -1012,7 +1024,7 @@ export const assignTask = async (projectId, taskId, memberId, assignee) => {
     });
   }
 };
-export const deleteTask = async (sprintId, taskId) => {
+export const deleteTask = async (sprintId, taskId, navigation) => {
   const token = await getToken();
   let errorCode = 200;
   try {
@@ -1056,7 +1068,11 @@ export const deleteTask = async (sprintId, taskId) => {
   }
 };
 
-export const deleteFolderInRepository = async (repoId, folderId) => {
+export const deleteFolderInRepository = async (
+  repoId,
+  folderId,
+  navigation
+) => {
   const token = await getToken();
   let errorCode = 200;
   try {
@@ -1099,7 +1115,7 @@ export const deleteFolderInRepository = async (repoId, folderId) => {
     });
   }
 };
-export const getListFolder = async (repoId) => {
+export const getListFolder = async (repoId, navigation) => {
   const token = await getToken();
   let errorCode = 200;
   try {
@@ -1141,7 +1157,12 @@ export const getListFolder = async (repoId) => {
   }
 };
 
-export const deleteFolderOrFile = async (parentFolderId, Id, type) => {
+export const deleteFolderOrFile = async (
+  parentFolderId,
+  Id,
+  type,
+  navigation
+) => {
   const token = await getToken();
   let errorCode = 200;
   if (type === "Folder") {
@@ -1230,7 +1251,7 @@ export const deleteFolderOrFile = async (parentFolderId, Id, type) => {
     }
   }
 };
-export const getListFolderDetail = async (folderId) => {
+export const getListFolderDetail = async (folderId, navigation) => {
   const token = await getToken();
   let errorCode = 200;
   try {
@@ -1273,7 +1294,7 @@ export const getListFolderDetail = async (folderId) => {
     });
   }
 };
-export const deleteMaterial = async (labId, materialId) => {
+export const deleteMaterial = async (labId, materialId, navigation) => {
   const token = await getToken();
   let errorCode = 200;
   try {
@@ -1316,7 +1337,7 @@ export const deleteMaterial = async (labId, materialId) => {
     });
   }
 };
-export const getListMaterial = async (labId) => {
+export const getListMaterial = async (labId, navigation) => {
   const token = await getToken();
   let errorCode = 200;
   try {
@@ -1358,7 +1379,12 @@ export const getListMaterial = async (labId) => {
   }
 };
 
-export const getQuestionDetail = async (questionId) => {
+export const getQuestionDetail = async (
+  questionId,
+  typeScore,
+  typeDate,
+  navigation
+) => {
   const token = await getToken();
   let errorCode = 200;
   try {
@@ -1366,7 +1392,11 @@ export const getQuestionDetail = async (questionId) => {
       routes.forum.getQuestionDetailCustom.replace(":question-id", questionId),
       {
         headers: {
-          Authorization: `Bearer ` + token,
+          Authorization: Bearer + token,
+        },
+        params: {
+          "score-sort-by": typeScore,
+          "created-date-sort-by": typeDate,
         },
       }
     );
@@ -1400,7 +1430,7 @@ export const getQuestionDetail = async (questionId) => {
   }
 };
 
-export const addAnswer = async (questionId, answer) => {
+export const addAnswer = async (questionId, answer, navigation) => {
   const token = await getToken();
   let errorCode = 200;
   try {
@@ -1444,7 +1474,7 @@ export const addAnswer = async (questionId, answer) => {
     });
   }
 };
-export const addCommentToQuestion = async (questionId, comment) => {
+export const addCommentToQuestion = async (questionId, comment, navigation) => {
   const token = await getToken();
   let errorCode = 200;
   try {
@@ -1490,9 +1520,9 @@ export const addCommentToQuestion = async (questionId, comment) => {
     });
   }
 };
-export const addCommentToAnswer = async (answerId, comment) => {
+export const addCommentToAnswer = async (answerId, comment, navigation) => {
   const token = await getToken();
-
+  let errorCode = 200;
   try {
     const response = await axios.post(
       routes.forum.addCommentToAnswer.replace(":answer-id", answerId),
@@ -1508,11 +1538,35 @@ export const addCommentToAnswer = async (answerId, comment) => {
     console.log("Data in addCommentToAnswer: " + JSON.stringify(response.data));
     return response.data;
   } catch (error) {
-    console.log("error when addCommentToAnswer:" + JSON.stringify(error));
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const deleteAnswer = async (questionId, answerId) => {
+export const deleteAnswer = async (questionId, answerId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.delete(
       routes.forum.deleteAnswerCustom
@@ -1526,12 +1580,41 @@ export const deleteAnswer = async (questionId, answerId) => {
     );
     console.log("Data in deleteAnswer: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when deleteAnswer:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const deleteCommentInQuestion = async (questionId, commentId) => {
+
+export const deleteCommentInQuestion = async (
+  questionId,
+  commentId,
+  navigation
+) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.delete(
       routes.forum.deleteCommentInQuestion
@@ -1545,12 +1628,40 @@ export const deleteCommentInQuestion = async (questionId, commentId) => {
     );
     console.log("Data in deleteComment: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when deleteComment:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const deleteCommentInAnswer = async (answerId, commentId) => {
+export const deleteCommentInAnswer = async (
+  answerId,
+  commentId,
+  navigation
+) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.delete(
       routes.forum.deleteCommentInAnswer
@@ -1564,12 +1675,36 @@ export const deleteCommentInAnswer = async (answerId, commentId) => {
     );
     console.log("Data in deleteComment: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when deleteComment:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 export const editComment = async (commentId, comment) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.put(
       routes.forum.editComment.replace(":comment-id", commentId),
@@ -1584,12 +1719,36 @@ export const editComment = async (commentId, comment) => {
     );
     console.log("Data in deleteComment: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when deleteComment:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const editAnswer = async (answerId, answer) => {
+export const editAnswer = async (answerId, answer, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.put(
       routes.forum.editAnswer.replace(":answer-id", answerId),
@@ -1604,13 +1763,37 @@ export const editAnswer = async (answerId, answer) => {
     );
     console.log("Data in deleteComment: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when deleteComment:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 
-export const voteQuestion = async (questionId, status) => {
+export const voteQuestion = async (questionId, status, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.post(
       routes.forum.voteQuestion.replace(":question-id", questionId),
@@ -1625,12 +1808,42 @@ export const voteQuestion = async (questionId, status) => {
     );
     console.log("Data in voteQuestion: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when voteQuestion:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const updateNews = async (newsId, title, content, thumbnail) => {
+export const updateNews = async (
+  newsId,
+  title,
+  content,
+  thumbnail,
+  navigation
+) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.put(
       routes.notification.updateNews.replace(":news-id", newsId),
@@ -1647,12 +1860,36 @@ export const updateNews = async (newsId, title, content, thumbnail) => {
     );
     console.log("Data in updateNews: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when updateNews:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 export const getNewsDetail = async (newsId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(
       routes.notification.getNewsDetail.replace(":news-id", newsId),
@@ -1664,12 +1901,36 @@ export const getNewsDetail = async (newsId, navigation) => {
     );
     console.log("Data in getNewsDetail: " + JSON.stringify(response.data));
     navigation.push("NewsDetail", { data: response.data.data });
-  } catch (error) {
-    console.log("error when getNewsDetail:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const getNewsDetailComment = async (newsId) => {
+export const getNewsDetailComment = async (newsId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(
       routes.notification.getNewsDetail.replace(":news-id", newsId),
@@ -1683,12 +1944,36 @@ export const getNewsDetailComment = async (newsId) => {
       "Data in getNewsDetailComment: " + JSON.stringify(response.data)
     );
     return response.data;
-  } catch (error) {
-    console.log("error when getNewsDetailComment:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const deleteNews = async (newsId) => {
+export const deleteNews = async (newsId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.delete(
       routes.notification.deleteNews.replace(":news-id", newsId),
@@ -1700,12 +1985,36 @@ export const deleteNews = async (newsId) => {
     );
     console.log("Data in deleteNews: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when deleteNews:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 export const getListNews = async (navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(routes.notification.getListNews, {
       headers: {
@@ -1714,12 +2023,36 @@ export const getListNews = async (navigation) => {
     });
     console.log("Data in getListNews: " + JSON.stringify(response.data));
     navigation.push("ListNews", { data: response.data.data });
-  } catch (error) {
-    console.log("error when getListNews:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const commentToNews = async (newsId, content) => {
+export const commentToNews = async (newsId, content, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.post(
       routes.notification.commentToNews.replace(":news-id", newsId),
@@ -1734,11 +2067,34 @@ export const commentToNews = async (newsId, content) => {
     );
     console.log("Data in commentToNews: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when commentToNews:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const commentToComment = async (commentId, content) => {
+export const commentToComment = async (commentId, content, navigation) => {
   const token = await getToken();
   try {
     const response = await axios.post(
@@ -1754,12 +2110,36 @@ export const commentToComment = async (commentId, content) => {
     );
     console.log("Data in commentToComment: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when commentToComment:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const editCommentNews = async (commentId, content) => {
+export const editCommentNews = async (commentId, content, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.put(
       routes.notification.editCommentNews.replace(":comment-id", commentId),
@@ -1774,12 +2154,36 @@ export const editCommentNews = async (commentId, content) => {
     );
     console.log("Data in editCommentNews: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when editCommentNews:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const deleteCommentInNews = async (newsId, commentId) => {
+export const deleteCommentInNews = async (newsId, commentId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.delete(
       routes.notification.deleteCommentInNews
@@ -1796,11 +2200,39 @@ export const deleteCommentInNews = async (newsId, commentId) => {
     );
     return response.data;
   } catch (error) {
-    console.log("error when deleteCommentInNews:" + JSON.stringify(error));
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const deleteCommentInComment = async (commentId, subCommentId) => {
+export const deleteCommentInComment = async (
+  commentId,
+  subCommentId,
+  navigation
+) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.delete(
       routes.notification.deleteCommentInComment
@@ -1816,12 +2248,36 @@ export const deleteCommentInComment = async (commentId, subCommentId) => {
       "Data in deleteCommentInComment: " + JSON.stringify(response.data)
     );
     return response.data;
-  } catch (error) {
-    console.log("error when deleteCommentInComment:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const getListOrderByLabId = async (labId) => {
+export const getListOrderByLabId = async (labId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(
       routes.laboratory.getListOrderByLabId.replace(":laboratory-id", labId),
@@ -1835,12 +2291,36 @@ export const getListOrderByLabId = async (labId) => {
       "Data in getListOrderByLabId: " + JSON.stringify(response.data)
     );
     return response.data;
-  } catch (error) {
-    console.log("error when getListOrderByLabId:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const responseOrder = async (orderId, status) => {
+export const responseOrder = async (orderId, status, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.put(
       laboratory +
@@ -1859,8 +2339,31 @@ export const responseOrder = async (orderId, status) => {
     );
     console.log("Data in responseOrder: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when responseOrder:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 
@@ -1869,9 +2372,11 @@ export const reviewRequest = async (
   applicationId,
   requestData,
   navigation,
-  dispatch
+  dispatch,
+  navigation
 ) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     console.log("request DATA:" + labId + applicationId);
     console.log("TOKENNNN: " + token);
@@ -1890,8 +2395,31 @@ export const reviewRequest = async (
       }
     );
     dispatch(getAllRequestInLabById(labId, navigation));
-  } catch (error) {
-    console.log("error when Request:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 
@@ -1970,6 +2498,7 @@ export const uploadProfileCv = async (
   cv
 ) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.post(
       routes.account.uploadProfileCv.replace(":profile-id", profileId),
@@ -1986,13 +2515,37 @@ export const uploadProfileCv = async (
     );
     console.log("Data in uploadCv: " + JSON.stringify(response.data));
     navigation.push("CurriculumVitae");
-  } catch (error) {
-    console.log("error when uploadCv:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 
-export const getCVbyAccountId = async (accountId) => {
+export const getCVbyAccountId = async (accountId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(
       routes.account.getCVbyAccountId.replace(":account-id", accountId),
@@ -2004,12 +2557,36 @@ export const getCVbyAccountId = async (accountId) => {
     );
     console.log("Data in getCVbyAccountId: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when getCVbyAccountId:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 export const deleteCVbyAccountId = async (profileId, cvId) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.delete(
       routes.account.deleteCVbyAccountId
@@ -2025,8 +2602,31 @@ export const deleteCVbyAccountId = async (profileId, cvId) => {
       "Data in deleteCVbyAccountId: " + JSON.stringify(response.data)
     );
     return response.data;
-  } catch (error) {
-    console.log("error when deleteCVbyAccountId:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 
@@ -2035,9 +2635,11 @@ export const updateProfileCv = async (
   navigation,
   cvName,
   description,
-  cv
+  cv,
+  navigation
 ) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.put(
       routes.account.updateProfileCv.replace(":cv-id", cvId),
@@ -2054,12 +2656,36 @@ export const updateProfileCv = async (
     );
     console.log("Data in updateProfileCv: " + JSON.stringify(response.data));
     navigation.push("CurriculumVitae");
-  } catch (error) {
-    console.log("error when updateProfileCv:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const changeAvatar = async (profileId, image) => {
+export const changeAvatar = async (profileId, image, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.post(
       routes.account.changeAvatar.replace(":profile-id", profileId),
@@ -2074,12 +2700,36 @@ export const changeAvatar = async (profileId, image) => {
     );
     console.log("Data in changeAvatar: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when changeAvatar:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const getProfileDetail = async (profileId) => {
+export const getProfileDetail = async (profileId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(
       routes.account.getProfileDetail.replace(":profile-id", profileId),
@@ -2092,8 +2742,31 @@ export const getProfileDetail = async (profileId) => {
     console.log("Data in getProfileDetail: " + JSON.stringify(response.data));
     await AsyncStorage.setItem("@avatar", response.data.data.avatar);
     return response.data;
-  } catch (error) {
-    console.log("error when getProfileDetail:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 const getProjectId = async () => {
@@ -2126,8 +2799,9 @@ export const getAllMemberInProject = async () => {
   }
 };
 
-export const getListOrderByAccountId = async (labId, accountId) => {
+export const getListOrderByAccountId = async (labId, accountId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(
       routes.laboratory.getListOrderByAccountId
@@ -2143,12 +2817,37 @@ export const getListOrderByAccountId = async (labId, accountId) => {
       "Data in getListOrderByAccountId: " + JSON.stringify(response.data)
     );
     return response.data;
-  } catch (error) {
-    console.log("error when getListOrderByAccountId:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const returnOrder = async (orderId) => {
+
+export const returnOrder = async (orderId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.post(
       routes.laboratory.returnOrder.replace(":order-id", orderId),
@@ -2161,12 +2860,35 @@ export const returnOrder = async (orderId) => {
     );
     console.log("Data in returnOrder: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when returnOrder:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 
-export const getAllTag = async (tagName, page, size) => {
+export const getAllTag = async (tagName, page, size, navigation) => {
   const token = await getToken();
   try {
     const response = await axios.get(routes.forum.getAllTag, {
@@ -2182,12 +2904,36 @@ export const getAllTag = async (tagName, page, size) => {
     });
     console.log("Data in getAllTag: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when getAllTag:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const addTag = async (tagName, ownerBy) => {
+export const addTag = async (tagName, ownerBy, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.post(
       routes.forum.addTag,
@@ -2203,12 +2949,36 @@ export const addTag = async (tagName, ownerBy) => {
     );
     console.log("Data in addTag: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when addTag:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const updateTag = async (tagId, tagName, ownerBy) => {
+export const updateTag = async (tagId, tagName, ownerBy, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.put(
       routes.forum.updateTag.replace(":tag-id", tagId),
@@ -2224,12 +2994,36 @@ export const updateTag = async (tagId, tagName, ownerBy) => {
     );
     console.log("Data in addTag: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when addTag:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const deleteTag = async (tagId) => {
+export const deleteTag = async (tagId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.delete(
       routes.forum.deleteTag.replace(":tag-id", tagId),
@@ -2241,13 +3035,37 @@ export const deleteTag = async (tagId) => {
     );
     console.log("Data in addTag: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when addTag:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 
-export const getAccountAdmin = async () => {
+export const getAccountAdmin = async (navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(routes.account.getAccountTag, {
       headers: {
@@ -2259,8 +3077,31 @@ export const getAccountAdmin = async () => {
     });
     console.log("Data in addTag: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when addTag:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 
@@ -2280,8 +3121,15 @@ export const getAllUser = async (inputSearchData) => {
     console.log("error when addTag:" + JSON.stringify(error));
   }
 };
-export const getListMyQuestion = async (accountId, title, page, size) => {
+export const getListMyQuestion = async (
+  accountId,
+  title,
+  page,
+  size,
+  navigation
+) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(routes.forum.getListQuestion, {
       headers: {
@@ -2297,12 +3145,36 @@ export const getListMyQuestion = async (accountId, title, page, size) => {
     });
     console.log("Data in getListMyQuestion: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when getListMyQuestion:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const getListQuestion = async (title, page, size) => {
+export const getListQuestion = async (title, page, size, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(routes.forum.getListQuestion, {
       headers: {
@@ -2317,12 +3189,36 @@ export const getListQuestion = async (title, page, size) => {
     });
     console.log("Data in getListQuestion: " + JSON.stringify(response.data));
     return response;
-  } catch (error) {
-    console.log("error when getListQuestion:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const voteAnswer = async (answerId, status) => {
+export const voteAnswer = async (answerId, status, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.put(
       routes.forum.voteAnswer.replace(":answer-id", answerId),
@@ -2337,12 +3233,36 @@ export const voteAnswer = async (answerId, status) => {
     );
     console.log("Data in voteQuestion: " + JSON.stringify(response.data));
     return response;
-  } catch (error) {
-    console.log("error when voteQuestion:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const getAnswerDetail = async (answerId) => {
+export const getAnswerDetail = async (answerId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(
       routes.forum.getAnswerDetail.replace(":answer-id", answerId),
@@ -2354,12 +3274,36 @@ export const getAnswerDetail = async (answerId) => {
     );
     console.log("Data in getAnswerDetail: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when getAnswerDetail:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const acceptAnswer = async (questionId, answerId) => {
+export const acceptAnswer = async (questionId, answerId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.put(
       routes.forum.acceptAnswer
@@ -2374,8 +3318,31 @@ export const acceptAnswer = async (questionId, answerId) => {
     );
     console.log("Data in acceptAnswer: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when acceptAnswer:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 
@@ -2402,9 +3369,16 @@ export const getNumberNotifyOfAccountId = async (accountId) => {
   }
 };
 
-export const getMemberNotInLab = async (labId, username, page, size) => {
+export const getMemberNotInLab = async (
+  labId,
+  username,
+  page,
+  size,
+  navigation
+) => {
   console.log("Call get member not in lab: " + labId);
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(
       routes.laboratory.getMemberNotInLab.replace(":lab-id", labId),
@@ -2423,14 +3397,43 @@ export const getMemberNotInLab = async (labId, username, page, size) => {
       "Data when get member not in lab: " + JSON.stringify(response.data)
     );
     return response.data;
-  } catch (error) {
-    console.log("error when getMemberNotInLab:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
 
-export const getMemberInLabNotInProject = async (projectId, page, size) => {
+export const getMemberInLabNotInProject = async (
+  projectId,
+  page,
+  size,
+  navigation
+) => {
   const token = await getToken();
   const labId = await getLabId();
+  let errorCode = 200;
   try {
     const response = await axios.get(
       routes.laboratory.getMemberInLabNotInProject
@@ -2451,14 +3454,36 @@ export const getMemberInLabNotInProject = async (projectId, page, size) => {
         JSON.stringify(response.data)
     );
     return response.data;
-  } catch (error) {
-    console.log(
-      "error when getMemberInLabNotInProject:" + JSON.stringify(error)
-    );
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const getListAllNews = async (title, page, size) => {
+export const getListAllNews = async (title, page, size, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(routes.notification.getListNews, {
       headers: {
@@ -2473,12 +3498,36 @@ export const getListAllNews = async (title, page, size) => {
     });
     console.log("Data in getListAllNews: " + JSON.stringify(response.data));
     return response;
-  } catch (error) {
-    console.log("error when getListAllNews:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const getIssueStatistics = async (workspaceId) => {
+export const getIssueStatistics = async (workspaceId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(
       routes.workSpace.issueStatistics.replace(":workspace-id", workspaceId),
@@ -2490,12 +3539,36 @@ export const getIssueStatistics = async (workspaceId) => {
     );
     console.log("Data in getIssueStatistics: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when getIssueStatistics:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const getAssignedToMe = async (workspaceId, memberId) => {
+export const getAssignedToMe = async (workspaceId, memberId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(
       routes.workSpace.assignedToMe
@@ -2509,12 +3582,36 @@ export const getAssignedToMe = async (workspaceId, memberId) => {
     );
     console.log("Data in getAssignedToMe: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when getAssignedToMe:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };
-export const getActivityStreams = async (workspaceId) => {
+export const getActivityStreams = async (workspaceId, navigation) => {
   const token = await getToken();
+  let errorCode = 200;
   try {
     const response = await axios.get(
       routes.workSpace.activityStreams.replace(":workspace-id", workspaceId),
@@ -2526,7 +3623,30 @@ export const getActivityStreams = async (workspaceId) => {
     );
     console.log("Data in getActivityStreams: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
-    console.log("error when getActivityStreams:" + JSON.stringify(error));
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
   }
 };

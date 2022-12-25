@@ -6,29 +6,6 @@ import {
   repository,
   workspace,
 } from "./ip";
-import {
-  addTag,
-  changeAvatar,
-  deleteCVbyAccountId,
-  deleteTag,
-  getAccountAdmin,
-  getAllMemberInProject,
-  getAllTag,
-  getCVbyAccountId,
-  getLaboratoryByAccountId,
-  getListOrderByAccountId,
-  getListOrderByLabId,
-  getProfileDetail,
-  responseOrder,
-  returnOrder,
-  reviewRequest,
-  updateProfileCv,
-  updateTag,
-  uploadProfileCv,
-} from "../networking/CustomNetworkService";
-import IssueStatistics from "../screens/Dashboards/IssueStatistics";
-import AssignedToMe from "../screens/Dashboards/AssignedToMe";
-import ActivityStreams from "../screens/Dashboards/ActivityStreams";
 
 export const routes = {
   laboratory: {
@@ -156,12 +133,11 @@ export const routes = {
     addTag: forum + "/flab/forum/public/api/v1/tags/tag",
     updateTag: forum + "/flab/forum/public/api/v1/tags/:tag-id",
     deleteTag: forum + "/flab/forum/public/api/v1/tags/:tag-id",
-    getAnswerDetail:
-        forum + "/flab/forum/public/api/v1/answers/:answer-id",
+    getAnswerDetail: forum + "/flab/forum/public/api/v1/answers/:answer-id",
     acceptAnswer:
-        forum + "/flab/forum/public/api/v1/answers/:question-id/:answer-id/accept",
-    voteAnswer:
-        forum + "/flab/forum/public/api/v1/answers/:answer-id/vote",
+      forum +
+      "/flab/forum/public/api/v1/answers/:question-id/:answer-id/accept",
+    voteAnswer: forum + "/flab/forum/public/api/v1/answers/:answer-id/vote",
   },
   repository: {
     getFolderDetail:
@@ -295,13 +271,13 @@ export const routes = {
       workspace +
       "/flab/workspace/public/api/v1/tasks/:sprint-id/tasks/:task-id",
     issueStatistics:
-        workspace +
-        "/flab/workspace/public/api/v1/workspaces/:workspace-id/issue-statistic",
+      workspace +
+      "/flab/workspace/public/api/v1/workspaces/:workspace-id/issue-statistic",
     assignedToMe:
-        workspace +
-        "/flab/workspace/public/api/v1/workspaces/:workspace-id/:member-id/assign-to-me",
+      workspace +
+      "/flab/workspace/public/api/v1/workspaces/:workspace-id/:member-id/assign-to-me",
     activityStreams:
-        workspace +
-        "/flab/workspace/public/api/v1/workspaces/:workspace-id/activity-stream",
+      workspace +
+      "/flab/workspace/public/api/v1/workspaces/:workspace-id/activity-stream",
   },
 };

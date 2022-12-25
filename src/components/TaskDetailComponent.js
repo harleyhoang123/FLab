@@ -237,7 +237,8 @@ export default function TaskDetailComponent({
       assignee,
       label,
       estimate,
-      reporter
+      reporter,
+      navigation
     ).then((v) => {
       callBackUpdateTask();
       getTaskDetail(taskId, navigation).then((r) => {
@@ -255,7 +256,7 @@ export default function TaskDetailComponent({
     });
   };
   const assignInTask = (projectId, taskId, memberId, assignee) => {
-    assignTask(projectId, taskId, memberId, assignee).then((v) => {
+    assignTask(projectId, taskId, memberId, assignee, navigation).then((v) => {
       callBackUpdateTask();
       getTaskDetail(taskId, navigation).then((r) => {
         setAssigneeDetail(r.data.assignee);
@@ -357,8 +358,11 @@ export default function TaskDetailComponent({
     }
   };
   const addSubTask = (taskId, memberId, subTaskName) => {
-    createSubTask(projectId, taskId, memberId, subTaskName).then(() =>
-      getListSubTask(taskId).then((r) => setListSubTask(r.data.subTasks))
+    createSubTask(projectId, taskId, memberId, subTaskName, navigation).then(
+      () =>
+        getListSubTask(taskId, navigation).then((r) =>
+          setListSubTask(r.data.subTasks)
+        )
     );
     setAdd(!add);
     setSubTaskName("");

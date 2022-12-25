@@ -1,11 +1,11 @@
-import React, {useState} from "react";
-import {Image, Modal, StyleSheet, Text, View} from "react-native";
+import React, { useState } from "react";
+import { Image, Modal, StyleSheet, Text, View } from "react-native";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
 import { useDispatch } from "react-redux";
 import { getListMaterialByLabId } from "../../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
-import {deleteMaterial} from "../../networking/CustomNetworkService";
+import { deleteMaterial } from "../../networking/CustomNetworkService";
 const getLabId = async () => {
   try {
     const labId = await AsyncStorage.getItem("@labId");
@@ -18,15 +18,17 @@ const getLabId = async () => {
 
 function MaterialDetail({ route, navigation }) {
   const dispatch = useDispatch();
-  const deleteAMaterial=(labId, materialId)=>{
-    deleteMaterial(labId, materialId).then(v=> dispatch(getListMaterialByLabId(labId, navigation)))
-  }
+  const deleteAMaterial = (labId, materialId) => {
+    deleteMaterial(labId, materialId, navigation).then((v) =>
+      dispatch(getListMaterialByLabId(labId, navigation))
+    );
+  };
   const data = route.params.data;
   const status = data.status;
   const isAdmin = false;
   const [labId, setLabId] = useState();
-  const [showConfirm,setShowConfirm]=useState(false);
-  getLabId().then(v => setLabId(v))
+  const [showConfirm, setShowConfirm] = useState(false);
+  getLabId().then((v) => setLabId(v));
   const handleButton = () => {
     if (status === "FREE") {
       return (
@@ -34,17 +36,14 @@ function MaterialDetail({ route, navigation }) {
           text={"Request"}
           style={styles.button}
           onPressTo={() => {
-            navigation.push("RequestMaterial", {data: data, labId: labId});
+            navigation.push("RequestMaterial", { data: data, labId: labId });
           }}
         />
       );
     } else {
       return (
         <View style={{ flexDirection: "row" }}>
-          <Buttons
-            text={"Return"}
-            style={styles.button}
-          />
+          <Buttons text={"Return"} style={styles.button} />
         </View>
       );
     }
@@ -54,22 +53,35 @@ function MaterialDetail({ route, navigation }) {
       <LabNavigator navigation={navigation} />
       <View style={styles.containerContent}>
         <Modal
-            animationType="fade"
-            transparent={true}
-            visible={showConfirm}
-            onRequestClose={() => {
-              setShowConfirm(false);
-            }}>
+          animationType="fade"
+          transparent={true}
+          visible={showConfirm}
+          onRequestClose={() => {
+            setShowConfirm(false);
+          }}
+        >
           <View style={styles.modalDelete}>
             <View style={styles.modalDeleteView}>
-              <Text style={{fontSize: 20, fontWeight: "bold", marginBottom: 20}}>Do you want to remove this material?</Text>
-              <View style={{alignItems: "flex-end", flexDirection: "row"}}>
-                <Buttons text={"Remove"} style={{marginRight: 40}} onPressTo={() => {
-                  deleteAMaterial(labId, data.materialId)
-                  setShowConfirm(false)
-                }}/>
-                <Buttons text={"Cancel"} style={{backgroundColor: '#F4F5F7'}} styleText={{color: 'black'}}
-                         onPressTo={() => setShowConfirm(false)}/>
+              <Text
+                style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
+              >
+                Do you want to remove this material?
+              </Text>
+              <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
+                <Buttons
+                  text={"Remove"}
+                  style={{ marginRight: 40 }}
+                  onPressTo={() => {
+                    deleteAMaterial(labId, data.materialId);
+                    setShowConfirm(false);
+                  }}
+                />
+                <Buttons
+                  text={"Cancel"}
+                  style={{ backgroundColor: "#F4F5F7" }}
+                  styleText={{ color: "black" }}
+                  onPressTo={() => setShowConfirm(false)}
+                />
               </View>
             </View>
           </View>
@@ -104,7 +116,11 @@ function MaterialDetail({ route, navigation }) {
                 navigation.push("UpdateMaterial", { materialInfo: data })
               }
             />
-            <Buttons style={styles.button} text={"Delete"} onPressTo={()=> setShowConfirm(true)}/>
+            <Buttons
+              style={styles.button}
+              text={"Delete"}
+              onPressTo={() => setShowConfirm(true)}
+            />
           </View>
         </View>
       </View>
@@ -153,7 +169,7 @@ const styles = StyleSheet.create({
   },
   modalDelete: {
     alignItems: "center",
-    justifyContent:"center",
+    justifyContent: "center",
     flex: 1,
   },
   modalDeleteView: {

@@ -62,7 +62,7 @@ function UpdateNews({ route, navigation }) {
   };
 
   const updateThisNews = (newsId, title, content, thumbnail, navigation) => {
-    updateNews(newsId, title, content, thumbnail).then((r) =>
+    updateNews(newsId, title, content, thumbnail, navigation).then((r) =>
       getNewsDetail(newsId, navigation)
     );
   };

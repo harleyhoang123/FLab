@@ -54,8 +54,8 @@ function Repository({ route, navigation }) {
     );
   };
   const deleteAFolder = (repoId, folderId) => {
-    deleteFolderInRepository(repoId, folderId).then((r) => {
-      getListFolder(repoId).then((v) => setItems(v.data.items));
+    deleteFolderInRepository(repoId, folderId, navigation).then((r) => {
+      getListFolder(repoId, navigation).then((v) => setItems(v.data.items));
     });
   };
   const [checked, setChecked] = useState("");

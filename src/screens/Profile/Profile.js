@@ -169,8 +169,10 @@ function Profile({ route, navigation }) {
         size: result.size,
         mimeType: result.mimeType,
       };
-      changeAvatar(accountId, imagePicked).then((v) =>
-        getProfileDetail(accountId).then((r) => setAvatar(r.data.avatar))
+      changeAvatar(accountId, imagePicked, navigation).then((v) =>
+        getProfileDetail(accountId, navigation).then((r) =>
+          setAvatar(r.data.avatar)
+        )
       );
     }
   };

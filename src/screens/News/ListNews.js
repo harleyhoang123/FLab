@@ -1,34 +1,37 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import NewsItem from "../../components/NewsItem";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
-import {getListAllNews, getListQuestion} from "../../networking/CustomNetworkService";
+import {
+  getListAllNews,
+  getListQuestion,
+} from "../../networking/CustomNetworkService";
 import PaginationBar from "../../components/PaginationBar";
 
-function ListNews({navigation }) {
+function ListNews({ navigation }) {
   const [text, setText] = useState("");
   const [numberOfElement, setNumberOfElement] = useState(0);
   const [listNews, setListNews] = useState();
   useEffect(() => {
-    getListAllNews(text,0,5).then(v=>{
+    getListAllNews(text, 0, 5, navigation).then((v) => {
       setListNews(v.data.data.items);
-      setNumberOfElement(v.data.data.totalPage*5)
-    })
+      setNumberOfElement(v.data.data.totalPage * 5);
+    });
   }, []);
   const callbackChangePage = (page) => {
-    getListAllNews(text,page-1,5).then(v=>{
+    getListAllNews(text, page - 1, 5, navigation).then((v) => {
       setListNews(v.data.data.items);
-      setNumberOfElement(v.data.data.totalPage*5)
-    })
-  }
-  const searchNews=()=>{
-    getListAllNews(text,0,5).then(v=>{
+      setNumberOfElement(v.data.data.totalPage * 5);
+    });
+  };
+  const searchNews = () => {
+    getListAllNews(text, 0, 5, navigation).then((v) => {
       setListNews(v.data.data.items);
-      setNumberOfElement(v.data.data.totalPage*5)
-    })
-  }
+      setNumberOfElement(v.data.data.totalPage * 5);
+    });
+  };
   return (
     <View>
       <HomeTopNavigator navigation={navigation} />
@@ -44,9 +47,9 @@ function ListNews({navigation }) {
             secureTextEntry={false}
             multiline={false}
             style={{ width: 400 }}
-            onSubmitEditing={()=>searchNews()}
+            onSubmitEditing={() => searchNews()}
           />
-          <Buttons text={"Search"} onPressTo={()=>searchNews()}/>
+          <Buttons text={"Search"} onPressTo={() => searchNews()} />
           <Buttons
             text={"Add News"}
             style={[styles.button, { marginLeft: 20 }]}
@@ -69,7 +72,11 @@ function ListNews({navigation }) {
           />
         )}
       />
-      <PaginationBar currentSizes={5} numberOfElement={numberOfElement} callbackSelectedPage={callbackChangePage}/>
+      <PaginationBar
+        currentSizes={5}
+        numberOfElement={numberOfElement}
+        callbackSelectedPage={callbackChangePage}
+      />
     </View>
   );
 }

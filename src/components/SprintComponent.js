@@ -196,9 +196,10 @@ function SprintComponent({
       sprintName,
       startDateUp,
       dueDateUp,
-      goal
+      goal,
+      navigation
     ).then((r) =>
-      getSprintDetail(sprintId).then((r) => {
+      getSprintDetail(sprintId, navigation).then((r) => {
         console.log("Data getSprintDetail : " + JSON.stringify(r.data));
         setSprintNameDetail(r.data.sprintName);
         setStartDateDetail(formatDate(r.data.startDate));
@@ -209,14 +210,26 @@ function SprintComponent({
   };
   const updateStatusOfSprint = (sprintId, memberId, status) => {
     if (status === "NOT_START") {
-      updateStatusSprint(projectId, sprintId, memberId, "STARTING").then((r) =>
-        getSprintDetail(sprintId).then((r) => {
+      updateStatusSprint(
+        projectId,
+        sprintId,
+        memberId,
+        "STARTING",
+        navigation
+      ).then((r) =>
+        getSprintDetail(sprintId, navigation).then((r) => {
           setStatusDetail(r.data.status);
         })
       );
     } else if (status === "STARTING") {
-      updateStatusSprint(projectId, sprintId, memberId, "COMPLETED").then((r) =>
-        getSprintDetail(sprintId).then((r) => {
+      updateStatusSprint(
+        projectId,
+        sprintId,
+        memberId,
+        "COMPLETED",
+        navigation
+      ).then((r) =>
+        getSprintDetail(sprintId, navigation).then((r) => {
           setStatusDetail(r.data.status);
         })
       );

@@ -18,6 +18,7 @@ function CommentItem({
   time,
   parentType,
   callBackComment,
+  navigation,
 }) {
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState(content);
@@ -32,23 +33,27 @@ function CommentItem({
     }
     if (isValid) {
       handleEdit();
-      setIsEdit(false)
+      setIsEdit(false);
     }
   }
   const handleDelete = () => {
     if (parentType === "QUESTION") {
-      deleteCommentInQuestion(parentId, commentId).then(() =>
+      deleteCommentInQuestion(parentId, commentId, navigation).then(() =>
         callBackComment()
       );
     } else if (parentType === "ANSWER") {
-      deleteCommentInAnswer(parentId, commentId).then(() => callBackComment());
+      deleteCommentInAnswer(parentId, commentId, navigation).then(() =>
+        callBackComment()
+      );
     } else if (parentType === "NEWS") {
-      deleteCommentInComment(parentId, commentId).then(() => callBackComment());
+      deleteCommentInComment(parentId, commentId, navigation).then(() =>
+        callBackComment()
+      );
     }
   };
   const handleEdit = () => {
     if (parentType === "NEWS") {
-      editCommentNews(commentId, text).then(() => {
+      editCommentNews(commentId, text, navigation).then(() => {
         callBackComment();
         setIsEdit(!isEdit);
       });
@@ -63,99 +68,106 @@ function CommentItem({
   return (
     <View style={styles.container}>
       <Modal
-          animationType="fade"
-          transparent={true}
-          visible={showConfirm}
-          onRequestClose={() => {
-            setShowConfirm(false);
-          }}
+        animationType="fade"
+        transparent={true}
+        visible={showConfirm}
+        onRequestClose={() => {
+          setShowConfirm(false);
+        }}
       >
         <View style={styles.modal}>
           <View style={styles.modalProfileView}>
             <Text
-                style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
+              style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
             >
               Do you want to delete this comment?
             </Text>
             <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
               <Buttons
-                  text={"Delete"}
-                  style={{ marginRight: 40 }}
-                  onPressTo={() => {
-                    handleDelete();
-                    setShowConfirm(false);
-                  }}
+                text={"Delete"}
+                style={{ marginRight: 40 }}
+                onPressTo={() => {
+                  handleDelete();
+                  setShowConfirm(false);
+                }}
               />
               <Buttons
-                  text={"Cancel"}
-                  style={{ backgroundColor: "#F4F5F7", }}
-                  styleText={{ color: "black" }}
-                  onPressTo={() => setShowConfirm(false)}
+                text={"Cancel"}
+                style={{ backgroundColor: "#F4F5F7" }}
+                styleText={{ color: "black" }}
+                onPressTo={() => setShowConfirm(false)}
               />
             </View>
           </View>
         </View>
       </Modal>
       <Modal
-          animationType="fade"
-          transparent={true}
-          visible={isEdit}
-          onRequestClose={() => {
-            setIsEdit(false);
-          }}
+        animationType="fade"
+        transparent={true}
+        visible={isEdit}
+        onRequestClose={() => {
+          setIsEdit(false);
+        }}
       >
         <View style={styles.modalEdit}>
           <View style={styles.modalEditView}>
             <TextField
-                text={text}
-                onChangeText={(text) => setText(text)}
-                placeholder={" Edit Comment"}
-                secureTextEntry={false}
-                multiline={true}
-                onSubmitEditing={() => {
-                  validateComment();
-                  setText("");
-                }}
-                style={{height:150, width:"95%"}}
+              text={text}
+              onChangeText={(text) => setText(text)}
+              placeholder={" Edit Comment"}
+              secureTextEntry={false}
+              multiline={true}
+              onSubmitEditing={() => {
+                validateComment();
+                setText("");
+              }}
+              style={{ height: 150, width: "95%" }}
             />
             {isComment && (
-                <Text style={styles.inputInvalid}>Invalid comment</Text>
+              <Text style={styles.inputInvalid}>Invalid comment</Text>
             )}
             <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
               <Buttons
-                  text={"Save"}
-                  onPressTo={() => {
-                    validateComment();
-                    setText("");
-                  }}
-                  style={{marginLeft: 20}}
+                text={"Save"}
+                onPressTo={() => {
+                  validateComment();
+                  setText("");
+                }}
+                style={{ marginLeft: 20 }}
               />
               <Buttons
-                  text={"Cancel"}
-                  style={{ backgroundColor: "#F4F5F7",marginLeft: 20 }}
-                  styleText={{ color: "black" }}
-                  onPressTo={() => setIsEdit(false)}
+                text={"Cancel"}
+                style={{ backgroundColor: "#F4F5F7", marginLeft: 20 }}
+                styleText={{ color: "black" }}
+                onPressTo={() => setIsEdit(false)}
               />
             </View>
           </View>
         </View>
       </Modal>
-        <View style={{width:"95%"}}>
-          <Text style={styles.text}><Text style={styles.textUsername}>{username}</Text> {content}</Text>
+      <View style={{ width: "95%" }}>
+        <Text style={styles.text}>
+          <Text style={styles.textUsername}>{username}</Text> {content}
+        </Text>
+      </View>
+      <View style={styles.containerComment}>
+        <Text style={styles.text}>{time}</Text>
+        <View style={styles.login}>
+          <TouchableOpacity
+            onPress={() => {
+              setIsEdit(true);
+              setText(content);
+            }}
+          >
+            <Text style={styles.txt}>Edit</Text>
+          </TouchableOpacity>
         </View>
-        <View style={styles.containerComment}>
-          <Text style={styles.text}>{time}</Text>
-          <View style={styles.login}>
-            <TouchableOpacity onPress={() => {setIsEdit(true); setText(content)}}>
-              <Text style={styles.txt}>Edit</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.login}>
-            <TouchableOpacity onPress={() => setShowConfirm(true)}>
-              <Text style={styles.txt}>Delete</Text>
-            </TouchableOpacity>
-          </View>
+        <View style={styles.login}>
+          <TouchableOpacity onPress={() => setShowConfirm(true)}>
+            <Text style={styles.txt}>Delete</Text>
+          </TouchableOpacity>
         </View>
+      </View>
     </View>
   );
 }
