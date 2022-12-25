@@ -111,7 +111,9 @@ export default function ViewAllMemberInProject({ route, navigation }) {
           </Text>
           <Text
             onPress={() =>
-              navigation.navigate("UpdateMemberRole", { memberid: memberId })
+              navigation.navigate("UpdateMemberRoleInProject", {
+                memberid: memberId,
+              })
             }
             style={styles.action}
           >
@@ -124,11 +126,11 @@ export default function ViewAllMemberInProject({ route, navigation }) {
   );
   const renderItem = ({ item }) => (
     <Item
+      accountId={item.userInfo.accountId}
       memberId={item.memberId}
       memberName={item.userInfo.userInfo.fullName}
       email={item.userInfo.userInfo.email}
       roles={item.role}
-      accountId={item.userInfo.accountId}
     />
   );
   const [showConfirm, setShowConfirm] = useState(false);

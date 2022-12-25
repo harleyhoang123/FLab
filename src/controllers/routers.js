@@ -100,6 +100,9 @@ export const routes = {
     getMemberInLabNotInProject:
       laboratory +
       "/flab/lab/public/api/v1/laboratories/:lab-id/members/:project-id/not-in",
+    getNumberOfApplication:
+      laboratory +
+      "/flab/lab/public/api/v1/laboratories/:lab-id/applications/count",
   },
   forum: {
     getQuestionDetail: forum + "/flab/forum/public/api/v1/questions/",

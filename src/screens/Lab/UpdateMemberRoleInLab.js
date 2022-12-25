@@ -14,9 +14,9 @@ import { SelectList } from "react-native-dropdown-select-list";
 import Buttons from "../../components/Buttons";
 import LabNavigator from "../../navigations/LabNavigator";
 import { createLaboratory } from "../../actions/LaboratoryAction";
-import { updateMemberRoleById } from "../../actions/LaboratoryAction";
+import { updateMemberRoleinProjectById } from "../../actions/LaboratoryAction";
 
-export default function UpdateMemberRole({ route, navigation }) {
+export default function UpdateMemberRoleInProject({ route, navigation }) {
   let isValid = true;
   const memberId = route.params.memberid;
   const [selected, setSelected] = useState("");
@@ -42,13 +42,13 @@ export default function UpdateMemberRole({ route, navigation }) {
     const requestData = {
       role: selected,
     };
-    dispatch(updateMemberRoleById(memberId, requestData, navigation));
+    dispatch(updateMemberRoleinProjectById(memberId, requestData, navigation));
   };
   return (
     <View>
       <LabNavigator navigation={navigation} />
       <View style={styles.container}>
-        <Text style={styles.title}>Update member's role</Text>
+        <Text style={styles.title}>Update member's role in project</Text>
         <View>
           <View>
             <Text style={styles.usage}>Select new role</Text>

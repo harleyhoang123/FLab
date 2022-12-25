@@ -47,7 +47,6 @@ export default function Backlog({ route, navigation }) {
     }
     if (isValidSprint) {
       addSprint(projectId, res.memberId, sprintName);
-      setSprintName("");
       setIsSprint(false);
     }
   }

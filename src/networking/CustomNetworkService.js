@@ -2456,24 +2456,6 @@ export const getLaboratorySuggestionByAccountId = async (
     },
   });
 };
-export const getLaboratoryWaitingByAccountId = async (
-    accountId,
-    page,
-    size
-) => {
-  const token = await getToken();
-  return await axios.get(routes.laboratory.getLaboratoryWaiting, {
-    params: {
-      "account-id": accountId,
-      page: page,
-      size: size,
-    },
-
-    headers: {
-      Authorization: `Bearer ` + token,
-    },
-  });
-};
 
 export const getAllMemberByLabId = async (page, size) => {
   const token = await getToken();
@@ -3364,9 +3346,8 @@ export const acceptAnswer = async (questionId, answerId, navigation) => {
   }
 };
 
-export const getNumberNotifyOfAccountId = async (accountId,navigation) => {
+export const getNumberNotifyOfAccountId = async (accountId) => {
   const token = await getToken();
-  let errorCode = 200;
   try {
     const response = await axios.get(
       routes.notification.getNumberOfNotificationByAccountId.replace(
@@ -3381,31 +3362,10 @@ export const getNumberNotifyOfAccountId = async (accountId,navigation) => {
     );
 
     return response.data;
-  } catch (data) {
-    if (data) {
-      if (data.status) {
-        if (data.status.status) {
-          errorCode = data.status.status;
-          let displayMessage = data.status.message;
-          if (displayMessage == null) {
-            displayMessage = "Oops! Something went wrong.";
-          }
-          if (errorCode == 400) {
-            alert(displayMessage);
-            return;
-          }
-          navigation.push("ErrorPage", {
-            status: errorCode,
-            displayMessage: displayMessage,
-          });
-          return;
-        }
-      }
-    }
-    navigation.push("ErrorPage", {
-      status: 500,
-      displayMessage: "Oops! Something went wrong.",
-    });
+  } catch (error) {
+    console.log(
+      "error when getNumberNotifyOfAccountId:" + JSON.stringify(error)
+    );
   }
 };
 
@@ -3732,3 +3692,44 @@ export const getNotification = async (accountId, navigation) => {
   }
 };
 
+export const getNumberOfApplication = async (labId, navigation) => {
+  const token = await getToken();
+  let errorCode = 200;
+  try {
+    const response = await axios.get(
+      routes.laboratory.getNumberOfApplication.replace(":lab-id", labId),
+      {
+        headers: {
+          Authorization: `Bearer ` + token,
+        },
+      }
+    );
+    console.log("getNumberOfApplication: " + JSON.stringify(response.data));
+    return response.data;
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
+  }
+};
