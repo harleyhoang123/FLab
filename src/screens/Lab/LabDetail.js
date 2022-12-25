@@ -68,7 +68,8 @@ export default function LabDetail({ route, navigation }) {
   getAccountId().then((v) => setAccountId(v));
   const data = route.params.data;
   console.log("lab data:" + JSON.stringify(data));
-  const isJoined = route.params.isJoined;
+  const memberInfo = route.params.data.memberInfo;
+  let isJoined = memberInfo ? true : false;
   console.log("Is Joined In lab detail" + isJoined);
   const allMember = route.params.allMember.items;
   const [numberOfApplication, setNumberOfApplication] = useState(0);
