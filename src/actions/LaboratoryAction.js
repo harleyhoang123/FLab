@@ -924,7 +924,7 @@ export const getAllRequestInLabById =
         labId,
       });
       if (response) {
-        navigation.navigate("ViewAllRequest", {
+        navigation.push("ViewAllRequest", {
           data: response.data.data,
         });
       }

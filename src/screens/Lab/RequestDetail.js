@@ -34,6 +34,7 @@ export default function RequestDetail({ route, navigation }) {
   getLabId().then((v) => setLabId(v));
   console.log("LabId in request:" + labId);
   const [textComment, onChangeTextComment] = useState("");
+  const dispatch = useDispatch();
 
   const reviewRequestHandler = (response) => {
     const requestData = {
@@ -41,7 +42,7 @@ export default function RequestDetail({ route, navigation }) {
       comment: textComment,
     };
     console.log(requestData);
-    reviewRequest(labId, data.applicationId, requestData, navigation);
+    reviewRequest(labId, data.applicationId, requestData, navigation, dispatch);
   };
 
   return (
