@@ -26,19 +26,16 @@ function CurriculumVitae({ navigation }) {
   const [checked, setChecked] = useState("");
   const [cvName, setCvName] = useState("");
   const [description, setDescription] = useState("");
-  const [text, setText] = useState("");
   const [accountId, setAccountId] = useState("");
   const [listCV, setListCV] = useState();
   const [showConfirm, setShowConfirm] = useState(false);
   const [disable, setDisable] = useState(true);
-  const [numberOfElement, setNumberOfElement] = useState(0);
   useEffect(() => {
     getAccountId().then((v) => {
       {
         setAccountId(v);
         getCVbyAccountId(v, navigation).then((r) => {
           setListCV(r.data.items);
-          setNumberOfElement(r.data.totalPage * 10);
         });
       }
     });
@@ -181,11 +178,6 @@ function CurriculumVitae({ navigation }) {
             />
           ))}
         </View>
-        <PaginationBar
-          numberOfElement={numberOfElement}
-          currentSizes={10}
-          callbackSelectedPage={callbackChangePage}
-        />
       </View>
     </View>
   );

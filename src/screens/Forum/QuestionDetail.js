@@ -252,6 +252,7 @@ function QuestionDetail({ route, navigation }) {
               onPressUp={() => handleVote("LIKED")}
               onPressDown={() => handleVote("DISLIKED")}
               status={votedStatus}
+              statusClose={statusClose}
             />
             <View style={styles.containerCon}>
               <Text style={styles.textContent}>{problem}</Text>
