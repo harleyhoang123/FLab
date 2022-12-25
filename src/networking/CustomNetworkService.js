@@ -1088,7 +1088,7 @@ export const deleteFolderInRepository = async (
     );
     console.log("Data in deleteFolder: " + JSON.stringify(response.data));
     return response.data;
-  } catch (error) {
+  } catch (data) {
     if (data) {
       if (data.status) {
         if (data.status.status) {
