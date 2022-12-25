@@ -76,7 +76,7 @@ export default function ApplyToALab({ route, navigation }) {
   React.useEffect(
     () =>
       //Get Values from database
-      getAllCVOfAccount()
+      getAllCVOfAccount(navigation)
         .then((response) => {
           // Store Values in Temporary Array
           let newArray = response.data.items.map((item) => {

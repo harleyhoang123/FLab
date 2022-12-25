@@ -49,14 +49,18 @@ export default function Backlog({ route, navigation }) {
   }
 
   const addSprint = (projectId, memberId, sprintName) => {
-    createSprint(projectId, memberId, sprintName).then((v) =>
-      getListSprint(projectId).then((v) => setListSPrint(v.data.sprints.items))
+    createSprint(projectId, memberId, sprintName, navigation).then((v) =>
+      getListSprint(projectId, navigation).then((v) =>
+        setListSPrint(v.data.sprints.items)
+      )
     );
     changeType();
     setSprintName("");
   };
   const callBackGetListSprint = () => {
-    getListSprint(projectId).then((v) => setListSPrint(v.data.sprints.items));
+    getListSprint(projectId, navigation).then((v) =>
+      setListSPrint(v.data.sprints.items)
+    );
   };
   const callBackUpdate = () => {
     setUpdate(update + 1);
@@ -67,6 +71,7 @@ export default function Backlog({ route, navigation }) {
         {list?.map((item) => (
           <View style={styles.backlogContent} key={item.sprintId}>
             <SprintComponent
+              navigation={navigation}
               key={item.sprintId}
               projectId={projectId}
               memberId={res.memberId}
@@ -130,7 +135,7 @@ export default function Backlog({ route, navigation }) {
       setTaskIdChange(taskId);
     }
     if (taskId != null) {
-      getTaskDetail(taskId).then((value) => {
+      getTaskDetail(taskId, navigation).then((value) => {
         setTaskDetail(value.data);
         setSubTaskDetail(null);
       });
@@ -157,7 +162,7 @@ export default function Backlog({ route, navigation }) {
   const callbackSubTaskDetail = (subtaskId) => {
     setSubTaskId(subtaskId);
     if (subtaskId != null) {
-      getSubTaskDetail(subtaskId).then((value) => {
+      getSubTaskDetail(subtaskId, navigation).then((value) => {
         setSubTaskDetail(value.data);
         setTaskDetail(null);
       });
@@ -177,9 +182,19 @@ export default function Backlog({ route, navigation }) {
           </View>
         </View>
         <View style={styles.right}>
-          <View style={{justifyContent:"space-between", flexDirection:"row", alignItems:"center"}}>
+          <View
+            style={{
+              justifyContent: "space-between",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
             <Text style={styles.backlog}>BackLog</Text>
-            <Buttons text={"View Dashboard"} style={{height:40}} onPressTo={()=> navigation.push("IssueStatistics")}/>
+            <Buttons
+              text={"View Dashboard"}
+              style={{ height: 40 }}
+              onPressTo={() => navigation.push("IssueStatistics")}
+            />
           </View>
 
           {renderItem(listSPrint)}
@@ -199,6 +214,7 @@ export default function Backlog({ route, navigation }) {
           )}
           {subTaskDetail != null && (
             <SubTaskDetailComponent
+              navigation={navigation}
               subTaskDetail={subTaskDetail}
               taskId={taskIdChange}
               listMember={listMember}

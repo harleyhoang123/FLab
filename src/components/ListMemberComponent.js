@@ -30,7 +30,7 @@ const Item = ({ item, memberId, setMemberId }) => (
       <CheckBox
         value={memberId.includes(item.memberId)}
         onValueChange={() => {
-          memberId.includes(item.key)
+          memberId.includes(item.memberId)
             ? setMemberId(memberId.filter((v) => v !== item.memberId))
             : setMemberId((oldMemberId) => [...oldMemberId, item.memberId]);
         }}

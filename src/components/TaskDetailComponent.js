@@ -29,6 +29,7 @@ export default function TaskDetailComponent({
   callbackTaskDetail,
   callbackSubTaskDetail,
   callBackUpdateTask,
+  navigation,
 }) {
   let isValid = true;
   const [add, setAdd] = useState(false);
@@ -127,7 +128,7 @@ export default function TaskDetailComponent({
       updateATask(
         projectId,
         taskId,
-          memberId,
+        memberId,
         taskName,
         status,
         description,
@@ -229,7 +230,7 @@ export default function TaskDetailComponent({
     updateTask(
       projectId,
       taskId,
-        memberId,
+      memberId,
       taskName,
       status,
       description,
@@ -239,7 +240,7 @@ export default function TaskDetailComponent({
       reporter
     ).then((v) => {
       callBackUpdateTask();
-      getTaskDetail(taskId).then((r) => {
+      getTaskDetail(taskId, navigation).then((r) => {
         console.log("getDetailATask:" + JSON.stringify(r.data));
         setTaskNameDetail(r.data.taskName);
         setStatusDetail(r.data.status);
@@ -253,10 +254,10 @@ export default function TaskDetailComponent({
       });
     });
   };
-  const assignInTask = (projectId, taskId, memberId,assignee) => {
-    assignTask(projectId, taskId, memberId,assignee).then((v) => {
+  const assignInTask = (projectId, taskId, memberId, assignee) => {
+    assignTask(projectId, taskId, memberId, assignee).then((v) => {
       callBackUpdateTask();
-      getTaskDetail(taskId).then((r) => {
+      getTaskDetail(taskId, navigation).then((r) => {
         setAssigneeDetail(r.data.assignee);
         setActivityResponse(r.data.activityResponses);
         filterActivity(r.data.activityResponses, show);
@@ -286,7 +287,7 @@ export default function TaskDetailComponent({
             <Text style={[styles.descriptionDetail, { width: 100 }]}></Text>
             <TouchableOpacity
               onPress={() => {
-                assignInTask(projectId, taskDetail.taskId, memberId,memberId);
+                assignInTask(projectId, taskDetail.taskId, memberId, memberId);
               }}
             >
               <Text style={[styles.descriptionDetail, { color: "blue" }]}>

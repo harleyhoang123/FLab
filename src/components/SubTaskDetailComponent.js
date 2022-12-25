@@ -28,6 +28,7 @@ function SubTaskDetailComponent({
   taskId,
   listMember,
   callbackSubTaskDetail,
+  navigation,
 }) {
   console.log("List item in update sub task: " + JSON.stringify(listMember));
   const [show, setShow] = useState("ALL");
@@ -125,7 +126,7 @@ function SubTaskDetailComponent({
       updateASubTask(
         projectId,
         taskId,
-          memberId,
+        memberId,
         taskName,
         status,
         description,
@@ -236,7 +237,7 @@ function SubTaskDetailComponent({
     updateSubTask(
       projectId,
       subTaskId,
-        memberId,
+      memberId,
       taskName,
       status,
       description,
@@ -246,7 +247,7 @@ function SubTaskDetailComponent({
       reporter
     ).then((value) => {
       console.log("updateASubTask:" + JSON.stringify(value));
-      getSubTaskDetail(subTaskId).then((r) => {
+      getSubTaskDetail(subTaskId, navigation).then((r) => {
         console.log("getDetailASubTask:" + JSON.stringify(r.data));
         setSubTaskNameDetail(r.data.subTaskName);
         setStatusDetail(r.data.status);
@@ -260,9 +261,9 @@ function SubTaskDetailComponent({
       });
     });
   };
-  const assignInSubTask = (projectId, subTaskId,memberId, assignee) => {
-    assignSubTask(projectId, subTaskId,memberId, assignee).then((value) => {
-      getSubTaskDetail(subTaskId).then((r) => {
+  const assignInSubTask = (projectId, subTaskId, memberId, assignee) => {
+    assignSubTask(projectId, subTaskId, memberId, assignee).then((value) => {
+      getSubTaskDetail(subTaskId, navigation).then((r) => {
         setAssigneeDetail(r.data.assignee);
         setActivityResponse(r.data.activityResponses);
         filterActivity(r.data.activityResponses, show);
@@ -285,7 +286,12 @@ function SubTaskDetailComponent({
             <Text style={[styles.descriptionDetail, { width: 100 }]}></Text>
             <TouchableOpacity
               onPress={() => {
-                assignInSubTask(projectId, subTaskDetail.subTaskId,memberId, memberId);
+                assignInSubTask(
+                  projectId,
+                  subTaskDetail.subTaskId,
+                  memberId,
+                  memberId
+                );
               }}
             >
               <Text style={[styles.descriptionDetail, { color: "blue" }]}>
