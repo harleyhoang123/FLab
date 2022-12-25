@@ -82,7 +82,7 @@ export default function ApplyToALab({ route, navigation }) {
           let newArray = response.data.items.map((item) => {
             return {
               key: item.cvId,
-              value: item.cvName,
+              value: item.cvUrl,
             };
           });
           //Set Data Variable
