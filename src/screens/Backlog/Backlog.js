@@ -177,7 +177,11 @@ export default function Backlog({ route, navigation }) {
           </View>
         </View>
         <View style={styles.right}>
-          <Text style={styles.backlog}>BackLog</Text>
+          <View style={{justifyContent:"space-between", flexDirection:"row", alignItems:"center"}}>
+            <Text style={styles.backlog}>BackLog</Text>
+            <Buttons text={"View Dashboard"} style={{height:40}} onPressTo={()=> navigation.push("IssueStatistics")}/>
+          </View>
+
           {renderItem(listSPrint)}
           {renderTextField()}
         </View>

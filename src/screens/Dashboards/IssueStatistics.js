@@ -1,53 +1,54 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, FlatList} from "react-native";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
-import { ProgressBar } from 'react-native-paper';
+import {ProgressBar} from 'react-native-paper';
 import Buttons from "../../components/Buttons";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
+import AsyncStorage from "@react-native-community/async-storage";
+import {getIssueStatistics} from "../../networking/CustomNetworkService";
+import UserInfoComponent from "../../components/UserInfoComponent";
 
-const listData = [
-    {
-        name: "Unassigned",
-        count: "23",
-        percentage: "79"
-    },
-    {
-        name: "Hoang Lam",
-        count: "2",
-        percentage: "7"
-    },
-    {
-        name: "Nguyen Cong Dung",
-        count: "2",
-        percentage: "7"
-    },
-    {
-        name: "Son Hoang Hai",
-        count: "1",
-        percentage: "3"
-    },
-    {
-        name: "Nguyen Cong Son",
-        count: "1",
-        percentage: "3"
-    },
-]
+const getProjectId = async () => {
+    try {
+        const projectId = await AsyncStorage.getItem("@projectId");
+        console.log("projectId: " + projectId);
+        return projectId;
+    } catch (e) {
+        console.log("Can't get projectId: " + e);
+    }
+};
 
 function IssueStatistics({navigation}) {
-    const Item = ({name, count, percentage}) => (
+    const [totalIssue, setTotalIssue] = useState();
+    const [totalUnassigned, setTotalUnassigned] = useState();
+    const [issueStatic, setIssueStatic] = useState();
+    useEffect(() => {
+        getProjectId().then(v => {
+            getIssueStatistics(v).then((r) => {
+                setTotalIssue(r.data.totalIssue);
+                setTotalUnassigned(r.data.totalUnassigned);
+                setIssueStatic(r.data.issueStatic);
+            })
+        })
+    }, []);
+    const calculatePercent=( count, totalIssue)=>{
+        const percent= count/totalIssue
+        return percent.toFixed(2)
+    }
+    const Item = ({info, count, totalIssue}) => (
         <View style={{flexDirection: "row"}}>
             <View style={{width: "20%", margin: 10}}>
-                <Text>{name}</Text>
+                <UserInfoComponent info={info}/>
             </View>
-            <View style={{width: "5%", margin: 10}}>
+            <View style={{width: "5%", margin: 10, alignSelf: "center"}}>
                 <Text>{count}</Text>
             </View>
-            <View style={{width: "75%", margin: 10}}>
+            <View style={{width: "75%", margin: 10, alignSelf: "center"}}>
                 <View style={{flexDirection: "row"}}>
-                    <View style={{width: "85%",alignSelf:"center"}}>
-                        <ProgressBar progress={percentage/100} color={'blue'}/>
+                    <View style={{width: "85%", alignSelf: "center"}}>
+                        <ProgressBar progress={calculatePercent(count,totalIssue)} color={'blue'}/>
                     </View>
-                    <Text> {percentage}%</Text>
+                    <Text style={{ alignSelf: "center"}} > {calculatePercent(count,totalIssue)*100}%</Text>
                 </View>
             </View>
         </View>
@@ -56,22 +57,25 @@ function IssueStatistics({navigation}) {
         <View style={styles.container}>
             <ProjectNavigator navigation={navigation}/>
             <View style={styles.containerContent}>
-                <View style={{flexDirection: "row", justifyContent:"space-between"}}>
+                <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                     <Text style={{fontSize: 25, fontWeight: "bold", margin: 30}}> Project Dashboards</Text>
                     <View style={{flexDirection: "row", marginRight: 30}}>
-                        <Buttons text={"Issue Statistics"} style={{width: "25%", height:40, margin:30}} onPressTo={()=> navigation.push("IssueStatistics")} />
-                        <Buttons text={"Assigned to Me"} style={{width: "25%", height:40, margin:30}} onPressTo={()=> navigation.push("AssignedToMe")}/>
-                        <Buttons text={"Activity Streams"} style={{width: "25%", height:40, margin:30}} onPressTo={()=> navigation.push("ActivityStreams")}/>
+                        <Buttons text={"Issue Statistics"} style={{width: "25%", height: 40, margin: 30}}
+                                 onPressTo={() => navigation.push("IssueStatistics")}/>
+                        <Buttons text={"Assigned to Me"} style={{width: "25%", height: 40, margin: 30}}
+                                 onPressTo={() => navigation.push("AssignedToMe")}/>
+                        <Buttons text={"Activity Streams"} style={{width: "25%", height: 40, margin: 30}}
+                                 onPressTo={() => navigation.push("ActivityStreams")}/>
                     </View>
 
                 </View>
 
                 <View style={styles.content}>
-                    <View style={{margin:20}}>
-                        <View style={{flexDirection: "row", justifyContent:"space-between"}}>
+                    <View style={{margin: 20}}>
+                        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                             <Text style={{fontSize: 18, fontWeight: "bold", margin: 10}}>Issue Statistics: Project
                                 (Assignee)</Text>
-                            <Buttons text={"Refresh"} style={{width: "5%", height:40, margin:10}}/>
+                            <Buttons text={"Refresh"} style={{width: "5%", height: 40, margin: 10}}/>
                         </View>
                         <View style={{flexDirection: "row", borderBottomWidth: 2}}>
                             <View style={{width: "20%", margin: 10}}>
@@ -84,17 +88,33 @@ function IssueStatistics({navigation}) {
                                 <Text>Percentage</Text>
                             </View>
                         </View>
-                        <FlatList
-                            data={listData}
-                            renderItem={({item}) => (
-                                <Item count={item.count} name={item.name} percentage={item.percentage}/>)}
-                        />
                         <View style={{flexDirection: "row"}}>
+                            <View style={{width: "20%", margin: 10}}>
+                                <Text>Unassigned</Text>
+                            </View>
+                            <View style={{width: "5%", margin: 10, alignSelf: "center"}}>
+                                <Text>{totalUnassigned}</Text>
+                            </View>
+                            <View style={{width: "75%", margin: 10}}>
+                                <View style={{flexDirection: "row"}}>
+                                    <View style={{width: "85%", alignSelf: "center"}}>
+                                        <ProgressBar progress={totalUnassigned/totalIssue} color={'blue'}/>
+                                    </View>
+                                    <Text style={{ alignSelf: "center"}} > {calculatePercent(totalUnassigned,totalIssue)*100}%</Text>
+                                </View>
+                            </View>
+                        </View>
+                        <FlatList
+                            data={issueStatic}
+                            renderItem={({item}) => (
+                                <Item info={item.userInfo} count={item.numOfTask} totalIssue={totalIssue}/>)}
+                        />
+                        <View style={{flexDirection: "row", borderTopWidth:2}}>
                             <View style={{width: "20%", margin: 10}}>
                                 <Text>Total</Text>
                             </View>
                             <View style={{width: "5%", margin: 10}}>
-                                <Text>29</Text>
+                                <Text>{totalIssue}</Text>
                             </View>
                         </View>
                     </View>
@@ -118,7 +138,7 @@ const styles = StyleSheet.create({
     content: {
         borderWidth: 1,
         borderRadius: 5,
-        marginLeft: 30,marginRight: 30
+        marginLeft: 30, marginRight: 30
     }
 });
 export default IssueStatistics;

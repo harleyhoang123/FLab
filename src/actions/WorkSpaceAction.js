@@ -1,6 +1,7 @@
 import {WorkSpaceController} from "../controllers/WorkSpaceController";
 import {NetworkService} from "../networking";
 import {LaboratoryController} from "../controllers/LaboratoryController";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export const getAllSprint =
     (projectId, navigation) =>
@@ -9,8 +10,8 @@ export const getAllSprint =
                 const workSpaceController = new WorkSpaceController(networkService);
                 console.log("Project ID in getAllSprint: " + projectId);
                 const response = await workSpaceController.getAllSprint({projectId});
-                console.log("Data getAllSprintis : " + JSON.stringify(response));
                 const laboratoryController = new LaboratoryController(networkService);
+                await AsyncStorage.setItem("@memberIdProject", response.data.data.memberId);
                 const projectDetail = await laboratoryController.getProjectDetail({
                     projectId,
                 });

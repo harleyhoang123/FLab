@@ -26,6 +26,9 @@ import {
   updateTag,
   uploadProfileCv,
 } from "../networking/CustomNetworkService";
+import IssueStatistics from "../screens/Dashboards/IssueStatistics";
+import AssignedToMe from "../screens/Dashboards/AssignedToMe";
+import ActivityStreams from "../screens/Dashboards/ActivityStreams";
 
 export const routes = {
   laboratory: {
@@ -291,5 +294,14 @@ export const routes = {
     deleteTask:
       workspace +
       "/flab/workspace/public/api/v1/tasks/:sprint-id/tasks/:task-id",
+    issueStatistics:
+        workspace +
+        "/flab/workspace/public/api/v1/workspaces/:workspace-id/issue-statistic",
+    assignedToMe:
+        workspace +
+        "/flab/workspace/public/api/v1/workspaces/:workspace-id/:member-id/assign-to-me",
+    activityStreams:
+        workspace +
+        "/flab/workspace/public/api/v1/workspaces/:workspace-id/activity-stream",
   },
 };

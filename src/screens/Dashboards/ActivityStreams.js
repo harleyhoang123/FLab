@@ -1,62 +1,71 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, Text, View} from "react-native";
-import HomeTopNavigator from "../../navigations/HomeNavigation";
 import Buttons from "../../components/Buttons";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
+import {getActivityStreams} from "../../networking/CustomNetworkService";
+import AsyncStorage from "@react-native-community/async-storage";
 
-const listData = [
-    {
-        user: "Hoang Van Lam ",
-        time: "1-1-2022",
-        action:" changed the status to Done on Task 1 with a resolution of 'Done' "
-    },
-    {
-        user: "Hoang Hai Son ",
-        time: "1-1-2022",
-        action:" changed the status to In Progress on Task 2 "
-    },
-    {
-        user: "Vo Anh Duc ",
-        time: "1-1-2022",
-        action:" changed the status to Done on Task 3 in sprint 4 with a resolution of 'Done' "
-    },
-    {
-        user: "Nguyen Cong Son ",
-        time: "1-1-2022",
-        action:"changed the status to In Progress on FLABS-54 - Task 2 "
-    },
-    {
-        user: "Bui Thanh Phong",
-        time: "1-1-2022",
-        action:" created FLABS-54 - Task 2 "
-    },
-]
+const getProjectId = async () => {
+    try {
+        const projectId = await AsyncStorage.getItem("@projectId");
+        console.log("projectId: " + projectId);
+        return projectId;
+    } catch (e) {
+        console.log("Can't get projectId: " + e);
+    }
+};
+
 function ActivityStreams({navigation}) {
+    const [activities, setActivities] = useState();
+    useEffect(() => {
+        getProjectId().then(v => {
+            getActivityStreams(v).then((r) => {
+                setActivities(r.data.activities)
+            })
+        })
+    }, []);
+    const formatterDate = (date) => {
+        const options = { year: "numeric", month: "long", day: "numeric" };
+        const d = new Date(date);
+        return (
+            d.toLocaleDateString("en-US", options) +
+            ", " +
+            d.toTimeString().split("G")[0]
+        );
+    };
     return (
         <View style={styles.container}>
             <ProjectNavigator navigation={navigation}/>
             <View style={styles.containerContent}>
-                <View style={{flexDirection: "row", justifyContent:"space-between"}}>
+                <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                     <Text style={{fontSize: 25, fontWeight: "bold", margin: 30}}> Project Dashboards</Text>
                     <View style={{flexDirection: "row", marginRight: 30}}>
-                        <Buttons text={"Issue Statistics"} style={{width: "25%", height:40, margin:30}} onPressTo={()=> navigation.push("IssueStatistics")}/>
-                        <Buttons text={"Assigned to Me"} style={{width: "25%", height:40, margin:30}} onPressTo={()=> navigation.push("AssignedToMe")}/>
-                        <Buttons text={"Activity Streams"} style={{width: "25%", height:40, margin:30}} onPressTo={()=> navigation.push("ActivityStreams")}/>
+                        <Buttons text={"Issue Statistics"} style={{width: "25%", height: 40, margin: 30}}
+                                 onPressTo={() => navigation.push("IssueStatistics")}/>
+                        <Buttons text={"Assigned to Me"} style={{width: "25%", height: 40, margin: 30}}
+                                 onPressTo={() => navigation.push("AssignedToMe")}/>
+                        <Buttons text={"Activity Streams"} style={{width: "25%", height: 40, margin: 30}}
+                                 onPressTo={() => navigation.push("ActivityStreams")}/>
                     </View>
 
                 </View>
 
                 <View style={styles.content}>
-                    <View style={{margin:20}}>
-                        <View style={{flexDirection: "row", justifyContent:"space-between"}}>
+                    <View style={{margin: 20}}>
+                        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                             <Text style={{fontSize: 18, fontWeight: "bold", margin: 10}}>Activity Stream</Text>
-                            <Buttons text={"Refresh"} style={{width: "5%", height:40, margin:10}}/>
+                            <Buttons text={"Refresh"} style={{width: "5%", height: 40, margin: 10}}/>
                         </View>
                         <FlatList
-                            data={listData}
+                            data={activities}
                             renderItem={({item}) => (
-                                <Text><Text>{item.user}</Text> {item.action} at {item.time}</Text>
-                                )}
+                                <View>
+                                    <Text style={styles.descriptionDetail}>
+                                        <Text
+                                            style={styles.childIssues}>{item.userInfo.fullName}</Text>{item.edited} at {formatterDate(item.createdDate)}
+                                    </Text>
+                                </View>
+                            )}
                         />
                     </View>
                 </View>
@@ -64,6 +73,7 @@ function ActivityStreams({navigation}) {
         </View>
     );
 }
+
 const styles = StyleSheet.create({
     container: {
         alignContent: "center",
@@ -78,7 +88,17 @@ const styles = StyleSheet.create({
     content: {
         borderWidth: 1,
         borderRadius: 5,
-        marginLeft: 30,marginRight: 30
-    }
+        marginLeft: 30, marginRight: 30
+    },
+    descriptionDetail: {
+        fontSize: 16,
+        alignItems: "center",
+        margin: 15,
+    },
+    childIssues: {
+        fontSize: 16,
+        fontWeight: "bold",
+        margin: 10,
+    },
 });
 export default ActivityStreams;

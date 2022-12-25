@@ -127,6 +127,7 @@ export default function TaskDetailComponent({
       updateATask(
         projectId,
         taskId,
+          memberId,
         taskName,
         status,
         description,
@@ -216,6 +217,7 @@ export default function TaskDetailComponent({
   const updateATask = (
     projectId,
     taskId,
+    memberId,
     taskName,
     status,
     description,
@@ -227,6 +229,7 @@ export default function TaskDetailComponent({
     updateTask(
       projectId,
       taskId,
+        memberId,
       taskName,
       status,
       description,
@@ -245,14 +248,18 @@ export default function TaskDetailComponent({
         setLabelDetail(r.data.label);
         setEstimateDetail(r.data.estimate);
         setReporterDetail(r.data.reporter);
+        setActivityResponse(r.data.activityResponses);
+        filterActivity(r.data.activityResponses, show);
       });
     });
   };
-  const assignInTask = (projectId, taskId, assignee) => {
-    assignTask(projectId, taskId, assignee).then((v) => {
+  const assignInTask = (projectId, taskId, memberId,assignee) => {
+    assignTask(projectId, taskId, memberId,assignee).then((v) => {
       callBackUpdateTask();
       getTaskDetail(taskId).then((r) => {
         setAssigneeDetail(r.data.assignee);
+        setActivityResponse(r.data.activityResponses);
+        filterActivity(r.data.activityResponses, show);
       });
     });
   };
@@ -279,7 +286,7 @@ export default function TaskDetailComponent({
             <Text style={[styles.descriptionDetail, { width: 100 }]}></Text>
             <TouchableOpacity
               onPress={() => {
-                assignInTask(projectId, taskDetail.taskId, memberId);
+                assignInTask(projectId, taskDetail.taskId, memberId,memberId);
               }}
             >
               <Text style={[styles.descriptionDetail, { color: "blue" }]}>

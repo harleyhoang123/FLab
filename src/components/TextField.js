@@ -14,12 +14,13 @@ function TextField({placeholder, text,onChangeText, secureTextEntry, style,multi
 }
 const styles = StyleSheet.create({
     textInput: {
-        height: 50,
+        height: 40,
         width: "99%",
         backgroundColor: 'white',
         borderWidth: 1,
         margin: 15,
         borderRadius:5,
+        padding:5
     },
 });
 

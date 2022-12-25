@@ -14,7 +14,6 @@ import AsyncStorage from "@react-native-community/async-storage";
 import UserInfoComponent from "./UserInfoComponent";
 import TextField from "./TextField";
 import {
-  assignneSubTask,
   assignSubTask,
   deleteSubTask,
   getSubTaskDetail,
@@ -126,6 +125,7 @@ function SubTaskDetailComponent({
       updateASubTask(
         projectId,
         taskId,
+          memberId,
         taskName,
         status,
         description,
@@ -224,6 +224,7 @@ function SubTaskDetailComponent({
   const updateASubTask = (
     projectId,
     subTaskId,
+    memberId,
     taskName,
     status,
     description,
@@ -235,6 +236,7 @@ function SubTaskDetailComponent({
     updateSubTask(
       projectId,
       subTaskId,
+        memberId,
       taskName,
       status,
       description,
@@ -253,13 +255,17 @@ function SubTaskDetailComponent({
         setLabelDetail(r.data.label);
         setEstimateDetail(r.data.estimate);
         setReporterDetail(r.data.reporter);
+        setActivityResponse(r.data.activityResponses);
+        filterActivity(r.data.activityResponses, show);
       });
     });
   };
-  const assignInSubTask = (projectId, subTaskId, assignee) => {
-    assignSubTask(projectId, subTaskId, assignee).then((value) => {
+  const assignInSubTask = (projectId, subTaskId,memberId, assignee) => {
+    assignSubTask(projectId, subTaskId,memberId, assignee).then((value) => {
       getSubTaskDetail(subTaskId).then((r) => {
         setAssigneeDetail(r.data.assignee);
+        setActivityResponse(r.data.activityResponses);
+        filterActivity(r.data.activityResponses, show);
       });
     });
   };
@@ -279,7 +285,7 @@ function SubTaskDetailComponent({
             <Text style={[styles.descriptionDetail, { width: 100 }]}></Text>
             <TouchableOpacity
               onPress={() => {
-                assignInSubTask(projectId, subTaskDetail.subTaskId, memberId);
+                assignInSubTask(projectId, subTaskDetail.subTaskId,memberId, memberId);
               }}
             >
               <Text style={[styles.descriptionDetail, { color: "blue" }]}>

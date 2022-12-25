@@ -66,9 +66,6 @@ function ProjectNavigator({ navigation }) {
           >
             <Text style={styles.textLogo}>Document</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={()=>navigation.push("IssueStatistics")}>
-            <Text style={styles.textLogo}>Dashboards</Text>
-          </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
             onPress={() => goToListMemberPage(projectId)}

@@ -11,6 +11,7 @@ import {
   repository,
   workspace,
 } from "../controllers/ip";
+import IssueStatistics from "../screens/Dashboards/IssueStatistics";
 
 const getToken = async () => {
   try {
@@ -242,7 +243,7 @@ export const getListTask = async (sprintId) => {
         },
       }
     );
-    console.log("Data in createTask: " + JSON.stringify(response.data));
+    console.log("Data in getListTask: " + JSON.stringify(response.data));
     return response.data;
   } catch (error) {
     alert(error.message);
@@ -251,6 +252,7 @@ export const getListTask = async (sprintId) => {
 export const updateSprint = async (
     projectId,
     sprintId,
+    memberId,
     sprintName,
     startDate,
     dueDate,
@@ -267,6 +269,7 @@ export const updateSprint = async (
         startDate: startDate,
         dueDate: dueDate,
         goal: goal,
+        memberId:memberId
       },
       {
         headers: {
@@ -342,6 +345,7 @@ export const deleteSubTask = async (subTaskId, taskId) => {
 export const updateSubTask = async (
     projectId,
     subTaskId,
+    memberId,
     subTaskName,
     status,
     description,
@@ -364,6 +368,7 @@ export const updateSubTask = async (
         label: label,
         estimate: estimate,
         reporter: reporter,
+        memberId:memberId
       },
       {
         headers: {
@@ -377,7 +382,7 @@ export const updateSubTask = async (
     console.log("ERROR when updateSprint: " + JSON.stringify(error));
   }
 };
-export const assignSubTask = async (projectId, subTaskId, assignee) => {
+export const assignSubTask = async (projectId, subTaskId,memberId, assignee) => {
   const token = await getToken();
   try {
     const response = await axios.put(
@@ -386,6 +391,7 @@ export const assignSubTask = async (projectId, subTaskId, assignee) => {
         .replace(":workspace-id", projectId),
       {
         assignee: assignee,
+        memberId:memberId,
       },
       {
         headers: {
@@ -448,6 +454,7 @@ export const getListSubTask = async (taskId) => {
 export const updateTask = async (
     projectId,
     taskId,
+    memberId,
     taskName,
     status,
     description,
@@ -470,6 +477,7 @@ export const updateTask = async (
         label: label,
         estimate: estimate,
         reporter: reporter,
+        memberId:memberId
       },
       {
         headers: {
@@ -483,7 +491,7 @@ export const updateTask = async (
     console.log("ERROR when updateTask: " + JSON.stringify(error));
   }
 };
-export const assignTask = async (projectId, taskId, assignee) => {
+export const assignTask = async (projectId, taskId, memberId,assignee) => {
   const token = await getToken();
   try {
     const response = await axios.put(
@@ -492,6 +500,7 @@ export const assignTask = async (projectId, taskId, assignee) => {
         .replace(":workspace-id", projectId),
       {
         assignee: assignee,
+        memberId:memberId,
       },
       {
         headers: {
@@ -1725,5 +1734,62 @@ export const getListAllNews = async (title, page, size) => {
     return response;
   } catch (error) {
     console.log("error when getListAllNews:" + JSON.stringify(error));
+  }
+};
+export const getIssueStatistics = async (workspaceId) => {
+  const token = await getToken();
+  try {
+    const response = await axios.get(
+        routes.workSpace.issueStatistics.replace(":workspace-id",workspaceId),
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+        }
+    );
+    console.log(
+        "Data in getIssueStatistics: " + JSON.stringify(response.data)
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error when getIssueStatistics:" + JSON.stringify(error));
+  }
+};
+export const getAssignedToMe = async (workspaceId, memberId) => {
+  const token = await getToken();
+  try {
+    const response = await axios.get(
+        routes.workSpace.assignedToMe.replace(":workspace-id",workspaceId).replace(":member-id",memberId),
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+        }
+    );
+    console.log(
+        "Data in getAssignedToMe: " + JSON.stringify(response.data)
+    );
+    return response;
+  } catch (error) {
+    console.log("error when getAssignedToMe:" + JSON.stringify(error));
+  }
+};
+export const getActivityStreams = async (workspaceId) => {
+  const token = await getToken();
+  try {
+    const response = await axios.get(
+        routes.workSpace.activityStreams.replace(":workspace-id",workspaceId),
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+        }
+    );
+    console.log(
+        "Data in getActivityStreams: " + JSON.stringify(response.data)
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error when getActivityStreams:" + JSON.stringify(error));
   }
 };

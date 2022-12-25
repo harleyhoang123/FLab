@@ -1,57 +1,51 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, Text, View} from "react-native";
-import {ProgressBar} from "react-native-paper";
-import HomeTopNavigator from "../../navigations/HomeNavigation";
 import Buttons from "../../components/Buttons";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
+import AsyncStorage from "@react-native-community/async-storage";
+import {getAssignedToMe} from "../../networking/CustomNetworkService";
+import UserInfoComponent from "../../components/UserInfoComponent";
 
+const getProjectId = async () => {
+    try {
+        const projectId = await AsyncStorage.getItem("@projectId");
+        console.log("projectId: " + projectId);
+        return projectId;
+    } catch (e) {
+        console.log("Can't get projectId: " + e);
+    }
+};
+const getMemberId = async () => {
+    try {
+        return await AsyncStorage.getItem("@memberIdProject");
+    } catch (e) {
+        console.log("Can't get memberIdProject: " + e);
+    }
+};
 
-const listData = [
-    {
-        summary: "Summary of features in existing laboratory management system",
-        estimate: "8",
-        assignedTime: "1-1-2022",
-        reporter:"Hoang Van Lam"
-    },
-    {
-        summary: "Identify and refine essential features",
-        estimate: "8",
-        assignedTime: "1-1-2022",
-        reporter:"Vo Anh Duc"
-    },
-    {
-        summary: "Talk directly with the teachers who manage the Lab",
-        estimate: "8",
-        assignedTime: "1-1-2022",
-        reporter:"Bui Thanh Phong "
-    },
-    {
-        summary: "Summary of features that will develop",
-        estimate: "8",
-        assignedTime: "1-1-2022",
-        reporter:"Hoang Hai Son"
-    },
-    {
-        summary: "Business Requirement Document",
-        estimate: "8",
-        assignedTime: "1-1-2022",
-        reporter:"Nguyen Cong Son "
-    },
-]
 function AssignedToMe({navigation}) {
-    const Item = ({summary, estimate,assignedTime, reporter}) => (
+    const [listAssign, setListAssign] = useState();
+    useEffect(() => {
+        getProjectId().then(v => {
+            console.log("PID"+ v);
+            getMemberId().then(r => {
+                console.log("MID"+ r);
+                getAssignedToMe(v, r).then(l => {
+                    setListAssign(l)
+                })
+            })
+        })
+    }, []);
+    const Item = ({summary, estimate, reporter}) => (
         <View style={{flexDirection: "row"}}>
             <View style={{width: "50%", margin: 10}}>
                 <Text>{summary}</Text>
             </View>
-            <View style={{width: "5%", margin: 10}}>
+            <View style={{width: "10%", margin: 10}}>
                 <Text>{estimate}</Text>
             </View>
-            <View style={{width: "10%", margin: 10}}>
-                <Text>{assignedTime}</Text>
-            </View>
-            <View style={{width: "35%", margin: 10}}>
-                <Text>{reporter}</Text>
+            <View style={{width: "40%", margin: 10}}>
+                <UserInfoComponent info={reporter}/>
             </View>
         </View>
     );
@@ -59,40 +53,40 @@ function AssignedToMe({navigation}) {
         <View style={styles.container}>
             <ProjectNavigator navigation={navigation}/>
             <View style={styles.containerContent}>
-                <View style={{flexDirection: "row", justifyContent:"space-between"}}>
+                <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                     <Text style={{fontSize: 25, fontWeight: "bold", margin: 30}}> Project Dashboards</Text>
                     <View style={{flexDirection: "row", marginRight: 30}}>
-                        <Buttons text={"Issue Statistics"} style={{width: "25%", height:40, margin:30}} onPressTo={()=> navigation.push("IssueStatistics")}/>
-                        <Buttons text={"Assigned to Me"} style={{width: "25%", height:40, margin:30}} onPressTo={()=> navigation.push("AssignedToMe")}/>
-                        <Buttons text={"Activity Streams"} style={{width: "25%", height:40, margin:30}} onPressTo={()=> navigation.push("ActivityStreams")}/>
+                        <Buttons text={"Issue Statistics"} style={{width: "25%", height: 40, margin: 30}}
+                                 onPressTo={() => navigation.push("IssueStatistics")}/>
+                        <Buttons text={"Assigned to Me"} style={{width: "25%", height: 40, margin: 30}}
+                                 onPressTo={() => navigation.push("AssignedToMe")}/>
+                        <Buttons text={"Activity Streams"} style={{width: "25%", height: 40, margin: 30}}
+                                 onPressTo={() => navigation.push("ActivityStreams")}/>
                     </View>
 
                 </View>
 
                 <View style={styles.content}>
-                    <View style={{margin:20}}>
-                        <View style={{flexDirection: "row", justifyContent:"space-between"}}>
+                    <View style={{margin: 20}}>
+                        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
                             <Text style={{fontSize: 18, fontWeight: "bold", margin: 10}}>Assigned to Me</Text>
-                            <Buttons text={"Refresh"} style={{width: "5%", height:40, margin:10}}/>
+                            <Buttons text={"Refresh"} style={{width: "5%", height: 40, margin: 10}}/>
                         </View>
                         <View style={{flexDirection: "row", borderBottomWidth: 2}}>
                             <View style={{width: "50%", margin: 10}}>
                                 <Text>Task</Text>
                             </View>
-                            <View style={{width: "5%", margin: 10}}>
+                            <View style={{width: "10%", margin: 10}}>
                                 <Text>Estimate</Text>
                             </View>
-                            <View style={{width: "10%", margin: 10}}>
-                                <Text>Assigned Time</Text>
-                            </View>
-                            <View style={{width: "35%", margin: 10}}>
+                            <View style={{width: "40%", margin: 10}}>
                                 <Text>Reporter</Text>
                             </View>
                         </View>
                         <FlatList
-                            data={listData}
+                            data={listAssign}
                             renderItem={({item}) => (
-                                <Item summary={item.summary} estimate={item.estimate} assignedTime={item.assignedTime} reporter={item.reporter}/>)}
+                                <Item summary={item.issueName} estimate={item.estimate} reporter={item.reporter}/>)}
                         />
                     </View>
                 </View>
@@ -100,6 +94,7 @@ function AssignedToMe({navigation}) {
         </View>
     );
 }
+
 const styles = StyleSheet.create({
     container: {
         alignContent: "center",
@@ -114,7 +109,7 @@ const styles = StyleSheet.create({
     content: {
         borderWidth: 1,
         borderRadius: 5,
-        marginLeft: 30,marginRight: 30
+        marginLeft: 30, marginRight: 30
     }
 });
 export default AssignedToMe;
