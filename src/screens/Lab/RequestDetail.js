@@ -7,7 +7,7 @@ import {
   Button,
   StyleSheet,
   Text,
-  StatusBar,
+  StatusBar, Linking,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import Buttons from "../../components/Buttons";
@@ -67,7 +67,14 @@ export default function RequestDetail({ route, navigation }) {
             value={textComment}
             placeholder={"Enter your's comment"}
           />
+
           <View style={styles.btn}>
+            <Buttons
+                text={"View CV"}
+                style={styles.button}
+                onPressTo={() => {Linking.openURL(data.cvKey).then(r => {
+                });}}
+            />
             <Buttons
               text={"Accept"}
               style={styles.button}
