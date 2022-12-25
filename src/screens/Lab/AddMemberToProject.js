@@ -43,10 +43,12 @@ export default function AddMemberToProject({ route, navigation }) {
   const [listMember, setListMember] = useState(searchMember);
 
   const searchMember = (page) => {
-    getMemberInLabNotInProject(projectId, page, size).then((response) => {
-      setNumberOfElement(response.data.totalPage * size);
-      setListMember(response.data.items);
-    });
+    getMemberInLabNotInProject(projectId, page, size, navigation).then(
+      (response) => {
+        setNumberOfElement(response.data.totalPage * size);
+        setListMember(response.data.items);
+      }
+    );
   };
 
   return (
