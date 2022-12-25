@@ -142,7 +142,7 @@ export default function ViewAllMemberInProject({ route, navigation }) {
           <Buttons
             style={styles.button}
             onPressTo={() =>
-              navigation.navigate("AddMemberToProject", {
+              navigation.push("AddMemberToProject", {
                 allMember: listMember,
                 projectId: projectId,
               })
