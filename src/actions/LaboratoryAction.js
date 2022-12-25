@@ -1193,6 +1193,7 @@ export const addMaterial =
 export const orderMaterial =
   (labId, materialId, amount, reason, orderFrom, orderTo, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       const response = await laboratoryController.orderMaterial({
