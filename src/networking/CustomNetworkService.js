@@ -2425,17 +2425,45 @@ export const reviewRequest = async (
 
 export const getLaboratoryByAccountId = async (accountId, page, size) => {
   const token = await getToken();
-  return await axios.get(routes.laboratory.getLaboratory, {
-    params: {
-      "account-id": accountId,
-      page: page,
-      size: size,
-    },
+  let errorCode = 200;
+  try {
+    return await axios.get(routes.laboratory.getLaboratory, {
+      params: {
+        "account-id": accountId,
+        page: page,
+        size: size,
+      },
 
-    headers: {
-      Authorization: `Bearer ` + token,
-    },
-  });
+      headers: {
+        Authorization: `Bearer ` + token,
+      },
+    });
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
+  }
 };
 
 export const getLaboratorySuggestionByAccountId = async (
@@ -2444,35 +2472,91 @@ export const getLaboratorySuggestionByAccountId = async (
   size
 ) => {
   const token = await getToken();
-  return await axios.get(routes.laboratory.getLaboratorySuggestion, {
-    params: {
-      "account-id": accountId,
-      page: page,
-      size: size,
-    },
+  let errorCode = 200;
+  try {
+    return await axios.get(routes.laboratory.getLaboratorySuggestion, {
+      params: {
+        "account-id": accountId,
+        page: page,
+        size: size,
+      },
 
-    headers: {
-      Authorization: `Bearer ` + token,
-    },
-  });
+      headers: {
+        Authorization: `Bearer ` + token,
+      },
+    });
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
+  }
 };
 export const getLaboratoryWaitingByAccountId = async (
-    accountId,
-    page,
-    size
+  accountId,
+  page,
+  size
 ) => {
   const token = await getToken();
-  return await axios.get(routes.laboratory.getLaboratoryWaiting, {
-    params: {
-      "account-id": accountId,
-      page: page,
-      size: size,
-    },
+  let errorCode = 200;
+  try {
+    return await axios.get(routes.laboratory.getLaboratoryWaiting, {
+      params: {
+        "account-id": accountId,
+        page: page,
+        size: size,
+      },
 
-    headers: {
-      Authorization: `Bearer ` + token,
-    },
-  });
+      headers: {
+        Authorization: `Bearer ` + token,
+      },
+    });
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
+  }
 };
 export const getAllMemberByLabId = async (page, size) => {
   const token = await getToken();
@@ -3672,12 +3756,12 @@ export const getNotification = async (accountId, navigation) => {
   let errorCode = 200;
   try {
     const response = await axios.get(
-        routes.notification.getNotification.replace(":account-id", accountId),
-        {
-          headers: {
-            Authorization: `Bearer ` + token,
-          },
-        }
+      routes.notification.getNotification.replace(":account-id", accountId),
+      {
+        headers: {
+          Authorization: `Bearer ` + token,
+        },
+      }
     );
     console.log("Data in getNotification: " + JSON.stringify(response.data));
     return response.data;
