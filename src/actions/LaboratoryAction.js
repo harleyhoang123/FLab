@@ -486,7 +486,7 @@ export const removeMemberInProjectById =
   };
 
 export const removeProject =
-  (labId, projectId, navigation) =>
+  (labId, projectId, currentMemberId, navigation) =>
   async (dispatch, _, { networkService }) => {
     let errorCode = 200;
     try {
@@ -496,7 +496,7 @@ export const removeProject =
         projectId,
       });
       if (response) {
-        dispatch(getAllProjectByLabId(labId, navigation));
+        dispatch(getAllProjectByLabId(labId, currentMemberId, navigation));
       }
     } catch ({ data }) {
       if (data) {

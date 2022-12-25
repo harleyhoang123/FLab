@@ -38,13 +38,24 @@ const storeCurrentProjectId = async (projectId) => {
   }
 };
 
+const getCurrentMemberId = async () => {
+  try {
+    const memberId = await AsyncStorage.getItem("@currentMemberId");
+    console.log("memberId in reate Project: " + memberId);
+    return memberId;
+  } catch (e) {
+    console.log("Can't get memberId id: " + e);
+  }
+};
+
 export default function Project({ route, navigation }) {
   const listProject = route.params.data;
   const data = listProject.items;
   const [labId, setLabId] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   getCuurentLabId().then((v) => setLabId(v));
-
+  const [currentMemberId, setCurrentMemberId] = useState("");
+  getCurrentMemberId().then((v) => setCurrentMemberId(v));
   console.log(JSON.stringify(data));
 
   const dispatch = useDispatch();
@@ -55,8 +66,8 @@ export default function Project({ route, navigation }) {
     dispatch(getProjectById(projectId, navigation));
   };
 
-  const removeProjectById = (projectId) => {
-    dispatch(removeProject(labId, projectId, navigation));
+  const removeProjectById = (projectId, navigation) => {
+    dispatch(removeProject(labId, projectId, currentMemberId, navigation));
   };
 
   const Item = ({ projectId, projectName, description, members }) => (
@@ -82,7 +93,7 @@ export default function Project({ route, navigation }) {
                 text={"Delete"}
                 style={{ marginRight: 40 }}
                 onPressTo={() => {
-                  removeProjectById(projectId);
+                  removeProjectById(projectId, navigation);
                   setShowConfirm(false);
                 }}
               />
