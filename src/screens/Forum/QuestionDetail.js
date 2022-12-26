@@ -1,13 +1,6 @@
-import React, {useEffect, useState} from "react";
-import {
-  FlatList,
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Dropdown } from "react-native-element-dropdown";
+import React, {useState} from "react";
+import {FlatList, Modal, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {Dropdown} from "react-native-element-dropdown";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import ForumNavigation from "../../navigations/ForumNavigation";
 import Separator from "../../components/Separator";
@@ -15,32 +8,22 @@ import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
 import CommentItem from "../../components/CommentItem";
 import VoteComponent from "../../components/VoteComponent";
-import { useDispatch } from "react-redux";
-import {
-  closeQuestion,
-  getListQuestion,
-  getQuestionDetailByQuestionId,
-} from "../../actions/ForumAction";
+import {useDispatch} from "react-redux";
+import {closeQuestion, getListQuestion, getQuestionDetailByQuestionId,} from "../../actions/ForumAction";
 import AnswerComponent from "../../components/AnswerComponent";
-import {
-  addAnswer,
-  addCommentToQuestion,
-  getQuestionDetail,
-  voteQuestion,
-} from "../../networking/CustomNetworkService";
+import {addAnswer, addCommentToQuestion, getQuestionDetail, voteQuestion,} from "../../networking/CustomNetworkService";
 import AsyncStorage from "@react-native-community/async-storage";
 
-const getUsername = async () => {
+const getUserAccount = async () => {
   try {
-    return await AsyncStorage.getItem("@username");
+    return await AsyncStorage.getItem("@userAccount");
   } catch (e) {
     console.log("Can't get username: " + e);
   }
 };
 const getRoles = async () => {
   try {
-    const roles = await AsyncStorage.getItem("@roles");
-    return roles;
+    return await AsyncStorage.getItem("@roles");
   } catch (e) {
     console.log("Can't get roles: " + e);
   }
@@ -71,24 +54,20 @@ function QuestionDetail({ route, navigation }) {
   const [isAnswer, setIsAnswer] = useState(false);
   const [username, setUsername] = useState("");
   const [roles, setRoles] = useState([]);
-  let edit= false
   getRoles().then((v) => {setRoles(v)});
-  getUsername().then((r) => {setUsername(r)});
-  // useEffect(()=>{
-  //   getRoles().then((v) => {setRoles(v);getUsername().then((r) => {setUsername(r); checkCanEdit(v,r,res.data.createdBy.username,statusClose)})});
-  //
-  // },[])
+  getUserAccount().then((r) => {setUsername(r)});
+
+
   const checkCanEdit=(roles,username,author,statusClose)=>{
     if(statusClose === "CLOSE" ){
       return false;
     }else {
-      if(roles.includes("MANAGER") ){
+      if (roles.includes("MANAGER") || roles.includes("ADMIN")) {
         return true;
       }else {
         return username === author;
       }
     }
-
   }
   function validateComment() {
     if (!content) {
@@ -139,6 +118,7 @@ function QuestionDetail({ route, navigation }) {
   const handleClose = () => {
     dispatch(closeQuestion(questionId, navigation));
   };
+
   const handleComment = () => {
     addCommentToQuestion(questionId, content, navigation).then((v) => {
       getQuestionDetail(questionId, null, null, navigation).then((r) =>
@@ -328,6 +308,7 @@ function QuestionDetail({ route, navigation }) {
                   parentId={questionId}
                   commentId={item.commentId}
                   username={item.createdBy.fullName}
+                  author={item.createdBy.username}
                   content={item.content}
                   parentType={"QUESTION"}
                   time={formatTime(item.createdDate)}
@@ -391,6 +372,7 @@ function QuestionDetail({ route, navigation }) {
                 createdDate={item.createdDate}
                 userAnswerComment={item.comments}
                 status={item.status}
+                authorQuestion={res.data.createdBy.username}
                 callbackAnswer={callbackAnswer}
                 votedStatus={item.votedStatus}
                 statusClose={statusClose}

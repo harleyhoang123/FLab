@@ -9,11 +9,28 @@ import {
 } from "../networking/CustomNetworkService";
 import TextField from "./TextField";
 import Buttons from "./Buttons";
+import AsyncStorage from "@react-native-community/async-storage";
+
+const getUserAccount = async () => {
+    try {
+        return await AsyncStorage.getItem("@userAccount");
+    } catch (e) {
+        console.log("Can't get username: " + e);
+    }
+};
+const getRoles = async () => {
+    try {
+        return await AsyncStorage.getItem("@roles");
+    } catch (e) {
+        console.log("Can't get roles: " + e);
+    }
+};
 
 function CommentItem({
                          parentId,
                          commentId,
                          username,
+                         author,
                          content,
                          time,
                          parentType,
@@ -26,6 +43,26 @@ function CommentItem({
     const [isComment, setIsComment] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
     let isValid = true;
+    const [userAccount, setUserAccount] = useState("");
+    const [roles, setRoles] = useState([]);
+    getRoles().then((v) => {
+        setRoles(v)
+    });
+    getUserAccount().then((r) => {
+        setUserAccount(r)
+    });
+
+    const checkCanEdit = (roles, userAccount, author, statusClose) => {
+        if (statusClose === "CLOSE") {
+            return false;
+        } else {
+            if (roles.includes("MANAGER") || roles.includes("ADMIN")) {
+                return true;
+            } else {
+                return userAccount === author;
+            }
+        }
+    }
 
     function validateComment() {
         if (!text) {
@@ -154,7 +191,7 @@ function CommentItem({
             </View>
             <View style={styles.containerComment}>
                 <Text style={styles.text}>{time}</Text>
-                {statusClose !== "CLOSE" &&
+                {checkCanEdit(roles, userAccount, author, statusClose) &&
                     <View style={styles.containerComment}><View style={styles.login}>
                         <TouchableOpacity
                             onPress={() => {

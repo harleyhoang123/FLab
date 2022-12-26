@@ -1,13 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import {useDispatch} from "react-redux";
-import {getListQuestion} from "../actions/ForumAction";
+import AsyncStorage from "@react-native-community/async-storage";
 
+const getRoles = async () => {
+    try {
+        return await AsyncStorage.getItem("@roles");
+    } catch (e) {
+        console.log("Can't get roles: " + e);
+    }
+};
 function ForumNavigation({ navigation }) {
-    const dispatch = useDispatch();
-    const goToForum = () => {
-        dispatch(getListQuestion(navigation));
-    };
+    const [roles, setRoles] = useState([]);
+    getRoles().then((v) => {setRoles(v)});
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -16,30 +20,20 @@ function ForumNavigation({ navigation }) {
       >
         <Text style={styles.textLogo}>Home</Text>
       </TouchableOpacity>
-      {/*<TouchableOpacity*/}
-      {/*  style={styles.button}*/}
-      {/*  onPress={() => navigation.push("Forum")}*/}
-      {/*>*/}
-      {/*  <Text style={styles.textLogo}>Recent question</Text>*/}
-      {/*</TouchableOpacity>*/}
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.push("MyQuestion")}
       >
         <Text style={styles.textLogo}>My question</Text>
       </TouchableOpacity>
-      {/*<TouchableOpacity*/}
-      {/*  style={styles.button}*/}
-      {/*  onPress={() => navigation.push("Forum")}*/}
-      {/*>*/}
-      {/*  <Text style={styles.textLogo}>Questions</Text>*/}
-      {/*</TouchableOpacity>*/}
-        <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.push("ListTag")}
-        >
-            <Text style={styles.textLogo}>Setting</Text>
-        </TouchableOpacity>
+        {roles.includes("MANAGER")|| roles.includes("ADMIN")&&
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.push("ListTag")}
+            >
+                <Text style={styles.textLogo}>Setting</Text>
+            </TouchableOpacity>
+        }
     </View>
   );
 }

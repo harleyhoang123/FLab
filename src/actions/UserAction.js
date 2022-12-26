@@ -45,6 +45,7 @@ export const login =
           await AsyncStorage.setItem("@avatar", data.data.avatar);
           await AsyncStorage.setItem("@token", data.data.token);
           await AsyncStorage.setItem("@username", data.data.fullName);
+          await AsyncStorage.setItem("@userAccount", data.data.username);
           console.log("Set account id success: " + JSON.stringify(data.data));
         } catch ({ err }) {
           console.log("Can't store accountId:" + err);
