@@ -88,9 +88,11 @@ export default function LabDetail({ route, navigation }) {
   useEffect(() => {
     getCurrentMemberId().then((v) => setCurrentMemberId(v));
     getLabId().then((r) => {
-      getNumberOfApplication(r, navigation).then((v) => {
-        setNumberOfApplication(v.data);
-      }).catch(error => {});
+      getNumberOfApplication(r, navigation)
+        .then((v) => {
+          setNumberOfApplication(v.data);
+        })
+        .catch((error) => {});
     });
   }, []);
 
@@ -123,7 +125,11 @@ export default function LabDetail({ route, navigation }) {
   const [showConfirm, setShowConfirm] = useState(false);
   return (
     <View style={styles.container}>
-      <LabNavigator navigation={navigation} isJoined={isJoined} />
+      <LabNavigator
+        navigation={navigation}
+        isJoined={isJoined}
+        isApply={isApply}
+      />
       <View style={styles.containerProfile}>
         {roles == "MANAGER" || roles == "OWNER" ? (
           <TouchableOpacity

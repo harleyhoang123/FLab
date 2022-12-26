@@ -4,7 +4,8 @@ import Logo from "../assets/Logo";
 import { useDispatch } from "react-redux";
 import {
   getAllMemberInLaboratoryById,
-  getAllProjectByLabId, getLaboratoryById,
+  getAllProjectByLabId,
+  getLaboratoryById,
   getListMaterialByLabId,
 } from "../actions/LaboratoryAction";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -25,7 +26,7 @@ const getMemberId = async () => {
     console.log("Can't get memberId id: " + e);
   }
 };
-export default function LabNavigator({ route, navigation, isJoined }) {
+export default function LabNavigator({ route, navigation, isJoined, isApply }) {
   const [labId, setLabId] = useState("");
   getLabId().then((v) => setLabId(v));
   getMemberId().then((v) => setMemberId(v));
@@ -63,12 +64,15 @@ export default function LabNavigator({ route, navigation, isJoined }) {
             <Logo />
             <Text style={styles.textLogo}>FLAB</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {!isApply && (
+            <TouchableOpacity
               style={styles.button}
               onPress={() => goToLabDetailPage(labId, isJoined)}
-          >
-            <Text style={styles.textLogo}>Overview</Text>
-          </TouchableOpacity>
+            >
+              <Text style={styles.textLogo}>Overview</Text>
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity
             style={styles.button}
             onPress={() => goToViewAllProjectPage(labId)}
