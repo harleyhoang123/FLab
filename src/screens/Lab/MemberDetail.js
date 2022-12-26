@@ -22,13 +22,13 @@ import Buttons from "../../components/Buttons";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useDispatch } from "react-redux";
 
-const getLabId = async () => {
+const getLabRole = async () => {
   try {
-    const labId = await AsyncStorage.getItem("@currentLabId");
-    console.log("LabId in reate Project: " + labId);
-    return labId;
+    const labRole = await AsyncStorage.getItem("@roleInLab");
+    console.log("labRole : " + labRole);
+    return labRole;
   } catch (e) {
-    console.log("Can't get LabId id: " + e);
+    console.log("Can't get labRole: " + e);
   }
 };
 
@@ -37,7 +37,8 @@ export default function MemberDetail({ route, navigation }) {
   const memberId = route.params.memberId;
   const labId = route.params.labId;
   const dispatch = useDispatch();
-  console.log("data memberId: " + JSON.stringify(memberId));
+  const [labRole, setLabRole] = useState("");
+  getLabRole().then((v) => setLabRole(v));
   const [showConfirm, setShowConfirm] = useState(false);
   const removeMemberhandler = () => {
     dispatch(removeMemberFromLaboratory(labId, memberId, navigation));
@@ -84,11 +85,14 @@ export default function MemberDetail({ route, navigation }) {
                   navigation.goBack(null);
                 }}
               />
-              <Buttons
-                text={"Remove"}
-                style={styles.button}
-                onPressTo={() => setShowConfirm(true)}
-              />
+              {labRole == "MANAGER" || labRole == "OWNER" ? (
+                <Buttons
+                  text={"Remove"}
+                  style={styles.button}
+                  onPressTo={() => setShowConfirm(true)}
+                />
+              ) : null}
+
               <Modal
                 animationType="fade"
                 transparent={true}
@@ -129,15 +133,17 @@ export default function MemberDetail({ route, navigation }) {
                   </View>
                 </View>
               </Modal>
-              <Buttons
-                text={"Update Role"}
-                style={styles.button}
-                onPressTo={() => {
-                  navigation.navigate("UpdateMemberRole", {
-                    memberid: memberId,
-                  });
-                }}
-              />
+              {labRole == "MANAGER" || labRole == "OWNER" ? (
+                <Buttons
+                  text={"Update Role"}
+                  style={styles.button}
+                  onPressTo={() => {
+                    navigation.navigate("UpdateMemberRole", {
+                      memberid: memberId,
+                    });
+                  }}
+                />
+              ) : null}
             </View>
           </View>
         </View>
