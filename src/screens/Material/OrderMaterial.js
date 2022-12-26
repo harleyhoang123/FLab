@@ -25,18 +25,22 @@ function OrderMaterial({ navigation }) {
   const [text, setText] = useState("");
   const [labId, setLabId] = useState();
   const callBackOrder = () => {
-    getListOrderByLabId(labId, navigation).then((r) => {
-      setListItem(r.data.items);
-      filterStatus(r.data.items, value);
-    }).catch(error => {});
+    getListOrderByLabId(labId, navigation)
+      .then((r) => {
+        setListItem(r.data.items);
+        filterStatus(r.data.items, value);
+      })
+      .catch((error) => {});
   };
   useEffect(() => {
     getLabId().then((v) => {
       {
         setLabId(v);
-        getListOrderByLabId(v, navigation).then((r) => {
-          checkDataNull(r);
-        }).catch(error => {});
+        getListOrderByLabId(v, navigation)
+          .then((r) => {
+            checkDataNull(r);
+          })
+          .catch((error) => {});
       }
     });
   }, []);
@@ -92,7 +96,7 @@ function OrderMaterial({ navigation }) {
           <Buttons text={"Search"} />
           <Buttons
             text={"Back"}
-            style={[styles.button, { marginLeft: 20 }]}
+            style={{ marginLeft: 20 }}
             onPressTo={() => navigation.goBack()}
           />
         </View>

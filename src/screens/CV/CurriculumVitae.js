@@ -41,6 +41,16 @@ function CurriculumVitae({ navigation }) {
     });
   }, []);
 
+  function check(id, check) {
+    if (id === check) {
+      setChecked("");
+      setDisable(true);
+    } else {
+      setChecked(id);
+      setDisable(false);
+    }
+  }
+
   const openURL = (url) => {
     Linking.openURL(url).then((r) => {});
   };
@@ -59,10 +69,9 @@ function CurriculumVitae({ navigation }) {
           value={cvId}
           status={checked === cvId ? "checked" : "unchecked"}
           onPress={() => {
-            setChecked(cvId);
+            check(cvId, checked);
             setCvName(cvName);
             setDescription(description);
-            setDisable(false);
           }}
         />
       </View>
@@ -141,6 +150,7 @@ function CurriculumVitae({ navigation }) {
                 cvName: cvName,
                 description: description,
               });
+              setChecked("");
             }}
           />
           <Buttons

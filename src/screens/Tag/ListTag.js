@@ -36,57 +36,88 @@ function ListTag({ navigation }) {
   const [deleteT, setDeleteT] = useState(false);
   const [disable, setDisable] = useState(true);
   const [numberOfElement, setNumberOfElement] = useState(0);
+
   useEffect(() => {
-    getAllTag(text, 0, 10, navigation).then((v) => {
-      setListTag(v.data.items);
-      setNumberOfElement(v.data.totalPage * 10);
-    }).catch(error => {});
-    getAccountAdmin(navigation).then((v) => {
-      let newArray = v.data.items.map((item) => {
-        return {
-          label: item.fullName + "(" + item.email + ")",
-          value: item.email,
-        };
-      });
-      setListAccount(newArray);
-    }).catch(error => {});
+    getAllTag(text, 0, 10, navigation)
+      .then((v) => {
+        setListTag(v.data.items);
+        setNumberOfElement(v.data.totalPage * 10);
+      })
+      .catch((error) => {});
+    getAccountAdmin(navigation)
+      .then((v) => {
+        let newArray = v.data.items.map((item) => {
+          return {
+            label: item.fullName + "(" + item.email + ")",
+            value: item.email,
+          };
+        });
+        setListAccount(newArray);
+      })
+      .catch((error) => {});
   }, []);
 
+  function check(id, check) {
+    if (id === check) {
+      setChecked("");
+      setDisable(true);
+    } else {
+      setChecked(id);
+      setDisable(false);
+    }
+  }
+
   const callbackChangePage = (page) => {
-    getAllTag(text, page - 1, 10, navigation).then((v) => {
-      setListTag(v.data.items);
-      setNumberOfElement(v.data.totalPage * 10);
-    }).catch(error => {});
+    getAllTag(text, page - 1, 10, navigation)
+      .then((v) => {
+        setListTag(v.data.items);
+        setNumberOfElement(v.data.totalPage * 10);
+      })
+      .catch((error) => {});
   };
   const addATag = (tagName, ownerBy) => {
-    addTag(tagName, ownerBy, navigation).then((r) =>
-      getAllTag(text, 0, 10, navigation).then((v) => {
-        setListTag(v.data.items);
-        setNumberOfElement(v.data.totalPage * 10);
-      }).catch(error => {})
-    ).catch(error => {});
+    addTag(tagName, ownerBy, navigation)
+      .then((r) =>
+        getAllTag(text, 0, 10, navigation)
+          .then((v) => {
+            setListTag(v.data.items);
+            setNumberOfElement(v.data.totalPage * 10);
+          })
+          .catch((error) => {})
+      )
+      .catch((error) => {});
   };
   const updateATag = (tagId, tagName, ownerBy) => {
-    updateTag(tagId, tagName, ownerBy, navigation).then((r) => {
-      getAllTag(text, 0, 10, navigation).then((v) => {
-        setListTag(v.data.items);
-        setNumberOfElement(v.data.totalPage * 10);
-      }).catch(error => {});
-    }).catch(error => {});
+    updateTag(tagId, tagName, ownerBy, navigation)
+      .then((r) => {
+        getAllTag(text, 0, 10, navigation)
+          .then((v) => {
+            setListTag(v.data.items);
+            setNumberOfElement(v.data.totalPage * 10);
+          })
+          .catch((error) => {});
+      })
+      .catch((error) => {});
   };
   const deleteATag = (tagId) => {
-    deleteTag(tagId, navigation).then((r) => {
-      getAllTag(text, 0, 10, navigation).then((v) => {
-        setListTag(v.data.items);
-        setNumberOfElement(v.data.totalPage * 10);
-      }).catch(error => {});
-    }).catch(error => {});
+    deleteTag(tagId, navigation)
+      .then((r) => {
+        getAllTag(text, 0, 10, navigation)
+          .then((v) => {
+            setListTag(v.data.items);
+            setNumberOfElement(v.data.totalPage * 10);
+          })
+          .catch((error) => {});
+      })
+      .catch((error) => {});
   };
   const searchTag = () => {
-    getAllTag(text, 0, 10, navigation).then((v) => {
-      setListTag(v.data.items);
-      setNumberOfElement(v.data.totalPage * 10);
-    }).catch(error => {});
+    getAllTag(text, 0, 10, navigation)
+      .then((v) => {
+        setListTag(v.data.items);
+        setNumberOfElement(v.data.totalPage * 10);
+      })
+      .catch((error) => {});
   };
   const formatterDate = (date) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -113,8 +144,7 @@ function ListTag({ navigation }) {
             value={tagId}
             status={checked === tagId ? "checked" : "unchecked"}
             onPress={() => {
-              setDisable(false);
-              setChecked(tagId);
+              check(tagId, checked);
               setTagNameUpdate(tagName);
               setOwnerByUpdate(ownerBy);
             }}
@@ -303,20 +333,16 @@ function ListTag({ navigation }) {
                 multiline={false}
                 style={{ width: 400 }}
               />
-              <Buttons
-                text={"Search"}
-                style={styles.button}
-                onPressTo={() => searchTag()}
-              />
+              <Buttons text={"Search"} onPressTo={() => searchTag()} />
               <Buttons
                 text={"Update"}
-                style={[styles.button, { marginLeft: 20 }]}
+                style={[{ marginLeft: 20 }]}
                 onPressTo={() => setUpdate(true)}
                 disabled={disable}
               />
               <Buttons
                 text={"Delete"}
-                style={[styles.button, { marginLeft: 20 }]}
+                style={[{ marginLeft: 20 }]}
                 onPressTo={() => {
                   setDeleteT(true);
                 }}
@@ -324,7 +350,7 @@ function ListTag({ navigation }) {
               />
               <Buttons
                 text={"Add Tag"}
-                style={[styles.button, { marginLeft: 20 }]}
+                style={[{ marginLeft: 20 }]}
                 onPressTo={() => setAdd(true)}
               />
             </View>
