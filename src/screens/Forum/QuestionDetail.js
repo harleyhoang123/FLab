@@ -87,7 +87,7 @@ function QuestionDetail({ route, navigation }) {
           });
         })
         setContent("");
-      });
+      }).catch(error => {});
       setIsAnswer(false);
     }
   }
@@ -123,27 +123,27 @@ function QuestionDetail({ route, navigation }) {
     addCommentToQuestion(questionId, content, navigation).then((v) => {
       getQuestionDetail(questionId, null, null, navigation).then((r) =>
         setUserComment(r.data.comments)
-      );
+      ).catch(error => {});
       setContent("");
-    });
+    }).catch(error => {});
   };
   const callBackComment = () => {
     getQuestionDetail(questionId, null, null, navigation).then((r) => {
       setUserComment(r.data.comments);
-    });
+    }).catch(error => {});
   };
   const callbackAnswer = () => {
     getQuestionDetail(questionId, null, null, navigation).then((r) =>
       setUserAnswer(r.data.answers.items)
-    );
+    ).catch(error => {});
   };
   const handleAnswer = () => {
     addAnswer(questionId, answer, navigation).then((v) => {
       getQuestionDetail(questionId, null, null, navigation).then((r) =>
         setUserAnswer(r.data.answers.items)
-      );
+      ).catch(error => {});
       setAnswer("");
-    });
+    }).catch(error => {});
   };
   const handleBack = () => {
     dispatch(getListQuestion(navigation));
@@ -159,25 +159,25 @@ function QuestionDetail({ route, navigation }) {
           displayMessage: "Oops! Something went wrong.",
         });
     });
-  })
+  }).catch(error => {})
   };
   const sort = (sortByType) => {
     if (sortByType === "Score (DESC)") {
       getQuestionDetail(questionId, "DESC", null, navigation).then((r) =>
         setUserAnswer(r.data.answers.items)
-      );
+      ).catch(error => {});
     } else if (sortByType === "Score (ASC)") {
       getQuestionDetail(questionId, "ASC", null, navigation).then((r) =>
         setUserAnswer(r.data.answers.items)
-      );
+      ).catch(error => {});
     } else if (sortByType === "Date created (DESC)") {
       getQuestionDetail(questionId, null, "DESC", navigation).then((r) =>
         setUserAnswer(r.data.answers.items)
-      );
+      ).catch(error => {});
     } else if (sortByType === "Date created (ASC)") {
       getQuestionDetail(questionId, null, "ASC", navigation).then((r) =>
         setUserAnswer(r.data.answers.items)
-      );
+      ).catch(error => {});
     }
   };
   const data = [

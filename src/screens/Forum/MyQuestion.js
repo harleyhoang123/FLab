@@ -8,7 +8,6 @@ import QuestionItem from "../../components/QuestionItem";
 import AsyncStorage from "@react-native-community/async-storage";
 import {
   getListMyQuestion,
-  getListQuestion,
 } from "../../networking/CustomNetworkService";
 import PaginationBar from "../../components/PaginationBar";
 
@@ -33,20 +32,20 @@ function MyQuestion({ navigation }) {
       getListMyQuestion(v, text, 0, 5, navigation).then((r) => {
         setList(r.data.items);
         setNumberOfElement(r.data.totalPage * 5);
-      });
+      }).catch(error => {});
     });
   }, []);
   const callbackChangePage = (page) => {
     getListMyQuestion(accountId, text, page - 1, 5, navigation).then((v) => {
       setList(v.data.items);
       setNumberOfElement(v.data.totalPage * 5);
-    });
+    }).catch(error => {});
   };
   const searchQues = () => {
     getListMyQuestion(accountId, text, 0, 5, navigation).then((v) => {
       setList(v.data.items);
       setNumberOfElement(v.data.totalPage * 5);
-    });
+    }).catch(error => {});
   };
   return (
     <View>

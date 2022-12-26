@@ -31,7 +31,7 @@ function NotificationIconContainer({ navigation }) {
       getAccountId().then((r) => {
         getNumberNotifyOfAccountId(r, navigation).then((v) =>
           setNumberOfNotify(v.data.notifies)
-        );
+        ).catch(error => {});
       });
     }, 15000);
     return () => clearInterval(interval);
@@ -39,7 +39,7 @@ function NotificationIconContainer({ navigation }) {
   const getNotify = () => {
     getNotification(accountId, navigation).then((r) => {
       setListNotification(r.data.contents);
-    });
+    }).catch(error => {});
   };
   return (
     <View>

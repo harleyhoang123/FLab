@@ -16,19 +16,19 @@ function Forum({ navigation }) {
     getListQuestion(text, 0, 5, navigation).then((v) => {
       setListQues(v.data.data.items);
       setNumberOfElement(v.data.data.totalPage * 5);
-    });
+    }).catch(error => {});
   }, []);
   const callbackChangePage = (page) => {
     getListQuestion(text, page - 1, 5, navigation).then((v) => {
       setListQues(v.data.data.items);
       setNumberOfElement(v.data.data.totalPage * 5);
-    });
+    }).catch(error => {});
   };
   const searchQues = () => {
     getListQuestion(text, 0, 5, navigation).then((v) => {
       setListQues(v.data.data.items);
       setNumberOfElement(v.data.data.totalPage * 5);
-    });
+    }).catch(error => {});
   };
   return (
     <View>

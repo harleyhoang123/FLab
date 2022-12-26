@@ -30,7 +30,7 @@ function AssignedToMe({ navigation }) {
       getMemberId().then((r) => {
         getAssignedToMe(v, r, navigation).then((l) => {
           setListAssign(l.data);
-        });
+        }).catch(error => {});
       });
     });
   }, []);

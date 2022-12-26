@@ -28,7 +28,7 @@ function IssueStatistics({ navigation }) {
         setTotalIssue(r.data.totalIssue);
         setTotalUnassigned(r.data.totalUnassigned);
         setIssueStatic(r.data.issueStatic);
-      });
+      }).catch(error => {});
     });
   }, []);
   const calculatePercent = (count, totalIssue) => {

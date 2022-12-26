@@ -35,7 +35,7 @@ export default function AddMemberToLab({ route, navigation }) {
           setNumberOfElement(response.data.totalPage * size);
           setListMember(response.data.items);
         }
-      );
+      ).catch(error => {});
     } else {
       getMemberNotInLab(
         labIdUseState,
@@ -46,7 +46,7 @@ export default function AddMemberToLab({ route, navigation }) {
       ).then((response) => {
         setNumberOfElement(response.data.totalPage * size);
         setListMember(response.data.items);
-      });
+      }).catch(error => {});
     }
   };
   return (

@@ -116,17 +116,6 @@ function AddQuestion({ navigation }) {
           />
           {isTag && <Text style={styles.inputInvalid}>Invalid comment</Text>}
           <View style={styles.summit}>
-            <Dropdown
-              style={styles.dropdown}
-              value={value}
-              data={data}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              onChange={(item) => {
-                setValue(item.value);
-              }}
-            />
             <View style={styles.row}>
               <Buttons
                 text={"Post Your Question"}

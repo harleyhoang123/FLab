@@ -67,15 +67,15 @@ export default function Backlog({route, navigation}) {
         createSprint(projectId, memberId, sprintName, navigation).then((v) =>
             getListSprint(projectId, navigation).then((v) =>
                 setListSPrint(v.data.sprints.items)
-            )
-        );
+            ).catch(error => {})
+        ).catch(error => {});
         changeType();
         setSprintName("");
     };
     const callBackGetListSprint = () => {
         getListSprint(projectId, navigation).then((v) =>
             setListSPrint(v.data.sprints.items)
-        );
+        ).catch(error => {});
     };
     const callBackUpdate = () => {
         setUpdate(update + 1);
@@ -155,7 +155,7 @@ export default function Backlog({route, navigation}) {
             getTaskDetail(taskId, navigation).then((value) => {
                 setTaskDetail(value.data);
                 setSubTaskDetail(null);
-            });
+            }).catch(error => {});
         } else {
             setTaskDetail(null);
         }
@@ -182,7 +182,7 @@ export default function Backlog({route, navigation}) {
             getSubTaskDetail(subtaskId, navigation).then((value) => {
                 setSubTaskDetail(value.data);
                 setTaskDetail(null);
-            });
+            }).catch(error => {});
         } else {
             setSubTaskDetail(null);
         }

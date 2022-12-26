@@ -49,7 +49,7 @@ export default function AddMemberToProject({ route, navigation }) {
         setNumberOfElement(response.data.totalPage * size);
         setListMember(response.data.items);
       }
-    );
+    ).catch(error => {});
   };
 
   return (

@@ -21,7 +21,7 @@ function ActivityStreams({ navigation }) {
     getProjectId().then((v) => {
       getActivityStreams(v, navigation).then((r) => {
         setActivities(r.data.activities);
-      });
+      }).catch(error => {});
     });
   }, []);
   const formatterDate = (date) => {
