@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Modal, StyleSheet, Text, TouchableOpacity, TouchableOpacityComponent, View} from "react-native";
 import Buttons from "./Buttons";
 import TaskComponent from "./TaskComponent";
 import TextField from "./TextField";
@@ -12,6 +12,8 @@ import {
     updateSprint,
     updateStatusSprint,
 } from "../networking/CustomNetworkService";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 function SprintComponent({
                              projectId,
@@ -437,22 +439,22 @@ function SprintComponent({
                         role !== "MEMBER" ? updateStatusOfSprint(sprintId, memberId, statusDetail) : alert("You don't have permission to do")
                     }}
                 />
-                <Buttons
-                    text={"Edit"}
-                    onPressTo={() => {
+                <View style={styles.btnIcon}>
+                    <TouchableOpacity onPress={() => {
                         role !== "MEMBER" ? setModalVisible(!modalVisible) : alert("You don't have permission to do")
-                    }}
-                    style={[styles.button, {width: 35}]}
-                    styleText={{fontSize: 12}}
-                />
-                <Buttons
-                    text={"X"}
-                    onPressTo={() => {
+                    }}>
+                        <MaterialCommunityIcons name={"border-color"} size={30} color="#3f444a"></MaterialCommunityIcons>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.btnIcon}>
+                    <TouchableOpacity onPress={() => {
                         role !== "MEMBER" ? setShowConfirm(true) : alert("You don't have permission to do")
-                    }}
-                    style={styles.button}
-                    styleText={{fontSize: 13}}
-                />
+                    }}>
+                        <MaterialCommunityIcons name={"trash-can-outline"} size={30} color="#3f444a"></MaterialCommunityIcons>
+                    </TouchableOpacity>
+                </View>
+
             </View>
             <Text style={{marginLeft: 20}}>{goalDetail}</Text>
             {renderDropdown()}
@@ -461,6 +463,12 @@ function SprintComponent({
 }
 
 const styles = StyleSheet.create({
+    btnIcon:{
+        paddingVertical: 5,
+        paddingHorizontal: 5,
+        minWidth:10,
+        height:40,
+    },
     container: {
         margin: 5,
         padding: 8,

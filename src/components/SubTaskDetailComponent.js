@@ -20,6 +20,7 @@ import {
     updateSubTask,
 } from "../networking/CustomNetworkService";
 import {SelectCountry} from "react-native-element-dropdown";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 function SubTaskDetailComponent({
                                     projectId,
@@ -486,18 +487,20 @@ function SubTaskDetailComponent({
             </Modal>
             <View style={styles.wrapper}>
                 <View style={{flexDirection: "row", alignSelf: "flex-end"}}>
-                    <Buttons
-                        text={"Edit"}
-                        style={[styles.buttonClose, {width: 40, marginRight: 10}]}
-                        onPressTo={() => setModalVisible(!modalVisible)}
-                    ></Buttons>
-                    <Buttons
-                        text={"Delete"}
-                        style={[styles.buttonClose, {width: 60, marginRight: 10}]}
-                        onPressTo={() => {
-                            setShowConfirm(true);
-                        }}
-                    ></Buttons>
+                    <View style={styles.btnIcon}>
+                        <TouchableOpacity onPress={() => {
+                            setShowConfirm(true)
+                        }}>
+                            <MaterialCommunityIcons name={"trash-can-outline"} size={25} color="#3f444a"></MaterialCommunityIcons>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.btnIcon}>
+                        <TouchableOpacity onPress={() => {
+                            setModalVisible(!modalVisible)
+                        }}>
+                            <MaterialCommunityIcons name={"border-color"} size={30} color="#3f444a"></MaterialCommunityIcons>
+                        </TouchableOpacity>
+                    </View>
                     <Buttons
                         text={"X"}
                         style={styles.buttonClose}
@@ -537,6 +540,12 @@ function SubTaskDetailComponent({
 }
 
 const styles = StyleSheet.create({
+    btnIcon:{
+        paddingVertical: 5,
+        paddingHorizontal: 5,
+        minWidth:10,
+        height:30,
+    },
     container: {
         display: "flex",
         flexDirection: "column",

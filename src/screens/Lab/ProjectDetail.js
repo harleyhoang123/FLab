@@ -76,11 +76,6 @@ export default function ProjectDetail({ route, navigation }) {
               </Text>
               <Text style={[styles.description]}>{data.description}</Text>
             </View>
-            <Buttons
-              style={styles.button}
-              text={"View All Member"}
-              onPressTo={() => goToListMemberPage(data.projectId)}
-            />
             {role == "MANAGER" || role == "OWNER" ? (
               <Buttons
                 style={styles.button}
@@ -92,12 +87,6 @@ export default function ProjectDetail({ route, navigation }) {
                 }
               />
             ) : null}
-
-            <Buttons
-              style={styles.button}
-              text={"BackLog"}
-              onPressTo={() => goToBacklog(data.projectId)}
-            />
           </View>
         </View>
       </View>

@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import Buttons from "./Buttons";
 import {deleteTask, getTaskDetail} from "../networking/CustomNetworkService";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 function TaskComponent({
                            taskId,
@@ -138,13 +139,13 @@ function TaskComponent({
                                 <Text style={styles.text}>{getStatus(statusDetail)}</Text>
                             </View>
                             {getImage(assigneeDetail)}
-                            <Buttons
-                                text={"X"}
-                                onPressTo={() => {
+                            <View style={styles.btnIcon}>
+                                <TouchableOpacity onPress={() => {
                                     role !== "MEMBER" ? setShowConfirm(true) : alert("You don't have permission to do")
-                                }}
-                                style={styles.btn}
-                            ></Buttons>
+                                }}>
+                                    <MaterialCommunityIcons name={"trash-can-outline"} size={30} color="#3f444a"></MaterialCommunityIcons>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -154,6 +155,12 @@ function TaskComponent({
 }
 
 const styles = StyleSheet.create({
+    btnIcon:{
+        paddingVertical: 5,
+        paddingHorizontal: 5,
+        minWidth:10,
+        height:40,
+    },
     container: {
         justifyContent: "space-between",
         flexDirection: "row",
