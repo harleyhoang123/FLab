@@ -107,7 +107,7 @@ export const forgot =
   };
 
 export const changePassword =
-  (oldPassword, newPassword, accountId) =>
+  (oldPassword, newPassword, accountId, navigation) =>
   async (dispatch, _, { networkService }) => {
     let errorCode = 200;
     try {

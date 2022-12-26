@@ -45,17 +45,17 @@ function ActivityStreams({ navigation }) {
           <View style={{ flexDirection: "row", marginRight: 30 }}>
             <Buttons
               text={"Issue Statistics"}
-              style={{ width: "25%", height: 40, margin: 30 }}
+              style={{ height: 40, margin: 30 }}
               onPressTo={() => navigation.push("IssueStatistics")}
             />
             <Buttons
               text={"Assigned to Me"}
-              style={{ width: "25%", height: 40, margin: 30 }}
+              style={{ height: 40, margin: 30 }}
               onPressTo={() => navigation.push("AssignedToMe")}
             />
             <Buttons
               text={"Activity Streams"}
-              style={{ width: "25%", height: 40, margin: 30 }}
+              style={{ height: 40, margin: 30 }}
               onPressTo={() => navigation.push("ActivityStreams")}
             />
           </View>

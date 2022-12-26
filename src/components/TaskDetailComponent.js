@@ -88,42 +88,42 @@ export default function TaskDetailComponent({
     } else {
       isSetTaskUpdate(false);
     }
-    if (!statusUpdate) {
-      isSetStatusUpdate(true);
-      isValidEdit = false;
-    } else {
-      isSetStatusUpdate(false);
-    }
-    if (!descriptionUpdate) {
-      isSetDescriptionUpdate(true);
-      isValidEdit = false;
-    } else {
-      isSetDescriptionUpdate(false);
-    }
-    if (!assigneeUpdate) {
-      isSetAssigneeUpdate(true);
-      isValidEdit = false;
-    } else {
-      isSetAssigneeUpdate(false);
-    }
-    if (!labelUpdate.toString().match(isNumber)) {
-      isSetLabelUpdate(true);
-      isValidEdit = false;
-    } else {
-      isSetLabelUpdate(false);
-    }
-    if (!estimateUpdate.toString().match(isNumber)) {
-      isSetEstimateUpdate(true);
-      isValidEdit = false;
-    } else {
-      isSetEstimateUpdate(false);
-    }
-    if (!reporterUpdate) {
-      isSetReporterUpdate(true);
-      isValidEdit = false;
-    } else {
-      isSetReporterUpdate(false);
-    }
+    // if (!statusUpdate) {
+    //   isSetStatusUpdate(true);
+    //   isValidEdit = false;
+    // } else {
+    //   isSetStatusUpdate(false);
+    // }
+    // if (!descriptionUpdate) {
+    //   isSetDescriptionUpdate(true);
+    //   isValidEdit = false;
+    // } else {
+    //   isSetDescriptionUpdate(false);
+    // }
+    // if (!assigneeUpdate) {
+    //   isSetAssigneeUpdate(true);
+    //   isValidEdit = false;
+    // } else {
+    //   isSetAssigneeUpdate(false);
+    // }
+    // if (!labelUpdate.toString().match(isNumber)) {
+    //   isSetLabelUpdate(true);
+    //   isValidEdit = false;
+    // } else {
+    //   isSetLabelUpdate(false);
+    // }
+    // if (!estimateUpdate.toString().match(isNumber)) {
+    //   isSetEstimateUpdate(true);
+    //   isValidEdit = false;
+    // } else {
+    //   isSetEstimateUpdate(false);
+    // }
+    // if (!reporterUpdate) {
+    //   isSetReporterUpdate(true);
+    //   isValidEdit = false;
+    // } else {
+    //   isSetReporterUpdate(false);
+    // }
     if (isValidEdit) {
       updateATask(
         projectId,
