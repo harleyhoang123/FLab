@@ -124,7 +124,7 @@ export default function LabDetail({ route, navigation }) {
     <View style={styles.container}>
       <LabNavigator navigation={navigation} isJoined={isJoined} />
       <View style={styles.containerProfile}>
-        {isJoined && (
+        {roles == "MANAGER" || roles == "OWNER" ? (
           <TouchableOpacity
             onPress={goToViewAllRequestPage}
             style={styles.request}
@@ -134,7 +134,7 @@ export default function LabDetail({ route, navigation }) {
               <Text style={styles.badge}>{numberOfApplication}</Text>
             ) : null}
           </TouchableOpacity>
-        )}
+        ) : null}
 
         <View style={styles.containerName}>
           <Text style={styles.textName}>{data.laboratoryName}</Text>

@@ -22,6 +22,17 @@ import {
   deleteFolderOrFile,
   getListFolderDetail,
 } from "../../networking/CustomNetworkService";
+import AsyncStorage from "@react-native-community/async-storage";
+
+const getRoleInProject = async () => {
+  try {
+    const role = await AsyncStorage.getItem("@roleInProject");
+    console.log("role: " + role);
+    return role;
+  } catch (e) {
+    console.log("Can't get role: " + e);
+  }
+};
 
 function RepositoryDetail({ route, navigation }) {
   const data = route.params.data;
@@ -39,8 +50,9 @@ function RepositoryDetail({ route, navigation }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [disable, setDisable] = useState(true);
   const [disableDownload, setDisableDownload] = useState(true);
-  console.log("folderName in Detail" + folderName);
-  console.log("parentFolderId in Detail" + parentFolderId);
+  const [role, setRole] = useState("");
+  console.log("ROLE SUB FOLDER" + role);
+  getRoleInProject().then((v) => setRole(v));
   const downLoadFileHandler = () => {
     Linking.openURL(urlDownload).then((r) => {});
   };
@@ -108,7 +120,7 @@ function RepositoryDetail({ route, navigation }) {
               setDescription(description);
               setUrlDownload(publicURL);
               setDisable(false);
-              setDisableDownload(false)
+              setDisableDownload(false);
             }}
           />
         </RadioButton.Group>
@@ -272,14 +284,16 @@ function RepositoryDetail({ route, navigation }) {
               disabled={disable}
               onPressTo={() => handleUpdate(typeChecked)}
             />
-            <Buttons
-              style={styles.button}
-              text={"Delete"}
-              disabled={disable}
-              onPressTo={() => {
-                setShowConfirm(true);
-              }}
-            />
+            {role !== "MEMBER" ? (
+              <Buttons
+                style={styles.button}
+                text={"Delete"}
+                disabled={disable}
+                onPressTo={() => {
+                  setShowConfirm(true);
+                }}
+              />
+            ) : null}
             <Buttons
               onPressTo={downLoadFileHandler}
               style={styles.button}
