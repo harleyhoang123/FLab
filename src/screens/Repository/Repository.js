@@ -32,6 +32,16 @@ const getRepoId = async () => {
   }
 };
 
+const getRoleInProject = async () => {
+  try {
+    const role = await AsyncStorage.getItem("@roleInProject");
+    console.log("role: " + role);
+    return role;
+  } catch (e) {
+    console.log("Can't get role: " + e);
+  }
+};
+
 function Repository({ route, navigation }) {
   const data = route.params.data;
   const [items, setItems] = useState(data.items);
@@ -40,6 +50,8 @@ function Repository({ route, navigation }) {
   const dispatch = useDispatch();
   const [repoId, setRepoId] = useState("");
   getRepoId().then((v) => setRepoId(v));
+  const [role, setRole] = useState("");
+  getRoleInProject().then((v) => setRole(v));
   const getFolderDetailIdHandler = (id, name) => {
     dispatch(getFolderDetailId(id, name, navigation));
   };
@@ -175,12 +187,14 @@ function Repository({ route, navigation }) {
                 setDisable(true);
               }}
             />
-            <Buttons
-              style={styles.button}
-              text={"Delete"}
-              disabled={disable}
-              onPressTo={() => setShowConfirm(true)}
-            />
+            {role !== "MEMBER" ? (
+              <Buttons
+                style={styles.button}
+                text={"Delete"}
+                disabled={disable}
+                onPressTo={() => setShowConfirm(true)}
+              />
+            ) : null}
           </View>
           <View style={styles.table}>
             <View style={[styles.columnCheckBox, styles.borderbot]}></View>
