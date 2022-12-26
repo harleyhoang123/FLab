@@ -50,7 +50,6 @@ function AnswerComponent({
   const [isComment, setIsComment] = useState(false);
   const [vote, setVote] = useState(votes);
   const [voted, setVoted] = useState(votedStatus);
-
   function validateEdit(commentId, text) {
     if (!text) {
       setIsCommentEdit(true);
@@ -216,25 +215,27 @@ function AnswerComponent({
           </View>
           <View style={[styles.row, { marginLeft: 10 }]}>
             <Text style={styles.text}>{formatTime(createdDate)}</Text>
-            <View style={styles.login}>
-              <TouchableOpacity
-                onPress={() => {
-                  setIsEdit(true);
-                  setText(content);
-                }}
-              >
-                <Text style={styles.txt}>Edit</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.login}>
-              <TouchableOpacity
-                onPress={() => {
-                  setShowConfirm(true);
-                }}
-              >
-                <Text style={styles.txt}>Delete</Text>
-              </TouchableOpacity>
-            </View>
+            {statusClose !== "CLOSE" && <View style={[styles.row, { marginLeft: 10 }]}>
+              <View style={styles.login}>
+                <TouchableOpacity
+                    onPress={() => {
+                      setIsEdit(true);
+                      setText(content);
+                    }}
+                >
+                  <Text style={styles.txt}>Edit</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.login}>
+                <TouchableOpacity
+                    onPress={() => {
+                      setShowConfirm(true);
+                    }}
+                >
+                  <Text style={styles.txt}>Delete</Text>
+                </TouchableOpacity>
+              </View>
+            </View>}
           </View>
         </View>
       </View>

@@ -155,7 +155,7 @@ function CommentItem({
             <View style={styles.containerComment}>
                 <Text style={styles.text}>{time}</Text>
                 {statusClose !== "CLOSE" &&
-                    <View><View style={styles.login}>
+                    <View style={styles.containerComment}><View style={styles.login}>
                         <TouchableOpacity
                             onPress={() => {
                                 setIsEdit(true);

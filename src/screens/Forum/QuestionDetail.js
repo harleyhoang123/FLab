@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   FlatList,
   Modal,
@@ -28,7 +28,23 @@ import {
   getQuestionDetail,
   voteQuestion,
 } from "../../networking/CustomNetworkService";
+import AsyncStorage from "@react-native-community/async-storage";
 
+const getUsername = async () => {
+  try {
+    return await AsyncStorage.getItem("@username");
+  } catch (e) {
+    console.log("Can't get username: " + e);
+  }
+};
+const getRoles = async () => {
+  try {
+    const roles = await AsyncStorage.getItem("@roles");
+    return roles;
+  } catch (e) {
+    console.log("Can't get roles: " + e);
+  }
+};
 function QuestionDetail({ route, navigation }) {
   const res = route.params;
   let isValid = true;
@@ -53,7 +69,27 @@ function QuestionDetail({ route, navigation }) {
   const [close, setClose] = useState(false);
   const [isComment, setIsComment] = useState(false);
   const [isAnswer, setIsAnswer] = useState(false);
+  const [username, setUsername] = useState("");
+  const [roles, setRoles] = useState([]);
+  let edit= false
+  getRoles().then((v) => {setRoles(v)});
+  getUsername().then((r) => {setUsername(r)});
+  // useEffect(()=>{
+  //   getRoles().then((v) => {setRoles(v);getUsername().then((r) => {setUsername(r); checkCanEdit(v,r,res.data.createdBy.username,statusClose)})});
+  //
+  // },[])
+  const checkCanEdit=(roles,username,author,statusClose)=>{
+    if(statusClose === "CLOSE" ){
+      return false;
+    }else {
+      if(roles.includes("MANAGER") ){
+        return true;
+      }else {
+        return username === author;
+      }
+    }
 
+  }
   function validateComment() {
     if (!content) {
       setIsComment(true);
@@ -265,23 +301,23 @@ function QuestionDetail({ route, navigation }) {
                   <Text style={styles.textView}>{item}</Text>
                 )}
               />
-              {statusClose !== "CLOSE" && (
-                <View style={styles.containerComment}>
-                  <View style={styles.login}>
-                    <TouchableOpacity onPress={handleEdit}>
-                      <Text style={styles.txt}>Edit</Text>
-                    </TouchableOpacity>
+              {checkCanEdit(roles,username,res.data.createdBy.username, statusClose)===true&&(
+                  <View style={styles.containerComment}>
+                    <View style={styles.login}>
+                      <TouchableOpacity onPress={handleEdit}>
+                        <Text style={styles.txt}>Edit</Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.login}>
+                      <TouchableOpacity
+                          onPress={() => {
+                            setClose(true);
+                          }}
+                      >
+                        <Text style={styles.txt}>Close</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                  <View style={styles.login}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setClose(true);
-                      }}
-                    >
-                      <Text style={styles.txt}>Close</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
               )}
             </View>
           </View>
@@ -297,6 +333,7 @@ function QuestionDetail({ route, navigation }) {
                   time={formatTime(item.createdDate)}
                   callBackComment={callBackComment}
                   navigation={navigation}
+                  statusClose={statusClose}
                 />
               </View>
             ))}
@@ -323,6 +360,7 @@ function QuestionDetail({ route, navigation }) {
                 )}
               </View>
             )}
+
           </View>
           <View style={styles.containerTitle}>
             <Text style={styles.textContent}>{userAnswer.length} Answers</Text>
