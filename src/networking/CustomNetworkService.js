@@ -3850,7 +3850,7 @@ export const changeEmail = async (accountId, email, navigation) => {
             }
         );
         console.log("Data in changeEmail: " + JSON.stringify(response.data));
-        if(response.data.status.status===200){
+        if (response.data.status.status === 200) {
             alert("Change email success")
         }
 
@@ -3897,7 +3897,7 @@ export const sendOTPToPhoneNumber = async (accountId, number, navigation) => {
             }
         );
         console.log("Data in sendOTPToPhoneNumber: " + JSON.stringify(response.data));
-        if(response.data.status.status===200){
+        if (response.data.status.status === 200) {
             alert("Send otp success please enter code in your message to verify your phone number")
         }
 
@@ -3944,7 +3944,7 @@ export const verifyNewPhoneNumber = async (accountId, otp, navigation) => {
             }
         );
         console.log("Data in verifyPhoneNumber: " + JSON.stringify(response.data));
-        if(response.data.status.status===200){
+        if (response.data.status.status === 200) {
             alert("Verify phone number success")
         }
 
