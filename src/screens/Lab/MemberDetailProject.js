@@ -110,13 +110,6 @@ export default function MemberDetailProject({ route, navigation }) {
                   navigation.goBack(null);
                 }}
               />
-              {role == "MANAGER" || role == "OWNER" ? (
-                <Buttons
-                  text={"Remove"}
-                  style={styles.button}
-                  onPressTo={removeMemberhandler}
-                />
-              ) : null}
             </View>
           </View>
         </View>
