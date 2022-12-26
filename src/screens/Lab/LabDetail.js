@@ -76,7 +76,8 @@ export default function LabDetail({ route, navigation }) {
   const [accountId, setAccountId] = useState("");
   getAccountId().then((v) => setAccountId(v));
   const data = route.params.data;
-  console.log("lab data:" + JSON.stringify(data));
+  const isApply = route.params.isApply;
+  console.log("isApply:" + isApply);
   const memberInfo = route.params.data.memberInfo;
   let isJoined = memberInfo ? true : false;
   console.log("Is Joined In lab detail" + isJoined);
@@ -227,7 +228,9 @@ export default function LabDetail({ route, navigation }) {
           ) : null}
 
           <View style={styles.leavebtn}>
-            {!isJoined && (
+            {isApply ? (
+              <Text style={styles.textWait}>WAITING FOR APPROVE</Text>
+            ) : !isJoined ? (
               <Pressable
                 style={[styles.button, styles.buttonOpen]}
                 onPress={() => setModalVisible(true)}
@@ -243,7 +246,7 @@ export default function LabDetail({ route, navigation }) {
                   Apply
                 </Text>
               </Pressable>
-            )}
+            ) : null}
             {roles == "MANAGER" || roles == "OWNER" ? (
               <Pressable
                 style={[styles.button, styles.buttonOpen]}
@@ -430,5 +433,8 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  textWait: {
+    color: "black",
   },
 });

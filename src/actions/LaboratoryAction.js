@@ -22,7 +22,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 //   };
 
 export const getLaboratoryById =
-  (labId, isJoined, navigation) =>
+  (labId, isJoined, navigation, isApply) =>
   async (dispatch, _, { networkService }) => {
     await AsyncStorage.setItem("@currentLabId", labId);
     let errorCode = 200;
@@ -53,6 +53,7 @@ export const getLaboratoryById =
         data: response.data.data,
         isJoined: isJoined,
         allMember: listMember.data.data,
+        isApply: isApply,
       });
     } catch ({ data }) {
       if (data) {
@@ -939,7 +940,7 @@ export const getmemberDetailProjectByProfileId =
   };
 
 export const applyTolAbByLabId =
-  (labId, requestData, navigation) =>
+  (labId, requestData, navigation, isApply) =>
   async (dispatch, _, { networkService }) => {
     let errorCode = 200;
     try {
@@ -950,7 +951,7 @@ export const applyTolAbByLabId =
         requestData,
       });
       if (response) {
-        dispatch(getLaboratoryById(labId, false, navigation));
+        dispatch(getLaboratoryById(labId, false, navigation, isApply));
       }
     } catch ({ data }) {
       if (data) {

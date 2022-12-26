@@ -16,6 +16,16 @@ const getLabId = async () => {
   }
 };
 
+const getLabRole = async () => {
+  try {
+    const labRole = await AsyncStorage.getItem("@roleInLab");
+    console.log("labRole : " + labRole);
+    return labRole;
+  } catch (e) {
+    console.log("Can't get labRole: " + e);
+  }
+};
+
 function MaterialDetail({ route, navigation }) {
   const dispatch = useDispatch();
   const deleteAMaterial = (labId, materialId) => {
@@ -29,6 +39,9 @@ function MaterialDetail({ route, navigation }) {
   const [labId, setLabId] = useState();
   const [showConfirm, setShowConfirm] = useState(false);
   getLabId().then((v) => setLabId(v));
+  const [labRole, setLabRole] = useState("");
+  getLabRole().then((v) => setLabRole(v));
+
   const handleButton = () => {
     if (status === "FREE") {
       return (
@@ -39,12 +52,6 @@ function MaterialDetail({ route, navigation }) {
             navigation.push("RequestMaterial", { data: data, labId: labId });
           }}
         />
-      );
-    } else {
-      return (
-        <View style={{ flexDirection: "row" }}>
-          <Buttons text={"Return"} style={styles.button} />
-        </View>
       );
     }
   };
@@ -109,18 +116,22 @@ function MaterialDetail({ route, navigation }) {
                 navigation.goBack(navigation);
               }}
             />
-            <Buttons
-              text={"Update"}
-              style={styles.button}
-              onPressTo={() =>
-                navigation.push("UpdateMaterial", { materialInfo: data })
-              }
-            />
-            <Buttons
-              style={styles.button}
-              text={"Delete"}
-              onPressTo={() => setShowConfirm(true)}
-            />
+            {labRole == "MANAGER" || labRole == "OWNER" ? (
+              <Buttons
+                text={"Update"}
+                style={styles.button}
+                onPressTo={() =>
+                  navigation.push("UpdateMaterial", { materialInfo: data })
+                }
+              />
+            ) : null}
+            {labRole == "MANAGER" || labRole == "OWNER" ? (
+              <Buttons
+                style={styles.button}
+                text={"Delete"}
+                onPressTo={() => setShowConfirm(true)}
+              />
+            ) : null}
           </View>
         </View>
       </View>
