@@ -75,7 +75,7 @@ function ListMaterial({ route, navigation }) {
           navigation={navigation}
           title={item.materialName}
           image={item.image}
-          status={item.status}
+          amount={item.amount}
         />
       ))}
       <PaginationBar />

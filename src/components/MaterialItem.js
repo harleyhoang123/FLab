@@ -8,7 +8,7 @@ import Buttons from "./Buttons";
 import {deleteMaterial} from "../networking/CustomNetworkService";
 
 
-function MaterialItem({ id, image, title, status, navigation }) {
+function MaterialItem({ id, image, title, amount, navigation }) {
   console.log("IDL:" + id);
   const dispatch = useDispatch();
   const goToMaterialDetail = () => {
@@ -31,7 +31,7 @@ function MaterialItem({ id, image, title, status, navigation }) {
           </View>
           <View style={styles.containerTitle}>
             <Text style={styles.title}>{title}</Text>
-            <Text style={styles.textInfo}>Status: {status}</Text>
+            <Text style={styles.textInfo}>Total amount: {amount}</Text>
           </View>
 
         </View>

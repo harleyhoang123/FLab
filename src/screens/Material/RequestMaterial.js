@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import {View, Text, StyleSheet, Image, FlatList} from "react-native";
 import Buttons from "../../components/Buttons";
 import React, { useState } from "react";
 import TextField from "../../components/TextField";
@@ -24,6 +24,11 @@ function RequestMaterial({ route, navigation }) {
   const [isDate, setisDate] = useState(false);
   const dispatch = useDispatch();
 
+  const formatTime = (date) => {
+    const d = new Date(date);
+    const month = d.getMonth() + 1;
+    return d.getDate() + "/" + month + "/" + d.getFullYear()+" "+ d.getHours()+":"+ d.getMinutes();
+  };
   function validateData() {
     if (!amount.match(isNumber)) {
       setIsAmount(true);
@@ -130,38 +135,52 @@ function RequestMaterial({ route, navigation }) {
           style={{ with: "40%" }}
         ></TextField>
         {isAmount && <Text style={styles.inputInvalid}>Invalid amount</Text>}
-        <Text style={styles.text}>From</Text>
-        <View style={styles.time}>
-          <DateTimePicker
-            style={{ width: 200, marginRight: 30, height: 50 }}
-            type="date"
-            value={startDate}
-            onChangeDate={(startDate) => setStartDate(startDate)}
-          />
-          <DateTimePicker
-            style={{ width: 200, height: 50 }}
-            type="time"
-            value={startTime}
-            onChangeDate={(startTime) => setStartTime(startTime)}
-          />
+        <View style={{flexDirection: "row"}}>
+          <View>
+            <Text style={styles.text}>From</Text>
+            <View style={styles.time}>
+              <DateTimePicker
+                  style={{ width: 200, marginRight: 30, height: 50 }}
+                  type="date"
+                  value={startDate}
+                  onChangeDate={(startDate) => setStartDate(startDate)}
+              />
+              <DateTimePicker
+                  style={{ width: 200, height: 50 }}
+                  type="time"
+                  value={startTime}
+                  onChangeDate={(startTime) => setStartTime(startTime)}
+              />
+            </View>
+            {isDate && <Text style={styles.inputInvalid}>Invalid start date</Text>}
+            <Text style={styles.text}>To</Text>
+            <View style={styles.time}>
+              <DateTimePicker
+                  style={{ width: 200, marginRight: 30, height: 50 }}
+                  type="date"
+                  value={endDate}
+                  onChangeDate={(endDate) => setEndDate(endDate)}
+              />
+              <DateTimePicker
+                  style={{ width: 200, height: 50 }}
+                  type="time"
+                  value={endTime}
+                  onChangeDate={(endTime) => setEndTime(endTime)}
+              />
+            </View>
+            {isDate && <Text style={styles.inputInvalid}>Invalid end date</Text>}
+          </View>
+          <View>
+            <FlatList data={data.borrowTime} renderItem={
+              ({item})=>(
+                  <View style={{marginLeft:20}}>
+                    <Text>From: {formatTime(item.fromDate)} To: {formatTime(item.returnDate)} Amount: {item.amount}</Text>
+                  </View>
+              )
+            }/>
+          </View>
         </View>
-        {isDate && <Text style={styles.inputInvalid}>Invalid start date</Text>}
-        <Text style={styles.text}>To</Text>
-        <View style={styles.time}>
-          <DateTimePicker
-            style={{ width: 200, marginRight: 30, height: 50 }}
-            type="date"
-            value={endDate}
-            onChangeDate={(endDate) => setEndDate(endDate)}
-          />
-          <DateTimePicker
-            style={{ width: 200, height: 50 }}
-            type="time"
-            value={endTime}
-            onChangeDate={(endTime) => setEndTime(endTime)}
-          />
-        </View>
-        {isDate && <Text style={styles.inputInvalid}>Invalid end date</Text>}
+        
         <Text style={styles.text}>Reason:</Text>
         <TextField
           text={reason}
