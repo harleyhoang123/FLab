@@ -43,6 +43,16 @@ const getProjectId = async () => {
   }
 };
 
+const getRoleInProject = async () => {
+  try {
+    const role = await AsyncStorage.getItem("@roleInProject");
+    console.log("role: " + role);
+    return role;
+  } catch (e) {
+    console.log("Can't get role: " + e);
+  }
+};
+
 export default function MemberDetailProject({ route, navigation }) {
   const data = route.params.data;
   const memberId = route.params.memberId;
@@ -51,6 +61,8 @@ export default function MemberDetailProject({ route, navigation }) {
   console.log("data memberId: " + JSON.stringify(memberId));
   const [projectId, setProjectId] = useState("");
   getProjectId().then((v) => setProjectId(v));
+  const [role, setRole] = useState("");
+  getRoleInProject().then((v) => setRole(v));
 
   const removeMemberhandler = () => {
     dispatch(removeMemberInProjectById(projectId, memberId, navigation));
@@ -98,12 +110,13 @@ export default function MemberDetailProject({ route, navigation }) {
                   navigation.goBack(null);
                 }}
               />
-
-              <Buttons
-                text={"Remove"}
-                style={styles.button}
-                onPressTo={removeMemberhandler}
-              />
+              {role == "MANAGER" || role == "OWNER" ? (
+                <Buttons
+                  text={"Remove"}
+                  style={styles.button}
+                  onPressTo={removeMemberhandler}
+                />
+              ) : null}
             </View>
           </View>
         </View>
