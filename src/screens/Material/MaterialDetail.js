@@ -31,11 +31,10 @@ function MaterialDetail({ route, navigation }) {
   const deleteAMaterial = (labId, materialId) => {
     deleteMaterial(labId, materialId, navigation).then((v) =>
       dispatch(getListMaterialByLabId(labId, navigation))
-    );
+    ).catch(error => {});
   };
   const data = route.params.data;
   const status = data.status;
-  const isAdmin = false;
   const [labId, setLabId] = useState();
   const [showConfirm, setShowConfirm] = useState(false);
   getLabId().then((v) => setLabId(v));

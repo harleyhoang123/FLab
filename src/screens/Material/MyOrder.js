@@ -66,7 +66,7 @@ function MyOrder({ navigation }) {
           getListOrderByAccountId(v, r, navigation).then((a) => {
             setList(a.data.items);
             filterStatus(a.data.items, value);
-          });
+          }).catch(error => {});
         });
       }
     });
@@ -95,7 +95,7 @@ function MyOrder({ navigation }) {
       getListOrderByAccountId(labId, accountId, navigation).then((a) =>
       {setList(a.data.items);
     filterStatus(a.data.items, value);}
-      )
+      ).catch(error => {})
     );
   };
   const renderReturnButton = (status, orderId) => {

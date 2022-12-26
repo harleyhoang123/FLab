@@ -27,7 +27,7 @@ function OrderItem({
     );
   };
   const responseOrderWaiting = (statusOder) => {
-    responseOrder(orderId, statusOder, navigation).then(() => callBackOrder());
+    responseOrder(orderId, statusOder, navigation).then(() => callBackOrder()).catch(error => {});
   };
   const renderButton = (statusOder) => {
     if (statusOder === "WAITING_FOR_APPROVAL") {

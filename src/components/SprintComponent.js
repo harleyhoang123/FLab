@@ -98,7 +98,7 @@ function SprintComponent({
             setNotStartTask(r.data.totalNotStartedTask);
             setInProgressTask(r.data.totalInProgressTask);
             setDoneTask(r.data.totalDoneTask);
-        });
+        }).catch(error => {});
     };
 
     useEffect(() => {
@@ -109,13 +109,13 @@ function SprintComponent({
             setNotStartTask(r.data.totalNotStartedTask);
             setInProgressTask(r.data.totalInProgressTask);
             setDoneTask(r.data.totalDoneTask);
-        });
+        }).catch(error => {});
     };
     const deleteASprint = (projectId, sprintId) => {
         deleteSprint(projectId, sprintId, navigation).then(() => {
             callBackGetListSprint();
             callbackDeleteSprint(sprintId);
-        });
+        }).catch(error => {});
     };
 
     const changeType = () => {
@@ -176,8 +176,8 @@ function SprintComponent({
                 setNotStartTask(r.data.totalNotStartedTask);
                 setInProgressTask(r.data.totalInProgressTask);
                 setDoneTask(r.data.totalDoneTask);
-            })
-        );
+            }).catch(error => {})
+        ).catch(error => {});
         changeType();
         setTaskName("");
     };
@@ -208,8 +208,8 @@ function SprintComponent({
                 setStartDateDetail(formatDate(r.data.startDate));
                 setEndDateDetail(formatDate(r.data.dueDate));
                 setGoalDetail(r.data.goal);
-            })
-        );
+            }).catch(error => {})
+        ).catch(error => {});
     };
     const updateStatusOfSprint = (sprintId, memberId, status) => {
         if (status === "NOT_START") {
@@ -222,8 +222,8 @@ function SprintComponent({
             ).then((r) =>
                 getSprintDetail(sprintId, navigation).then((r) => {
                     setStatusDetail(r.data.status);
-                })
-            );
+                }).catch(error => {})
+            ).catch(error => {});
         } else if (status === "STARTING") {
             updateStatusSprint(
                 projectId,
@@ -234,8 +234,8 @@ function SprintComponent({
             ).then((r) =>
                 getSprintDetail(sprintId, navigation).then((r) => {
                     setStatusDetail(r.data.status);
-                })
-            );
+                }).catch(error => {})
+            ).catch(error => {});
         }
     };
     const renderTextField = () => {

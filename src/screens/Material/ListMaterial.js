@@ -30,9 +30,7 @@ function ListMaterial({ route, navigation }) {
   );
   const [text, setText] = useState("");
   const [list, setList] = useState(listsMaterial);
-  const callbackListMaterial = () => {
-    getListMaterial(labId, navigation).then((r) => setList(r.data.items));
-  };
+
   return (
     <View>
       <LabNavigator navigation={navigation} />

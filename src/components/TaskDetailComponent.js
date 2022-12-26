@@ -234,8 +234,8 @@ export default function TaskDetailComponent({
         setEstimateDetail(r.data.estimate);
         setReporterDetail(r.data.reporter);
         setActivityResponse(r.data.activityResponses);
-      });
-    });
+      }).catch(error => {});
+    }).catch(error => {});
   };
   const assignInTask = (projectId, taskId, memberId, assignee) => {
     assignTask(projectId, taskId, memberId, assignee, navigation).then((v) => {
@@ -243,8 +243,8 @@ export default function TaskDetailComponent({
       getTaskDetail(taskId, navigation).then((r) => {
         setAssigneeDetail(r.data.assignee);
         setActivityResponse(r.data.activityResponses);
-      });
-    });
+      }).catch(error => {});
+    }).catch(error => {});
   };
   const handleNone = (none) => {
     if (none === null) {
@@ -343,8 +343,8 @@ export default function TaskDetailComponent({
       () =>
         getListSubTask(taskId, navigation).then((r) =>
           setListSubTask(r.data.subTasks)
-        )
-    );
+        ).catch(error => {})
+    ).catch(error => {});
     setAdd(!add);
     setSubTaskName("");
   };

@@ -57,7 +57,7 @@ const ViewAllMember = ({ route, navigation }) => {
     getAllMemberByLabId(selectedPage - 1, 5).then((v) => {
       setItem(v.data.data.items);
       setNumberOfElement(v.data.data.totalPage * 5);
-    });
+    }).catch(error => {});
   };
 
   useEffect(() => {

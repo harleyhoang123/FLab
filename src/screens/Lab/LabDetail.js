@@ -90,7 +90,7 @@ export default function LabDetail({ route, navigation }) {
     getLabId().then((r) => {
       getNumberOfApplication(r, navigation).then((v) => {
         setNumberOfApplication(v.data);
-      });
+      }).catch(error => {});
     });
   }, []);
 

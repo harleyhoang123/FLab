@@ -59,7 +59,7 @@ export default function CreateLab({ navigation }) {
     };
     console.log(requestData);
     dispatch(createLaboratory(requestData, navigation));
-    reset;
+    reset();
   };
   return (
     <View>

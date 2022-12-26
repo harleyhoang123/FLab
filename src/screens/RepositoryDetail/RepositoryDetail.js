@@ -56,15 +56,15 @@ function RepositoryDetail({route, navigation}) {
     getRoleInProject().then((v) => setRole(v));
     const downLoadFileHandler = () => {
         Linking.openURL(urlDownload).then((r) => {
-        });
+        }).catch(error => {});
     };
     const deleteAFileOrFolder = (id, type, parentFolderId) => {
         deleteFolderOrFile(parentFolderId, id, type, navigation).then((v) =>
             getListFolderDetail(parentFolderId, navigation).then((r) => {
                 setItemsFile(r.data.listFile);
                 setItemsFolder(r.data.listFolder);
-            })
-        );
+            }).catch(error => {})
+        ).catch(error => {});
     };
     const formatterDate = (date) => {
         const options = {year: "numeric", month: "long", day: "numeric"};

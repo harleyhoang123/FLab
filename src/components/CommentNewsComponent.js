@@ -86,18 +86,18 @@ function CommentNewsComponent({
   const handleComment = () => {
     commentToComment(commentId, comment, navigation).then(() =>
       callBackCommentNews()
-    );
+    ).catch(error => {});
   };
   const handleEdit = () => {
     editCommentNews(commentId, text, navigation).then(() => {
       callBackCommentNews();
       setIsEdit(!isEdit);
-    });
+    }).catch(error => {});
   };
   const handleDelete = () => {
     deleteCommentInNews(newsId, commentId, navigation).then(() =>
       callBackCommentNews()
-    );
+    ).catch(error => {});
   };
   const [showConfirm, setShowConfirm] = useState(false);
   return (

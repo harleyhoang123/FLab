@@ -74,13 +74,13 @@ function NewsDetail({ route, navigation }) {
     commentToNews(newsId, content, navigation).then((v) =>
       getNewsDetailComment(newsId, navigation).then((r) => {
         setUserComment(r.data.comments);
-      })
-    );
+      }).catch(error => {})
+    ).catch(error => {});
   };
   const callBackCommentNews = () => {
     getNewsDetailComment(newsId, navigation).then((r) => {
       setUserComment(r.data.comments);
-    });
+    }).catch(error => {});
   };
   return (
     <View>

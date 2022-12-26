@@ -50,7 +50,7 @@ export default function RequestDetail({ route, navigation }) {
       navigation,
       dispatch,
       navigation
-    );
+    ).then(v=>{}).catch(error => {});
   };
 
   return (

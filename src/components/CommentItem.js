@@ -79,15 +79,15 @@ function CommentItem({
         if (parentType === "QUESTION") {
             deleteCommentInQuestion(parentId, commentId, navigation).then(() =>
                 callBackComment()
-            );
+            ).catch(error => {});
         } else if (parentType === "ANSWER") {
             deleteCommentInAnswer(parentId, commentId, navigation).then(() =>
                 callBackComment()
-            );
+            ).catch(error => {});
         } else if (parentType === "NEWS") {
             deleteCommentInComment(parentId, commentId, navigation).then(() =>
                 callBackComment()
-            );
+            ).catch(error => {});
         }
     };
     const handleEdit = () => {
@@ -95,12 +95,12 @@ function CommentItem({
             editCommentNews(commentId, text, navigation).then(() => {
                 callBackComment();
                 setIsEdit(!isEdit);
-            });
+            }).catch(error => {});
         } else {
             editComment(commentId, text).then(() => {
                 callBackComment();
                 setIsEdit(!isEdit);
-            });
+            }).catch(error => {});
         }
     };
 

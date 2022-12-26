@@ -40,7 +40,7 @@ function ListTag({ navigation }) {
     getAllTag(text, 0, 10, navigation).then((v) => {
       setListTag(v.data.items);
       setNumberOfElement(v.data.totalPage * 10);
-    });
+    }).catch(error => {});
     getAccountAdmin(navigation).then((v) => {
       let newArray = v.data.items.map((item) => {
         return {
@@ -49,44 +49,44 @@ function ListTag({ navigation }) {
         };
       });
       setListAccount(newArray);
-    });
+    }).catch(error => {});
   }, []);
 
   const callbackChangePage = (page) => {
     getAllTag(text, page - 1, 10, navigation).then((v) => {
       setListTag(v.data.items);
       setNumberOfElement(v.data.totalPage * 10);
-    });
+    }).catch(error => {});
   };
   const addATag = (tagName, ownerBy) => {
     addTag(tagName, ownerBy, navigation).then((r) =>
       getAllTag(text, 0, 10, navigation).then((v) => {
         setListTag(v.data.items);
         setNumberOfElement(v.data.totalPage * 10);
-      })
-    );
+      }).catch(error => {})
+    ).catch(error => {});
   };
   const updateATag = (tagId, tagName, ownerBy) => {
     updateTag(tagId, tagName, ownerBy, navigation).then((r) => {
       getAllTag(text, 0, 10, navigation).then((v) => {
         setListTag(v.data.items);
         setNumberOfElement(v.data.totalPage * 10);
-      });
-    });
+      }).catch(error => {});
+    }).catch(error => {});
   };
   const deleteATag = (tagId) => {
     deleteTag(tagId, navigation).then((r) => {
       getAllTag(text, 0, 10, navigation).then((v) => {
         setListTag(v.data.items);
         setNumberOfElement(v.data.totalPage * 10);
-      });
-    });
+      }).catch(error => {});
+    }).catch(error => {});
   };
   const searchTag = () => {
     getAllTag(text, 0, 10, navigation).then((v) => {
       setListTag(v.data.items);
       setNumberOfElement(v.data.totalPage * 10);
-    });
+    }).catch(error => {});
   };
   const formatterDate = (date) => {
     const options = { year: "numeric", month: "long", day: "numeric" };

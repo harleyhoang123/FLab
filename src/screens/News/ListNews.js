@@ -29,19 +29,19 @@ function ListNews({ navigation }) {
     getListAllNews(text, 0, 5, navigation).then((v) => {
       setListNews(v.data.data.items);
       setNumberOfElement(v.data.data.totalPage * 5);
-    });
+    }).catch(error => {});
   }, []);
   const callbackChangePage = (page) => {
     getListAllNews(text, page - 1, 5, navigation).then((v) => {
       setListNews(v.data.data.items);
       setNumberOfElement(v.data.data.totalPage * 5);
-    });
+    }).catch(error => {});
   };
   const searchNews = () => {
     getListAllNews(text, 0, 5, navigation).then((v) => {
       setListNews(v.data.data.items);
       setNumberOfElement(v.data.data.totalPage * 5);
-    });
+    }).catch(error => {});
   };
   const checkCanUse=(roles)=>{
       return !!(roles.includes("MANAGER") || roles.includes("ADMIN"));

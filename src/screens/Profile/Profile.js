@@ -140,13 +140,13 @@ function Profile({ route, navigation }) {
   };
 
   const handleChangeEmail=()=>{
-    changeEmail(accountId,email, navigation).then(v=> {setEmail("")})
+    changeEmail(accountId,email, navigation).then(v=> {setEmail("")}).catch(error => {})
   }
   const handleSendOTP=()=>{
-    sendOTPToPhoneNumber(accountId,verifyPhoneNumber,navigation).then(v=>{})
+    sendOTPToPhoneNumber(accountId,verifyPhoneNumber,navigation).then(v=>{}).catch(error => {})
   }
   const handleVerify=()=>{
-    verifyNewPhoneNumber(accountId,otp,navigation).then(v=> setVerifyPhoneNumber(""))
+    verifyNewPhoneNumber(accountId,otp,navigation).then(v=> setVerifyPhoneNumber("")).catch(error => {})
   }
   const goToEditProfile = () => {
     console.log("EditProfile: ");
@@ -180,8 +180,8 @@ function Profile({ route, navigation }) {
       changeAvatar(accountId, imagePicked, navigation).then((v) =>
         getProfileDetail(accountId, navigation).then((r) =>
           setAvatar(r.data.avatar)
-        )
-      );
+        ).catch(error => {})
+      ).catch(error => {});
     }
   };
 

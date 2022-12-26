@@ -63,8 +63,8 @@ function UpdateNews({ route, navigation }) {
 
   const updateThisNews = (newsId, title, content, thumbnail, navigation) => {
     updateNews(newsId, title, content, thumbnail, navigation).then((r) =>
-      getNewsDetail(newsId, navigation)
-    );
+      getNewsDetail(newsId, navigation).then().catch(error => {})
+    ).catch(error => {});
   };
   return (
     <View style={styles.container}>

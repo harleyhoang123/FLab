@@ -240,8 +240,8 @@ function SubTaskDetailComponent({
                 setEstimateDetail(r.data.estimate);
                 setReporterDetail(r.data.reporter);
                 setActivityResponse(r.data.activityResponse);
-            });
-        });
+            }).catch(error => {});
+        }).catch(error => {});
     };
     const assignInSubTask = (projectId, subTaskId, memberId, assignee) => {
         assignSubTask(projectId, subTaskId, memberId, assignee, navigation).then(
@@ -249,9 +249,9 @@ function SubTaskDetailComponent({
                 getSubTaskDetail(subTaskId, navigation).then((r) => {
                     setAssigneeDetail(r.data.assignee);
                     setActivityResponse(r.data.activityResponse);
-                });
+                }).catch(error => {});
             }
-        );
+        ).catch(error => {});
     };
     const renderDetail = () => {
         if (visible) {

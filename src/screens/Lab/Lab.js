@@ -67,7 +67,7 @@ const Lab = ({ route, navigation }) => {
       getLaboratoryByAccountId(v, selectedPage - 1, 5).then((v) => {
         setItem(v.data.data.items);
         setNumberOfElement(v.data.data.totalPage * 5);
-      });
+      }).catch(error => {});
     });
   };
 
@@ -77,7 +77,7 @@ const Lab = ({ route, navigation }) => {
       getLaboratorySuggestionByAccountId(v, selectedPage - 1, 5).then((v) => {
         setItemsSugges(v.data.data.items),
           setNumberOfElementSuggestion(v.data.data.totalPage * 5);
-      });
+      }).catch(error => {});
     });
   };
   const getLaboratoryWaiting = (selectedPage) => {
@@ -86,7 +86,7 @@ const Lab = ({ route, navigation }) => {
       getLaboratoryWaitingByAccountId(v, selectedPage - 1, 5).then((v) => {
         setItemWaiting(v.data.data.items),
           setNumberOfElementWaiting(v.data.data.totalPage * 5);
-      });
+      }).catch(error => {});
     });
   };
   useEffect(() => {

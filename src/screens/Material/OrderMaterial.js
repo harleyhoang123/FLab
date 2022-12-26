@@ -28,7 +28,7 @@ function OrderMaterial({ navigation }) {
     getListOrderByLabId(labId, navigation).then((r) => {
       setListItem(r.data.items);
       filterStatus(r.data.items, value);
-    });
+    }).catch(error => {});
   };
   useEffect(() => {
     getLabId().then((v) => {
@@ -36,7 +36,7 @@ function OrderMaterial({ navigation }) {
         setLabId(v);
         getListOrderByLabId(v, navigation).then((r) => {
           checkDataNull(r);
-        });
+        }).catch(error => {});
       }
     });
   }, []);

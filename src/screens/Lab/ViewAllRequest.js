@@ -38,7 +38,7 @@ export default function ViewAllRequest({ route, navigation }) {
     getAllRequestInLab(selectedPage - 1, 5).then((v) => {
       setItem(v.data.data.items);
       setNumberOfElement(v.data.data.totalPage * 5);
-    });
+    }).catch(error => {});
   };
 
   const dispatch = useDispatch();

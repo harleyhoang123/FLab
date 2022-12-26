@@ -39,7 +39,7 @@ function TaskComponent({
         deleteTask(sprintId, taskId, navigation).then(() => {
             callBackGetListTask();
             callbackDeleteTask(taskId);
-        });
+        }).catch(error => {});
     };
     useEffect(() => {
         callUpdate();
@@ -50,7 +50,7 @@ function TaskComponent({
             setEstimateDetail(v.data.estimate);
             setStatusDetail(v.data.status);
             setAssigneeDetail(v.data.assignee);
-        });
+        }).catch(error => {});
     };
 
     const getImage = (user) => {

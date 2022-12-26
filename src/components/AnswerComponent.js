@@ -126,28 +126,28 @@ function AnswerComponent({
             getAnswerDetail(answerId, navigation).then((v) => {
                 setVote(v.data.score);
                 setVoted(v.data.votedStatus);
-            })
-        );
+            }).catch(error => {})
+        ).catch(error => {});
     };
     const handleDelete = () => {
-        deleteAnswer(questionId, answerId, navigation).then(() => callbackAnswer());
+        deleteAnswer(questionId, answerId, navigation).then(() => callbackAnswer()).catch(error => {});
     };
     const handleComment = () => {
         addCommentToAnswer(answerId, comment, navigation).then(() => {
             setComment("");
             callbackAnswer();
-        });
+        }).catch(error => {});
     };
     const handleEdit = (commentId, text) => {
         editAnswer(commentId, text, navigation).then(() => {
             callbackAnswer();
             setIsEdit(!isEdit);
-        });
+        }).catch(error => {});
     };
     const acceptAnAnswer = () => {
         acceptAnswer(questionId, answerId, navigation).then((v) =>
             callbackAnswer()
-        );
+        ).catch(error => {});
     };
     const checkColor = (status) => {
         if (status === "ACCEPTED") {

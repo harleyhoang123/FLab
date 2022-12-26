@@ -68,8 +68,8 @@ function Repository({route, navigation}) {
     };
     const deleteAFolder = (repoId, folderId) => {
         deleteFolderInRepository(repoId, folderId, navigation).then((r) => {
-            getListFolder(repoId, navigation).then((v) => setItems(v.data.items));
-        });
+            getListFolder(repoId, navigation).then((v) => setItems(v.data.items)).catch(error => {});
+        }).catch(error => {});
     };
     const [checked, setChecked] = useState("");
     const [folderName, setFolderName] = useState("");
