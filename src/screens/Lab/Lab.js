@@ -95,10 +95,6 @@ const Lab = ({ route, navigation }) => {
     getLaboratoryWaiting(1);
   }, []);
 
-  // const callbackSelectedPage = (pageNumber, suggestionPageNumber) => {
-  //   getLaboratory(pageNumber, suggestionPageNumber);
-  // };
-
   const changeSuggestionPage = (suggestionPageNumber) => {
     getLaboratorySuggestion(suggestionPageNumber);
   };
