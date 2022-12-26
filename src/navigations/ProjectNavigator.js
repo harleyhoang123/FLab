@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import {
   getAllMemberInProject,
 } from "../actions/LaboratoryAction";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {Linking, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Logo from "../assets/Logo";
 import { getAllSprint } from "../actions/WorkSpaceAction";
 import { getFolderByRepositoryId } from "../actions/RepositoryAction";
@@ -48,7 +48,6 @@ function ProjectNavigator({ navigation }) {
 
   function goToDocument() {
     getOTT(navigation).then(r => {
-      console.log("URL: "+ "http://127.0.0.1:4200/document/spaces?ott="+r.ott)
       Linking.openURL(routes.document.spaces+r.ott).then(r => {});
     }).catch(error => {
       console.log("ERROR:"+ error)
