@@ -203,6 +203,9 @@ export const routes = {
     getProfileDetail:
       account + "/flab/account/public/api/v1/profiles/:profile-id",
     getAccountTag: account + "/flab/account/public/api/v1/accounts",
+    changeEmail: account + "/flab/account/public/api/v1/accounts/:account-id/email",
+    sendOTPToPhoneNumber: account + "/flab/account/public/api/v1/accounts/:account-id/phone-number",
+    verifyPhoneNumber: account + "/flab/account/public/api/v1/accounts/:account-id/phone-number/verify",
   },
   notification: {
     getListNews: notification + "/flab/notification/public/api/v1/news",
