@@ -60,8 +60,8 @@ export default function ViewAllMemberInProject({ route, navigation }) {
   const dispatch = useDispatch();
   const [projectId, setProjectId] = useState("");
   getProjectId().then((v) => setProjectId(v));
-  const removeMember = (memberId) => {
-    console.log("data" + projectId + data.memberId);
+  const [mId, setMId] = useState("");
+  const removeMember = (projectId,memberId) => {
     dispatch(removeMemberInProjectById(projectId, memberId, navigation));
   };
 
@@ -70,68 +70,32 @@ export default function ViewAllMemberInProject({ route, navigation }) {
       getmemberDetailProjectByProfileId(accountId, labId, memberId, navigation)
     );
   };
-
-  const Item = ({ accountId, memberId, memberName, email, roles }) => (
+const callbackSetId=(id)=>{
+  setMId(id);
+}
+  const Item = ({accountId, id, memberName, email, roles,callbackSetId}) => (
     <View style={styles.item}>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={showConfirm}
-        onRequestClose={() => {
-          setShowConfirm(false);
-        }}
-      >
-        <View style={styles.modalDelete}>
-          <View style={styles.modalDeleteView}>
-            <Text
-              style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
-            >
-              Do you want to remove this member?
-            </Text>
-            <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
-              <Buttons
-                text={"Delete"}
-                style={{ marginRight: 40 }}
-                onPressTo={() => {
-                  removeMember(memberId);
-                  setShowConfirm(false);
-                }}
-              />
-              <Buttons
-                text={"Cancel"}
-                style={{ backgroundColor: "#F4F5F7" }}
-                styleText={{ color: "black" }}
-                onPressTo={() => setShowConfirm(false)}
-              />
-            </View>
-          </View>
-        </View>
-      </Modal>
       <Text style={styles.title}>Member name: {memberName}</Text>
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.title}>Email: {email}</Text>
         <View style={{ marginLeft: "auto", flexDirection: "row" }}>
-          <Text
-            onPress={() => goToMemberDetail(accountId, memberId)}
-            style={styles.action}
-          >
-            Detail
-          </Text>
+          <Buttons
+              onPressTo={() => goToMemberDetail(accountId, id)}
+              style={styles.action} text={"Detail"}
+          />
           {role == "MANAGER" || role == "OWNER" ? (
             <View style={{ flexDirection: "row" }}>
-              <Text onPress={() => setShowConfirm(true)} style={styles.action}>
-                Remove
-              </Text>
-              <Text
-                onPress={() =>
-                  navigation.navigate("UpdateMemberRoleInProject", {
-                    memberid: memberId,
-                  })
-                }
-                style={styles.action}
-              >
-                Update Role
-              </Text>
+
+              <Buttons
+                  onPressTo={() => {setShowConfirm(true);callbackSetId(id)}}
+                       style={styles.action} text={"Remove"}
+              />
+              <Buttons
+                  onPressTo={() => { navigation.navigate("UpdateMemberRoleInProject", {
+                    memberid: id,
+                  })}}
+                  style={styles.action} text={"Update Role"}
+              />
             </View>
           ) : null}
         </View>
@@ -139,20 +103,45 @@ export default function ViewAllMemberInProject({ route, navigation }) {
       <Text style={styles.title}>Roles: {roles}</Text>
     </View>
   );
-  const renderItem = ({ item }) => (
-    <Item
-      accountId={item.userInfo.accountId}
-      memberId={item.memberId}
-      memberName={item.userInfo.userInfo.fullName}
-      email={item.userInfo.userInfo.email}
-      roles={item.role}
-    />
-  );
   const [showConfirm, setShowConfirm] = useState(false);
   return (
     <View>
       <ProjectNavigator navigation={navigation} />
       <View style={styles.container}>
+        <Modal
+            animationType="fade"
+            transparent={true}
+            visible={showConfirm}
+            onRequestClose={() => {
+              setShowConfirm(false);
+            }}
+        >
+          <View style={styles.modalDelete}>
+            <View style={styles.modalDeleteView}>
+              <Text
+                  style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
+              >
+                Do you want to remove this member?
+              </Text>
+              <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
+                <Buttons
+                    text={"Delete"}
+                    style={{ marginRight: 40 }}
+                    onPressTo={() => {
+                      removeMember(projectId,mId);
+                      setShowConfirm(false);
+                    }}
+                />
+                <Buttons
+                    text={"Cancel"}
+                    style={{ backgroundColor: "#F4F5F7" }}
+                    styleText={{ color: "black" }}
+                    onPressTo={() => setShowConfirm(false)}
+                />
+              </View>
+            </View>
+          </View>
+        </Modal>
         <View>
           {role == "MANAGER" || role == "OWNER" ? (
             <Buttons
@@ -170,8 +159,17 @@ export default function ViewAllMemberInProject({ route, navigation }) {
         <SafeAreaView>
           <FlatList
             data={data}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.memberId}
+            renderItem={({ item }) => (
+                <Item
+                    accountId={item.userInfo.accountId}
+                    id={item.memberId}
+                    memberName={item.userInfo.userInfo.fullName}
+                    email={item.userInfo.userInfo.email}
+                    roles={item.role}
+                    projectId={projectId}
+                    callbackSetId={callbackSetId}
+                />
+            )}
           />
         </SafeAreaView>
         <Buttons
