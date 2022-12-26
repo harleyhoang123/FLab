@@ -1,13 +1,6 @@
-import React, { useState } from "react";
-import {
-  FlatList,
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Dropdown } from "react-native-element-dropdown";
+import React, {useState} from "react";
+import {FlatList, Modal, StyleSheet, Text, TouchableOpacity, View,} from "react-native";
+import {Dropdown} from "react-native-element-dropdown";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import ForumNavigation from "../../navigations/ForumNavigation";
 import Separator from "../../components/Separator";
@@ -15,20 +8,26 @@ import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
 import CommentItem from "../../components/CommentItem";
 import VoteComponent from "../../components/VoteComponent";
-import { useDispatch } from "react-redux";
-import {
-  closeQuestion,
-  getListQuestion,
-  getQuestionDetailByQuestionId,
-} from "../../actions/ForumAction";
+import {useDispatch} from "react-redux";
+import {closeQuestion, getListQuestion, getQuestionDetailByQuestionId,} from "../../actions/ForumAction";
 import AnswerComponent from "../../components/AnswerComponent";
-import {
-  addAnswer,
-  addCommentToQuestion,
-  getQuestionDetail,
-  voteQuestion,
-} from "../../networking/CustomNetworkService";
+import {addAnswer, addCommentToQuestion, getQuestionDetail, voteQuestion,} from "../../networking/CustomNetworkService";
+import AsyncStorage from "@react-native-community/async-storage";
 
+const getUserAccount = async () => {
+  try {
+    return await AsyncStorage.getItem("@userAccount");
+  } catch (e) {
+    console.log("Can't get username: " + e);
+  }
+};
+const getRoles = async () => {
+  try {
+    return await AsyncStorage.getItem("@roles");
+  } catch (e) {
+    console.log("Can't get roles: " + e);
+  }
+};
 function QuestionDetail({ route, navigation }) {
   const res = route.params;
   let isValid = true;
@@ -53,7 +52,23 @@ function QuestionDetail({ route, navigation }) {
   const [close, setClose] = useState(false);
   const [isComment, setIsComment] = useState(false);
   const [isAnswer, setIsAnswer] = useState(false);
+  const [username, setUsername] = useState("");
+  const [roles, setRoles] = useState([]);
+  getRoles().then((v) => {setRoles(v)});
+  getUserAccount().then((r) => {setUsername(r)});
 
+
+  const checkCanEdit=(roles,username,author,statusClose)=>{
+    if(statusClose === "CLOSE" ){
+      return false;
+    }else {
+      if (roles.includes("MANAGER") || roles.includes("ADMIN")) {
+        return true;
+      }else {
+        return username === author;
+      }
+    }
+  }
   function validateComment() {
     if (!content) {
       setIsComment(true);
@@ -103,6 +118,7 @@ function QuestionDetail({ route, navigation }) {
   const handleClose = () => {
     dispatch(closeQuestion(questionId, navigation));
   };
+
   const handleComment = () => {
     addCommentToQuestion(questionId, content, navigation).then((v) => {
       getQuestionDetail(questionId, null, null, navigation).then((r) =>
@@ -265,23 +281,23 @@ function QuestionDetail({ route, navigation }) {
                   <Text style={styles.textView}>{item}</Text>
                 )}
               />
-              {statusClose !== "CLOSE" && (
-                <View style={styles.containerComment}>
-                  <View style={styles.login}>
-                    <TouchableOpacity onPress={handleEdit}>
-                      <Text style={styles.txt}>Edit</Text>
-                    </TouchableOpacity>
+              {checkCanEdit(roles,username,res.data.createdBy.username, statusClose)===true&&(
+                  <View style={styles.containerComment}>
+                    <View style={styles.login}>
+                      <TouchableOpacity onPress={handleEdit}>
+                        <Text style={styles.txt}>Edit</Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={styles.login}>
+                      <TouchableOpacity
+                          onPress={() => {
+                            setClose(true);
+                          }}
+                      >
+                        <Text style={styles.txt}>Close</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                  <View style={styles.login}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setClose(true);
-                      }}
-                    >
-                      <Text style={styles.txt}>Close</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
               )}
             </View>
           </View>
@@ -292,11 +308,13 @@ function QuestionDetail({ route, navigation }) {
                   parentId={questionId}
                   commentId={item.commentId}
                   username={item.createdBy.fullName}
+                  author={item.createdBy.username}
                   content={item.content}
                   parentType={"QUESTION"}
                   time={formatTime(item.createdDate)}
                   callBackComment={callBackComment}
                   navigation={navigation}
+                  statusClose={statusClose}
                 />
               </View>
             ))}
@@ -323,6 +341,7 @@ function QuestionDetail({ route, navigation }) {
                 )}
               </View>
             )}
+
           </View>
           <View style={styles.containerTitle}>
             <Text style={styles.textContent}>{userAnswer.length} Answers</Text>
@@ -353,6 +372,7 @@ function QuestionDetail({ route, navigation }) {
                 createdDate={item.createdDate}
                 userAnswerComment={item.comments}
                 status={item.status}
+                authorQuestion={res.data.createdBy.username}
                 callbackAnswer={callbackAnswer}
                 votedStatus={item.votedStatus}
                 statusClose={statusClose}

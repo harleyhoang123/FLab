@@ -38,14 +38,35 @@ const storeCurrentProjectId = async (projectId) => {
   }
 };
 
+const getCurrentMemberId = async () => {
+  try {
+    const memberId = await AsyncStorage.getItem("@currentMemberId");
+    console.log("memberId in reate Project: " + memberId);
+    return memberId;
+  } catch (e) {
+    console.log("Can't get memberId id: " + e);
+  }
+};
+
+const getRoles = async () => {
+  try {
+    const roles = await AsyncStorage.getItem("@roleInLab");
+    return roles;
+  } catch (e) {
+    console.log("Can't get roles: " + e);
+  }
+};
+
 export default function Project({ route, navigation }) {
   const listProject = route.params.data;
   const data = listProject.items;
   const [labId, setLabId] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   getCuurentLabId().then((v) => setLabId(v));
-
-  console.log(JSON.stringify(data));
+  const [currentMemberId, setCurrentMemberId] = useState("");
+  getCurrentMemberId().then((v) => setCurrentMemberId(v));
+  const [role, setRoles] = useState([]);
+  getRoles().then((v) => setRoles(v));
 
   const dispatch = useDispatch();
   const goToProjectDetailPage = (projectId) => {
@@ -55,8 +76,8 @@ export default function Project({ route, navigation }) {
     dispatch(getProjectById(projectId, navigation));
   };
 
-  const removeProjectById = (projectId) => {
-    dispatch(removeProject(labId, projectId, navigation));
+  const removeProjectById = (projectId, navigation) => {
+    dispatch(removeProject(labId, projectId, currentMemberId, navigation));
   };
 
   const Item = ({ projectId, projectName, description, members }) => (
@@ -82,7 +103,7 @@ export default function Project({ route, navigation }) {
                 text={"Delete"}
                 style={{ marginRight: 40 }}
                 onPressTo={() => {
-                  removeProjectById(projectId);
+                  removeProjectById(projectId, navigation);
                   setShowConfirm(false);
                 }}
               />
@@ -106,9 +127,11 @@ export default function Project({ route, navigation }) {
             >
               Detail
             </Text>
-            <Text onPress={() => setShowConfirm(true)} style={styles.action}>
-              Remove
-            </Text>
+            {role == "MANAGER" || role == "OWNER" ? (
+              <Text onPress={() => setShowConfirm(true)} style={styles.action}>
+                Remove
+              </Text>
+            ) : null}
           </View>
         </View>
       </View>
@@ -129,13 +152,15 @@ export default function Project({ route, navigation }) {
       <View style={styles.container}>
         <View>
           <Text style={styles.heading}>List Project</Text>
-          <Buttons
-            text={"Create project"}
-            style={styles.button}
-            onPressTo={() => {
-              navigation.navigate("CreateProject");
-            }}
-          />
+          {role == "MANAGER" || role == "OWNER" ? (
+            <Buttons
+              text={"Create project"}
+              style={styles.button}
+              onPressTo={() => {
+                navigation.navigate("CreateProject");
+              }}
+            />
+          ) : null}
         </View>
         <SafeAreaView>
           <FlatList

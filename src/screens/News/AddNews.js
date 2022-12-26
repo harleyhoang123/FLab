@@ -43,9 +43,6 @@ function AddNews({ navigation }) {
     }
   }
 
-  //   const handleCreateNews = () => {
-  //     dispatch(createNews(title, content, thumbnail, navigation));
-  //   };
   const pickImage = async () => {
     let result = await DocumentPicker.getDocumentAsync({
       type: "image/*",

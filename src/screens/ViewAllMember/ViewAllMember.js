@@ -34,11 +34,23 @@ const getLabId = async () => {
   }
 };
 
+const getLabRole = async () => {
+  try {
+    const labRole = await AsyncStorage.getItem("@roleInLab");
+    console.log("labRole : " + labRole);
+    return labRole;
+  } catch (e) {
+    console.log("Can't get labRole: " + e);
+  }
+};
+
 const ViewAllMember = ({ route, navigation }) => {
   const [numberOfElement, setNumberOfElement] = useState(0);
   const [labId, setLabId] = useState("");
   const [items, setItem] = useState([]);
   getLabId().then((v) => setLabId(v));
+  const [labRole, setLabRole] = useState("");
+  getLabRole().then((v) => setLabRole(v));
   const dispatch = useDispatch();
 
   const getAllMemberInLab = (selectedPage) => {
@@ -100,13 +112,15 @@ const ViewAllMember = ({ route, navigation }) => {
       <LabNavigator navigation={navigation} />
       <View>
         <Text style={styles.titleContent}>List all member in your lab</Text>
-        <Buttons
-          text={"Add new member"}
-          style={styles.button}
-          onPressTo={() => {
-            navigation.push("AddMemberToLab");
-          }}
-        />
+        {labRole == "MANAGER" || labRole == "OWNER" ? (
+          <Buttons
+            text={"Add new member"}
+            style={styles.button}
+            onPressTo={() => {
+              navigation.push("AddMemberToLab");
+            }}
+          />
+        ) : null}
       </View>
       <SafeAreaView style={styles.container}>
         <View style={styles.tableForm}>
@@ -114,7 +128,7 @@ const ViewAllMember = ({ route, navigation }) => {
             <Text style={styles.title}>Code</Text>
           </View>
           <View style={[styles.ava]}>
-            <Text style={styles.title}>Ava</Text>
+            <Text style={styles.title}>Email</Text>
           </View>
           <View style={[styles.name]}>
             <Text style={styles.title}>Name</Text>

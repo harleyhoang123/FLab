@@ -94,6 +94,8 @@ export default function ApplyToALab({ route, navigation }) {
     []
   );
 
+  const isApply = true;
+
   const createApplication = () => {
     const requestData = {
       accountId: accountId,
@@ -101,7 +103,7 @@ export default function ApplyToALab({ route, navigation }) {
       cvKey: key,
     };
     console.log(requestData);
-    dispatch(applyTolAbByLabId(labId, requestData, navigation));
+    dispatch(applyTolAbByLabId(labId, requestData, navigation, isApply));
   };
   return (
     <View>

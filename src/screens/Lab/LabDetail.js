@@ -60,6 +60,15 @@ const getCurrentMemberId = async () => {
   }
 };
 
+const getRoles = async () => {
+  try {
+    const roles = await AsyncStorage.getItem("@roles");
+    return roles;
+  } catch (e) {
+    console.log("Can't get roles: " + e);
+  }
+};
+
 export default function LabDetail({ route, navigation }) {
   const [labIdRequest, setLabIdRequest] = useState("");
   getLabId().then((v) => setLabIdRequest(v));
@@ -67,13 +76,13 @@ export default function LabDetail({ route, navigation }) {
   const [accountId, setAccountId] = useState("");
   getAccountId().then((v) => setAccountId(v));
   const data = route.params.data;
-  console.log("lab data:" + JSON.stringify(data));
+  const isApply = route.params.isApply;
+  console.log("isApply:" + isApply);
   const memberInfo = route.params.data.memberInfo;
   let isJoined = memberInfo ? true : false;
   console.log("Is Joined In lab detail" + isJoined);
   const allMember = route.params.allMember.items;
   const [numberOfApplication, setNumberOfApplication] = useState(0);
-
   const [currentMemberId, setCurrentMemberId] = useState("");
 
   useEffect(() => {
@@ -81,7 +90,6 @@ export default function LabDetail({ route, navigation }) {
     getLabId().then((r) => {
       getNumberOfApplication(r, navigation).then((v) => {
         setNumberOfApplication(v.data);
-        console.log("AAAA:" + v.data);
       });
     });
   }, []);
@@ -89,7 +97,6 @@ export default function LabDetail({ route, navigation }) {
   const isAdmin = true;
 
   const roles = data?.memberInfo?.role;
-  console.log("ROLE: " + roles);
 
   const dispatch = useDispatch();
   const goToViewAllMemberPage = (labId) => {
@@ -107,12 +114,18 @@ export default function LabDetail({ route, navigation }) {
     dispatch(getAllRequestInLabById(labIdRequest, navigation));
   };
 
+  const delteCurrentLab = () => {
+    console.log("data.laboratoryId");
+    console.log(data.laboratoryId);
+    dispatch(deleteLaboratory(accountId, labIdRequest, navigation));
+  };
+
   const [showConfirm, setShowConfirm] = useState(false);
   return (
     <View style={styles.container}>
       <LabNavigator navigation={navigation} isJoined={isJoined} />
       <View style={styles.containerProfile}>
-        {isJoined && (
+        {roles == "MANAGER" || roles == "OWNER" ? (
           <TouchableOpacity
             onPress={goToViewAllRequestPage}
             style={styles.request}
@@ -122,13 +135,47 @@ export default function LabDetail({ route, navigation }) {
               <Text style={styles.badge}>{numberOfApplication}</Text>
             ) : null}
           </TouchableOpacity>
-        )}
+        ) : null}
 
         <View style={styles.containerName}>
           <Text style={styles.textName}>{data.laboratoryName}</Text>
         </View>
 
         <View style={styles.containerInfo}>
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={showConfirm}
+            onRequestClose={() => {
+              setShowConfirm(false);
+            }}
+          >
+            <View style={styles.modalDelete}>
+              <View style={styles.modalDeleteView}>
+                <Text
+                  style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
+                >
+                  Do you want to delete this lab?
+                </Text>
+                <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
+                  <Buttons
+                    text={"Delete"}
+                    style={{ marginRight: 40 }}
+                    onPressTo={() => {
+                      delteCurrentLab();
+                      setShowConfirm(false);
+                    }}
+                  />
+                  <Buttons
+                    text={"Cancel"}
+                    style={{ backgroundColor: "#F4F5F7" }}
+                    styleText={{ color: "black" }}
+                    onPressTo={() => setShowConfirm(false)}
+                  />
+                </View>
+              </View>
+            </View>
+          </Modal>
           <View style={styles.info}>
             <ProfileComponent
               title={"Start from"}
@@ -161,7 +208,7 @@ export default function LabDetail({ route, navigation }) {
           </View>
         </View>
         <View style={styles.containerInfo}>
-          {isJoined && (
+          {roles == "MANAGER" || roles == "OWNER" ? (
             <View>
               <View style={{ flexDirection: "row" }}>
                 <Buttons
@@ -178,17 +225,19 @@ export default function LabDetail({ route, navigation }) {
                 />
               </View>
             </View>
-          )}
+          ) : null}
 
           <View style={styles.leavebtn}>
-            {!isJoined && (
+            {isApply ? (
+              <Text style={styles.textWait}>WAITING FOR APPROVE</Text>
+            ) : !isJoined ? (
               <Pressable
                 style={[styles.button, styles.buttonOpen]}
                 onPress={() => setModalVisible(true)}
               >
                 <Text
                   onPress={() =>
-                    navigation.navigate("ApplyToLab", {
+                    navigation.push("ApplyToLab", {
                       labId: data.laboratoryId,
                     })
                   }
@@ -197,8 +246,8 @@ export default function LabDetail({ route, navigation }) {
                   Apply
                 </Text>
               </Pressable>
-            )}
-            {isJoined && (
+            ) : null}
+            {roles == "MANAGER" || roles == "OWNER" ? (
               <Pressable
                 style={[styles.button, styles.buttonOpen]}
                 onPress={() =>
@@ -207,9 +256,9 @@ export default function LabDetail({ route, navigation }) {
               >
                 <Text style={styles.textStyle}>Add Member</Text>
               </Pressable>
-            )}
+            ) : null}
           </View>
-          {isJoined && (
+          {roles == "OWNER" && (
             <View style={{ marginTop: 20, flexDirection: "row" }}>
               <Pressable
                 style={[styles.button, styles.buttonOpen]}
@@ -384,5 +433,8 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  textWait: {
+    color: "black",
   },
 });

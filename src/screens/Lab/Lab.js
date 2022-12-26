@@ -12,7 +12,8 @@ import Buttons from "../../components/Buttons";
 import HomeTopNavigator from "../../navigations/HomeNavigation";
 import {
   getLaboratoryByAccountId,
-  getLaboratorySuggestionByAccountId, getLaboratoryWaitingByAccountId,
+  getLaboratorySuggestionByAccountId,
+  getLaboratoryWaitingByAccountId,
 } from "../../networking/CustomNetworkService";
 import PaginationBar from "../../components/PaginationBar";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -26,6 +27,13 @@ const getAccountId = async () => {
     console.log("Can't get account id: " + e);
   }
 };
+const getRoles = async () => {
+  try {
+    return await AsyncStorage.getItem("@roles");
+  } catch (e) {
+    console.log("Can't get roles: " + e);
+  }
+};
 
 const Lab = ({ route, navigation }) => {
   const [numberOfElement, setNumberOfElement] = useState(0);
@@ -36,10 +44,19 @@ const Lab = ({ route, navigation }) => {
   const [itemWaiting, setItemWaiting] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
   const [suggestionPage, setSuggestionPage] = useState(1);
-
+  const isApply = true;
+  const [roles, setRoles] = useState([]);
+  getRoles().then((v) => {setRoles(v)});
+  const checkCanUse=(roles)=>{
+    return !!(roles.includes("MANAGER") || roles.includes("ADMIN"));
+  }
   const dispatch = useDispatch();
   const goToLabDetailPage = (labId, isJoined) => {
     dispatch(getLaboratoryById(labId, isJoined, navigation));
+  };
+
+  const goToLabDetailPageApproved = (labId, isJoined) => {
+    dispatch(getLaboratoryById(labId, isJoined, navigation, isApply));
   };
 
   const [accountId, setAccountId] = useState("");
@@ -68,15 +85,14 @@ const Lab = ({ route, navigation }) => {
       setAccountId(v);
       getLaboratoryWaitingByAccountId(v, selectedPage - 1, 5).then((v) => {
         setItemWaiting(v.data.data.items),
-            setNumberOfElementWaiting(
-                v.data.data.totalPage * 5);
+          setNumberOfElementWaiting(v.data.data.totalPage * 5);
       });
     });
   };
   useEffect(() => {
     getLaboratory(1);
     getLaboratorySuggestion(1);
-    getLaboratoryWaiting(1)
+    getLaboratoryWaiting(1);
   }, []);
 
   // const callbackSelectedPage = (pageNumber, suggestionPageNumber) => {
@@ -201,6 +217,61 @@ const Lab = ({ route, navigation }) => {
       </View>
     </View>
   );
+
+  const Item3 = ({
+    id,
+    title,
+    host,
+    numberMem,
+    description,
+    major,
+    numberOfProject,
+    isJoined,
+  }) => (
+    <View style={styles.item}>
+      <View style={styles.itemInfor}>
+        <Text style={styles.title}>{title}</Text>
+        <View style={styles.inlineIcon}>
+          <Icon style={styles.iconPadding} name="user-circle"></Icon>
+          <Text style={styles.host}>{host}</Text>
+        </View>
+        <View style={styles.inlineIcon}>
+          <Icon style={styles.iconPadding} name="id-card"></Icon>
+          <Text style={styles.numberMem}>Number of students: {numberMem}</Text>
+        </View>
+        <View></View>
+        <View style={styles.inlineIcon}>
+          <Icon style={styles.iconPadding} name="file"></Icon>
+          <Text style={styles.description}>Description: {description}</Text>
+        </View>
+        <View style={styles.inlineIcon}>
+          <Icon style={styles.iconPadding} name="object-group"></Icon>
+          <Text style={styles.description}>Major: {major}</Text>
+        </View>
+        <View style={styles.inlineIcon}>
+          <Icon style={styles.iconPadding} name="window-restore"></Icon>
+          <Text style={styles.description}>
+            Number Of Project: {numberOfProject}
+          </Text>
+        </View>
+        <View style={styles.inlineIconLink}>
+          <Text
+            onPress={() => goToLabDetailPageApproved(id, isJoined)}
+            style={styles.link}
+          >
+            Go to your Lab{"  "}
+          </Text>
+          <Icon
+            style={styles.iconPadding}
+            size={16}
+            color="#0078D4"
+            name="arrow-right"
+          ></Icon>
+        </View>
+      </View>
+    </View>
+  );
+
   const renderItem = ({ item }) => (
     <Item
       id={item.laboratoryId}
@@ -226,6 +297,20 @@ const Lab = ({ route, navigation }) => {
       isJoined={true}
     />
   );
+
+  const renderItem3 = ({ item }) => (
+    <Item3
+      id={item.laboratoryId}
+      title={item.laboratoryName}
+      host={item.ownerBy?.userInfo?.username}
+      numberMem={item.members}
+      description={item.description}
+      major={item.major}
+      numberOfProject={item.projects}
+      isJoined={true}
+    />
+  );
+
   return (
     <View>
       <HomeTopNavigator navigation={navigation} />
@@ -273,33 +358,29 @@ const Lab = ({ route, navigation }) => {
 
           <SafeAreaView style={styles.flatlist}>
             <FlatList
-                numColumns={5}
-                data={itemWaiting}
-                renderItem={renderItem}
+              numColumns={5}
+              data={itemWaiting}
+              renderItem={renderItem3}
             />
           </SafeAreaView>
           <PaginationBar
-              currentSizes={5}
-              numberOfElement={numberOfElementSuggestion}
-              callbackSelectedPage={changeWaitingPage}
+            currentSizes={5}
+            numberOfElement={numberOfElementWaiting}
+            callbackSelectedPage={changeWaitingPage}
           />
         </View>
-        <View style={styles.btn}>
-          <Buttons
-            text={"Create Lab"}
-            style={styles.button}
-            onPressTo={() => {
-              navigation.navigate("CreateLab");
-            }}
-          />
-          <Buttons
-            text={"Back"}
-            style={styles.button}
-            onPressTo={() => {
-              navigation.goBack(null);
-            }}
-          />
-        </View>
+        {checkCanUse(roles) && (
+            <View style={styles.btn}>
+              <Buttons
+                  text={"Create Lab"}
+                  style={styles.button}
+                  onPressTo={() => {
+                    navigation.navigate("CreateLab");
+                  }}
+              />
+            </View>
+        )}
+
       </View>
     </View>
   );

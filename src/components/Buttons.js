@@ -1,13 +1,20 @@
-import React from "react";
-import {StyleSheet, Text, TouchableOpacity} from "react-native";
-
+import React, {useState} from "react";
+import {StyleSheet, Text, TouchableOpacity,View} from "react-native";
 function Buttons({text, onPressTo, style, styleText, disabled}) {
     return (
-        <TouchableOpacity disabled={disabled} style={[styles.button, style]} onPress={onPressTo}>
-            <Text style={[styles.text, styleText]}>{text}</Text>
-        </TouchableOpacity>
+        <View>
+            {disabled?<TouchableOpacity disabled={disabled} style={[styles.button, style,{backgroundColor: "gray"}]}>
+                <Text style={[styles.text, styleText]}>{text}</Text>
+            </TouchableOpacity>:<TouchableOpacity disabled={disabled} style={[styles.button, style]} onPress={onPressTo}>
+                <Text style={[styles.text, styleText]}>{text}</Text>
+            </TouchableOpacity>
+            }
+        </View>
+
+
     );
 }
+
 
 const styles = StyleSheet.create({
     button: {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -18,10 +18,26 @@ import Buttons from "../../components/Buttons";
 import { getAllMemberInProject } from "../../actions/LaboratoryAction";
 import { getAllSprint } from "../../actions/WorkSpaceAction";
 import ProjectNavigator from "../../navigations/ProjectNavigator";
+import AsyncStorage from "@react-native-community/async-storage";
+
+const getRoleInProject = async () => {
+  try {
+    const role = await AsyncStorage.getItem("@roleInProject");
+    console.log("role: " + role);
+    return role;
+  } catch (e) {
+    console.log("Can't get role: " + e);
+  }
+};
 
 export default function ProjectDetail({ route, navigation }) {
   const data = route.params.data;
   const dispatch = useDispatch();
+  const [role, setRole] = useState("");
+  getRoleInProject().then((v) => setRole(v));
+
+  console.log("roleAsyn: " + role);
+
   const goToListMemberPage = (projectId) => {
     dispatch(getAllMemberInProject(projectId, navigation));
   };
@@ -60,26 +76,17 @@ export default function ProjectDetail({ route, navigation }) {
               </Text>
               <Text style={[styles.description]}>{data.description}</Text>
             </View>
-            <Buttons
-              style={styles.button}
-              text={"View All Member"}
-              onPressTo={() => goToListMemberPage(data.projectId)}
-            />
-
-            <Buttons
-              style={styles.button}
-              text={"Update"}
-              onPressTo={() =>
-                navigation.navigate("UpdateProject", {
-                  projectInfo: data,
-                })
-              }
-            />
-            <Buttons
-              style={styles.button}
-              text={"BackLog"}
-              onPressTo={() => goToBacklog(data.projectId)}
-            />
+            {role == "MANAGER" || role == "OWNER" ? (
+              <Buttons
+                style={styles.button}
+                text={"Update"}
+                onPressTo={() =>
+                  navigation.navigate("UpdateProject", {
+                    projectInfo: data,
+                  })
+                }
+              />
+            ) : null}
           </View>
         </View>
       </View>

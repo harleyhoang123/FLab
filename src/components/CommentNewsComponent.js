@@ -9,7 +9,22 @@ import {
   deleteCommentInNews,
   editCommentNews,
 } from "../networking/CustomNetworkService";
+import AsyncStorage from "@react-native-community/async-storage";
 
+const getUserAccount = async () => {
+  try {
+    return await AsyncStorage.getItem("@userAccount");
+  } catch (e) {
+    console.log("Can't get username: " + e);
+  }
+};
+const getRoles = async () => {
+  try {
+    return await AsyncStorage.getItem("@roles");
+  } catch (e) {
+    console.log("Can't get roles: " + e);
+  }
+};
 function CommentNewsComponent({
   newsId,
   commentId,
@@ -17,6 +32,7 @@ function CommentNewsComponent({
   content,
   createdDate,
   listSubComment,
+    authorComment,
   callBackCommentNews,
   navigation,
 }) {
@@ -29,10 +45,23 @@ function CommentNewsComponent({
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState(content);
   let isValid = true;
-
+  const [userAccount, setUserAccount] = useState("");
+  const [roles, setRoles] = useState([]);
   const [isComment, setIsComment] = useState(false);
   const [isReply, setIsReply] = useState(false);
-
+  getRoles().then((v) => {
+    setRoles(v)
+  });
+  getUserAccount().then((r) => {
+    setUserAccount(r)
+  });
+  const checkCanEdit = (roles, userAccount, author) => {
+      if (roles.includes("MANAGER") || roles.includes("ADMIN")) {
+        return true;
+      } else {
+        return userAccount === author;
+      }
+  }
   function validateComment() {
     if (!text) {
       setIsComment(true);
@@ -152,35 +181,38 @@ function CommentNewsComponent({
             </View>
           </View>
         </Modal>
-        <View>
-          <View style={styles.containerComment}>
-            <Text style={styles.text}>
-              <Text style={styles.textUsername}>{username}</Text> {content}
-            </Text>
-          </View>
+        <View style={{width: "95%"}}>
+          <Text style={styles.text}>
+            <Text style={styles.textUsername}>{username} </Text> {content}
+          </Text>
+        </View>
           <View style={styles.containerComment}>
             <Text style={styles.text}>{createdDate}</Text>
-            <View style={styles.login}>
-              <TouchableOpacity
-                onPress={() => {
-                  setIsEdit(true);
-                  setText(content);
-                }}
-              >
-                <Text style={styles.txt}>Edit</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.login}>
-              <TouchableOpacity
-                onPress={() => {
-                  setShowConfirm(true);
-                }}
-              >
-                <Text style={styles.txt}>Delete</Text>
-              </TouchableOpacity>
-            </View>
+            {checkCanEdit(roles,userAccount,authorComment)&&
+                <View style={styles.containerComment}>
+                  <View style={styles.login}>
+                    <TouchableOpacity
+                        onPress={() => {
+                          setIsEdit(true);
+                          setText(content);
+                        }}
+                    >
+                      <Text style={styles.txt}>Edit</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.login}>
+                    <TouchableOpacity
+                        onPress={() => {
+                          setShowConfirm(true);
+                        }}
+                    >
+                      <Text style={styles.txt}>Delete</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+            }
           </View>
-        </View>
+
       </View>
       <View style={{ marginLeft: "5%" }}>
         {listSubComment?.map((item) => (
@@ -194,6 +226,7 @@ function CommentNewsComponent({
               time={formatTime(item.createdDate)}
               callBackComment={callBackCommentNews}
               navigation={navigation}
+              author={item.createdBy.userInfo.username}
             />
           </View>
         ))}
@@ -259,7 +292,6 @@ const styles = StyleSheet.create({
   container: {
     margin: 10,
     backgroundColor: "white",
-    flexDirection: "row",
     justifyContent: "space-between",
     flex: 1,
   },
@@ -269,7 +301,6 @@ const styles = StyleSheet.create({
   },
   textUsername: {
     fontWeight: "bold",
-    marginRight: 20,
     fontSize: 15,
   },
   text: {

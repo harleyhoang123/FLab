@@ -32,7 +32,7 @@ function UpdateFile({route, navigation}) {
                               style={{width: "97%"}}
                               text={description} onChangeText={description => setDescription(description)}/>
                 <View style={{flexDirection:"row"}}>
-                    <Buttons text={"Update"} style={[styles.button,{marginRight:30 }]} onPressTo={()=> handleUpdateFileInFolder(parentFolderName, parentFolderId, fileId,fileName+"."+type,description, navigation)}/>
+                    <Buttons text={"Update"} style={[styles.button,{marginRight:30 }]} onPressTo={()=> handleUpdateFileInFolder(parentFolderName, parentFolderId, fileId,fileName,description, navigation)}/>
                     <Buttons text={"Cancel"} style={styles.button} onPressTo={()=> navigation.goBack(null)}/>
                 </View>
             </View>

@@ -19,7 +19,14 @@ import {
   getNewsDetailComment,
 } from "../../networking/CustomNetworkService";
 import CommentNewsComponent from "../../components/CommentNewsComponent";
-
+import AsyncStorage from "@react-native-community/async-storage";
+const getUserAccount = async () => {
+  try {
+    return await AsyncStorage.getItem("@userAccount");
+  } catch (e) {
+    console.log("Can't get username: " + e);
+  }
+};
 function NewsDetail({ route, navigation }) {
   const res = route.params.data;
   let isValid = true;
@@ -27,7 +34,14 @@ function NewsDetail({ route, navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [comment, setComment] = useState("");
   const [isComment, setIsComment] = useState(false);
+  const [userAccount, setUserAccount] = useState("");
+  getUserAccount().then((r) => {
+    setUserAccount(r)
+  });
 
+  const checkCanUse=(userAccount, author)=>{
+    return userAccount===author;
+  }
   function validateComment(newsId, comment) {
     if (!comment) {
       setIsComment(true);
@@ -47,7 +61,7 @@ function NewsDetail({ route, navigation }) {
   };
   const newsId = res.newsId;
   const [title, setTitle] = useState(res.title);
-  const [author, setAuthor] = useState(res.author);
+  const [author, setAuthor] = useState(res.createdBy.userInfo.fullName);
   const [time, setTime] = useState(res.createdDate);
   const [content, setContent] = useState(res.content);
   const [views, setViews] = useState(res.views);
@@ -124,11 +138,14 @@ function NewsDetail({ route, navigation }) {
               </Text>
             </View>
             <View>
-              <Buttons
-                text={"..."}
-                style={styles.btnModal}
-                onPressTo={() => setModalVisible(true)}
-              />
+              {checkCanUse(userAccount,res.createdBy.userInfo.username)&&
+                  <Buttons
+                      text={"..."}
+                      style={styles.btnModal}
+                      onPressTo={() => setModalVisible(true)}
+                  />
+              }
+
               <Buttons
                 text={"Back"}
                 style={[styles.btnModal, { width: 50 }]}
@@ -210,6 +227,7 @@ function NewsDetail({ route, navigation }) {
               newsId={newsId}
               commentId={item.commentId}
               username={item.createdBy.userInfo.fullName}
+              authorComment={item.createdBy.userInfo.username}
               content={item.content}
               createdDate={formatTime(item.createdDate)}
               listSubComment={item.comments}

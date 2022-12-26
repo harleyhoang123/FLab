@@ -15,8 +15,8 @@ import {
 import AsyncStorage from "@react-native-community/async-storage";
 import * as DocumentPicker from "expo-document-picker";
 import {
-  changeAvatar,
-  getProfileDetail,
+  changeAvatar, changeEmail,
+  getProfileDetail, sendOTPToPhoneNumber, verifyNewPhoneNumber,
 } from "../../networking/CustomNetworkService";
 
 const getAccountId = async () => {
@@ -32,8 +32,8 @@ const getAccountId = async () => {
 function Profile({ route, navigation }) {
   let isValidPassword = true;
   let isEmail = true;
-  let isPhoneNumber = true;
   let isPhoneNumberVerify = true;
+  let isOTP=true;
   const response = route.params.data;
   const fullName = response.fullName;
   const gender = response.gender;
@@ -54,16 +54,15 @@ function Profile({ route, navigation }) {
   const [newPassword, setNewPassword] = useState("");
   const [reNewPassword, setReNewPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otp, setOtp] = useState("");
   const [verifyPhoneNumber, setVerifyPhoneNumber] = useState("");
   const [accountId, setAccountId] = useState("");
-  const [notify, setNotify] = useState("");
   const [isNewPassword, setIsValidNewPassword] = useState(false);
   const [isOldPassword, setIsValidOldPassword] = useState(false);
   const [isReNewPassword, setIsReNewPassword] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);
-  const [isPhoneNumberValid, setIsPhoneNumber] = useState(false);
   const [isPhoneNumberVerifyValid, setIsPhoneNumberVerify] = useState(false);
+  const [isOTPValid, setIsOTPValid] = useState(false);
   const regexPassword =
     "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d@$!%*?&.,]{8,}$";
   const regexEmail =
@@ -78,21 +77,8 @@ function Profile({ route, navigation }) {
       setIsEmailValid(false);
     }
     if (isEmail) {
-      alert("Son an cak");
+      handleChangeEmail()
       setIsEmailValid(false);
-    }
-  }
-
-  function validatePhone() {
-    if (!phoneNumber.match(regexPhoneNumber)) {
-      setIsPhoneNumber(true);
-      isPhoneNumber = false;
-    } else {
-      setIsPhoneNumber(false);
-    }
-    if (isPhoneNumber) {
-      alert("Son an loz");
-      setIsPhoneNumber(false);
     }
   }
 
@@ -104,8 +90,20 @@ function Profile({ route, navigation }) {
       setIsPhoneNumberVerify(false);
     }
     if (isPhoneNumberVerify) {
-      alert("Son an loz");
+      handleSendOTP();
       setIsPhoneNumberVerify(false);
+    }
+  }
+  function validateOTP() {
+    if (otp.length<6) {
+      setIsOTPValid(true);
+      isOTP = false;
+    } else {
+      setIsOTPValid(false);
+    }
+    if (isOTP) {
+      handleVerify();
+      setIsOTPValid(false);
     }
   }
 
@@ -138,8 +136,18 @@ function Profile({ route, navigation }) {
   const handleChangePassword = () => {
     console.log("Oll Password: " + oldPassword);
     console.log("New Password: " + newPassword);
-    dispatch(changePassword(oldPassword, newPassword, accountId));
+    dispatch(changePassword(oldPassword, newPassword, accountId, navigation));
   };
+
+  const handleChangeEmail=()=>{
+    changeEmail(accountId,email, navigation).then(v=> {setEmail("")})
+  }
+  const handleSendOTP=()=>{
+    sendOTPToPhoneNumber(accountId,verifyPhoneNumber,navigation).then(v=>{})
+  }
+  const handleVerify=()=>{
+    verifyNewPhoneNumber(accountId,otp,navigation).then(v=> setVerifyPhoneNumber(""))
+  }
   const goToEditProfile = () => {
     console.log("EditProfile: ");
     dispatch(getAccountInfoByAccountIdToEdit(accountId, navigation));
@@ -273,7 +281,6 @@ function Profile({ route, navigation }) {
               </Text>
             )}
           </View>
-          <Text>{notify}</Text>
           <Buttons
             style={styles.button}
             onPressTo={validatePassword}
@@ -293,32 +300,10 @@ function Profile({ route, navigation }) {
             {!!isEmailValid && (
               <Text style={styles.inputInvalid}>Email invalid</Text>
             )}
-            <Text>{notify}</Text>
             <Buttons
               onPressTo={validateEmail}
               style={styles.button}
               text={"Change Email"}
-            />
-          </View>
-        </View>
-        <View>
-          <View style={styles.containerInfo}>
-            <Text style={styles.text}>Change Phone Number</Text>
-            <TextField
-              text={phoneNumber}
-              onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
-              placeholder={" Phone Number"}
-              secureTextEntry={false}
-              style={styles.textField}
-            />
-            {!!isPhoneNumberValid && (
-              <Text style={styles.inputInvalid}>Phone number invalid</Text>
-            )}
-            <Text>{notify}</Text>
-            <Buttons
-              onPressTo={validatePhone}
-              style={styles.button}
-              text={"Change Phone Number"}
             />
           </View>
         </View>
@@ -337,12 +322,31 @@ function Profile({ route, navigation }) {
             {!!isPhoneNumberVerifyValid && (
               <Text style={styles.inputInvalid}>Phone number invalid</Text>
             )}
-            <Text>{notify}</Text>
             <Buttons
-              onPressTo={verifyPhone}
-              style={styles.button}
-              text={"Verify Phone Number"}
+                onPressTo={verifyPhone}
+                style={styles.button}
+                text={"Send OTP"}
             />
+          </View>
+          <View>
+            <View style={styles.containerInfo}>
+              <Text style={styles.text}>Enter your code</Text>
+              <TextField
+                  text={otp}
+                  onChangeText={(otp) => setOtp(otp)}
+                  placeholder={" OTP"}
+                  secureTextEntry={false}
+                  style={styles.textField}
+              />
+              {!!isOTPValid && (
+                  <Text style={styles.inputInvalid}>Invalid OTP</Text>
+              )}
+              <Buttons
+                  onPressTo={validateOTP}
+                  style={styles.button}
+                  text={"Verify"}
+              />
+            </View>
           </View>
         </View>
       </View>

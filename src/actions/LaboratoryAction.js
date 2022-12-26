@@ -22,7 +22,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 //   };
 
 export const getLaboratoryById =
-  (labId, isJoined, navigation) =>
+  (labId, isJoined, navigation, isApply) =>
   async (dispatch, _, { networkService }) => {
     await AsyncStorage.setItem("@currentLabId", labId);
     let errorCode = 200;
@@ -38,6 +38,13 @@ export const getLaboratoryById =
           "@currentMemberId",
           response.data.data.memberInfo.memberId
         );
+        await AsyncStorage.setItem(
+          "@roleInLab",
+          response.data.data.memberInfo.role
+        );
+        console.log(
+          "ROLE IN LAB" + JSON.stringify(response.data.data.memberInfo.role)
+        );
       }
       const listMember = await laboratoryController.getAllMemberInLaboratory({
         labId,
@@ -46,6 +53,7 @@ export const getLaboratoryById =
         data: response.data.data,
         isJoined: isJoined,
         allMember: listMember.data.data,
+        isApply: isApply,
       });
     } catch ({ data }) {
       if (data) {
@@ -211,6 +219,13 @@ export const getProjectById =
         projectId,
       });
       await AsyncStorage.setItem("@projectId", response.data.data.projectId);
+      await AsyncStorage.setItem(
+        "@roleInProject",
+        response.data.data.memberInfo.role
+      );
+      console.log(
+        "ROLE IN PROJECT" + JSON.stringify(response.data.data.memberInfo.role)
+      );
       navigation.navigate("ProjectDetail", {
         data: response.data.data,
       });
@@ -486,7 +501,7 @@ export const removeMemberInProjectById =
   };
 
 export const removeProject =
-  (labId, projectId, navigation) =>
+  (labId, projectId, currentMemberId, navigation) =>
   async (dispatch, _, { networkService }) => {
     let errorCode = 200;
     try {
@@ -496,7 +511,7 @@ export const removeProject =
         projectId,
       });
       if (response) {
-        dispatch(getAllProjectByLabId(labId, navigation));
+        dispatch(getAllProjectByLabId(labId, currentMemberId, navigation));
       }
     } catch ({ data }) {
       if (data) {
@@ -925,7 +940,7 @@ export const getmemberDetailProjectByProfileId =
   };
 
 export const applyTolAbByLabId =
-  (labId, requestData, navigation) =>
+  (labId, requestData, navigation, isApply) =>
   async (dispatch, _, { networkService }) => {
     let errorCode = 200;
     try {
@@ -936,7 +951,7 @@ export const applyTolAbByLabId =
         requestData,
       });
       if (response) {
-        dispatch(getLaboratoryById(labId, false, navigation));
+        dispatch(getLaboratoryById(labId, false, navigation, isApply));
       }
     } catch ({ data }) {
       if (data) {
@@ -1193,6 +1208,7 @@ export const addMaterial =
 export const orderMaterial =
   (labId, materialId, amount, reason, orderFrom, orderTo, navigation) =>
   async (dispatch, _, { networkService }) => {
+    let errorCode = 200;
     try {
       const laboratoryController = new LaboratoryController(networkService);
       const response = await laboratoryController.orderMaterial({
