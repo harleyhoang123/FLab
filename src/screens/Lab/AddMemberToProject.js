@@ -17,6 +17,7 @@ import { getMemberNotInLab } from "../../networking/CustomNetworkService";
 import ListUserComponent from "../../components/ListUserComponent";
 import ListMemberComponent from "../../components/ListMemberComponent";
 import { getMemberInLabNotInProject } from "../../networking/CustomNetworkService";
+import ProjectNavigator from "../../navigations/ProjectNavigator";
 
 const getLabId = async () => {
   try {
@@ -53,7 +54,7 @@ export default function AddMemberToProject({ route, navigation }) {
 
   return (
     <View>
-      <LabNavigator navigation={navigation} />
+      <ProjectNavigator navigation={navigation} />
       <View>
         <View>
           <Text style={styles.title}>Add new member:</Text>

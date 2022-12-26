@@ -7,9 +7,22 @@ import MaterialItem from "../../components/MaterialItem";
 import PaginationBar from "../../components/PaginationBar";
 import LabNavigator from "../../navigations/LabNavigator";
 import { getListMaterial } from "../../networking/CustomNetworkService";
+import AsyncStorage from "@react-native-community/async-storage";
+
+const getLabRole = async () => {
+  try {
+    const labRole = await AsyncStorage.getItem("@roleInLab");
+    console.log("labRole : " + labRole);
+    return labRole;
+  } catch (e) {
+    console.log("Can't get labRole: " + e);
+  }
+};
 
 function ListMaterial({ route, navigation }) {
   const listsMaterial = route.params.data.items;
+  const [labRole, setLabRole] = useState("");
+  getLabRole().then((v) => setLabRole(v));
   const labId = route.params.labId;
   console.log(
     "List material in List Material Component is: " +
@@ -41,16 +54,20 @@ function ListMaterial({ route, navigation }) {
             style={[{ marginLeft: 20 }]}
             onPressTo={() => navigation.push("MyOrder")}
           />
-          <Buttons
-            text={"List Order"}
-            style={[{ marginLeft: 20 }]}
-            onPressTo={() => navigation.push("OrderMaterial")}
-          />
-          <Buttons
-            text={"Add Material"}
-            style={[{ marginLeft: 20 }]}
-            onPressTo={() => navigation.push("AddMaterial")}
-          />
+          {labRole == "MANAGER" || labRole == "OWNER" ? (
+            <Buttons
+              text={"List Order"}
+              style={[{ marginLeft: 20 }]}
+              onPressTo={() => navigation.push("OrderMaterial")}
+            />
+          ) : null}
+          {labRole == "MANAGER" || labRole == "OWNER" ? (
+            <Buttons
+              text={"Add Material"}
+              style={[{ marginLeft: 20 }]}
+              onPressTo={() => navigation.push("AddMaterial")}
+            />
+          ) : null}
         </View>
       </View>
       {list?.map((item) => (

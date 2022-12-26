@@ -128,7 +128,7 @@ const ViewAllMember = ({ route, navigation }) => {
             <Text style={styles.title}>Code</Text>
           </View>
           <View style={[styles.ava]}>
-            <Text style={styles.title}>Ava</Text>
+            <Text style={styles.title}>Email</Text>
           </View>
           <View style={[styles.name]}>
             <Text style={styles.title}>Name</Text>
