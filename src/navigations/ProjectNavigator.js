@@ -9,6 +9,8 @@ import Logo from "../assets/Logo";
 import { getAllSprint } from "../actions/WorkSpaceAction";
 import { getFolderByRepositoryId } from "../actions/RepositoryAction";
 import RightNavigation from "./RightNavigation";
+import {getOTT} from './../networking/CustomNetworkService'
+import {routes} from "../controllers";
 const getRepoId = async () => {
   try {
     const repoId = await AsyncStorage.getItem("@currentProjectId");
@@ -43,6 +45,16 @@ function ProjectNavigator({ navigation }) {
   const goToBacklog = (projectId) => {
     dispatch(getAllSprint(projectId, navigation));
   };
+
+  function goToDocument() {
+    getOTT(navigation).then(r => {
+      console.log("URL: "+ "http://127.0.0.1:4200/document/spaces?ott="+r.ott)
+      Linking.openURL(routes.document.spaces+r.ott).then(r => {});
+    }).catch(error => {
+      console.log("ERROR:"+ error)
+    });
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.topNavigationContent}>
@@ -62,7 +74,7 @@ function ProjectNavigator({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.push("Document")}
+            onPress={goToDocument}
           >
             <Text style={styles.textLogo}>Document</Text>
           </TouchableOpacity>
