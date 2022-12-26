@@ -6,14 +6,25 @@ import TextField from "../../components/TextField";
 import Buttons from "../../components/Buttons";
 import {
   getListAllNews,
-  getListQuestion,
 } from "../../networking/CustomNetworkService";
 import PaginationBar from "../../components/PaginationBar";
+import AsyncStorage from "@react-native-community/async-storage";
+const getRoles = async () => {
+  try {
+    return await AsyncStorage.getItem("@roles");
+  } catch (e) {
+    console.log("Can't get roles: " + e);
+  }
+};
+
+
 
 function ListNews({ navigation }) {
   const [text, setText] = useState("");
   const [numberOfElement, setNumberOfElement] = useState(0);
   const [listNews, setListNews] = useState();
+  const [roles, setRoles] = useState([]);
+  getRoles().then((v) => {setRoles(v)});
   useEffect(() => {
     getListAllNews(text, 0, 5, navigation).then((v) => {
       setListNews(v.data.data.items);
@@ -32,6 +43,9 @@ function ListNews({ navigation }) {
       setNumberOfElement(v.data.data.totalPage * 5);
     });
   };
+  const checkCanUse=(roles)=>{
+      return !!(roles.includes("MANAGER") || roles.includes("ADMIN"));
+  }
   return (
     <View>
       <HomeTopNavigator navigation={navigation} />
@@ -50,11 +64,13 @@ function ListNews({ navigation }) {
             onSubmitEditing={() => searchNews()}
           />
           <Buttons text={"Search"} onPressTo={() => searchNews()} />
-          <Buttons
-            text={"Add News"}
-            style={[styles.button, { marginLeft: 20 }]}
-            onPressTo={() => navigation.push("AddNews")}
-          />
+          {checkCanUse(roles)&&
+              <Buttons
+                  text={"Add News"}
+                  style={[styles.button, { marginLeft: 20 }]}
+                  onPressTo={() => navigation.push("AddNews")}
+              />
+          }
         </View>
       </View>
       <FlatList
