@@ -61,7 +61,7 @@ export default function ViewAllMemberInProject({ route, navigation }) {
   const [projectId, setProjectId] = useState("");
   getProjectId().then((v) => setProjectId(v));
   const [mId, setMId] = useState("");
-  const removeMember = (projectId,memberId) => {
+  const removeMember = (projectId, memberId) => {
     dispatch(removeMemberInProjectById(projectId, memberId, navigation));
   };
 
@@ -70,31 +70,53 @@ export default function ViewAllMemberInProject({ route, navigation }) {
       getmemberDetailProjectByProfileId(accountId, labId, memberId, navigation)
     );
   };
-const callbackSetId=(id)=>{
-  setMId(id);
-}
-  const Item = ({accountId, id, memberName, email, roles,callbackSetId}) => (
+
+  const getAccountId = async () => {
+    try {
+      const accountId = await AsyncStorage.getItem("@accountId");
+      console.log("AccountId: " + accountId);
+      return accountId;
+    } catch (e) {
+      console.log("Can't get account id: " + e);
+    }
+  };
+
+  const [accountIdCurrent, setAccountId] = useState("");
+  getAccountId().then((v) => setAccountId(v));
+
+  const callbackSetId = (id) => {
+    setMId(id);
+  };
+  const Item = ({ accountId, id, memberName, email, roles, callbackSetId }) => (
     <View style={styles.item}>
       <Text style={styles.title}>Member name: {memberName}</Text>
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.title}>Email: {email}</Text>
         <View style={{ marginLeft: "auto", flexDirection: "row" }}>
           <Buttons
-              onPressTo={() => goToMemberDetail(accountId, id)}
-              style={styles.action} text={"Detail"}
+            onPressTo={() => goToMemberDetail(accountId, id)}
+            style={styles.action}
+            text={"Detail"}
           />
-          {role == "MANAGER" || role == "OWNER" ? (
+          {role == "MANAGER" ||
+          (role == "OWNER" && accountId !== accountIdCurrent) ? (
             <View style={{ flexDirection: "row" }}>
-
               <Buttons
-                  onPressTo={() => {setShowConfirm(true);callbackSetId(id)}}
-                       style={styles.action} text={"Remove"}
+                onPressTo={() => {
+                  setShowConfirm(true);
+                  callbackSetId(id);
+                }}
+                style={styles.action}
+                text={"Remove"}
               />
               <Buttons
-                  onPressTo={() => { navigation.navigate("UpdateMemberRoleInProject", {
+                onPressTo={() => {
+                  navigation.navigate("UpdateMemberRoleInProject", {
                     memberid: id,
-                  })}}
-                  style={styles.action} text={"Update Role"}
+                  });
+                }}
+                style={styles.action}
+                text={"Update Role"}
               />
             </View>
           ) : null}
@@ -109,34 +131,34 @@ const callbackSetId=(id)=>{
       <ProjectNavigator navigation={navigation} />
       <View style={styles.container}>
         <Modal
-            animationType="fade"
-            transparent={true}
-            visible={showConfirm}
-            onRequestClose={() => {
-              setShowConfirm(false);
-            }}
+          animationType="fade"
+          transparent={true}
+          visible={showConfirm}
+          onRequestClose={() => {
+            setShowConfirm(false);
+          }}
         >
           <View style={styles.modalDelete}>
             <View style={styles.modalDeleteView}>
               <Text
-                  style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
+                style={{ fontSize: 20, fontWeight: "bold", marginBottom: 20 }}
               >
                 Do you want to remove this member?
               </Text>
               <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
                 <Buttons
-                    text={"Delete"}
-                    style={{ marginRight: 40 }}
-                    onPressTo={() => {
-                      removeMember(projectId,mId);
-                      setShowConfirm(false);
-                    }}
+                  text={"Delete"}
+                  style={{ marginRight: 40 }}
+                  onPressTo={() => {
+                    removeMember(projectId, mId);
+                    setShowConfirm(false);
+                  }}
                 />
                 <Buttons
-                    text={"Cancel"}
-                    style={{ backgroundColor: "#F4F5F7" }}
-                    styleText={{ color: "black" }}
-                    onPressTo={() => setShowConfirm(false)}
+                  text={"Cancel"}
+                  style={{ backgroundColor: "#F4F5F7" }}
+                  styleText={{ color: "black" }}
+                  onPressTo={() => setShowConfirm(false)}
                 />
               </View>
             </View>
@@ -160,15 +182,15 @@ const callbackSetId=(id)=>{
           <FlatList
             data={data}
             renderItem={({ item }) => (
-                <Item
-                    accountId={item.userInfo.accountId}
-                    id={item.memberId}
-                    memberName={item.userInfo.userInfo.fullName}
-                    email={item.userInfo.userInfo.email}
-                    roles={item.role}
-                    projectId={projectId}
-                    callbackSetId={callbackSetId}
-                />
+              <Item
+                accountId={item.userInfo.accountId}
+                id={item.memberId}
+                memberName={item.userInfo.userInfo.fullName}
+                email={item.userInfo.userInfo.email}
+                roles={item.role}
+                projectId={projectId}
+                callbackSetId={callbackSetId}
+              />
             )}
           />
         </SafeAreaView>
