@@ -199,7 +199,6 @@ function CommentItem({
                                 setText(content);
                             }}
                         >
-
                             <Text style={styles.txt}>Edit</Text>
                         </TouchableOpacity>
                     </View>
@@ -209,7 +208,6 @@ function CommentItem({
                             </TouchableOpacity>
                         </View></View>
                 }
-
             </View>
         </View>
     );
@@ -231,7 +229,6 @@ const styles = StyleSheet.create({
     },
     textUsername: {
         fontWeight: "bold",
-        marginRight: 20,
         fontSize: 15,
     },
     text: {

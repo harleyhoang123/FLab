@@ -181,12 +181,11 @@ function CommentNewsComponent({
             </View>
           </View>
         </Modal>
-        <View>
-          <View style={styles.containerComment}>
-            <Text style={styles.text}>
-              <Text style={styles.textUsername}>{username}</Text> {content}
-            </Text>
-          </View>
+        <View style={{width: "95%"}}>
+          <Text style={styles.text}>
+            <Text style={styles.textUsername}>{username} </Text> {content}
+          </Text>
+        </View>
           <View style={styles.containerComment}>
             <Text style={styles.text}>{createdDate}</Text>
             {checkCanEdit(roles,userAccount,authorComment)&&
@@ -213,7 +212,7 @@ function CommentNewsComponent({
                 </View>
             }
           </View>
-        </View>
+
       </View>
       <View style={{ marginLeft: "5%" }}>
         {listSubComment?.map((item) => (
@@ -293,7 +292,6 @@ const styles = StyleSheet.create({
   container: {
     margin: 10,
     backgroundColor: "white",
-    flexDirection: "row",
     justifyContent: "space-between",
     flex: 1,
   },
@@ -303,7 +301,6 @@ const styles = StyleSheet.create({
   },
   textUsername: {
     fontWeight: "bold",
-    marginRight: 20,
     fontSize: 15,
   },
   text: {

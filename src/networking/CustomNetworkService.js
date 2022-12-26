@@ -3794,19 +3794,202 @@ export const getNotification = async (accountId, navigation) => {
 };
 
 export const getNumberOfApplication = async (labId, navigation) => {
+    const token = await getToken();
+    let errorCode = 200;
+    try {
+        const response = await axios.get(
+            routes.laboratory.getNumberOfApplication.replace(":lab-id", labId),
+            {
+                headers: {
+                    Authorization: `Bearer ` + token,
+                },
+            }
+        );
+        console.log("getNumberOfApplication: " + JSON.stringify(response.data));
+        return response.data;
+    } catch (data) {
+        if (data) {
+            if (data.status) {
+                if (data.status.status) {
+                    errorCode = data.status.status;
+                    let displayMessage = data.status.message;
+                    if (displayMessage == null) {
+                        displayMessage = "Oops! Something went wrong.";
+                    }
+                    if (errorCode == 400) {
+                        alert(displayMessage);
+                        return;
+                    }
+                    navigation.push("ErrorPage", {
+                        status: errorCode,
+                        displayMessage: displayMessage,
+                    });
+                    return;
+                }
+            }
+        }
+        navigation.push("ErrorPage", {
+            status: 500,
+            displayMessage: "Oops! Something went wrong.",
+        });
+    }
+};
+
+
+export const getOTT = async (navigation) => {
+    const token = await getToken();
+    let errorCode = 200;
+    const currentProjectId = await getCurrentProjectId();
+    try {
+        const response = await axios.post(routes.account.getOTT, {
+            "projectId": currentProjectId
+        }, {
+            headers: {
+                Authorization: `Bearer ` + token,
+            },
+        });
+        return response.data.data;
+    } catch (error) {
+        if (data) {
+            if (data.status) {
+                if (data.status.status) {
+                    errorCode = data.status.status;
+                    let displayMessage = data.status.message;
+                    if (displayMessage == null) {
+                        displayMessage = "Oops! Something went wrong.";
+                    }
+                    if (errorCode == 400) {
+                        alert(displayMessage);
+                        return;
+                    }
+                    navigation.push("ErrorPage", {
+                        status: errorCode,
+                        displayMessage: displayMessage,
+                    });
+                    return;
+                }
+            }
+        }
+        navigation.push("ErrorPage", {
+            status: 500,
+            displayMessage: "Oops! Something went wrong.",
+        });
+    }
+}
+export const changeEmail = async (accountId, email, navigation) => {
   const token = await getToken();
   let errorCode = 200;
   try {
-    const response = await axios.get(
-      routes.laboratory.getNumberOfApplication.replace(":lab-id", labId),
-      {
-        headers: {
-          Authorization: `Bearer ` + token,
+    const response = await axios.put(
+        routes.account.changeEmail.replace(":account-id", accountId),
+        {
+          newEmail: email
         },
-      }
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+        }
     );
-    console.log("getNumberOfApplication: " + JSON.stringify(response.data));
-    return response.data;
+    console.log("Data in changeEmail: " + JSON.stringify(response.data));
+    if (response.data.status.status === 200) {
+      alert("Change email success")
+    }
+
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
+  }
+};
+export const sendOTPToPhoneNumber = async (accountId, number, navigation) => {
+  const token = await getToken();
+  let errorCode = 200;
+  try {
+    const response = await axios.post(
+        routes.account.sendOTPToPhoneNumber.replace(":account-id", accountId),
+        {
+          phoneNumber: number
+        },
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+        }
+    );
+    console.log("Data in sendOTPToPhoneNumber: " + JSON.stringify(response.data));
+    if (response.data.status.status === 200) {
+      alert("Send otp success please enter code in your message to verify your phone number")
+    }
+
+  } catch (data) {
+    if (data) {
+      if (data.status) {
+        if (data.status.status) {
+          errorCode = data.status.status;
+          let displayMessage = data.status.message;
+          if (displayMessage == null) {
+            displayMessage = "Oops! Something went wrong.";
+          }
+          if (errorCode == 400) {
+            alert(displayMessage);
+            return;
+          }
+          navigation.push("ErrorPage", {
+            status: errorCode,
+            displayMessage: displayMessage,
+          });
+          return;
+        }
+      }
+    }
+    navigation.push("ErrorPage", {
+      status: 500,
+      displayMessage: "Oops! Something went wrong.",
+    });
+  }
+};
+export const verifyNewPhoneNumber = async (accountId, otp, navigation) => {
+  const token = await getToken();
+  let errorCode = 200;
+  try {
+    const response = await axios.post(
+        routes.account.verifyPhoneNumber.replace(":account-id", accountId),
+        {
+          otp: otp
+        },
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+        }
+    );
+    console.log("Data in verifyPhoneNumber: " + JSON.stringify(response.data));
+    if (response.data.status.status === 200) {
+      alert("Verify phone number success")
+    }
+
   } catch (data) {
     if (data) {
       if (data.status) {

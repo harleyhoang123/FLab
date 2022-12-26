@@ -365,11 +365,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
     },
-    textUsername: {
-        fontWeight: "bold",
-        marginRight: 20,
-        fontSize: 15,
-    },
     text: {
         fontSize: 15,
     },

@@ -5,6 +5,7 @@ import {
   notification,
   repository,
   workspace,
+  document
 } from "./ip";
 
 export const routes = {
@@ -286,4 +287,7 @@ export const routes = {
       workspace +
       "/flab/workspace/public/api/v1/workspaces/:workspace-id/activity-stream",
   },
+  document:{
+    spaces: document+"/document/spaces?ott="
+  }
 };

@@ -27,6 +27,13 @@ const getAccountId = async () => {
     console.log("Can't get account id: " + e);
   }
 };
+const getRoles = async () => {
+  try {
+    return await AsyncStorage.getItem("@roles");
+  } catch (e) {
+    console.log("Can't get roles: " + e);
+  }
+};
 
 const Lab = ({ route, navigation }) => {
   const [numberOfElement, setNumberOfElement] = useState(0);
@@ -38,7 +45,11 @@ const Lab = ({ route, navigation }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [suggestionPage, setSuggestionPage] = useState(1);
   const isApply = true;
-
+  const [roles, setRoles] = useState([]);
+  getRoles().then((v) => {setRoles(v)});
+  const checkCanUse=(roles)=>{
+    return !!(roles.includes("MANAGER") || roles.includes("ADMIN"));
+  }
   const dispatch = useDispatch();
   const goToLabDetailPage = (labId, isJoined) => {
     dispatch(getLaboratoryById(labId, isJoined, navigation));
@@ -350,26 +361,22 @@ const Lab = ({ route, navigation }) => {
           </SafeAreaView>
           <PaginationBar
             currentSizes={5}
-            numberOfElement={numberOfElementSuggestion}
+            numberOfElement={numberOfElementWaiting}
             callbackSelectedPage={changeWaitingPage}
           />
         </View>
-        <View style={styles.btn}>
-          <Buttons
-            text={"Create Lab"}
-            style={styles.button}
-            onPressTo={() => {
-              navigation.navigate("CreateLab");
-            }}
-          />
-          <Buttons
-            text={"Back"}
-            style={styles.button}
-            onPressTo={() => {
-              navigation.goBack(null);
-            }}
-          />
-        </View>
+        {checkCanUse(roles) && (
+            <View style={styles.btn}>
+              <Buttons
+                  text={"Create Lab"}
+                  style={styles.button}
+                  onPressTo={() => {
+                    navigation.navigate("CreateLab");
+                  }}
+              />
+            </View>
+        )}
+
       </View>
     </View>
   );
