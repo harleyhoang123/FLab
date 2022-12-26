@@ -214,25 +214,6 @@ export default function LabDetail({ route, navigation }) {
           </View>
         </View>
         <View style={styles.containerInfo}>
-          {roles == "MANAGER" || roles == "OWNER" ? (
-            <View>
-              <View style={{ flexDirection: "row" }}>
-                <Buttons
-                  style={styles.button}
-                  text={"View All Member"}
-                  onPressTo={() => goToViewAllMemberPage(data.laboratoryId)}
-                />
-                <Buttons
-                  style={styles.button}
-                  text={"View All Project"}
-                  onPressTo={() =>
-                    goToViewAllProjectPage(data.laboratoryId, memberId)
-                  }
-                />
-              </View>
-            </View>
-          ) : null}
-
           <View style={styles.leavebtn}>
             {isApply ? (
               <Text style={styles.textWait}>WAITING FOR APPROVE</Text>
@@ -295,6 +276,11 @@ export default function LabDetail({ route, navigation }) {
               </Pressable>
             </View>
           )}
+          <Buttons
+            style={[styles.button, styles.buttonOpen, { marginTop: 20 }]}
+            text={"Back to Lab"}
+            onPressTo={() => navigation.push("Lab")}
+          />
         </View>
       </View>
     </View>

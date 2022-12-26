@@ -27,7 +27,9 @@ function OrderItem({
     );
   };
   const responseOrderWaiting = (statusOder) => {
-    responseOrder(orderId, statusOder, navigation).then(() => callBackOrder()).catch(error => {});
+    responseOrder(orderId, statusOder, navigation)
+      .then(() => callBackOrder())
+      .catch((error) => {});
   };
   const renderButton = (statusOder) => {
     if (statusOder === "WAITING_FOR_APPROVAL") {
@@ -90,7 +92,6 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 40,
-    width: "25%",
     margin: 20,
   },
 });
